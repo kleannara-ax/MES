@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="scscm compile" default="compile" basedir=".">
+	<property environment="env" />
+	<property file="buildJAVAC.properties" />
+
+	<presetdef name="javac">
+	    <javac includeantruntime="false" />
+	</presetdef>
+	
+	<!-- target prepare -->
+	<target name="prepare">
+		<mkdir dir="${deploy.dir}" />
+	</target>
+
+	<!-- target compile -->
+	<target name="compile" depends="prepare">
+		<javac srcdir="${build.dir}" destdir="${deploy.dir}" compiler="javac1.8" encoding="UTF-8">
+			<classpath>
+				<fileset dir="${jdk.dir}">
+				    <include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${servlet.dir}">
+				    <include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<exclude name="org/**" />
+		</javac>		
+		<copy overwrite="true" todir="${deploy.dir}">
+			<fileset dir="${build.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+			<fileset dir="${build.dir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+	</target>
+</project>

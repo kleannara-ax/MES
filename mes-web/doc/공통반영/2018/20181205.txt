@@ -1,0 +1,21 @@
+input.js
+ - reloadCombo 호출시 paramater 직접 전달 가능한 기능 추가 : paramData
+   inputList.reloadCombo($comboObj, comboType, comboData, codeViewType, paramData);
+ - reloadCombo 미리 선언한 combo가 아니라도 사용 가능하도록 기능 추가
+   inputList.reloadCombo($comboObj, comboType, comboData, codeViewType, paramData);
+   inputList.reloadCombo($comboObj2, "Default", "Demo,MCOMBO2", true, param);
+ - multicombo 함수 추가
+   getMultiComboValue(obj) : return type Array
+   setMultiComboValue(obj, values, eventType) : values(string 또는 Array), eventType(true인 경우만 change event 발생)
+   resetMultiComboValue(obj, eventType) : value 초기화, eventType(true인 경우만 change event 발생)
+ - multicombo change event 추가 : name = combo name
+   multiComboChange(name, values)
+     멀티콤보 닫는 경우, 멀티콤보 입력창을 통해 데이터 입력하는 경우, setMultiComboValue 함수 호출시
+   
+theme.js
+ - multicombo 입력 부분 높이 조정
+ 
+계층형 multi combo sample 추가
+ - common/include/toolMenu.jsp
+ - demo/input/multicombo.jsp
+ - demo.xml

@@ -1,0 +1,4 @@
+grid.js
+ - 틀고정 시 checkBox 동작 가능 하도록 변경
+ - 틀고정 시 select를 clone되지 않는 문제 해결을 위해 select는 text로 표시 하도록 변경
+   

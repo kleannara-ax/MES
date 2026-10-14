@@ -1,0 +1,54 @@
+@charset 'utf-8';
+/*
+font-family: 'Open Sans', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+font-family: 'Open Sans', sans-serif;
+*/
+
+.bg {position:absolute; left:0; right:0; top:0; bottom:0; overflow:hidden; background:url("/common/theme/webdek/images/login/bgbg.jpg") no-repeat center center; background-size:100% 100%;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='arrow-big-right.png', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/common/theme/webdek/images/login/bgbg.jpg', sizingMethod='scale')";}
+.loginWrap {position:absolute; top:40%; left:50%; width:429px; margin:-130px 0 0 -215px; background-color: rgba(0,0,0,0.55);}
+
+
+/*새로 추가한 css*/
+.loginWrap h2, h3 {color: #ffffff; text-align: center; }
+.loginWrap h2 { font-size: 16px;  font-weight: normal; font-family: 'Open Sans', sans-serif; margin-top: 65px; }
+.loginWrap h3 { font-size: 33px;  font-weight: bold; font-family: 'Open Sans', sans-serif; margin-top: -13px; }
+/*새로 추가 끝*/
+
+
+.loginWrap > .innerWrap { position:relative; padding:28px 0 10px 0px; height:200px; text-align: center; margin-top: -30px;}
+.logo { margin-left: 50px; margin-top: 50px; }
+.loginWrap .id input,
+.loginWrap .pw input { width:260px; padding:0 10px 0 10px; height:37px; line-height:37px; color:#ffffff; font-size:14px; background: none; border: none; border-bottom: 1px #a5a4a4 solid;}
+.loginWrap .id input::placeholder, 
+.loginWrap .pw input::placeholder { color: #fff;}
+.loginWrap .id { padding:0 0 10px;}
+.loginWrap .pw { padding:0 0 10px;}
+.loginWrap .changePassword { margin-top: 5px; float:right; margin-right: 70px; font-family: 'Noto Sans KR', sans-serif; background: none; border: none; color: #fff;}
+.loginWrap .changePassword a {
+	display:block; 
+	color:#fff;
+	text-decoration : none;
+}
+.loginWrap .changePassword a img { margin-left:5px;}
+.loginWrap .selectWrap #WAREKY { font-family: 'Open Sans', sans-serif; color: #fff; background: none; border: none; border-bottom: 1px #a5a4a4 solid; appearance: none; -moz-appearance: none;
+    -webkit-appearance: none; background: url("/common/theme/webdek/images/login/arrow.png") no-repeat; background-position: center right; }
+.loginWrap .selectWrap { padding:0 0 10px;}
+.loginWrap .selectWrap select{width:280px; height:37px; padding:0 10px; }
+.loginWrap .login { margin-top: 15px; }
+.loginWrap .login > input {
+	width:280px; height:47px; border:0 none; border-radius:5px; color:#fff; font-size:17px; font-weight:bold; cursor:pointer; font-family: 'Open Sans', sans-serif;
+	background: #ff5723; /* Old browsers */
+/* 	background: -moz-linear-gradient(top,  #203557 0%, #182741 100%); FF3.6+
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#203557), color-stop(100%,#182741)); Chrome,Safari4+
+	background: -webkit-linear-gradient(top,  #203557 0%,#182741 100%); Chrome10+,Safari5.1+
+	background: -o-linear-gradient(top,  #203557 0%,#182741 100%); Opera 11.10+
+	background: -ms-linear-gradient(top,  #203557 0%,#182741 100%); IE10+
+	background: linear-gradient(to bottom,  #203557 0%,#182741 100%); W3C
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#203557', endColorstr='#182741',GradientType=0 ); IE6-9 */
+}
+.loginWrap .contact { margin:100px 0 0 65px;}
+.loginWrap .contact .tit { padding:20px 0 0; color:#fff; font-size:11px; opacity:0.5; filter:alpha(opacity=50);}
+
+.contentLoading { position:fixed; left:0; top:0; bottom:0; right:0; z-index:999999; background:#fff url("/common/theme/darkness/images/loading.jpg") no-repeat center center; opacity:0.85;display: none;}

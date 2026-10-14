@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html> 
+<head>
+<title>싱글 다운로드 UI를 설정하는 예제입니다.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- 단순히 샘플 설명을 위한 화면 스타일입니다. 중요하지 않습니다. -->
+<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+
+<!-- 
+	NamoCrossDownloader Client Flex Edition 이 동작하기 위한 필수 파일들입니다. 
+--> 
+<script type="text/javascript" src="../../js/swfobject.js"></script>
+<script type="text/javascript" src="../../js/namocrossuploader.js"></script>
+<!-- 모니터 창 출력을 위한 스타일입니다. 필요 시 프로젝트 디자인에 맞게 적절히 수정해 주십시오. -->
+<link rel="stylesheet" type="text/css" href="../../css/namocrossuploader.css" />
+
+<!-- JSON 파싱을 위해 jQuery 사용하고 있습니다. 필요 없을 시 삭제해 주십시오. -->
+<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript">
+    /**
+    * NamoCrossDownloader의 Manager 객체
+    */
+    var cdManager = null;
+
+	// HTML의 onload 이벤트 핸들러
+    var onInit = function () {
+        /**
+        * NamoCrossDownloader 객체를 생성합니다.
+        * 객체의 크기 변경, Javascript로 전송하는 이벤트 이름 변경 및 기타 설정은 함수 내부를 참조해 주십시오. 
+        * createNamoCrossDownloader 함수는 namocrossuploader.js 파일에 구현되어 있습니다. 
+        * 각각의 Id는 변경 가능합니다.
+        */
+        createNamoCrossDownloader(
+            "crossDownloadManager", // NamoCrossDownloader의 Manager 객체 Id
+            "flashContentManager",  // NamoCrossDownloader의 Manager 객체가 위치할 HTML Id (body 태크 내에 선언된 Id와 동일해야 함)
+            true                    // Single File Download 이면 true, Multiple File Download 이면 false
+            );
+    }
+
+	/**
+	* NamoCrossDownloader의 Manager 객체 생성 완료 시 호출됩니다.
+	*/
+    var onCreationCompleteCd = function () {
+        cdManager = document.getElementById("crossDownloadManager");
+
+        // 다운로드 할 파일 추가
+        // filePath는 샘플을 위한 것으로 실제 환경에서는 불필요합니다.
+		var filePath = getAbsolutePathNoProtocol("Download") + "DownloadFiles";
+		var fileURL = getCurrentPath() + "DownloadProcess.jsp?filePath=" + filePath;
+		//var fileURL = "http://localhost:8080/NamoCrossUploaderFxSamples/Download/SingleFileDownload/DownloadProcess.jsp";
+        cdManager.addFile({ fileId: "FILEID_0001", fileName: "나모크로스에디터3_제품소개서.pdf", fileURL: fileURL, fileSize: 2210715 });
+        cdManager.addFile({ fileId: "FILEID_0002", fileName: "ActiveSquare 7_brochure.pdf", fileURL: fileURL, fileSize: 2816868 });
+        cdManager.addFile({ fileId: "FILEID_0003", fileName: "130617_나모_펍트리_브로셔_130702.pdf", fileURL: fileURL, fileSize: 2717166 });
+    }
+
+	/**
+	* 예외 발생 시 호출됩니다.
+	*/ 
+    var onExceptionCd = function (params) {
+        // 300~ : 일반적 예외
+        // 400~ : 시스템 예외
+        // 500~ : 서측에서 발생한 예외
+        // 필요한 예외정보만 고객에서 보여주십시오.
+		var obj = jQuery.parseJSON(params); 
+		alertTimeout("[예외 정보]\n" + "code : " + obj.code + "\n" + "message : " + obj.message + "\n" + "detailMessage : " + obj.detailMessage); 
+    }
+
+	/**
+	* 다운로드 완료 시 호출됩니다.
+    * 싱글 파일 다운로드에서는 "onEndDownload" 시점에 파일정보가 전달되고, 멀티플 파일 다운로드에서는 "onEndDownloadItem" 시점에 파일정보가 전달됩니다. 
+	*/
+    var onEndDownloadItemCd = function (params) {
+	    var obj = jQuery.parseJSON(params); 
+	    alertTimeout("[파일 다운로드 완료]\n" + 
+	    "FileId : "	  + obj.fileId + "\n" +
+	    "FileName : " + obj.fileName + "\n" +
+	    "FileSize : " + obj.fileSize 
+	    ); 
+	} 
+
+    /**
+    * 다운로드 취소 시 호출됩니다.
+    */
+    var onCancelDownloadItemCd = function (params) {
+        /*
+        var obj = jQuery.parseJSON(params); 
+        alertTimeout("[파일 다운로드 취소]\n" + 
+        "FileId : "   + obj.fileId + "\n" +
+        "FileName : " + obj.fileName + "\n" +
+        "FileSize : " + obj.fileSize
+        ); 
+        */
+	}
+
+	/* UI Properties 변경 */
+	var resetUIProperties = function () { 
+		var width = document.getElementById("cdManagerW").value; 
+		var height = document.getElementById("cdManagerH").value; 
+		var borderColor = document.getElementById("borderColor").value; 
+
+		// UI 프로퍼티를 설정합니다.
+		var uiProperties = {
+		    "width": width,
+			"height": height,
+			"borderColor": borderColor
+		};
+        cdManager.setUIProperties(uiProperties);
+
+		// HTML 내의 Flash 영역을 변경합니다.
+		cdManager.width = Number(width); 
+		cdManager.height = Number(height); 
+	}
+
+	/**
+    * Flash로부터 호출되는 Javascript 콜백함수 내에서 alert 창을 띄우기 위한 처리로 Chrome, Firefox, Safari 브라우저의 일부 버전에 해당됩니다. 
+    */
+	var alertTimeout = function (params) {
+	    window.focus();
+	    setTimeout(function () { alert(params) }, 100);
+	}
+</script>
+</head>
+
+<body onload="onInit()"> 
+	<div class="content_title_area">
+		<div class="content_title">샘플 설명</div>
+		<div class="content_desc">싱글 파일 다운로드 예제입니다. Adobe Flash Player만을 사용합니다.<br /><font color="red">UI 설정 가이드를 위해 다소 코드가 복잡하니 실제 업로드, 다운로드 기능 참조는 해당 샘플을 참고해 주십시오.</font></div>
+		<div class="content_title">샘플 경로</div>
+		<div class="content_desc">NamoCrossUploaderFxSamples/SettingUI/SettingSingleDownloadUI</div>
+	</div><br />
+
+	<!-- UI 설정 값 --> 
+	<div class="ui_area">
+		<input type="button" value="UI 스타일 변경" onclick="resetUIProperties()" /> (아래 표에서 변경할 UI 스타일을 설정해 주십시오.)
+		<table class="ui_table"> 
+			<tbody>
+				<tr class="ui_table_title">
+					<td width="200">항목</td><td width="80">초기 값</td><td width="100">변경할 값</td><td width="800">설명</td>
+				</tr>
+				<tr>
+					<td>크기 변경</td>
+					<td>가로: 436<br />세로: 280</td>
+					<td>가로: <input type="text" id="cdManagerW" value="436" size="5"><br />세로: <input type="text" id="cdManagerH" value="280" size="5"></td>
+					<td>최초 컴포넌트가 생성될 때 크기를 지정할 경우는 embedNamoCrossUploader 함수를 사용하고, 이후 동적으로 크기를 변경할 경우는 setUIProperties 메소드를 사용해 주십시오.</td>
+				</tr>
+				<tr>
+					<td>보더 컬러 변경</td>
+					<td>#EEEEEE</td>
+					<td><input type="text" id="borderColor" value="#EEEEEE" size="9"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br />
+
+	<div class="form_area">
+        <!-- NamoCrossDownloader의 Manager 객체가 위치할 HTML Id -->
+        <div id="flashContentManager" style="display: none;">
+            <p>To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.</p>
+            <script type="text/javascript"> 
+                var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://"); 
+                document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+                                + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+            </script> 
+        </div>
+	</div>
+</body>
+</html>

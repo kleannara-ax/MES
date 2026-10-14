@@ -1,0 +1,5 @@
+content_body.css
+ - grid head 색상 변경
+ 
+문선 연결 기능 사용시 연결된 문서를 닫고 다시 연결하는 경우 열리지 않는 오류 수정
+ - left.jsp, main.jsp, wintab.jsp

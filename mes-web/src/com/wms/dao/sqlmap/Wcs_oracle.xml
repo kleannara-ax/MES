@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsWcs">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<select id="AREAKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    AREAKY AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM AREMA 
+		WHERE WAREKY = #WAREKY#
+		AND   RDDALL = 'V'
+	</select>
+	
+	<select id="LOCSTSCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT KTCODL AS VALUE_COL, 
+		    CDESC1 AS TEXT_COL
+		FROM KTCOD 
+		WHERE CMCDKY='LOCSTS'
+	</select>
+	
+	<select id="LOCLUGCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT KTCODL AS VALUE_COL, 
+		    CDESC1 AS TEXT_COL
+		FROM KTCOD 
+		WHERE CMCDKY='LOCLUG'
+	</select>
+	
+	<select id="DROPIDCOMCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDVL AS VALUE_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'DROPID' 
+        ORDER BY CMCDVL DESC 
+	</select>
+	
+	<select id="TRUNTYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT KTCODL AS VALUE_COL, 
+		    CDESC1 AS TEXT_COL
+		FROM KTCOD 
+		WHERE CMCDKY='TRUNTY'
+	</select>
+	
+	<select id="STRT_SCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT KTCODL AS VALUE_COL, 
+		    CDESC1 AS TEXT_COL
+		FROM KTCOD 
+		WHERE CMCDKY='STRT_S'
+	</select>
+	
+    <select id="KT000_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY	,AREAKY , IOFR, STCIO, 
+		        DECODE(STC01,'Y','V',' ') STC01,
+		        DECODE(STC02,'Y','V',' ') STC02,
+		        DECODE(STC03,'Y','V',' ') STC03,
+		        DECODE(STC04,'Y','V',' ') STC04,
+		        DECODE(STC05,'Y','V',' ') STC05,
+		        DECODE(STC06,'Y','V',' ') STC06,
+		        DECODE(STC07,'Y','V',' ') STC07,
+		        DECODE(STC08,'Y','V',' ') STC08,
+		        DECODE(STC09,'Y','V',' ') STC09,
+		        DECODE(STC10,'Y','V',' ') STC10,
+		        DECODE(STC11,'Y','V',' ') STC11,
+		        DECODE(STC12,'Y','V',' ') STC12,
+		        DECODE(STC13,'Y','V',' ') STC13,
+		        DECODE(STC14,'Y','V',' ') STC14,
+		        DECODE(STC15,'Y','V',' ') STC15,
+		        DECODE(STC16,'Y','V',' ') STC16,
+		        DECODE(STC17,'Y','V',' ') STC17,
+		        DECODE(STC18,'Y','V',' ') STC18,
+		        DECODE(STC19,'Y','V',' ') STC19,
+		        DECODE(STC20,'Y','V',' ') STC20,
+		        DEF_02,
+		        DEF_03
+		FROM 
+		(    
+				SELECT WAREKY, AREAKY, 'IF' IOFR, '입고장 입고'  STCIO,
+				       SUBSTR(INFUSE,1,1)  STC01, SUBSTR(INFUSE,2,1)  STC02, SUBSTR(INFUSE,3,1)  STC03, SUBSTR(INFUSE,4,1)  STC04, SUBSTR(INFUSE,5,1)  STC05,
+				       SUBSTR(INFUSE,6,1)  STC06, SUBSTR(INFUSE,7,1)  STC07, SUBSTR(INFUSE,8,1)  STC08, SUBSTR(INFUSE,9,1)  STC09, SUBSTR(INFUSE,10,1) STC10,
+				       SUBSTR(INFUSE,11,1) STC11, SUBSTR(INFUSE,12,1) STC12, SUBSTR(INFUSE,13,1) STC13, SUBSTR(INFUSE,14,1) STC14, SUBSTR(INFUSE,15,1) STC15,
+				       SUBSTR(INFUSE,16,1) STC16, SUBSTR(INFUSE,17,1) STC17, SUBSTR(INFUSE,18,1) STC18, SUBSTR(INFUSE,19,1) STC19, SUBSTR(INFUSE,15,1) STC20,
+				       DEF_02, DEF_03
+				FROM KT000
+				WHERE WAREKY = #WAREKY#
+				AND   AREAKY = #AREAKY#		
+				UNION ALL 
+				SELECT WAREKY, AREAKY, 'IR' IOFR, '입고장 출고'  STCIO,
+				       SUBSTR(INRUSE,1,1)  STC01, SUBSTR(INRUSE,2,1)  STC02, SUBSTR(INRUSE,3,1)  STC03, SUBSTR(INRUSE,4,1)  STC04, SUBSTR(INRUSE,5,1)  STC05,
+				       SUBSTR(INRUSE,6,1)  STC06, SUBSTR(INRUSE,7,1)  STC07, SUBSTR(INRUSE,8,1)  STC08, SUBSTR(INRUSE,9,1)  STC09, SUBSTR(INRUSE,10,1) STC10,
+				       SUBSTR(INRUSE,11,1) STC11, SUBSTR(INRUSE,12,1) STC12, SUBSTR(INRUSE,13,1) STC13, SUBSTR(INRUSE,14,1) STC14, SUBSTR(INRUSE,15,1) STC15,
+				       SUBSTR(INRUSE,16,1) STC16, SUBSTR(INRUSE,17,1) STC17, SUBSTR(INRUSE,18,1) STC18, SUBSTR(INRUSE,19,1) STC19, SUBSTR(INRUSE,15,1) STC20,
+				       DEF_02, DEF_03
+				FROM KT000
+				WHERE WAREKY = #WAREKY#
+				AND   AREAKY = #AREAKY#
+				UNION ALL 
+				SELECT WAREKY, AREAKY, 'OF' IOFR, '출고장 입고'  STCIO,
+				       SUBSTR(OTFUSE,1,1)  STC01, SUBSTR(OTFUSE,2,1)  STC02, SUBSTR(OTFUSE,3,1)  STC03, SUBSTR(OTFUSE,4,1)  STC04, SUBSTR(OTFUSE,5,1)  STC05,
+				       SUBSTR(OTFUSE,6,1)  STC06, SUBSTR(OTFUSE,7,1)  STC07, SUBSTR(OTFUSE,8,1)  STC08, SUBSTR(OTFUSE,9,1)  STC09, SUBSTR(OTFUSE,10,1) STC10,
+				       SUBSTR(OTFUSE,11,1) STC11, SUBSTR(OTFUSE,12,1) STC12, SUBSTR(OTFUSE,13,1) STC13, SUBSTR(OTFUSE,14,1) STC14, SUBSTR(OTFUSE,15,1) STC15,
+				       SUBSTR(OTFUSE,16,1) STC16, SUBSTR(OTFUSE,17,1) STC17, SUBSTR(OTFUSE,18,1) STC18, SUBSTR(OTFUSE,19,1) STC19, SUBSTR(OTFUSE,15,1) STC20,
+				       DEF_02, DEF_03
+				FROM KT000
+				WHERE WAREKY = #WAREKY#
+				AND   AREAKY = #AREAKY#
+				UNION ALL
+				SELECT WAREKY, AREAKY, 'OR' IOFR, '출고장 출고'  STCIO,
+				       SUBSTR(OTRUSE,1,1)  STC01, SUBSTR(OTRUSE,2,1)  STC02, SUBSTR(OTRUSE,3,1)  STC03, SUBSTR(OTRUSE,4,1)  STC04, SUBSTR(OTRUSE,5,1)  STC05,
+				       SUBSTR(OTRUSE,6,1)  STC06, SUBSTR(OTRUSE,7,1)  STC07, SUBSTR(OTRUSE,8,1)  STC08, SUBSTR(OTRUSE,9,1)  STC09, SUBSTR(OTRUSE,10,1) STC10,
+				       SUBSTR(OTRUSE,11,1) STC11, SUBSTR(OTRUSE,12,1) STC12, SUBSTR(OTRUSE,13,1) STC13, SUBSTR(OTRUSE,14,1) STC14, SUBSTR(OTRUSE,15,1) STC15,
+				       SUBSTR(OTRUSE,16,1) STC16, SUBSTR(OTRUSE,17,1) STC17, SUBSTR(OTRUSE,18,1) STC18, SUBSTR(OTRUSE,19,1) STC19, SUBSTR(OTRUSE,15,1) STC20,
+				       DEF_02, DEF_03
+				FROM KT000
+				WHERE WAREKY = #WAREKY#
+				AND   AREAKY = #AREAKY#		
+		)				
+	</select>
+		
+	
+	<update id="KT000_UPDATE" parameterClass="Map">
+		UPDATE KT000
+			SET INFUSE  =  #INFUSE#,
+				INRUSE  =  #INRUSE#,
+				OTFUSE  =  #OTFUSE#,
+				OTRUSE  =  #OTRUSE#,
+				DEF_02  =  #DEF_02#,
+				DEF_03  =  #DEF_03#			
+		WHERE WAREKY = #WAREKY#
+		AND   AREAKY = #AREAKY#
+	</update>
+
+	<select id="KTDEF_LIST" parameterClass="Map" resultClass="DataMap">	
+		SELECT WAREKY, AREAKY, STNSEQ, DECODE(USE_01,'Y','V',' ') USE_01, DEF_01, DECODE(SIGN(CNT_01),-1,0, CNT_01) CNT_01
+		FROM KTDEF
+		WHERE WAREKY = #WAREKY#
+		AND   AREAKY = #AREAKY#
+		AND   STNSEQ IN (1,2,3,4)
+	</select>
+
+	<update id="KTDEF_UPDATE" parameterClass="Map">
+		UPDATE KTDEF 
+		SET USE_01  =  #USE_01#,
+			DEF_01  =  #DEF_01#,
+			CNT_01  =  #CNT_01#	
+		WHERE WAREKY = #WAREKY#
+		AND   AREAKY = #AREAKY#
+		AND   STNSEQ = TO_NUMBER(#STNSEQ#)
+	</update>
+	
+	<update id="KT000_WS02_UPDATE" parameterClass="Map">
+		UPDATE KT000
+			SET USEGRP = substr(USEGRP,  1, 3) 
+     			        ||#STN_USE#
+      		            ||substr(USEGRP,  8,17)  /* DOCK_USE   출하대 사용정의 */
+       					||substr(USEGRP, 25,20)  /* FRONT_CNV_MODE 입고장 콘베이어 모드 */
+       					||substr(USEGRP, 45,20)  /* REAR_CNV_MODE  */
+       					||substr(USEGRP, 65, 1)  /* OUT_CROSS_MODE */
+      					||substr(USEGRP, 66, 1)  /* STC_14_15_MODE */
+     					||substr(USEGRP, 67, 1)  /* STC_TO_STC_USE */
+       					||substr(USEGRP, 68,21)  /* BUF_STC_PLT_CNT */
+       					||#STN_MAX_PLT#
+       					||#STN_CUR_PLT#
+      					||substr(USEGRP,105,20)  /* DOCK_MAX_JOB */
+		WHERE WAREKY = #WAREKY#
+		AND   AREAKY = #AREAKY#
+	</update>	
+	
+	<select id="ORDERENTRY_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		    TH.DOCDAT,
+		    TH.TASKKY,
+		    TI.STKNUM,
+		    TI.SVBELN,    
+		    SUM(TI.QTTAOR) QTTAOR,
+		    COUNT(*) CNT,
+		    MAX(SI.PTNRKY) AS PTNRKY,
+		    SH.DRIVER
+		FROM HANTA.TASDH TH, HANTA.TASDI TI, HANTA.SHPDH SH, HANTA.SHPDI SI
+		WHERE 1=1
+			<isNotEmpty property="RANGE_SQL">$RANGE_SQL$</isNotEmpty>
+			<isNotEmpty property="DRIVER">AND SH.DRIVER = #DRIVER#</isNotEmpty>
+			<isNotEmpty property="TASKKY">AND TH.TASKKY = #TASKKY#</isNotEmpty>
+			<isNotEmpty property="STKNUM">AND TI.STKNUM = #STKNUM#</isNotEmpty>
+			<isNotEmpty property="SVBELN">AND TI.SVBELN = #SVBELN#</isNotEmpty>
+		    AND TH.TASKKY = TI.TASKKY
+		    AND TI.SHPOKY = SH.SHPOKY
+		    AND SH.SHPOKY = SI.SHPOKY
+		GROUP BY TH.DOCDAT, TH.TASKKY, TI.SHPOKY, TI.SVBELN, TI.STKNUM, SH.DPTNKY, SH.DRIVER
+		ORDER BY TH.DOCDAT DESC
+	</select>
+	
+	<select id="ORDERENTRYPOP_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    AREAKY AS VALUE_COL,
+		    SHORTX AS TEXT_COL 
+		FROM AREMA 
+		WHERE RDDALL = 'V'
+	</select>
+	
+	<select id="WCM1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT K2.LOCAKY, DECODE(K2.IN_USE,'Y','V',' ') IN_USE, K2.LOCLUG, K2.LOCSTS, SY.LOTA03, K2.TRUNPT, SY.OWNRKY, 
+		    SY.LOTA01, SY.SKUKEY, SY.LOTA02, SY.LOTA09, SY.LOTA11, SY.LOTA12, NVL(SUM(SY.QTSIWH),0) QTSIWH, SY.UOMKEY, K2.TRNUID, SY.LOTA13, MAX(K2.WAREKY) AS WAREKY
+		FROM KT200 K2, STKKY SY
+		WHERE 1=1  
+			<isNotEmpty property="RANGE_SQL">$RANGE_SQL$</isNotEmpty>
+			<isNotEmpty property="LOCSTS">AND K2.LOCSTS = #LOCSTS#</isNotEmpty>
+			<isNotEmpty property="LOCLUG">AND K2.LOCLUG = #LOCLUG#</isNotEmpty>
+			AND K2.WAREKY = #WAREKY#
+			AND K2.WAREKY= SY.WAREKY(+)
+		    AND K2.LOCAKY = SY.LOCAKY(+)		    
+		GROUP BY K2.LOCAKY, K2.IN_USE, K2.LOCLUG, K2.LOCSTS, SY.LOTA03, SY.OWNRKY, 
+		    SY.LOTA01, SY.SKUKEY, SY.LOTA02, SY.LOTA09, SY.LOTA11, SY.LOTA12, K2.TRUNPT, SY.UOMKEY, K2.TRNUID, SY.LOTA13
+		ORDER BY K2.LOCAKY
+	</select>
+	
+	<update id="WCM1_UPDATE" parameterClass="Map">
+		UPDATE KT200 SET 
+	        <isNotEmpty property="IN_USE">IN_USE = DECODE(#IN_USE#,'V','Y','N'),</isNotEmpty>
+	        <isNotEmpty property="LOCLUG">LOCLUG = #LOCLUG#,</isNotEmpty>
+	        <isNotEmpty property="LOCSTS">LOCSTS = #LOCSTS#,</isNotEmpty>
+	        <isNotEmpty property="TRUNPT">TRUNPT = #TRUNPT#</isNotEmpty>	        
+	    WHERE WAREKY = #WAREKY#
+	        AND LOCAKY = #LOCAKY#
+	</update>
+	
+	<select id="WCM2_LIST" parameterClass="Map" resultClass="DataMap">
+	   SELECT STC,
+          DECODE(INFUSE,'Y','V',' ') INFUSE, 
+          DECODE(OTFUSE,'Y','V',' ') OTFUSE,
+          SUBSTR(STCSTS,1,1) STCSTS,
+          CDESC1
+       FROM(
+	      SELECT '1' STC, SUBSTR(INFUSE,1,1) INFUSE, SUBSTR(OTFUSE,1,1) OTFUSE, SUBSTR(STCSTS,1,1) STCSTS, KD.CDESC1 FROM KT000 K0, KTCOD KD WHERE KD.CMCDKY='STCSTS' AND KD.KTCODL=SUBSTR(K0.STCSTS,1,1)
+	      UNION ALL 
+	      SELECT '2' STC, SUBSTR(INFUSE,2,1) INFUSE, SUBSTR(OTFUSE,2,1) OTFUSE, SUBSTR(STCSTS,2,1) STCSTS, KD.CDESC1 FROM KT000 K0, KTCOD KD WHERE KD.CMCDKY='STCSTS' AND KD.KTCODL=SUBSTR(K0.STCSTS,2,1)
+	      UNION ALL 
+	      SELECT '3' STC, SUBSTR(INFUSE,3,1) INFUSE, SUBSTR(OTFUSE,3,1) OTFUSE, SUBSTR(STCSTS,3,1) STCSTS, KD.CDESC1 FROM KT000 K0, KTCOD KD WHERE KD.CMCDKY='STCSTS' AND KD.KTCODL=SUBSTR(K0.STCSTS,3,1)
+	      UNION ALL 
+	      SELECT '4' STC, SUBSTR(INFUSE,4,1) INFUSE, SUBSTR(OTFUSE,4,1) OTFUSE, SUBSTR(STCSTS,4,1) STCSTS, KD.CDESC1 FROM KT000 K0, KTCOD KD WHERE KD.CMCDKY='STCSTS' AND KD.KTCODL=SUBSTR(K0.STCSTS,4,1)
+	      UNION ALL 
+	      SELECT '5' STC, SUBSTR(INFUSE,5,1) INFUSE, SUBSTR(OTFUSE,5,1) OTFUSE, SUBSTR(STCSTS,5,1) STCSTS, KD.CDESC1 FROM KT000 K0, KTCOD KD WHERE KD.CMCDKY='STCSTS' AND KD.KTCODL=SUBSTR(K0.STCSTS,5,1)
+		)
+		WHERE 1=1
+	</select>
+	
+	<update id="WCM2_UPDATE" parameterClass="Map">
+		UPDATE KT000 SET INFUSE  =  #INFUSE#, OTFUSE  =  #OTFUSE#		
+	</update>		
+	
+	<select id="WCI1_LIST" parameterClass="Map" resultClass="DataMap">
+	SELECT   STOKKY
+	        ,WAREKY
+	        ,LOTNUM
+	        ,LOCAKY
+	        ,TRNUID
+	        ,SECTID
+	        ,PACKID
+	        ,QTSIWH
+	        ,QTSALO
+	        ,QTSPMO
+	        ,QTSPMI
+	        ,QTSBLK
+	        ,QTYUOM
+	        ,TRUNTY
+	        ,MEASKY
+	        ,UOMKEY
+	        ,QTPUOM
+	        ,DUOMKY
+	        ,QTDUOM
+	        ,TKFLKY
+	        ,STEPNO
+	        ,LSTTFL
+	        ,SRCSKY
+	        ,UOMDOC
+	        ,CNTBSK
+	        ,NUPDPS
+	        ,REFDKY
+	        ,REFDIT
+	        ,REFCAT
+	        ,REFDAT
+	        ,PURCKY
+	        ,PURCIT
+	        ,ASNDKY
+	        ,ASNDIT
+	        ,RECVKY
+	        ,RECVIT
+	        ,SHPOKY
+	        ,SHPOIT
+	        ,GRPOKY
+	        ,GRPOIT
+	        ,TASKKY
+	        ,TASKIT
+	        ,SADJKY
+	        ,SADJIT
+	        ,SDIFKY
+	        ,SDIFIT
+	        ,PHYIKY
+	        ,PHYIIT
+	        ,OWNRKY
+	        ,SKUKEY
+	        ,LOTA01
+	        ,LOTA02
+	        ,LOTA03
+	        ,LOTA04
+	        ,LOTA05
+	        ,LOTA06
+	        ,LOTA07
+	        ,LOTA08
+	        ,LOTA09
+	        ,LOTA10
+	        ,LOTA11
+	        ,LOTA12
+	        ,LOTA13
+	        ,LOTA14
+	        ,LOTA15
+	        ,LOTA16
+	        ,LOTA17
+	        ,LOTA18
+	        ,LOTA19
+	        ,LOTA20
+	        ,LOTA21
+	        ,LOTA22
+	        ,LOTA23
+	        ,LOTA24
+	        ,LOTA25
+	        ,AWMSNO
+	        ,DESC01
+	        ,DESC02
+	        ,ASKU01
+	        ,ASKU02
+	        ,ASKU03
+	        ,ASKU04
+	        ,ASKU05
+	        ,EANCOD
+	        ,GTINCD
+	        ,SKUG01
+	        ,SKUG02
+	        ,SKUG03
+	        ,SKUG04
+	        ,SKUG05
+	        ,GRSWGT
+	        ,NETWGT
+	        ,WGTUNT
+	        ,LENGTH
+	        ,WIDTHW
+	        ,HEIGHT
+	        ,CUBICM
+	        ,CAPACT
+	        ,ZONEKY
+	        ,TKZONE
+	        ,AREAKY
+	        ,SMANDT
+	        ,SEBELN
+	        ,SEBELP
+	        ,SZMBLNO
+	        ,SZMIPNO
+	        ,STRAID
+	        ,SVBELN
+	        ,SPOSNR
+	        ,STKNUM
+	        ,STPNUM
+	        ,SWERKS
+	        ,SLGORT
+	        ,SDATBG
+	        ,STDLNR
+	        ,SSORNU
+	        ,SSORIT
+	        ,SMBLNR
+	        ,SZEILE
+	        ,SMJAHR
+	        ,SXBLNR
+	        ,SAPSTS
+	        ,SBKTXT
+	        ,CREDAT
+	        ,CRETIM
+	        ,CREUSR
+	        ,LMODAT
+	        ,LMOTIM
+	        ,LMOUSR
+	        ,INDBZL
+	        ,INDARC
+	        ,UPDCHK
+	        ,KEEPTS
+	        ,' ' AS DOCTXT
+	        ,' ' AS STRT_S
+		FROM STKKY
+		WHERE 1=1
+		--AND LOCAKY='AWHLOOSE'
+		AND QTSIWH>0
+		AND QTSPMO=0
+		AND TRNUID NOT IN ( SELECT TRNUID 
+                 FROM LT99T 
+                WHERE JOBTYP IN ('2','4','6','8') 
+                AND IFFLAG='N')
+		<isNotEmpty property="WAREKY">
+			AND	WAREKY = #WAREKY# 
+		</isNotEmpty>
+		 
+	<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+	</isNotEmpty>
+	</select>
+	
+	<select id="WCO2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+				TH.WAREKY   
+				,TI.OWNRKY -- 기탁자
+			    ,TI.LOTA01 --재고번호  
+			    ,TI.LOTA02 --참치바스켓번호
+			    ,TI.LOTA03 --관리자  
+			    ,TI.LOTA04 --최초기탁자  
+		    	,TI.LOTA05 --조업선  
+			    ,TI.LOTA06 --보관증번호 
+			    ,TI.LOTA07 --화물관리번호  
+			    ,TI.LOTA08 --면장번호 
+			    ,TI.LOTA09 --BL번호  
+			    ,TI.LOTA10 --컨테이너번호 
+			    ,TI.LOTA11 --제조일자  
+			    ,TI.LOTA12 --입고일자  
+			    ,TI.LOTA13 --유통기한  
+			    ,TI.LOTA14 --면허일자  
+			    ,TI.LOTA15 --검역일자 
+			    ,TI.LOTA16 --적용단가-냉장  
+			    ,TI.LOTA17 --적용단가-입고  
+			    ,TI.LOTA18 --적용단가-출고  
+			    ,TI.LOTA19 --적용단가-동결  
+			    ,TI.LOTA20 --적용단가-발췌  
+			    ,TI.LOTA21 --적용단가-계근
+			    ,TI.LOTA22 --수입유통이력번호-산업
+			    ,TI.LOTA23 --참고사항-산업  
+			    ,TI.LOTA24 --입고자부담 
+			    ,TI.LOTA25
+		        ,TI.DROPID
+			    ,substr(DROPID,1,1) AS DROPID1
+			    ,substr(DROPID,2,1) AS DROPID2
+			    ,substr(DROPID,3,1) AS DROPID3
+			    ,substr(DROPID,4,1) AS DROPID4
+			    ,substr(DROPID,5,1) AS DROPID5
+		        ,TI.SUOMKY
+		        ,TI.QTTAOR
+		        ,TI.SKUKEY
+		        ,TI.DESC01
+		        ,TI.LOCASR
+			    ,TI.TASKKY
+		        ,TI.TASKIT
+		        ,TI.TASKTY
+		        ,TI.RSNCOD
+		        ,TI.STATIT
+		        ,TI.QTCOMP
+		        ,TI.LOTNUM
+		        ,TI.ACTCDT
+		        ,TI.ACTCTI
+		        ,TI.QTYUOM
+		        ,TI.TKFLKY
+		        ,TI.STEPNO
+		        ,TI.LSTTFL
+		        ,TI.SECTSR
+		        ,TI.PAIDSR
+		        ,TI.TRNUSR
+		        ,TI.STRUTY
+		        ,TI.SMEAKY
+		        ,TI.QTSPUM
+		        ,TI.SDUOKY
+		        ,TI.QTSDUM
+		        ,TI.LOCATG
+		        ,TI.SECTTG
+		        ,TI.PAIDTG
+		        ,TI.TRNUTG
+		        ,TI.TTRUTY
+		        ,TI.TMEAKY
+		        ,TI.TUOMKY
+		        ,TI.QTTPUM
+		        ,TI.TDUOKY
+		        ,TI.QTTDUM
+		        ,TI.LOCAAC
+		        ,TI.SECTAC
+		        ,TI.PAIDAC
+		        ,TI.TRNUAC
+		        ,TI.ATRUTY
+		        ,TI.AMEAKY
+		        ,TI.AUOMKY
+		        ,TI.QTAPUM
+		        ,TI.ADUOKY
+		        ,TI.QTADUM
+		        ,TI.REFDKY
+		        ,TI.REFDIT
+		        ,TI.REFCAT
+		        ,TI.REFDAT
+		        ,TI.PURCKY
+		        ,TI.PURCIT
+		        ,TI.ASNDKY
+		        ,TI.ASNDIT
+		        ,TI.RECVKY
+		        ,TI.RECVIT
+		        ,TI.SHPOKY
+		        ,TI.SHPOIT
+		        ,TI.GRPOKY
+		        ,TI.GRPOIT
+		        ,TI.SADJKY
+		        ,TI.SADJIT
+		        ,TI.SDIFKY
+		        ,TI.SDIFIT
+		        ,TI.PHYIKY
+		        ,TI.PHYIIT
+		        ,TI.DESC02
+		        ,TI.ASKU01
+		        ,TI.ASKU02
+		        ,TI.ASKU03
+		        ,TI.ASKU04
+		        ,TI.ASKU05
+		        ,TI.EANCOD
+		        ,TI.GTINCD
+		        ,TI.SKUG01
+		        ,TI.SKUG02
+		        ,TI.SKUG03
+		        ,TI.SKUG04
+		        ,TI.SKUG05
+		        ,TI.GRSWGT
+		        ,TI.NETWGT
+		        ,TI.WGTUNT
+		        ,TI.LENGTH
+		        ,TI.WIDTHW
+		        ,TI.HEIGHT
+		        ,TI.CUBICM
+		        ,TI.CAPACT
+		        ,TI.WORKID
+		        ,TI.WORKNM
+		        ,TI.HHTTID
+		        ,TI.AREAKY
+		        ,TI.AWMSNO
+		        ,TI.AWMSTS
+		        ,TI.SMANDT
+		        ,TI.SEBELN
+		        ,TI.SEBELP
+		        ,TI.SZMBLNO
+		        ,TI.SZMIPNO
+		        ,TI.STRAID
+		        ,TI.SVBELN
+		        ,TI.SPOSNR
+		        ,TI.STKNUM
+		        ,TI.STPNUM
+		        ,TI.SWERKS
+		        ,TI.SLGORT
+		        ,TI.SDATBG
+		        ,TI.STDLNR
+		        ,TI.SSORNU
+		        ,TI.SSORIT
+		        ,TI.SMBLNR
+		        ,TI.SZEILE
+		        ,TI.SMJAHR
+		        ,TI.SXBLNR
+		        ,TI.SAPSTS
+		        ,TI.DOORKY
+		        ,TI.PTLT01
+		        ,TI.PTLT02
+		        ,TI.PTLT03
+		        ,TI.PTLT04
+		        ,TI.PTLT05
+		        ,TI.PTLT06
+		        ,TI.PTLT07
+		        ,TI.PTLT08
+		        ,TI.PTLT09
+		        ,TI.PTLT10
+		        ,TI.PTLT11
+		        ,TI.PTLT12
+		        ,TI.PTLT13
+		        ,TI.PTLT14
+		        ,TI.PTLT15
+		        ,TI.PTLT16
+		        ,TI.PTLT17
+		        ,TI.PTLT18
+		        ,TI.PTLT19
+		        ,TI.PTLT20
+		        ,TI.PASTKY
+		        ,TI.ALSTKY
+		        ,TI.SBKTXT
+		        ,TI.TASRSN
+		        ,TI.CREDAT
+		        ,TI.CRETIM
+		        ,TI.CREUSR
+		        ,TI.LMODAT
+		        ,TI.LMOTIM
+		        ,TI.LMOUSR
+		        ,TI.INDBZL
+		        ,TI.INDARC
+        		,TI.UPDCHK
+		FROM TASDI TI
+		INNER JOIN TASDH TH ON TH.TASKKY = TI.TASKKY
+		WHERE TI.STATIT='NEW'
+		AND TI.AWMSNO=' '
+		AND AWMSTS='2'
+		<isNotEmpty property="WAREKY">
+			AND	TH.WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="TASOTY">
+			AND	TH.TASOTY = #TASOTY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+				$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<parameterMap class="java.util.Map" id="WCOpro">
+		<parameter property="WAREKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="TASKKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="TASKIT" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>	
+		<parameter property="DROPID" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="O_SUCCSS" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_MESGKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_01" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_02" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_03" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+	</parameterMap>
+	
+	<procedure id="WCO01proc_MAP" parameterMap="WCOpro">
+	 <![CDATA[
+		 { CALL TAP_WCO1_SAVE( ?,?,?,?,?,?,?,?,? ) }
+	]]>
+	</procedure>
+	
+	<procedure id="WCO02proc_MAP" parameterMap="WCOpro">
+	 <![CDATA[
+		 { CALL TAP_WCO2_SAVE( ?,?,?,?,?,?,?,?,? ) }
+	]]>
+	</procedure>
+	
+	<parameterMap class="java.util.Map" id="WCI1pro">
+		<parameter property="WAREKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="STRT_S" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="TRUNTY" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="STOKKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="DOCTXT" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+		<parameter property="O_SUCCSS" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_MESGKY" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_01" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_02" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+		<parameter property="O_VAL_03" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+	</parameterMap>
+	
+	<procedure id="WCI1proc_MAP" parameterMap="WCI1pro">
+	 <![CDATA[
+		  { CALL TAP_WCI1_SAVE( ?,?,?,?,?,?,?,?,?,? ) }
+	]]>
+	</procedure>
+	
+	<select id="WCO1HEAD_LIST" parameterClass="Map" resultClass="DataMap">
+	SELECT  TH.TASKKY
+		       ,TH.WAREKY
+		       ,TH.TASOTY
+		       ,TH.DOCDAT
+		       ,TH.DOCCAT
+		       ,TH.DRELIN
+		       ,TH.STATDO
+		       ,TH.QTTAOR
+		       ,TH.QTCOMP
+		       ,TH.TSPKEY
+		       ,TH.DOORKY
+		       ,TH.WARETG
+		       ,TH.PTNRKY
+		       ,TH.PTNRTY
+		       ,TH.PTNRNM
+		       ,TH.USRID1
+		       ,TH.UNAME1
+		       ,TH.DEPTID1
+		       ,TH.DNAME1
+		       ,TH.USRID2
+		       ,TH.UNAME2
+		       ,TH.DEPTID2
+		       ,TH.DNAME2
+		       ,TH.USRID3
+		       ,TH.UNAME3
+		       ,TH.DEPTID3
+		       ,TH.DNAME3
+		       ,TH.USRID4
+		       ,TH.UNAME4
+		       ,TH.DEPTID4
+		       ,TH.DNAME4
+		       ,TH.DOCTXT
+		       ,TH.CREDAT
+		       ,TH.CRETIM
+		       ,TH.CREUSR
+		       ,TH.LMODAT
+		       ,TH.LMOTIM
+		       ,TH.LMOUSR
+		       ,TH.INDBZL
+		       ,TH.INDARC
+		       ,TH.UPDCHK
+		       ,TH.KEEPTS
+		       ,MAX(TI.OWNRKY) AS OWNRKY
+		       ,MAX(TI.LOTA01) AS LOTA03
+		FROM TASDH TH
+		INNER JOIN TASDI TI ON TH.TASKKY = TI.TASKKY
+		WHERE 1=1
+		AND TH.STATDO='NEW'
+		AND TI.STATIT='NEW'
+		AND TI.AWMSNO=' '
+		AND TI.AWMSTS='2'
+		AND TH.TASOTY = '210'
+		<isNotEmpty property="WAREKY">
+			AND	TH.WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+				$RANGE_SQL$
+		</isNotEmpty>
+		GROUP BY TH.TASKKY,TH.WAREKY,TH.TASOTY,TH.DOCDAT,TH.DOCCAT,TH.DRELIN,TH.STATDO,TH.QTTAOR
+		        ,TH.QTCOMP,TH.TSPKEY,TH.TSPKEY,TH.DOORKY,TH.WARETG,TH.PTNRKY,TH.PTNRTY,TH.PTNRNM
+		        ,TH.USRID1,TH.UNAME1,TH.DEPTID1,TH.DNAME2,TH.USRID2,TH.UNAME2,TH.DEPTID2,TH.DNAME2
+		        ,TH.USRID3,TH.UNAME3,TH.DEPTID3,TH.DNAME3,TH.USRID4,TH.UNAME4,TH.DEPTID4,TH.DNAME4
+		        ,TH.DOCTXT,TH.CREDAT,TH.CRETIM,TH.CREUSR,TH.LMODAT,TH.LMOTIM,TH.LMOUSR,TH.INDBZL
+		        ,TH.INDARC,TH.UPDCHK,TH.KEEPTS,TH.DNAME1
+	</select>
+	
+	<select id="WCO1ITEM_LIST" parameterClass="Map" resultClass="DataMap">
+	SELECT    TI.TASKIT
+		        ,TI.TASKTY
+		        ,TI.RSNCOD
+		        ,TI.STATIT
+		        ,TI.QTTAOR
+		        ,TI.QTCOMP
+		        ,TI.OWNRKY
+		        ,TI.SKUKEY
+		        ,TI.LOTNUM
+		        ,TI.ACTCDT
+		        ,TI.ACTCTI
+		        ,TI.QTYUOM
+		        ,TI.TKFLKY
+		        ,TI.STEPNO
+		        ,TI.LSTTFL
+		        ,TI.LOCASR
+		        ,TI.SECTSR
+		        ,TI.PAIDSR
+		        ,TI.TRNUSR
+		        ,TI.STRUTY
+		        ,TI.SMEAKY
+		        ,TI.SUOMKY
+		        ,TI.QTSPUM
+		        ,TI.SDUOKY
+		        ,TI.QTSDUM
+		        ,TI.LOCATG
+		        ,TI.SECTTG
+		        ,TI.PAIDTG
+		        ,TI.TRNUTG
+		        ,TI.TTRUTY
+		        ,TI.TMEAKY
+		        ,TI.TUOMKY
+		        ,TI.QTTPUM
+		        ,TI.TDUOKY
+		        ,TI.QTTDUM
+		        ,TI.LOCAAC
+		        ,TI.SECTAC
+		        ,TI.PAIDAC
+		        ,TI.TRNUAC
+		        ,TI.ATRUTY
+		        ,TI.AMEAKY
+		        ,TI.AUOMKY
+		        ,TI.QTAPUM
+		        ,TI.ADUOKY
+		        ,TI.QTADUM
+		        ,TI.REFDKY
+		        ,TI.REFDIT
+		        ,TI.REFCAT
+		        ,TI.REFDAT
+		        ,TI.PURCKY
+		        ,TI.PURCIT
+		        ,TI.ASNDKY
+		        ,TI.ASNDIT
+		        ,TI.RECVKY
+		        ,TI.RECVIT
+		        ,TI.SHPOKY
+		        ,TI.SHPOIT
+		        ,TI.GRPOKY
+		        ,TI.GRPOIT
+		        ,TI.SADJKY
+		        ,TI.SADJIT
+		        ,TI.SDIFKY
+		        ,TI.SDIFIT
+		        ,TI.PHYIKY
+		        ,TI.PHYIIT
+		        ,TI.DROPID
+		        ,TI.DESC01
+		        ,TI.DESC02
+		        ,TI.ASKU01
+		        ,TI.ASKU02
+		        ,TI.ASKU03
+		        ,TI.ASKU04
+		        ,TI.ASKU05
+		        ,TI.EANCOD
+		        ,TI.GTINCD
+		        ,TI.SKUG01
+		        ,TI.SKUG02
+		        ,TI.SKUG03
+		        ,TI.SKUG04
+		        ,TI.SKUG05
+		        ,TI.GRSWGT
+		        ,TI.NETWGT
+		        ,TI.WGTUNT
+		        ,TI.LENGTH
+		        ,TI.WIDTHW
+		        ,TI.HEIGHT
+		        ,TI.CUBICM
+		        ,TI.CAPACT
+		        ,TI.WORKID
+		        ,TI.WORKNM
+		        ,TI.HHTTID
+		        ,TI.AREAKY
+		        ,TI.LOTA01
+		        ,TI.LOTA02
+		        ,TI.LOTA03
+		        ,TI.LOTA04
+		        ,TI.LOTA05
+		        ,TI.LOTA06
+		        ,TI.LOTA07
+		        ,TI.LOTA08
+		        ,TI.LOTA09
+		        ,TI.LOTA10
+		        ,TI.LOTA11
+		        ,TI.LOTA12
+		        ,TI.LOTA13
+		        ,TI.LOTA14
+		        ,TI.LOTA15
+		        ,TI.LOTA16
+		        ,TI.LOTA17
+		        ,TI.LOTA18
+		        ,TI.LOTA19
+		        ,TI.LOTA20
+		        ,TI.LOTA21
+		        ,TI.LOTA22
+		        ,TI.LOTA23
+		        ,TI.LOTA24
+		        ,TI.LOTA25
+		        ,TI.AWMSNO
+		        ,TI.AWMSTS
+		        ,TI.SMANDT
+		        ,TI.SEBELN
+		        ,TI.SEBELP
+		        ,TI.SZMBLNO
+		        ,TI.SZMIPNO
+		        ,TI.STRAID
+		        ,TI.SVBELN
+		        ,TI.SPOSNR
+		        ,TI.STKNUM
+		        ,TI.STPNUM
+		        ,TI.SWERKS
+		        ,TI.SLGORT
+		        ,TI.SDATBG
+		        ,TI.STDLNR
+		        ,TI.SSORNU
+		        ,TI.SSORIT
+		        ,TI.SMBLNR
+		        ,TI.SZEILE
+		        ,TI.SMJAHR
+		        ,TI.SXBLNR
+		        ,TI.SAPSTS
+		        ,TI.DOORKY
+		        ,TI.PTLT01
+		        ,TI.PTLT02
+		        ,TI.PTLT03
+		        ,TI.PTLT04
+		        ,TI.PTLT05
+		        ,TI.PTLT06
+		        ,TI.PTLT07
+		        ,TI.PTLT08
+		        ,TI.PTLT09
+		        ,TI.PTLT10
+		        ,TI.PTLT11
+		        ,TI.PTLT12
+		        ,TI.PTLT13
+		        ,TI.PTLT14
+		        ,TI.PTLT15
+		        ,TI.PTLT16
+		        ,TI.PTLT17
+		        ,TI.PTLT18
+		        ,TI.PTLT19
+		        ,TI.PTLT20
+		        ,TI.PASTKY
+		        ,TI.ALSTKY
+		        ,TI.SBKTXT
+		        ,TI.TASRSN
+		        ,TI.CREDAT
+		        ,TI.CRETIM
+		        ,TI.CREUSR
+		        ,TI.LMODAT
+		        ,TI.LMOTIM
+		        ,TI.LMOUSR
+		        ,TI.INDBZL
+		        ,TI.INDARC
+		        ,TI.UPDCHK
+		        ,TI.TASKKY
+		        ,TH.WAREKY
+			    ,substr(DROPID,1,1) AS DROPID1
+			    ,substr(DROPID,2,1) AS DROPID2
+			    ,substr(DROPID,3,1) AS DROPID3
+			    ,substr(DROPID,4,1) AS DROPID4
+			    ,substr(DROPID,5,1) AS DROPID5
+		FROM TASDI TI
+		INNER JOIN TASDH TH ON TH.TASKKY = TI.TASKKY
+		WHERE TI.TASKKY = #TASKKY#
+		AND TI.STATIT='NEW'
+	</select>
+</sqlMap>

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>EZPlatform App</title>
+<link rel="stylesheet" type="text/css" href="/common/theme/webdek/css/login.css">
+<script>
+function setPlatformApp(){
+ 	window.localStorage.setItem('EZPlatformApp', '1.0.0.11');
+ 	location.href = "/";
+ 	//this.close();
+}
+</script>
+</head>
+<body>
+<div class="loadBg">  
+	<div class="textWrap">
+		<h2>
+			<a href="/ezgen/ocx/EzPlatformSetting_dev.exe">EZPlatform download</a> <br/>
+			<a>or</a> <br/>
+			<a href="javascript:setPlatformApp();">EZPlatform 설치이후에도 나올경우 클릭</a> <br/>
+		</h2>
+		<div class="brand"><img src="/common/images/hnw_logo.png" alt="air-SCM" /></div>
+		<!-- a href="/common/include/ocx/EzPlatformSetting_local.exe"><img src="/common/images/ico_full.png">EZPlatform 로컬서버 다운로드</a> <br/>
+		<a href="/common/include/ocx/EzPlatformSetting_dev.exe"><img src="/common/images/ico_full.png">EZPlatform 개발서버 다운로드</a> <br/>
+		<a href="javascript:setPlatformApp();"><img src="/common/images/ico_full.png">EZPlatform 설치이후에도 나올경우 클릭 </a> <br/-->
+	</div>
+</div>
+</body>

@@ -1,0 +1,1378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsMobileOutboundPicking">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<!-- ================================================================================================== -->
+	<!-- PDPK01 상품별 피킹 : BEGIN-->
+	<!-- ================================================================================================== -->
+	<select id="PDPK01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT TH.TASKKY AS TASKKY
+		     , TI.TASKIT AS TASKIT
+		     , LM.LOCAKY AS LOCAKY
+		     , NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),' ') AS STATIT
+		     , TI.SKUKEY AS SKUKEY
+		     , SM.DESC01 AS DESC01
+		     , SM.EANCOD AS EANCOD
+		     , TI.QTTAOR AS QTTAOR
+		     , TI.QTCOMP AS QTCOMP
+		     , SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		<isNotEmpty property="TASKKY">
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+		 ORDER BY TH.TASKKY, TI.TASKIT, LM.OBROUT, LM.LOCAKY
+	</select>
+	
+	<select id="PDPK01SKU_RE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT) AS RNUM
+			 , CASE WHEN TI.STATIT = 'NEW' THEN 'O'
+					ELSE 'X'
+			   END AS SAVE_ENABLE
+			 , TH.TASKKY, TI.TASKIT
+			 , TI.STATIT, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),0) AS STATITNM
+			 , TI.LOCASR AS LOCAKY
+			 , LM.OBROUT
+			 , TI.OWNRKY, TI.SKUKEY, SM.DESC01, SM.EANCOD
+			 , TI.QTTAOR
+			 , SM.DUOMKY AS UOMKEY
+			 , TI.QTCOMP AS QTCOMP
+			 , SM.DUOMKY AS UOMKEY2
+			 , TI.SHPOKY
+			 , TI.SHPOIT
+			 , TI.LOCATG AS LOCATG
+			 , TI.TRNUTG AS TRNUTG
+			 , TI.SECTTG AS SECTTG
+			 , (CASE WHEN TI.ACTCDT = '00000000' THEN TI.PAIDTG
+									ELSE TI.PAIDAC END) AS PAIDAC
+			 , (CASE WHEN TI.ACTCDT = '00000000' THEN TI.TTRUTY
+									ELSE TI.ATRUTY END) AS ATRUTY
+			 , TI.TMEAKY AS TMEAKY
+			 , TI.TUOMKY AS TUOMKY
+			 , TI.QTTPUM AS QTTPUM
+			 , TI.TDUOKY AS TDUOKY
+			 , TI.QTTDUM AS QTTDUM
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		<isNotEmpty property="TASKKY">
+		   AND TH.TASKKY = #TASKKY#
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+		 ORDER BY TH.TASKKY, TI.TASKIT, LM.OBROUT, LM.LOCAKY
+	</select>
+	
+	<select id="PDPK01SKU_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT) AS RNUM
+			 , CASE WHEN TI.STATIT = 'NEW' THEN 'O'
+					ELSE 'X'
+			   END AS SAVE_ENABLE
+			 , TH.TASKKY, TI.TASKIT
+			 , TI.STATIT, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),0) AS STATITNM
+			 , TI.LOCASR AS LOCAKY
+			 , LM.OBROUT
+			 , TI.OWNRKY, TI.SKUKEY, SM.DESC01, SM.EANCOD
+			 , TI.QTTAOR
+			 , SM.DUOMKY AS UOMKEY
+			 , TI.QTCOMP AS QTCOMP
+			 , SM.DUOMKY AS UOMKEY2
+			 , TI.SHPOKY
+			 , TI.SHPOIT
+			 , TI.LOCATG AS LOCATG
+			 , TI.TRNUTG AS TRNUTG
+			 , TI.SECTTG AS SECTTG
+			 , (CASE WHEN TI.ACTCDT = '00000000' THEN TI.PAIDTG
+									ELSE TI.PAIDAC END) AS PAIDAC
+			 , (CASE WHEN TI.ACTCDT = '00000000' THEN TI.TTRUTY
+									ELSE TI.ATRUTY END) AS ATRUTY
+			 , TI.TMEAKY AS TMEAKY
+			 , TI.TUOMKY AS TUOMKY
+			 , TI.QTTPUM AS QTTPUM
+			 , TI.TDUOKY AS TDUOKY
+			 , TI.QTTDUM AS QTTDUM
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		   AND TH.TASKKY = #TASKKY# 
+		   AND TI.TASKIT = #TASKIT#
+		   <isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+		 ORDER BY TH.TASKKY, TI.TASKIT, LM.OBROUT, LM.LOCAKY
+	</select>
+	
+	<select id="PDPK01SKUCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		<isNotEmpty property="TASKKY">
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+	</select>
+	
+	<select id="PDPK01LOCCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE WHEN S.AREAKY = 'SHP' THEN 0
+			   ELSE SUM(S.QTSIWH-S.QTSBLK-GREATEST(S.QTSALO,S.QTSPMO)) - (CASE WHEN S.LOTA06 IN ('00') OR SUM(S.QTSPMO) > 0 THEN 0 ELSE SUM(S.QTSIWH) END)
+			   END AS USEQTY
+			 , S.LOCAKY
+			 , S.AREAKY
+			 , S.ZONEKY
+		  FROM STKKY S, SKUMA M, SKUWC W
+		 WHERE S.SKUKEY = M.SKUKEY
+		   AND S.OWNRKY = M.OWNRKY
+		   AND S.SKUKEY = W.SKUKEY
+		   AND S.WAREKY = W.WAREKY
+		   AND S.OWNRKY = W.OWNRKY
+		   AND ( S.QTSIWH > 0 OR S.QTSPMI >0 )
+		   AND S.WAREKY = 'WH01'
+		   AND S.OWNRKY = 'HNW'
+		   AND S.LOCAKY = #LOCAKY2#
+		   AND S.SKUKEY = #SKUKEY#
+		 GROUP BY S.OWNRKY, S.WAREKY, S.AREAKY, S.ZONEKY, S.LOCAKY, 
+				  S.SKUKEY, M.DESC01, M.SKUG01, M.SKUG04, M.SKUG05,
+				  S.ASKU01, M.DESC02, S.TRNUID, S.LOTA06
+	</select>
+	
+	<select id="PDPK01ALSTKY_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.DBFILD
+			 , A.RNGVMI 
+		  FROM RLRRI A
+		 WHERE 1 = 1
+		   AND A.LOTRKY = (SELECT ALFTKY
+							 FROM ALSTI
+							WHERE 1 = 1
+							  AND WAREKY = 'WH01'
+							  AND ALSTKY =(SELECT ALSTKY 
+											 FROM SHPDI
+											WHERE SHPOKY = #SHPOKY#
+											  AND SHPOIT = #SHPOIT#))
+		   AND A.WAREKY = #WAREKY#
+	</select>
+	
+	<select id="PDPK01_MAP" parameterClass="Map" resultClass="DataMap">
+		 { call P_AIRWMS_PICKING_COMPLETE( #TASKKY#, #TASKIT#, 'SHPLOC', ' ', #QTCOMP#, #SES_USER_ID# ) }
+	</select>
+	
+	<select id="PDPK01CNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		     , SUM(TI.QTTAOR) AS QTTAOR
+		     , SUM(TI.QTCOMP) AS QTCOMP
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		<isNotEmpty property="TASKKY">
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+		 ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT
+	</select>
+
+	<select id="PDPK01SUBCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		 WHERE TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		<isNotEmpty property="TASKKY">
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+	</select>	
+		   
+	<select id="PDPK01UOM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT DISTINCT SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		<isNotEmpty property="TASKKY">
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		</isNotEmpty>
+		<isNotEmpty property="BARCOD">
+		   AND (TI.SKUKEY = #BARCOD# OR TI.TRNUSR = #BARCOD# OR TI.LOCASR = #BARCOD#)
+		</isNotEmpty>
+	</select>
+	
+	<select id="PDPK01_SAVE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.WAREKY AS WAREKY,
+		       B.TASKKY AS TASKKY,
+		       B.TASKIT AS TASKIT,
+		       B.TASKTY AS TASKTY,
+		       B.RSNCOD AS RSNCOD,
+		       B.TASRSN AS TASRSN,
+		       B.STATIT AS STATIT,
+		       (SELECT X.CDESC1 FROM CMCDV X WHERE X.CMCDKY = 'STATIT' AND X.CMCDVL = B.STATIT) AS STATITNM,
+		       B.QTTAOR AS QTTAOR,
+		       B.QTTAOR AS QTCOMP,
+		       B.OWNRKY AS OWNRKY,
+		       B.SKUKEY AS SKUKEY,
+		       B.LOTNUM AS LOTNUM,
+		       B.ACTCDT AS ACTCDT,
+		       B.ACTCTI AS ACTCTI,
+		       B.QTYUOM AS QTYUOM,
+		       B.TKFLKY AS TKFLKY,
+		       B.STEPNO AS STEPNO,
+		       B.LSTTFL AS LSTTFL,
+		       B.LOCASR AS LOCASR,
+		       B.SECTSR AS SECTSR,
+		       B.PAIDSR AS PAIDSR,
+		       B.TRNUSR AS TRNUSR,
+		       B.STRUTY AS STRUTY,
+		       B.SMEAKY AS SMEAKY,
+		       B.SUOMKY AS SUOMKY,
+		       B.QTSPUM AS QTSPUM,
+		       B.SDUOKY AS SDUOKY,
+		       B.QTSDUM AS QTSDUM,
+		       B.LOCATG AS LOCATG,
+		       B.SECTTG AS SECTTG,
+		       B.PAIDTG AS PAIDTG,
+		       B.TRNUTG AS TRNUTG,
+		       B.TTRUTY AS TTRUTY,
+		       B.TMEAKY AS TMEAKY,
+		       B.TUOMKY AS TUOMKY,
+		       B.QTTPUM AS QTTPUM,
+		       B.TDUOKY AS TDUOKY,
+		       B.QTTDUM AS QTTDUM,
+		       B.LOCATG AS LOCAAC,
+		       B.SECTTG AS SECTAC,
+		       B.PAIDTG AS PAIDAC,
+		       B.TRNUTG AS TRNUAC,
+		       B.TTRUTY AS ATRUTY,
+		       B.TMEAKY AS AMEAKY,
+		       B.TUOMKY AS AUOMKY,
+		       B.QTTPUM AS QTAPUM,
+		       B.TDUOKY AS ADUOKY,
+		       B.QTTDUM AS QTADUM,
+		       B.REFDKY AS REFDKY,
+		       B.REFDIT AS REFDIT,
+		       B.REFCAT AS REFCAT,
+		       B.REFDAT AS REFDAT,
+		       B.PURCKY AS PURCKY,
+		       B.PURCIT AS PURCIT,
+		       B.ASNDKY AS ASNDKY,
+		       B.ASNDIT AS ASNDIT,
+		       B.RECVKY AS RECVKY,
+		       B.RECVIT AS RECVIT,
+		       B.SHPOKY AS SHPOKY,
+		       B.SHPOIT AS SHPOIT,
+		       B.GRPOKY AS GRPOKY,
+		       B.GRPOIT AS GRPOIT,
+		       B.SADJKY AS SADJKY,
+		       B.SADJIT AS SADJIT,
+		       B.SDIFKY AS SDIFKY,
+		       B.SDIFIT AS SDIFIT,
+		       B.PHYIKY AS PHYIKY,
+		       B.PHYIIT AS PHYIIT,
+		       B.DROPID AS DROPID,
+		       B.DESC01 AS DESC01,
+		       B.DESC02 AS DESC02,
+		       B.ASKU01 AS ASKU01,
+		       B.ASKU02 AS ASKU02,
+		       B.ASKU03 AS ASKU03,
+		       B.ASKU04 AS ASKU04,
+		       B.ASKU05 AS ASKU05,
+		       B.EANCOD AS EANCOD,
+		       B.GTINCD AS GTINCD,
+		       B.SKUG01 AS SKUG01,
+		       B.SKUG02 AS SKUG02,
+		       B.SKUG03 AS SKUG03,
+		       B.SKUG04 AS SKUG04,
+		       B.SKUG05 AS SKUG05,
+		       B.GRSWGT AS GRSWGT,
+		       B.NETWGT AS NETWGT,
+		       B.WGTUNT AS WGTUNT,
+		       B.LENGTH AS LENGTH,
+		       B.WIDTHW AS WIDTHW,
+		       B.HEIGHT AS HEIGHT,
+		       B.CUBICM AS CUBICM,
+		       B.CAPACT AS CAPACT,
+		       B.WORKID AS WORKID,
+		       B.WORKNM AS WORKNM,
+		       B.HHTTID AS HHTTID,
+		       B.AREAKY AS AREAKY,
+		       B.LOTA01 AS LOTA01,
+		       B.LOTA02 AS LOTA02,
+		       B.LOTA03 AS LOTA03,
+		       B.LOTA04 AS LOTA04,
+		       B.LOTA05 AS LOTA05,
+		       B.LOTA06 AS LOTA06,
+		       B.LOTA07 AS LOTA07,
+		       B.LOTA08 AS LOTA08,
+		       B.LOTA09 AS LOTA09,
+		       B.LOTA10 AS LOTA10,
+		       B.LOTA11 AS LOTA11,
+		       B.LOTA12 AS LOTA12,
+		       B.LOTA13 AS LOTA13,
+		       B.LOTA14 AS LOTA14,
+		       B.LOTA15 AS LOTA15,
+		       B.LOTA16 AS LOTA16,
+		       B.LOTA17 AS LOTA17,
+		       B.LOTA18 AS LOTA18,
+		       B.LOTA19 AS LOTA19,
+		       B.LOTA20 AS LOTA20,
+		       B.AWMSNO AS AWMSNO,
+		       B.AWMSTS AS AWMSTS,
+		       B.SMANDT AS SMANDT,
+		       B.SEBELN AS SEBELN,
+		       B.SEBELP AS SEBELP,
+		       B.SZMBLNO AS SZMBLNO,
+		       B.SZMIPNO AS SZMIPNO,
+		       B.STRAID AS STRAID,
+		       B.SVBELN AS SVBELN,
+		       B.SPOSNR AS SPOSNR,
+		       B.STKNUM AS STKNUM,
+		       B.STPNUM AS STPNUM,
+		       B.SWERKS AS SWERKS,
+		       B.SLGORT AS SLGORT,
+		       B.SDATBG AS SDATBG,
+		       B.STDLNR AS STDLNR,
+		       B.SSORNU AS SSORNU,
+		       B.SSORIT AS SSORIT,
+		       B.SMBLNR AS SMBLNR,
+		       B.SZEILE AS SZEILE,
+		       B.SMJAHR AS SMJAHR,
+		       B.SXBLNR AS SXBLNR,
+		       B.SAPSTS AS SAPSTS,
+		       B.DOORKY AS DOORKY,
+		       B.PTLT01 AS PTLT01,
+		       B.PTLT02 AS PTLT02,
+		       B.PTLT03 AS PTLT03,
+		       B.PTLT04 AS PTLT04,
+		       B.PTLT05 AS PTLT05,
+		       B.PTLT06 AS PTLT06,
+		       B.PTLT07 AS PTLT07,
+		       B.PTLT08 AS PTLT08,
+		       B.PTLT09 AS PTLT09,
+		       B.PTLT10 AS PTLT10,
+		       B.PTLT11 AS PTLT11,
+		       B.PTLT12 AS PTLT12,
+		       B.PTLT13 AS PTLT13,
+		       B.PTLT14 AS PTLT14,
+		       B.PTLT15 AS PTLT15,
+		       B.PTLT16 AS PTLT16,
+		       B.PTLT17 AS PTLT17,
+		       B.PTLT18 AS PTLT18,
+		       B.PTLT19 AS PTLT19,
+		       B.PTLT20 AS PTLT20,
+		       C.AUTLOC AS AUTLOC,
+		       B.CREDAT AS CREDAT,
+		       B.CRETIM AS CRETIM,
+		       B.CREUSR AS CREUSR,
+		       (SELECT X.NMLAST FROM USRMA X WHERE X.USERID = B.CREUSR) AS CUSRNM,
+		       B.LMODAT AS LMODAT,
+		       B.LMOTIM AS LMOTIM,
+		       B.LMOUSR AS LMOUSR,
+		       (SELECT X.NMLAST FROM USRMA X WHERE X.USERID = B.LMOUSR) AS LUSRNM,
+		       B.INDBZL AS INDBZL,
+		       B.INDARC AS INDARC,
+		       B.UPDCHK AS UPDCHK
+		  FROM TASDH A,
+		       TASDI B,
+		       LOCMA C
+		 WHERE A.TASKKY = B.TASKKY
+		   AND A.WAREKY = C.WAREKY
+		   AND B.LOCASR = C.LOCAKY
+		   AND A.TASKKY = #TASKKY#
+		   AND B.TASKIT = #TASKIT#
+		   AND B.STATIT = 'NEW'
+		 ORDER BY B.TASKKY, B.TASKIT
+	</select>	
+	<!-- ================================================================================================== -->
+	<!-- PDPK01 상품별 피킹 : END-->
+	<!-- ================================================================================================== -->
+	
+	
+	
+	
+	
+	<!-- ================================================================================================== -->
+	<!-- PDPK02 팔레트별 피킹 : BEGIN-->
+	<!-- ================================================================================================== -->
+	<select id="PDPK02_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT TH.TASKKY AS TASKKY
+		     , TI.TASKIT AS TASKIT
+		     , TI.TRNUSR AS TRNUSR
+		     , LM.LOCAKY AS LOCAKY
+		     , NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),' ') AS STATIT
+		     , TI.SKUKEY AS SKUKEY
+		     , SM.DESC01 AS DESC01
+		     , SM.EANCOD AS EANCOD
+		     , TI.QTTAOR AS QTTAOR
+		     , TI.QTCOMP AS QTCOMP
+		     , SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT
+	</select>
+	
+	<select id="PDPK02SKU_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT) AS RNUM
+		     , CASE WHEN TI.STATIT = 'NEW' THEN 'O'
+		            ELSE 'X'
+		       END AS SAVE_ENABLE
+		     , TH.TASKKY, TI.TASKIT
+		     , TI.STATIT, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),0) AS STATITNM
+		     , TI.LOCASR AS LOCAKY
+		     , LM.OBROUT
+		     , TI.OWNRKY, TI.SKUKEY, SM.DESC01, SM.EANCOD
+		     , TI.QTTAOR
+		     , SM.DUOMKY AS UOMKEY
+		     , TI.QTCOMP AS QTCOMP
+		     , SM.DUOMKY AS UOMKEY2
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT
+	</select>
+	
+	<select id="PDPK02SKUCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>
+	
+	<select id="PDPK02_MAP" parameterClass="Map" resultClass="DataMap">
+		 { call P_AIRWMS_PICKING_COMPLETE( #TASKKY#, #TASKIT#, 'SHPLOC', #TRNUAC#, #QTCOMP#, #SES_USER_ID# ) }
+	</select>
+	
+	<select id="PDPK02CNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		     , SUM(TI.QTTAOR) AS QTTAOR
+		     , SUM(TI.QTCOMP) AS QTCOMP
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT
+	</select>
+
+	<select id="PDPK02SUBCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		 WHERE TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>	
+		   
+	<select id="PDPK02UOM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT DISTINCT SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>
+	<!-- ================================================================================================== -->
+	<!-- PDPK02 팔레트별 피킹 : END-->
+	<!-- ================================================================================================== -->
+	
+		<!-- ================================================================================================== -->
+	<!-- PDPKRM01 라이판뮐러 팔레트별 피킹 : BEGIN-->
+	<!-- ================================================================================================== -->
+	<select id="PDPKRM01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT TH.TASKKY AS TASKKY
+		     , TI.TASKIT AS TASKIT
+		     , TI.TRNUSR AS TRNUSR
+		     , LM.LOCAKY AS LOCAKY
+		     , NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),' ') AS STATIT
+		     , TI.SKUKEY AS SKUKEY
+		     , SM.DESC01 AS DESC01
+		     , SM.EANCOD AS EANCOD
+		     , TI.QTTAOR AS QTTAOR
+		     , TI.QTCOMP AS QTCOMP
+		     , SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY TH.TASKKY, TI.TASKIT
+	</select>
+	
+	<select id="PDPKRM01SKUCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>
+	
+	<select id="PDPKRM01CNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		     , SUM(TI.QTTAOR) AS QTTAOR
+		     , SUM(TI.QTCOMP) AS QTCOMP
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY TH.TASKKY, TI.TASKIT
+	</select>
+	
+	<select id="PDPKRM01SUBCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) CNT
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		 WHERE TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND TI.STATIT = 'NEW'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>	
+	
+	<select id="PDPKRM01UOM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT DISTINCT SM.DUOMKY AS UOMKEY
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY
+		                          AND SM.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+	</select>
+	
+	<select id="PDPKRM01_MAP" parameterClass="Map" resultClass="DataMap">
+		 { call P_AIRWMS_PICKING_COMPLETE( #TASKKY#, #TASKIT#, 'SHPLOC', #TRNUAC#, #QTCOMP#, #SES_USER_ID# ) }
+	</select>
+	
+	<select id="PDPKRM01SKU_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY LM.OBROUT, LM.LOCAKY, TH.TASKKY, TI.TASKIT) AS RNUM
+		     , CASE WHEN TI.STATIT = 'NEW' THEN 'O'
+		            ELSE 'X'
+		       END AS SAVE_ENABLE
+		     , TH.TASKKY
+		     , TI.TASKIT
+		     , TI.STATIT
+		     , NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = TI.STATIT),0) AS STATITNM
+		     , TI.SKUKEY AS SKUKEY
+		     , TI.LOTNUM AS LOTNUM
+		     , TI.LOCASR AS LOCAKY
+		     , TI.TRNUSR AS TRNUSR
+		     , LM.OBROUT AS OBROUT
+		     , TI.OWNRKY AS OWNRKY
+		     , TI.SKUKEY AS SKUKEY
+		     , SM.DESC01 AS DESC01
+		     , TI.QTTAOR AS QTTAOR
+		     , SM.DUOMKY AS UOMKEY
+		     , TI.QTCOMP AS QTCOMP
+		     , SM.DUOMKY AS UOMKEY2
+		     , TI.PTLT12 AS PTLT12
+		     , TI.PTLT11 AS PTLT11
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY
+		 WHERE 1 = 1
+		   AND TH.WAREKY = #WAREKY#
+		   AND TH.TASOTY = '210'
+		   AND (TH.TASKKY = #TASKKY# OR TH.TASKKY || TI.TASKIT = #TASKKY#)
+		 ORDER BY TH.TASKKY, TI.TASKIT
+	</select>
+	
+	
+	<select id="PDPKRM01_QTSWRK_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) AS CNT
+		     , SUM(QTSIWH) AS QTSIWH
+		  FROM STKKY
+		 WHERE WAREKY = #WAREKY#
+		   AND LOTNUM = #LOTNUM#
+		   AND LOCAKY = #LOCAKY2#
+		   AND TRNUID = #TRNUAC#
+		   AND QTSALO = 0
+	</select>
+	
+	<select id="PDPKRM01_QTSAVB_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SUM(CASE WHEN (STD.LOTNUM || STD.LOCAKY || STD.TRNUID) = STD.CHKKEY 
+		                THEN DECODE( SIGN(NVL(SUM(S.QTSIWH),0)),-1,0,(NVL(SUM(S.QTSIWH),0))-(STD.QTSWRK-STD.SUBQTT)) 
+		                ELSE DECODE( SIGN(NVL(SUM(S.QTSIWH),0)-NVL(MAX(STD.QTSWRK),0)), -1, 0, (NVL(SUM(S.QTSIWH),0)-NVL(MAX(STD.QTSWRK),0)) ) 
+		           END) AS QTSAVB
+		  FROM STKKY S, LOCMA L ,( $APPEND_QUERY$) STD 
+		 WHERE S.WAREKY = #WAREKY#
+		   AND S.OWNRKY = #OWNRKY#
+		   AND S.SKUKEY = #SKUKEY#
+		   AND S.WAREKY = L.WAREKY 
+		   AND S.LOCAKY = L.LOCAKY
+		   AND S.AREAKY NOT IN ('SYS','SHP')
+		   AND L.INDUPK = 'V'
+		   AND ((S.QTSIWH > 0 AND S.QTSPMO = 0) OR
+		       (S.TASKKY = #TASKKY# AND S.QTSPMO > 0))
+		   AND S.LOTNUM = STD.LOTNUM(+)
+		   AND S.LOCAKY = STD.LOCAKY(+)
+		   AND S.TRNUID = STD.TRNUID(+)
+		   AND S.LOTNUM = #LOTNUM#
+		   AND S.LOCAKY = #LOCAKY#
+		   AND S.TRNUID = #TRNUID#
+		 GROUP BY S.LOTNUM, S.LOCAKY, S.TRNUID, STD.CHKKEY, STD.LOTNUM, STD.LOCAKY, STD.TRNUID, STD.QTSWRK, STD.SUBQTT
+		HAVING (CASE WHEN (STD.LOTNUM || STD.LOCAKY || STD.TRNUID) = STD.CHKKEY 
+		             THEN DECODE( SIGN(NVL(SUM(S.QTSIWH),0)),-1,0,(NVL(SUM(S.QTSIWH),0))-(STD.QTSWRK-STD.SUBQTT)) 
+		             ELSE DECODE( SIGN(NVL(SUM(S.QTSIWH),0)-NVL(MAX(STD.QTSWRK),0)), -1, 0, (NVL(SUM(S.QTSIWH),0)-NVL(MAX(STD.QTSWRK),0)) ) 
+		        END) >0
+	</select>	
+	
+	<select id="PDPKRM01_SHPINFO_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SI.SHPOKY AS SHPOKY
+		     , SI.SHPOIT AS SHPOIT
+		  FROM TASDH TH 
+		       INNER JOIN TASDI TI ON TH.TASKKY = TI.TASKKY
+		       INNER JOIN LOCMA LM ON LM.WAREKY = TH.WAREKY AND LM.LOCAKY = TI.LOCASR
+		       INNER JOIN SHPDI SI ON TI.SHPOIT = SI.SHPOIT AND TI.SHPOKY = SI.SHPOKY
+		 WHERE TH.WAREKY = #WAREKY#
+		   AND TH.TASKKY = #TASKKY#
+		   AND TI.TASKIT = #TASKIT#
+		   AND TI.STATIT = 'NEW'
+	</select> 
+	
+	<select id="PDPKRM01_QTUALOCNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT (I.QTSHPO-I.QTALOC) AS QTUALO
+		  FROM SHPDI I 
+		       INNER JOIN SHPDH H ON H.SHPOKY = I.SHPOKY
+		 WHERE I.SHPOKY = H.SHPOKY 
+		   AND I.SHPOKY = #SHPOKY#
+		   AND I.SHPOIT = #SHPOIT#
+	</select>
+	
+	<select id="PickingInfoPDPKRM01_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT TH.TASKKY AS TASKKY
+		     , TH.WAREKY AS WAREKY
+		     , TH.TASOTY AS TASOTY
+		     , TH.DOCDAT AS DOCDAT
+		     , TH.DOCCAT AS DOCCAT
+		     , TH.DRELIN AS DRELIN
+		     , TH.STATDO AS STATDO 
+		     , TI.QTTAOR AS QTTAOR
+		     , TI.QTCOMP AS QTCOMP
+		     , TH.TSPKEY AS TSPKEY
+		     , TI.DOORKY AS DOORKY
+		     , TH.WARETG AS WARETG
+		     , TH.PTNRKY AS PTNRKY
+		     , TH.PTNRTY AS PTNRTY
+		     , TH.PTNRNM AS PTNRNM
+		     , TH.USRID1 AS USRID1
+		     , TH.UNAME1 AS UNAME1
+		     , TH.DEPTID1 AS DEPTID1
+		     , TH.DNAME1 AS DNAME1
+		     , TH.USRID2 AS USRID2
+		     , TH.UNAME2 AS UNAME2
+		     , TH.DEPTID2 AS DEPTID2
+		     , TH.DNAME2 AS DNAME2
+		     , TH.USRID3 AS USRID3
+		     , TH.UNAME3 AS UNAME3
+		     , TH.DEPTID3 AS DEPTID3
+		     , TH.DNAME3 AS DNAME3
+		     , TH.USRID4 AS USRID4
+		     , TH.UNAME4 AS UNAME4
+		     , TH.DEPTID4 AS DEPTID4
+		     , TH.DNAME4 AS DNAME4
+		     , TH.DOCTXT AS DOCTXT
+		     , TI.CREDAT AS CREDAT
+		     , TI.CRETIM AS CRETIM
+		     , TI.CREUSR AS CREUSR
+		     , TI.LMODAT AS LMODAT
+		     , TI.LMOTIM AS LMOTIM
+		     , TI.LMOUSR AS LMOUSR
+		     , TI.INDBZL AS INDBZL
+		     , TI.INDARC AS INDARC
+		     , TI.UPDCHK AS UPDCHK
+		     , TH.KEEPTS AS KEEPTS
+		     , TI.TASKIT AS TASKIT
+		     , TI.TASKTY AS TASKTY
+		     , TI.STATIT AS STATIT
+		     , TI.OWNRKY AS OWNRKY
+		     , TI.SKUKEY AS SKUKEY
+		     , TI.LOTNUM AS LOTNUM
+		     , TI.ACTCDT AS ACTCDT
+		     , TI.ACTCTI AS ACTCTI
+		     , TI.TKFLKY AS TKFLKY
+		     , TI.STEPNO AS STEPNO
+		     , TI.LSTTFL AS LSTTFL
+		     , TI.LOCASR AS LOCASR
+		     , TI.SECTSR AS SECTSR
+		     , TI.PAIDSR AS PAIDSR
+		     , TI.TRNUSR AS TRNUSR
+		     , TI.STRUTY AS STRUTY
+		     , TI.SMEAKY AS SMEAKY
+		     , TI.SUOMKY AS SUOMKY
+		     , TI.QTSPUM AS QTSPUM
+		     , TI.SDUOKY AS SDUOKY
+		     , TI.QTSPUM AS QTSPUM
+		     , TI.SDUOKY AS SDUOKY
+		     , TI.QTSDUM AS QTSDUM
+		     , TI.LOCATG AS LOCATG
+		     , TI.SECTTG AS SECTTG
+		     , TI.PAIDTG AS PAIDTG
+		     , TI.TRNUTG AS TRNUTG
+		     , TI.TTRUTY AS TTRUTY
+		     , TI.TMEAKY AS TMEAKY
+		     , TI.TUOMKY AS TUOMKY
+		     , TI.QTTPUM AS QTTPUM
+		     , TI.TDUOKY AS TDUOKY
+		     , TI.QTTDUM AS QTTDUM
+		     , TI.LOCAAC AS LOCAAC
+		     , TI.SECTAC AS SECTAC
+		     , TI.PAIDAC AS PAIDAC
+		     , TI.TRNUAC AS TRNUAC
+		     , TI.ATRUTY AS ATRUTY
+		     , TI.AMEAKY AS AMEAKY
+		     , TI.AUOMKY AS AUOMKY
+		     , TI.QTAPUM AS QTAPUM
+		     , TI.ADUOKY AS ADUOKY
+		     , TI.QTADUM AS QTADUM
+		     , TI.REFDKY AS REFDKY
+		     , TI.REFDIT AS REFDIT
+		     , TI.REFCAT AS REFCAT
+		     , TI.REFDAT AS REFDAT
+		     , TI.PURCKY AS PURCKY
+		     , TI.PURCIT AS PURCIT
+		     , TI.ASNDKY AS ASNDKY
+		     , TI.ASNDIT AS ASNDIT
+		     , TI.RECVKY AS RECVKY
+		     , TI.RECVIT AS RECVIT
+		     , TI.SHPOKY AS SHPOKY
+		     , TI.SHPOIT AS SHPOIT
+		     , TI.GRPOKY AS GRPOKY
+		     , TI.GRPOIT AS GRPOIT
+		     , TI.SADJKY AS SADJKY
+		     , TI.SADJIT AS SADJIT
+		     , TI.SDIFKY AS SDIFKY
+		     , TI.SDIFIT AS SDIFIT
+		     , TI.PHYIKY AS PHYIKY
+		     , TI.PHYIIT AS PHYIIT
+		     , TI.DROPID AS DROPID
+		     , TI.DESC01 AS DESC01
+		     , TI.DESC02 AS DESC02
+		     , TI.ASKU01 AS ASKU01
+		     , TI.ASKU02 AS ASKU02
+		     , TI.ASKU03 AS ASKU03
+		     , TI.ASKU04 AS ASKU04
+		     , TI.ASKU05 AS ASKU05
+		     , TI.EANCOD AS EANCOD
+		     , TI.GTINCD AS GTINCD
+		     , TI.SKUG01 AS SKUG01
+		     , TI.SKUG02 AS SKUG02
+		     , TI.SKUG03 AS SKUG03
+		     , TI.SKUG04 AS SKUG04
+		     , TI.SKUG05 AS SKUG05
+		     , TI.GRSWGT AS GRSWGT
+		     , TI.NETWGT AS NETWGT
+		     , TI.WGTUNT AS WGTUNT
+		     , TI.LENGTH AS LENGTH
+		     , TI.WIDTHW AS WIDTHW
+		     , TI.HEIGHT AS HEIGHT
+		     , TI.CUBICM AS CUBICM
+		     , TI.CAPACT AS CAPACT
+		     , TI.WORKID AS WORKID
+		     , TI.WORKNM AS WORKNM
+		     , TI.HHTTID AS HHTTID
+		     , TI.AREAKY AS AREAKY
+		     , TI.LOTA01 AS LOTA01
+		     , TI.LOTA02 AS LOTA02
+		     , TI.LOTA03 AS LOTA03
+		     , TI.LOTA04 AS LOTA04
+		     , TI.LOTA05 AS LOTA05
+		     , TI.LOTA06 AS LOTA06
+		     , TI.LOTA07 AS LOTA07
+		     , TI.LOTA08 AS LOTA08
+		     , TI.LOTA09 AS LOTA09
+		     , TI.LOTA10 AS LOTA10
+		     , TI.LOTA11 AS LOTA11
+		     , TI.LOTA12 AS LOTA12
+		     , TI.LOTA13 AS LOTA13
+		     , TI.LOTA14 AS LOTA14
+		     , TI.LOTA15 AS LOTA15
+		     , TI.LOTA16 AS LOTA16
+		     , TI.LOTA17 AS LOTA17
+		     , TI.LOTA18 AS LOTA18
+		     , TI.LOTA19 AS LOTA19
+		     , TI.LOTA20 AS LOTA20
+		     , TI.AWMSNO AS AWMSNO
+		     , TI.AWMSTS AS AWMSTS
+		     , TI.SMANDT AS SMANDT
+		     , TI.SEBELN AS SEBELN
+		     , TI.SEBELP AS SEBELP
+		     , TI.SZMBLNO AS SZMBLNO
+		     , TI.SZMIPNO AS SZMIPNO
+		     , TI.STRAID AS STRAID
+		     , TI.SVBELN AS SVBELN
+		     , TI.SPOSNR AS SPOSNR
+		     , TI.STKNUM AS STKNUM
+		     , TI.STPNUM AS STPNUM
+		     , TI.SWERKS AS SWERKS
+		     , TI.SLGORT AS SLGORT
+		     , TI.SDATBG AS SDATBG
+		     , TI.STDLNR AS STDLNR
+		     , TI.SSORNU AS SSORNU
+		     , TI.SSORIT AS SSORIT
+		     , TI.SMBLNR AS SMBLNR
+		     , TI.SZEILE AS SZEILE
+		     , TI.SMJAHR AS SMJAHR
+		     , TI.SXBLNR AS SXBLNR
+		     , TI.SAPSTS AS SAPSTS
+		     , TI.DOORKY AS DOORKY
+		     , TI.PTLT01 AS PTLT01
+		     , TI.PTLT02 AS PTLT02
+		     , TI.PTLT03 AS PTLT03
+		     , TI.PTLT04 AS PTLT04
+		     , TI.PTLT05 AS PTLT05
+		     , TI.PTLT06 AS PTLT06
+		     , TI.PTLT07 AS PTLT07
+		     , TI.PTLT08 AS PTLT08
+		     , TI.PTLT09 AS PTLT09
+		     , TI.PTLT10 AS PTLT10
+		     , TI.PTLT11 AS PTLT11
+		     , TI.PTLT12 AS PTLT12
+		     , TI.PTLT13 AS PTLT13
+		     , TI.PTLT14 AS PTLT14
+		     , TI.PTLT15 AS PTLT15
+		     , TI.PTLT16 AS PTLT16
+		     , TI.PTLT17 AS PTLT17
+		     , TI.PTLT18 AS PTLT18
+		     , TI.PTLT19 AS PTLT19
+		     , TI.PTLT20 AS PTLT20
+		     , TI.PASTKY AS PASTKY
+		     , TI.ALSTKY AS ALSTKY
+		     , TI.SBKTXT AS SBKTXT
+		     , TI.TASRSN AS TASRSN
+		  FROM TASDH TH 
+		       INNER JOIN TASDI TI ON TH.TASKKY = TI.TASKKY
+		 WHERE TH.TASKKY = #TASKKY#
+		   AND TI.TASKIT = #TASKIT#
+	</select>
+	
+	<delete id="TASDIDEL_DELETE" parameterClass="Map">
+		DELETE FROM TASDI
+		 WHERE TASKKY = #TASKKY#
+		   AND TASKIT = #TASKIT#
+	</delete>
+	
+	<insert id="TASDIEND_INSERT" parameterClass="Map">
+		INSERT INTO TASDI(
+				TASKKY,
+				TASKIT,
+				TASKTY,
+				RSNCOD,
+				STATIT,
+				QTTAOR,
+				QTCOMP,
+				OWNRKY,
+				SKUKEY,
+				LOTNUM,
+				ACTCDT,
+				ACTCTI,
+				QTYUOM,
+				TKFLKY,
+				STEPNO,
+				LSTTFL,
+				LOCASR,
+				SECTSR,
+				PAIDSR,
+				TRNUSR,
+				STRUTY,
+				SMEAKY,
+				SUOMKY,
+				QTSPUM,
+				SDUOKY,
+				QTSDUM,
+				LOCATG,
+				SECTTG,
+				PAIDTG,
+				TRNUTG,
+				TTRUTY,
+				TMEAKY,
+				TUOMKY,
+				QTTPUM,
+				TDUOKY,
+				QTTDUM,
+				LOCAAC,
+				SECTAC,
+				PAIDAC,
+				TRNUAC,
+				ATRUTY,
+				AMEAKY,
+				AUOMKY,
+				QTAPUM,
+				ADUOKY,
+				QTADUM,
+				REFDKY,
+				REFDIT,
+				REFCAT,
+				REFDAT,
+				PURCKY,
+				PURCIT,
+				ASNDKY,
+				ASNDIT,
+				RECVKY,
+				RECVIT,
+				SHPOKY,
+				SHPOIT,
+				GRPOKY,
+				GRPOIT,
+				SADJKY,
+				SADJIT,
+				SDIFKY,
+				SDIFIT,
+				PHYIKY,
+				PHYIIT,
+				DROPID,
+				DESC01,
+				DESC02,
+				ASKU01,
+				ASKU02,
+				ASKU03,
+				ASKU04,
+				ASKU05,
+				EANCOD,
+				GTINCD,
+				SKUG01,
+				SKUG02,
+				SKUG03,
+				SKUG04,
+				SKUG05,
+				GRSWGT,
+				NETWGT,
+				WGTUNT,
+				LENGTH,
+				WIDTHW,
+				HEIGHT,
+				CUBICM,
+				CAPACT,
+				WORKID,
+				WORKNM,
+				HHTTID,
+				AREAKY,
+				LOTA01,
+				LOTA02,
+				LOTA03,
+				LOTA04,
+				LOTA05,
+				LOTA06,
+				LOTA07,
+				LOTA08,
+				LOTA09,
+				LOTA10,
+				LOTA11,
+				LOTA12,
+				LOTA13,
+				LOTA14,
+				LOTA15,
+				LOTA16,
+				LOTA17,
+				LOTA18,
+				LOTA19,
+				LOTA20,
+				AWMSNO,
+				AWMSTS,
+				SMANDT,
+				SEBELN,
+				SEBELP,
+				SZMBLNO,
+				SZMIPNO,
+				STRAID,
+				SVBELN,
+				SPOSNR,
+				STKNUM,
+				STPNUM,
+				SWERKS,
+				SLGORT,
+				SDATBG,
+				STDLNR,
+				SSORNU,
+				SSORIT,
+				SMBLNR,
+				SZEILE,
+				SMJAHR,
+				SXBLNR,
+				SAPSTS,
+				DOORKY,
+				PTLT01,
+				PTLT02,
+				PTLT03,
+				PTLT04,
+				PTLT05,
+				PTLT06,
+				PTLT07,
+				PTLT08,
+				PTLT09,
+				PTLT10,
+				PTLT11,
+				PTLT12,
+				PTLT13,
+				PTLT14,
+				PTLT15,
+				PTLT16,
+				PTLT17,
+				PTLT18,
+				PTLT19,
+				PTLT20,
+				PASTKY,
+				ALSTKY,
+				SBKTXT,
+				TASRSN,
+				CREDAT,
+				CRETIM,
+				CREUSR,
+				LMODAT,
+				LMOTIM,
+				LMOUSR,
+				INDBZL,
+				INDARC,
+				UPDCHK
+			)VALUES(
+				NVL(#TASKKY#, ' '),
+				NVL(#TASKIT#, ' '),
+				NVL(#TASKTY#, ' '),
+				NVL(#RSNCOD#, ' '),
+				NVL(#STATIT#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTTAOR#), 0)),
+				TO_NUMBER(NVL(TRIM(#QTCOMP#), 0)),
+				NVL(#OWNRKY#, ' '),
+				NVL(#SKUKEY#, ' '),
+				NVL(#LOTNUM#, ' '),
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS'),
+				TO_NUMBER(NVL(TRIM(#QTYUOM#), 0)),
+				NVL(#TKFLKY#, ' '),
+				NVL(#STEPNO#, ' '),
+				NVL(#LSTTFL#, ' '),
+				NVL(#LOCASR#, ' '),
+				NVL(#SECTSR#, ' '),
+				NVL(#PAIDSR#, ' '),
+				NVL(#TRNUSR#, ' '),
+				NVL(#STRUTY#, ' '),
+				NVL(#SMEAKY#, ' '),
+				NVL(#SUOMKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTSPUM#), 0)),
+				NVL(#SDUOKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTSDUM#), 0)),
+				NVL(#LOCATG#, ' '),
+				NVL(#SECTTG#, ' '),
+				NVL(#PAIDTG#, ' '),
+				NVL(#TRNUTG#, ' '),
+				NVL(#TTRUTY#, ' '),
+				NVL(#TMEAKY#, ' '),
+				NVL(#TUOMKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTTPUM#), 0)),
+				NVL(#TDUOKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTTDUM#), 0)),
+				NVL(#LOCAAC#, ' '),
+				NVL(#SECTAC#, ' '),
+				NVL(#PAIDAC#, ' '),
+				NVL(#TRNUAC#, ' '),
+				NVL(#ATRUTY#, ' '),
+				NVL(#AMEAKY#, ' '),
+				NVL(#AUOMKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTAPUM#), 0)),
+				NVL(#ADUOKY#, ' '),
+				TO_NUMBER(NVL(TRIM(#QTADUM#), 0)),
+				NVL(#REFDKY#, ' '),
+				NVL(#REFDIT#, ' '),
+				NVL(#REFCAT#, ' '),
+				NVL(#REFDAT#, ' '),
+				NVL(#PURCKY#, ' '),
+				NVL(#PURCIT#, ' '),
+				NVL(#ASNDKY#, ' '),
+				NVL(#ASNDIT#, ' '),
+				NVL(#RECVKY#, ' '),
+				NVL(#RECVIT#, ' '),
+				NVL(#SHPOKY#, ' '),
+				NVL(#SHPOIT#, ' '),
+				NVL(#GRPOKY#, ' '),
+				NVL(#GRPOIT#, ' '),
+				NVL(#SADJKY#, ' '),
+				NVL(#SADJIT#, ' '),
+				NVL(#SDIFKY#, ' '),
+				NVL(#SDIFIT#, ' '),
+				NVL(#PHYIKY#, ' '),
+				NVL(#PHYIIT#, ' '),
+				NVL(#DROPID#, ' '),
+				NVL(#DESC01#, ' '),
+				NVL(#DESC02#, ' '),
+				NVL(#ASKU01#, ' '),
+				NVL(#ASKU02#, ' '),
+				NVL(#ASKU03#, ' '),
+				NVL(#ASKU04#, ' '),
+				NVL(#ASKU05#, ' '),
+				NVL(#EANCOD#, ' '),
+				NVL(#GTINCD#, ' '),
+				NVL(#SKUG01#, ' '),
+				NVL(#SKUG02#, ' '),
+				NVL(#SKUG03#, ' '),
+				NVL(#SKUG04#, ' '),
+				NVL(#SKUG05#, ' '),
+				TO_NUMBER(NVL(TRIM(#GRSWGT#), 0)),
+				TO_NUMBER(NVL(TRIM(#NETWGT#), 0)),
+				NVL(#WGTUNT#, ' '),
+				TO_NUMBER(NVL(TRIM(#LENGTH#), 0)),
+				TO_NUMBER(NVL(TRIM(#WIDTHW#), 0)),
+				TO_NUMBER(NVL(TRIM(#HEIGHT#), 0)),
+				TO_NUMBER(NVL(TRIM(#CUBICM#), 0)),
+				TO_NUMBER(NVL(TRIM(#CAPACT#), 0)),
+				NVL(#WORKID#, ' '),
+				NVL(#WORKNM#, ' '),
+				NVL(#HHTTID#, ' '),
+				NVL(#AREAKY#, ' '),
+				NVL(#LOTA01#, ' '),
+				NVL(#LOTA02#, ' '),
+				NVL(#LOTA03#, ' '),
+				NVL(#LOTA04#, ' '),
+				NVL(#LOTA05#, ' '),
+				NVL(#LOTA06#, ' '),
+				NVL(#LOTA07#, ' '),
+				NVL(#LOTA08#, ' '),
+				NVL(#LOTA09#, ' '),
+				NVL(#LOTA10#, ' '),
+				NVL(#LOTA11#, ' '),
+				NVL(#LOTA12#, ' '),
+				NVL(#LOTA13#, ' '),
+				NVL(#LOTA14#, ' '),
+				NVL(#LOTA15#, ' '),
+				TO_NUMBER(NVL(TRIM(#LOTA16#), 0)),
+				TO_NUMBER(NVL(TRIM(#LOTA17#), 0)),
+				TO_NUMBER(NVL(TRIM(#LOTA18#), 0)),
+				TO_NUMBER(NVL(TRIM(#LOTA19#), 0)),
+				TO_NUMBER(NVL(TRIM(#LOTA20#), 0)),
+				NVL(#AWMSNO#, ' '),
+				NVL(#AWMSTS#, ' '),
+				NVL(#SMANDT#, ' '),
+				NVL(#SEBELN#, ' '),
+				NVL(#SEBELP#, ' '),
+				NVL(#SZMBLNO#, ' '),
+				NVL(#SZMIPNO#, ' '),
+				NVL(#STRAID#, ' '),
+				NVL(#SVBELN#, ' '),
+				NVL(#SPOSNR#, ' '),
+				NVL(#STKNUM#, ' '),
+				NVL(#STPNUM#, ' '),
+				NVL(#SWERKS#, ' '),
+				NVL(#SLGORT#, ' '),
+				NVL(#SDATBG#, ' '),
+				NVL(#STDLNR#, ' '),
+				NVL(#SSORNU#, ' '),
+				NVL(#SSORIT#, ' '),
+				NVL(#SMBLNR#, ' '),
+				NVL(#SZEILE#, ' '),
+				NVL(#SMJAHR#, ' '),
+				NVL(#SXBLNR#, ' '),
+				NVL(#SAPSTS#, ' '),
+				NVL(#DOORKY#, ' '),
+				NVL(#PTLT01#, ' '),
+				NVL(#PTLT02#, ' '),
+				NVL(#PTLT03#, ' '),
+				NVL(#PTLT04#, ' '),
+				NVL(#PTLT05#, ' '),
+				NVL(#PTLT06#, ' '),
+				NVL(#PTLT07#, ' '),
+				NVL(#PTLT08#, ' '),
+				NVL(#PTLT09#, ' '),
+				NVL(#PTLT10#, ' '),
+				NVL(#PTLT11#, ' '),
+				NVL(#PTLT12#, ' '),
+				NVL(#PTLT13#, ' '),
+				NVL(#PTLT14#, ' '),
+				NVL(#PTLT15#, ' '),
+				TO_NUMBER(NVL(TRIM(#PTLT16#), 0)),
+				TO_NUMBER(NVL(TRIM(#PTLT17#), 0)),
+				TO_NUMBER(NVL(TRIM(#PTLT18#), 0)),
+				TO_NUMBER(NVL(TRIM(#PTLT19#), 0)),
+				TO_NUMBER(NVL(TRIM(#PTLT20#), 0)),
+				NVL(#PASTKY#, ' '),
+				NVL(#ALSTKY#, ' '),
+				NVL(#SBKTXT#, ' '),
+				NVL(#TASRSN#, ' '),
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS'),
+				NVL(#SES_USER_ID#, ' '),
+				TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				TO_CHAR(SYSDATE, 'HH24MISS'),
+				NVL(#SES_USER_ID#, ' '),
+				NVL(#INDBZL#, ' '),
+				NVL(#INDARC#, ' '),
+				TO_NUMBER(NVL(TRIM(#UPDCHK#), 0))
+			)
+	</insert>
+	
+	<select id="DBMSPROC_SZP_INS_TASDR_MAP" parameterClass="Map" resultClass="DataMap">
+		{ call SZP_INS_TASDR(#TASKKY#, #TASKIT#, #STOKKY#, #QTTAOR#, #QTCOMP#) }
+	</select>
+	<!-- ================================================================================================== -->
+	<!-- PDPKRM01 라이펜뮐러 팔레트별 피킹 : END-->
+	<!-- ================================================================================================== -->
+	
+	
+	<!-- ================================================================================================== -->
+	<!-- PDDL05 WAVE별 출고검수 : START-->
+	<!-- ================================================================================================== -->
+	<!-- PDDL05 WAVE별 출고검수 조회-->
+	<select id="PDDL05_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SI.SHPOKY AS SHPOKY
+				, SI.SHPOIT AS SHPOIT
+				, SH.WAREKY AS WAREKY
+				, SH.OWNRKY AS OWNRKY
+				, SI.QTYORG AS QTYORG
+				, SI.QTSHPO AS QTSHPO
+				, (SI.QTSHPO-SI.QTALOC) AS QTUALO
+				, SI.QTALOC AS QTALOC
+				, SI.QTSHPD AS QTSHPD
+				, SI.QTSHPC AS QTSHPC
+				, SI.QTJCMP AS QTJCMP
+				, SI.SKUKEY AS SKUKEY
+				, SI.DESC01 AS DESC01
+				, CT.NAME01 AS PTNRNM
+				, SI.STATIT AS STATIT
+				, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATIT' AND CMCDVL = SI.STATIT),' ') AS STATNM
+                , SI.ESHPKY AS ESHPKY
+                , SI.ESHPIT AS ESHPIT				
+		  FROM SHPDI SI
+			INNER JOIN SHPDH SH ON SH.SHPOKY = SI.SHPOKY
+			LEFT OUTER JOIN BZPTN CT ON CT.PTNRKY = SH.DPTNKY AND CT.PTNRTY = 'CT' AND CT.OWNRKY = SH.OWNRKY
+		 WHERE SI.SHPOKY = #SHPOKY#
+		<isNotEmpty property="SKUKEY">
+		   AND SI.SKUKEY = #SKUKEY#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 분배우선순위 쿼리 -->
+	<select id="PDDL05SEQ_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SEQCUS
+		 FROM SHPDH SH
+			LEFT OUTER JOIN ALCUS AL ON AL.WAREKY = #SES_WAREKY# AND AL.DOCUTY = SH.SHPMTY
+		WHERE SH.WAREKY = #SES_WAREKY#
+		  AND SHPOKY = #SHPOKY#
+	</select>
+	
+	<!-- 분배 조회 -->
+	<select id="PDDL05Detail_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SI.ESHPKY --그룹오더번호
+			 , SI.ESHPIT
+			 , SI.SHPOKY --출하문서번호
+			 , SI.SHPOIT
+			 , IFW.KUNAG AS PTNRKY  --거래처
+			 , (SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'CT' AND PTNRKY = IFW.KUNAG AND ROWNUM = 1) AS PTNRNM
+			 , SM.SKUKEY
+			 , SM.DESC01
+			 , SM.DESC02
+			 , SI.QTYORG
+			 , SI.QTSHPO
+			 , SI.QTJCMP
+			 , SI.QTSHPC
+		 FROM SHPDH SH
+			LEFT OUTER JOIN SHPDI SI ON SI.SHPOKY = SH.SHPOKY
+			LEFT OUTER JOIN SKUMA SM ON SM.SKUKEY = SI.SKUKEY AND SM.OWNRKY = SH.OWNRKY
+			LEFT OUTER JOIN IFWMS113 IFW ON IFW.VBELN = SI.REFDKY AND IFW.SKUKEY = SI.SKUKEY AND IFW.WAREKY = SH.WAREKY
+		WHERE SI.ESHPKY = #S_SHPOKY#
+		  AND SM.SKUKEY = #S_SKUKEY#
+	</select>
+	
+	<!-- 저장시 검수수량 update -->
+	<update id="PDDL05_UPDATE" parameterClass="Map">
+		UPDATE SHPDI
+		   SET QTSHPC = #QTSHPC#
+			 , STATIT = #STATIT#
+			 , LMODAT = TO_CHAR(SYSDATE,'YYYYMMDD')
+			 , LMOTIM = TO_CHAR(SYSDATE,'HH24MISS')
+			 , LMOUSR = #SES_USER_ID#
+		 WHERE SHPOKY = #SHPOKY#
+		   AND SHPOIT = #SHPOIT#
+	</update>
+	<!-- ================================================================================================== -->
+	<!-- PDDL05 WAVE별 출고검수 : END -->
+	<!-- ================================================================================================== -->
+	
+</sqlMap>

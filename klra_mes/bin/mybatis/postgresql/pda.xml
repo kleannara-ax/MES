@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Pda">
+	<select id="DEMO_AREACOMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT AREAKY AS "VALUE_COL"
+		   ,   SHORTX AS "TEXT_COL"
+		FROM   AREMA
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    WAREKY = #{SES_WAREKY}
+	</select>
+	
+	<select id="DEMO_ZONMA_LIST" parameterType="hashmap" resultType="DataMap">
+	SELECT AREAKY AS "AREAKY"
+	   ,   ZONEKY AS "ZONEKY"
+	   ,   SHORTX AS "ZONENM"
+	FROM   ZONMA
+	WHERE  COMPKY = #{SES_USER_COMPANY}
+    AND    WAREKY = #{SES_WAREKY}
+	</select>
+	
+	<select id="DEMO_LOCMA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.AREAKY AS "AREAKY"
+		   ,   C.SHORTX AS "AREANM"
+		   ,   A.ZONEKY AS "ZONEKY"
+		   ,   B.SHORTX AS "ZONENM"
+		   ,   A.LOCAKY AS "LOCAKY"
+		   ,   A.SHORTX AS "LOCANM"
+		FROM   LOCMA A
+		       INNER JOIN ZONMA B ON  A.COMPKY = B.COMPKY
+		                          AND A.WAREKY = B.WAREKY
+		                          AND A.ZONEKY = B.ZONEKY
+		                          AND A.AREAKY = B.AREAKY
+		       INNER JOIN AREMA C ON  B.COMPKY = C.COMPKY
+		                          AND B.WAREKY = C.WAREKY
+		                          AND B.AREAKY = C.AREAKY
+		WHERE  A.COMPKY = #{SES_USER_COMPANY}
+		AND    A.WAREKY = #{SES_WAREKY}
+		<if test="ZONEKY != null and ZONEKY != ''">
+		AND    A.ZONEKY LIKE '%'|| #{ZONEKY} ||'%'
+		</if>
+		<if test="LOCAKY != null and LOCAKY != ''">
+		AND    A.LOCAKY = #{LOCAKY}
+		</if>
+		ORDER BY A.COMPKY, A.WAREKY, A.AREAKY
+	</select>
+
+	<select id="DEMO_POP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COL1 AS "COL1"
+		    ,  A.COL2 AS "COL2"
+		    ,  A.COL3 AS "COL3"
+		FROM(
+			SELECT '1' AS COL1, 'COLUMN_DATA1' AS COL2, 'TYPE1' AS COL3 UNION ALL
+			SELECT '2' AS COL1, 'COLUMN_DATA2' AS COL2, 'TYPE1' AS COL3 UNION ALL
+			SELECT '3' AS COL1, 'COLUMN_DATA3' AS COL2, 'TYPE1' AS COL3 UNION ALL
+			SELECT '4' AS COL1, 'COLUMN_DATA4' AS COL2, 'TYPE2' AS COL3 UNION ALL
+			SELECT '5' AS COL1, 'COLUMN_DATA5' AS COL2, 'TYPE2' AS COL3 UNION ALL
+			SELECT '6' AS COL1, 'COLUMN_DATA6' AS COL2, 'TYPE2' AS COL3 UNION ALL
+			SELECT '7' AS COL1, 'COLUMN_DATA7' AS COL2, 'TYPE3' AS COL3 UNION ALL
+			SELECT '8' AS COL1, 'COLUMN_DATA8' AS COL2, 'TYPE3' AS COL3 
+		) A
+		WHERE 1=1
+		<if test="TYPE != null and TYPE != ''">
+		AND   A.COL3 != #{TYPE}
+		</if>
+		<if test="COMBO1 != null and COMBO1 != ''">
+		AND   A.COL3 != #{COMBO1}
+		</if>
+		<if test="COMBO2 != null and COMBO2 != ''">
+		AND   A.COL3 != #{COMBO2}
+		</if>
+		<if test="COL1 != null and COL1 != ''">
+		AND   A.COL1 LIKE '%'|| #{COL1} ||'%' 
+		</if>
+		<if test="COL2 != null and COL2 != ''">
+		AND   A.COL2 LIKE '%'|| #{COL2} ||'%' 
+		</if>
+	</select>
+	
+	<select id="DEMO_COMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COL1 AS "VALUE_COL"
+		    ,  A.COL2 AS "TEXT_COL"
+		FROM(
+			SELECT 'key1' AS COL1, 'Option1' AS COL2, 'type1' AS TYPE UNION ALL
+			SELECT 'key2' AS COL1, 'Option2' AS COL2, 'type2' AS TYPE UNION ALL
+			SELECT 'key3' AS COL1, 'Option3' AS COL2, 'type3' AS TYPE UNION ALL
+			SELECT 'key4' AS COL1, 'Option4' AS COL2, 'type4' AS TYPE
+		) A
+		WHERE 1=1
+		<if test="TYPE != null and TYPE != ''">
+		AND   A.COL2 != #{TYPE}
+		</if>
+	</select>
+	
+	<select id="DEMO_POP_COMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COL1 AS "VALUE_COL"
+		    ,  A.COL2 AS "TEXT_COL"
+		FROM(
+			SELECT '' AS COL1, 'ALL' AS COL2 UNION ALL
+			SELECT 'TYPE1' AS COL1, 'TYPE1' AS COL2 UNION ALL
+			SELECT 'TYPE2' AS COL1, 'TYPE2' AS COL2 UNION ALL
+			SELECT 'TYPE3' AS COL1, 'TYPE3' AS COL2
+		) A
+		WHERE 1=1
+		<if test="TYPE != null and TYPE != ''">
+		AND   A.COL2 != #{TYPE}
+		</if>
+	</select>
+
+	<select id="MENUTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH RECURSIVE MENU AS(
+			SELECT COMPID
+			     , MENUGID 
+			     , MENUID
+			     , PMENUID
+			     , SORTORDER
+			     , 1 AS LV                     
+			     , CAST(SORTORDER AS VARCHAR) AS SORTTXT
+			FROM   MSTMENUGL
+			WHERE  COMPID  = #{COMPID} 
+			AND    MENUGID = 'PDA'
+			AND    PMENUID = 'root'
+			UNION ALL
+			SELECT A.COMPID
+			   ,   A.MENUGID 
+			   ,   A.MENUID
+			   ,   A.PMENUID
+			   ,   A.SORTORDER
+			   ,   MENU.LV + 1 AS LV
+		       ,   MENU.SORTTXT || '_' ||A.SORTORDER AS SORTTXT
+			FROM   MENU   
+			       INNER JOIN MSTMENUGL A ON MENU.MENUID = A.PMENUID
+			WHERE  A.COMPID  = #{COMPID}
+			AND    A.MENUGID = 'PDA'
+		)
+		SELECT M.MENUGID   AS "MENUGID"
+		   ,   M.MENUID    AS "MENUID"
+		   ,   M.PMENUID   AS "AMNUID"
+		   ,   P.MENUNAME  AS "LBLTXL"
+		   ,   P.URI       AS "PGPATH"
+		   ,   P.IMGPTH    AS "IMGPTH"
+		   ,   P.MENUTYPE  AS "MNUTYP"
+		FROM   MENU M
+		       LEFT OUTER JOIN MSTMENU P  ON  P.MENUID    = M.MENUID 
+		                                  AND P.COMPID    = 'WDSCM'
+			   LEFT OUTER JOIN SYSLABEL L ON  L.LABELGID  = 'MENU' 
+			                              AND L.LANGCODE  = 'KO' 
+			                              AND P.MENULABEL = L.LABELID
+		ORDER BY M.SORTTXT
+	</select>
+	
+	<select id="MENU_INFO_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH RECURSIVE MENU AS(
+			SELECT COMPID
+			     , MENUGID 
+			     , MENUID
+			     , PMENUID
+			     , SORTORDER
+			     , 1 AS LV                     
+			     , CAST(SORTORDER AS VARCHAR) AS SORTTXT
+			FROM   MSTMENUGL
+			WHERE  COMPID  = #{SES_USER_COMPANY} 
+			AND    MENUGID = 'PDA'
+			AND    PMENUID = 'root'
+			UNION ALL
+			SELECT A.COMPID
+			   ,   A.MENUGID 
+			   ,   A.MENUID
+			   ,   A.PMENUID
+			   ,   A.SORTORDER
+			   ,   MENU.LV + 1 AS LV
+		       ,   MENU.SORTTXT || '_' ||A.SORTORDER AS SORTTXT
+			FROM   MENU   
+			       INNER JOIN MSTMENUGL A ON MENU.MENUID = A.PMENUID
+			WHERE  A.COMPID  = #{COMPID}
+			AND    A.MENUGID = 'PDA'
+		)
+		SELECT M.MENUGID   AS "MENUGID"
+		   ,   M.MENUID    AS "MENUID"
+		   ,   M.PMENUID   AS "AMNUID"
+		   ,   P.MENUNAME  AS "LBLTXL"
+		   ,   ''          AS "PGPATH"
+		   ,   P.IMGPTH    AS "IMGPTH"
+		   ,   M.MENUID    AS "PROGID"
+		FROM   MENU M
+		       LEFT OUTER JOIN MSTMENU P  ON  P.MENUID    = M.MENUID 
+		                                  AND P.COMPID    = 'WDSCM'
+			   LEFT OUTER JOIN SYSLABEL L ON  L.LABELGID  = 'MENU' 
+			                              AND L.LANGCODE  = 'KO' 
+			                              AND P.MENULABEL = L.LABELID
+		WHERE P.MENUTYPE = 'F'	                              
+		ORDER BY M.SORTTXT DESC
+	</select>	
+	
+	<select id="MGR01_ASN_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.ASNTTY AS "ASNTTY"
+		   ,   C.SHORTX AS "ASNTNM"
+		   ,   A.ASNDKY AS "ASNDKY"
+		   ,   A.DOCDAT AS "DOCDAT"
+		   ,   CASE WHEN A.ASNTTY = '003' THEN A.DEPTID3 ELSE A.DPTNKY END AS "PTNRKY"
+		   ,   CASE WHEN A.ASNTTY = '003' THEN A.DNAME3 ELSE A.DNAME1 END AS "PTNRNM"
+		   ,   A.USRID1 AS "SEBELN"
+		FROM   ASNDH A
+		       INNER JOIN DOCTM B ON A.ASNTTY = B.DOCUTY
+		       INNER JOIN DOCTM C ON B.CDOCTY = C.DOCUTY
+		WHERE  A.COMPKY = #{SES_USER_COMPANY}
+		AND    A.STATDO IN('NEW', 'PPC')
+		AND    A.INDDCL != 'V'
+		ORDER BY
+		       A.ASNDKY
+	</select>
+	
+	<select id="MGR01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.ASNDKY  AS "ASNDKY"
+		   ,   A.COMPKY  AS "COMPKY" 
+		   ,   A.WAREKY  AS "WAREKY"
+		   ,   A.OWNRKY  AS "OWNRKY"
+		   ,   A.ASNTTY  AS "ASNTTY"
+		   ,   B.DOCGRP  AS "DOCCAT"
+		   ,   B.CDOCTY  AS "RCPTTY"
+		   ,   A.STATDO  AS "STATDO"
+		   ,   A.DOCDAT  AS "DOCDAT"
+		   <choose>
+		   <when test='ASNTTY != null and ASNTTY == "003"'>
+		   ,   A.DEPTID3 AS "DEPTID3"
+		   ,   A.DNAME3  AS "DNAME3"
+		   </when>
+		   <otherwise>
+		   ,   A.DPTNKY AS "DPTNKY"
+		   ,   A.DNAME1 AS "DNAME1"
+		   </otherwise>
+		   </choose>
+		   ,   A.USRID1  AS "SEBELN"
+		   ,   A.USRID2  AS "SVBELN"
+		   ,   A.UNAME1  AS "SZMBLNO"
+		FROM   ASNDH A
+		       INNER JOIN DOCTM B ON A.ASNTTY = B.DOCUTY
+		       INNER JOIN DOCTM C ON B.CDOCTY = C.DOCUTY
+		WHERE  A.COMPKY = #{SES_USER_COMPANY}
+		AND    A.ASNDKY = #{ASNDKY}
+		AND    A.STATDO IN('NEW', 'PPC')
+		LIMIT  1
+	</select>
+	
+	<select id="MPT01_TASK_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TASKKY AS "TASKKY"
+		   ,   DOCDAT AS "DOCDAT"
+		FROM   TASDH
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASOTY = '301'
+		AND    STATDO IN('NEW', 'PPC')
+		ORDER BY 
+			   DOCDAT
+	</select>
+	
+	<select id="MPT01_TASK_FPC_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   TASDH
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+		AND    STATDO = 'FPC'
+	</select>
+	
+	<select id="MPK01_POP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+			   S.SHPOKY AS "SHPOKY"
+		   ,   S.RQSHPD AS "RQSHPD"
+		   ,   S.DPTNKY AS "PTNRKY"
+		   ,   S.DNAME1 AS "PTNRNM"
+		   ,   S.PTRCVR AS "PTRCVR"
+		   ,   S.DNAME2 AS "PTRCNM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    S.SHPMTY = '201'
+		AND    I.TASKTY = 'PK'
+		AND    I.STATIT IN('NEW', 'PPC')
+		ORDER BY 
+		       S.SHPOKY ASC
+	</select>
+	
+	<select id="MPK01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+			   S.SHPOKY AS "SHPOKY"
+		   ,   H.WAREKY AS "WAREKY"	   
+		   ,   I.TASKTY AS "TASKTY"	   
+		   ,   S.SHPMTY AS "SHPMTY"
+		   ,   T.SHORTX AS "SHPMNM"
+		   ,   S.RQSHPD AS "RQSHPD"
+		   ,   H.STATDO AS "STATDO"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   S.DPTNKY AS "PTNRKY"
+		   ,   S.DNAME1 AS "PTNRNM"
+		   ,   S.PTRCVR AS "PTRCVR"
+		   ,   S.DNAME2 AS "PTRCNM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+			   INNER JOIN DOCTM T ON  S.DOCCAT = T.DOCCAT
+			                      AND S.SHPMTY = T.DOCUTY
+			   INNER JOIN CMCDV V ON  H.STATDO = V.CMCDVL
+								  AND V.CMCDKY = 'STATDO'
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    S.SHPMTY = '201'
+		<if test="SHPOKY != null and SHPOKY != ''">
+		AND    S.SHPOKY  = #{SHPOKY}
+		</if>
+		AND    I.TASKTY = 'PK'
+		AND    S.STATDO NOT IN('FSH', 'PSH')
+		ORDER BY 
+		       S.SHPOKY ASC
+	</select>
+	
+	<select id="MOD01_POP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.SVBELN AS "SVBELN"
+		   ,   A.RQSHPD AS "RQSHPD"
+		   ,   CASE WHEN A.SHPOKY = '' THEN 'WAVE 생성 전'
+			        WHEN A.QTALOC = 0 THEN '미작업'
+			        WHEN (A.QTALOC > 0  AND A.QTJCMP = 0 AND A.QTSHPD = 0) THEN '할당완료'
+			        WHEN (A.QTALOC > 0 AND A.QTJCMP > 0 AND A.QTSHPD = 0) THEN '피킹완료'
+			        WHEN (A.QTALOC > 0 AND A.QTJCMP > 0 AND A.QTSHPD > 0) THEN '출고완료'
+		       END AS "STATDO"
+		   ,   A.PTNRKY AS "PTNRKY"
+		   ,   A.PTNRNM AS "PTNRNM"
+		   ,   A.PTRCVR AS "PTRCVR"
+		   ,   A.PTRCNM AS "PTRCNM"
+		   ,   A.SHPOKY AS "SHPOKY"
+		FROM(
+			SELECT A.SVBELN
+			   ,   A.RQSHPD
+			   ,   A.PTNRKY
+			   ,   A.PTNRNM
+			   ,   A.PTRCVR
+			   ,   A.PTRCNM
+			   ,   SUM(A.QTYORD :: INT) AS QTYORD
+			   ,   SUM(COALESCE(B.QTALOC :: INT, 0)) AS QTALOC
+			   ,   SUM(COALESCE(B.QTJCMP :: INT, 0)) AS QTJCMP  
+			   ,   SUM(COALESCE(B.QTSHPD :: INT, 0)) AS QTSHPD
+			   ,   COALESCE(B.SHPOKY,'') AS SHPOKY
+			FROM   IFSHP A
+			       LEFT OUTER JOIN SHPDI B ON  A.COMPKY = B.COMPKY
+			                               AND A.SVBELN = B.SVBELN
+			                               AND A.SPOSNR = B.SPOSNR
+			WHERE  A.COMPKY = #{SES_USER_COMPANY}
+			<if test="SVBELN != null and SVBELN != ''">
+			AND    A.SVBELN  = #{SVBELN}
+			</if>
+			<if test="RQSHPD != null and RQSHPD != ''">
+			AND    A.RQSHPD  = #{RQSHPD}
+			</if>
+			GROUP BY 
+			       A.SVBELN
+			   ,   A.RQSHPD
+			   ,   A.PTNRKY
+			   ,   A.PTNRNM
+			   ,   A.PTRCVR
+			   ,   A.PTRCNM
+			   ,   B.SHPOKY
+		) A
+		WHERE 1=1
+		<if test='STATDO != null and STATDO != "" and STATDO == "01"'>
+		AND   A.SHPOKY = ''
+		</if>
+		<if test='STATDO != null and STATDO != "" and STATDO == "02"'>
+		AND   A.QTALOC = 0
+		</if>
+		<if test='STATDO != null and STATDO != "" and STATDO == "03"'>
+		AND  (A.QTALOC > 0  AND A.QTJCMP = 0 AND A.QTSHPD = 0)
+		</if>
+		<if test='STATDO != null and STATDO != "" and STATDO == "04"'>
+		AND  (A.QTALOC > 0 AND A.QTJCMP > 0 AND A.QTSHPD = 0)
+		</if>
+		<if test='STATDO != null and STATDO != "" and STATDO == "05"'>
+		AND  (A.QTALOC > 0 AND A.QTJCMP > 0 AND A.QTSHPD > 0)
+		</if>
+		ORDER BY A.SVBELN DESC      
+	</select>
+	
+	<select id="MOD01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.SVBELN AS "SVBELN"
+			,  A.SPOSNR AS "SPOSNR" 
+			,  CASE WHEN SHPOKY = '' THEN 'WAVE 생성 전'
+			        WHEN QTALOC = 0 THEN '미작업'
+			        WHEN QTALOC > 0 AND (QTYORD - QTALOC) = 0 AND QTJCMP = 0 AND QTSHPD = 0 THEN '할당완료'
+			        WHEN QTALOC > 0 AND (QTYORD - QTALOC) > 0 AND QTJCMP = 0 AND QTSHPD = 0 THEN '부분할당'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0) AND (QTYORD - QTJCMP) = 0  AND QTSHPD = 0 THEN '피킹완료'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0) AND (QTYORD - QTJCMP) > 0  AND QTSHPD = 0 THEN '부분피킹'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0 AND QTSHPD > 0) AND (QTYORD - QTSHPD) = 0 THEN '출고완료'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0 AND QTSHPD > 0) AND (QTYORD - QTSHPD) > 0 THEN '부분출고'
+			   END AS "STATDO"
+			,  A.RQSHPD AS "RQSHPD"
+			,  A.PTNRKY AS "PTNRKY"
+			,  A.PTNRNM AS "PTNRNM"
+			,  A.PTRCVR AS "PTRCVR"
+			,  A.PTRCNM AS "PTRCNM"
+			,  A.SKUKEY AS "SKUKEY"
+			,  A.DESC01 AS "DESC01"
+			,  A.QTYORD AS "QTYORD"
+			,  A.QTALOC AS "QTALOC"
+			,  A.QTJCMP AS "QTJCMP"  
+			,  A.QTSHPD AS "QTSHPD"
+			,  A.SHPOKY AS "SHPOKY"
+			,  A.SHPOIT AS "SHPOIT"
+		FROM(
+			SELECT A.SVBELN
+			   ,   A.SPOSNR
+			   ,   A.RQSHPD
+			   ,   A.PTNRKY
+			   ,   A.PTNRNM
+			   ,   A.PTRCVR
+			   ,   A.PTRCNM
+			   ,   A.SKUKEY
+			   ,   A.DESC01
+			   ,   A.QTYORD :: INT
+			   ,   COALESCE(B.QTALOC :: INT, 0) AS QTALOC
+			   ,   COALESCE(B.QTJCMP :: INT, 0) AS QTJCMP  
+			   ,   COALESCE(B.QTSHPD :: INT, 0) AS QTSHPD
+			   ,   COALESCE(B.SHPOKY,'') AS SHPOKY
+			   ,   COALESCE(B.SHPOIT,'') AS SHPOIT
+			FROM   IFSHP A
+			       LEFT OUTER JOIN SHPDI B ON  A.COMPKY = B.COMPKY
+			                               AND A.SVBELN = B.SVBELN
+			                               AND A.SPOSNR = B.SPOSNR
+			WHERE  A.COMPKY = #{SES_USER_COMPANY}
+			AND    A.SVBELN = #{SVBELN}
+			AND    A.RQSHPD = #{RQSHPD}
+			AND    A.PTNRKY = #{PTNRKY}
+			AND    A.PTRCVR = #{PTRCVR}
+			AND    B.SHPOKY = #{SHPOKY}
+		) A
+		ORDER BY A.SVBELN, A.SPOSNR
+	</select>
+	
+	<select id="MOD01_COMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.VALUE_COL AS "VALUE_COL"
+		    ,  A.TEXT_COL  AS "TEXT_COL"
+		FROM(
+			SELECT ''   AS VALUE_COL, '전체' AS TEXT_COL UNION ALL
+		    SELECT '01' AS VALUE_COL, 'Wave' AS TEXT_COL UNION ALL
+			SELECT '02' AS VALUE_COL, '미작업' AS TEXT_COL UNION ALL
+			SELECT '03' AS VALUE_COL, '할당' AS TEXT_COL UNION ALL
+			SELECT '04' AS VALUE_COL, '피킹' AS TEXT_COL UNION ALL
+			SELECT '05' AS VALUE_COL, '출고' AS TEXT_COL 
+		) A
+	</select>
+</mapper>

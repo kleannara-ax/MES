@@ -1,0 +1,808 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/common/css/content_body.css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+<script type="text/javascript" src="/common/js/jquery-ui-custom.js"></script>
+<script>
+//탭 인덱스 변경
+(function() {
+	$(function() {
+		var tab = $('.tab.type2')
+			, tabTrigger = tab.children('a');
+
+		tabTrigger.each(function(i) {
+
+			var zIndex = tabTrigger.length - i;
+
+			$(this).css('zIndex',zIndex);
+
+		});
+	});
+})();
+
+// 그리드 크기 조절
+(function() {
+	$(function() {
+		var trigger = $('.fullSizer')
+			, wrap = $('.foldSect')
+			, bottomSect = $('.bottomSect')
+			, tab = $('.tab.type2')
+
+		trigger.each(function() {
+
+			var img = $(this).find('img');
+
+			$(this).on({
+				click : function() {
+					if ( $(this).hasClass('folded') ) {
+						wrap.stop().slideDown(250);
+						TweenMax.to(bottomSect, 0.25, { top : 160 });
+						TweenMax.to(img, 0.25, { rotation : 0, onComplete : function() {
+							trigger.removeClass('folded');
+						}});
+					} else {
+						wrap.stop().slideUp(250);
+						TweenMax.to(bottomSect, 0.25, { top : 10 });
+						TweenMax.to(img, 0.25, { rotation : 180, onComplete : function() {
+							trigger.addClass('folded');
+						}});
+					}
+				}
+			});
+
+		});
+
+	});
+})();
+
+// jQuery 탭 기능
+(function() {
+	$(function() {
+		$('.tabs').tabs();
+	});
+})();
+
+
+// 검색 팝업
+(function() {
+	$(function() {
+		var trigger = $('#showPop')
+			, pop = $('.searchPop')
+			, closer = pop.find('.closer');
+
+		trigger.on({
+			click : function() {
+				pop.stop(true, true).fadeIn(150);
+			}
+		});
+
+		closer.on({
+			click : function() {
+				pop.stop(true, true).fadeOut(150);
+			}
+		});
+	});
+})();
+
+// 테이블 스크롤
+(function() {
+	$(function() {
+		var table = $('.table.type2');
+
+		table.each(function() {
+			var _this = $(this)
+				, header = _this.find('.tableHeader')
+				, body = _this.find('.tableBody');
+
+			body.on({
+				scroll : function(e) {
+					var scrollLeft = $(this).scrollLeft();
+
+					//console.log(scrollLeft);
+					header.css({
+						marginLeft : -scrollLeft
+					});
+				}
+			});
+		});
+	});
+})();
+
+// 찾기 팝업
+function searchPop() {
+
+	var	pop = $('.layerPopup')
+		, closer = pop.find('.closer');
+
+	pop.stop(true, true).fadeIn(150);
+	closer.on({
+		click : function() {
+			pop.stop(true, true).fadeOut(150);
+		}
+	});
+}
+
+// 경고창
+function alertMessage() {
+
+	var alert = $('.alertMessage')
+		, closer = alert.find('.closer');
+
+	alert.fadeIn(150);
+
+	closer.on({
+		click : function() {
+			alert.fadeOut(150);
+		}
+	});
+}
+</script>
+</head>
+<body>
+
+<div class="contentHeader">
+	<div class="util">
+		<button class="button type1" type="button"><img src="/common/images/ico_btn1.png" alt="Previous" /></button>
+		<button class="button type1" type="button"><img src="/common/images/ico_btn2.png" alt="Save" /></button>
+		<button class="button type1 last" type="button"><img src="/common/images/ico_btn3.png" alt="Write" /></button>
+	</div>
+	<div class="util2">
+		<button class="button type2" id="showPop" type="button"><img src="/common/images/ico_btn4.png" alt="List" /></button>
+	</div>
+</div>
+
+<!-- searchPop -->
+<div class="searchPop">
+
+	<button type="button" class="closer">X</button>
+
+	<div class="searchInnerContainer">
+
+		<p class="searchBtn"><input type="submit" class="button type1 widthAuto" value="검색" /></p>
+
+		<div class="searchInBox">
+			<h2 class="tit">검색조건</h2>
+			<table class="table type1">
+				<colgroup>
+					<col width="100" />
+					<col />
+					<col width="100" />
+					<col />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>거점</th>
+						<td colspan="3">
+							<input type="text" />
+							<button class="button type3" onclick="searchPop();" type="button"><img src="/common/images/ico_find.png" alt="" /></button>
+							<button class="button type3" onclick="alertMessage();" type="button"><img src="/common/images/ico_enter.png" alt="" /></button>
+						</td>
+					</tr>
+					<tr>
+						<th>구역</th>
+						<td><input type="text" /></td>
+						<th>구역타입</th>
+						<td>
+							<select>
+								<option>[STOR]보관</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>설명</th>
+						<td><input type="text" /></td>
+						<th>창고</th>
+						<td><input type="text" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="searchInBox">
+			<h2 class="tit type1">검색조건</h2>
+			<table class="table type1">
+				<colgroup>
+					<col width="100" />
+					<col />
+					<col width="100" />
+					<col />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>생성일시</th>
+						<td >
+							<input type="text" class="inputText width1" />
+							<input type="text" class="inputText width1" />
+						</td>
+						<th>수정일시</th>
+						<td >
+							<input type="text" class="inputText width1" />
+							<input type="text" class="inputText width1" />
+						</td>
+					</tr>
+					<tr>
+						<th>생성자</th>
+						<td><input type="text" /></td>
+						<th>수정자</th>
+						<td><input type="text" value="[STOR]보관" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+</div>
+<!-- //searchPop -->
+
+<!-- content -->
+<div class="content">
+	<div class="innerContainer">
+
+		<!-- contentContainer -->
+		<div class="contentContainer">
+
+			<div class="foldSect">
+				<div class="tabs">
+				  <ul class="tab type2">
+					<li><a href="#tabs-1"><span>탭메뉴1</span></a></li>
+					<li><a href="#tabs-2"><span>탭메뉴2</span></a></li>
+					<li><a href="#tabs-3"><span>탭메뉴3</span></a></li>
+				  </ul>
+				  <div id="tabs-1">
+					<div class="section type1">
+						<table class="table type1">
+							<colgroup>
+								<col />
+								<col />
+								<col />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>거점</th>
+									<td colspan="3">
+										<input type="text" />
+										<button class="button type3" type="button"><img src="/common/images/ico_find.png" alt="" /></button>
+										<button class="button type3" type="button"><img src="/common/images/ico_enter.png" alt="" /></button>
+									</td>
+								</tr>
+								<tr>
+									<th>구역</th>
+									<td><input type="text" /></td>
+									<th>구역타입</th>
+									<td>
+										<select>
+											<option>[STOR]보관</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>설명</th>
+									<td><input type="text" /></td>
+									<th>창고</th>
+									<td><input type="text" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				  </div>
+				  <div id="tabs-2">
+					<div class="section type1">
+						<table class="table type1">
+							<colgroup>
+								<col />
+								<col />
+								<col />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>거점</th>
+									<td colspan="3">
+										<input type="text" />
+										<button class="button type3" type="button"><img src="/common/images/ico_find.png" alt="" /></button>
+										<button class="button type3" type="button"><img src="/common/images/ico_enter.png" alt="" /></button>
+									</td>
+								</tr>
+								<tr>
+									<th>구역</th>
+									<td><input type="text" /></td>
+									<th>구역타입</th>
+									<td>
+										<select>
+											<option>[STOR]보관</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>설명</th>
+									<td><input type="text" /></td>
+									<th>창고</th>
+									<td><input type="text" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				  </div>
+				  <div id="tabs-3">
+					<div class="section type1">
+						<table class="table type1">
+							<colgroup>
+								<col />
+								<col />
+								<col />
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>거점</th>
+									<td colspan="3">
+										<input type="text" />
+										<button class="button type3" type="button"><img src="/common/images/ico_find.png" alt="" /></button>
+										<button class="button type3" type="button"><img src="/common/images/ico_enter.png" alt="" /></button>
+									</td>
+								</tr>
+								<tr>
+									<th>구역</th>
+									<td><input type="text" /></td>
+									<th>구역타입</th>
+									<td>
+										<select>
+											<option>[STOR]보관</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>설명</th>
+									<td><input type="text" /></td>
+									<th>창고</th>
+									<td><input type="text" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				  </div>
+				</div>
+			</div>
+
+			<div class="bottomSect">
+				<button type="button" class="button type2 fullSizer"><img src="/common/images/ico_full.png" alt="Full Size"></button>
+				<div class="tabs">
+					<ul class="tab type2">
+						<li><a href="#tabs1-1"><span>탭메뉴1</span></a></li>
+						<li><a href="#tabs1-2"><span>탭메뉴2</span></a></li>
+						<li><a href="#tabs1-3"><span>탭메뉴3</span></a></li>
+					</ul>
+					<div id="tabs1-1">
+						<div class="section type1">
+							<div class="table type2">
+								<div class="tableHeader">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th class="checkbox">□</th>
+												<th>설명</th>
+												<th>창고</th>
+												<th>생성일자</th>
+												<th>생성시간</th>
+												<th>생성자</th>
+												<th>수정일자</th>
+												<th>수정시간</th>
+												<th>수정자</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tableBody">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">■</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr class="active">
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">■</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="editabled">AR03</td>
+												<td class="editable editActive">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable editActive alignLeft">
+													<select>
+														<option>20130214</option>
+													</select>
+												</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+							<div class="tableUtil">
+								<div class="leftArea">
+									<button class="button type4" type="button"><img src="/common/images/ico_btn5.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn6.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn7.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn8.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn9.png" alt="" /></button>
+								</div>
+								<div class="rightArea">
+									<p class="record">17 Record</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tabs1-2">
+						<div class="section type1">
+							<div class="table type2">
+								<div class="tableHeader">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th class="checkbox">□</th>
+												<th>설명</th>
+												<th>창고</th>
+												<th>생성일자</th>
+												<th>생성시간</th>
+												<th>생성자</th>
+												<th>수정일자</th>
+												<th>수정시간</th>
+												<th>수정자</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tableBody">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr class="active">
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable editActive">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable editActive alignLeft">
+													<select>
+														<option>20130214</option>
+													</select>
+												</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+							<div class="tableUtil">
+								<div class="leftArea">
+									<button class="button type4" type="button"><img src="/common/images/ico_btn5.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn6.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn7.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn8.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn9.png" alt="" /></button>
+								</div>
+								<div class="rightArea">
+									<p class="record">17 Record</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tabs1-3">
+						<div class="section type1">
+							<div class="table type2">
+								<div class="tableHeader">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<thead>
+											<tr>
+												<th>번호</th>
+												<th class="checkbox">□</th>
+												<th>설명</th>
+												<th>창고</th>
+												<th>생성일자</th>
+												<th>생성시간</th>
+												<th>생성자</th>
+												<th>수정일자</th>
+												<th>수정시간</th>
+												<th>수정자</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tableBody">
+									<table>
+										<colgroup>
+											<col width="40" />
+											<col width="40" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+											<col width="150" />
+										</colgroup>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr class="active">
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td class="checkbox">□</td>
+												<td class="unEditable">RCYZONE</td>
+												<td class="unEditable">AR03</td>
+												<td class="editable editActive">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable editActive alignLeft">
+													<select>
+														<option>20130214</option>
+													</select>
+												</td>
+												<td class="editable">20130214</td>
+												<td class="editable">175400</td>
+												<td class="editable alignLeft select">SYSTEM</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+							<div class="tableUtil">
+								<div class="leftArea">
+									<button class="button type4" type="button"><img src="/common/images/ico_btn5.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn6.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn7.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn8.png" alt="" /></button>
+									<button class="button type4" type="button"><img src="/common/images/ico_btn9.png" alt="" /></button>
+								</div>
+								<div class="rightArea">
+									<p class="record">17 Record</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- //contentContainer -->
+
+	</div>
+</div>
+<!-- //content -->
+</body>
+</html>

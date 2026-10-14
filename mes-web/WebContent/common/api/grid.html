@@ -1,0 +1,3831 @@
+<!doctype html>
+<!--[if IE 7 ]>		 <html class="no-js ie ie7 lte7 lte8 lte9" lang="ko"> <![endif]-->
+<!--[if IE 8 ]>		 <html class="no-js ie ie8 lte8 lte9" lang="ko"> <![endif]-->
+<!--[if IE 9 ]>		 <html class="no-js ie ie9 lte9>" lang="ko"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="euc-kr"> <!--<![endif]-->
+<head data-live-domain="api.jqueryui.com">
+	
+	<!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>API Documentation</title>
+
+	<meta name="viewport" content="width=device-width">
+
+	<!--<link rel="shortcut icon" href="//api.jqueryui.com/jquery-wp-content/themes/api.jqueryui.com/i/favicon.ico">-->
+
+	<!--<link rel="stylesheet" href="https://api.jqueryui.com/jquery-wp-content/themes/jquery/css/base.css?v=1">-->
+	<!--<link rel="stylesheet" href="https://api.jqueryui.com/jquery-wp-content/themes/api.jqueryui.com/style.css">-->
+	<link rel="stylesheet" type="text/css" href="./css/base.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+
+	<script src="https://api.jqueryui.com/jquery-wp-content/themes/jquery/js/modernizr.custom.2.8.3.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+
+	<script src="https://api.jqueryui.com/jquery-wp-content/themes/jquery/js/plugins.js"></script>
+	<script src="https://api.jqueryui.com/jquery-wp-content/themes/jquery/js/main.js"></script>
+
+	<script src="https://use.typekit.net/wde1aof.js"></script>
+	<script>try{Typekit.load();}catch(e){}</script>
+
+	<script type="text/javascript">
+		window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/api.jqueryui.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.5.2"}};
+		!function(a,b,c){function d(a){var c,d,e,f=b.createElement("canvas"),g=f.getContext&&f.getContext("2d"),h=String.fromCharCode;if(!g||!g.fillText)return!1;switch(g.textBaseline="top",g.font="600 32px Arial",a){case"flag":return g.fillText(h(55356,56806,55356,56826),0,0),f.toDataURL().length>3e3;case"diversity":return g.fillText(h(55356,57221),0,0),c=g.getImageData(16,16,1,1).data,d=c[0]+","+c[1]+","+c[2]+","+c[3],g.fillText(h(55356,57221,55356,57343),0,0),c=g.getImageData(16,16,1,1).data,e=c[0]+","+c[1]+","+c[2]+","+c[3],d!==e;case"simple":return g.fillText(h(55357,56835),0,0),0!==g.getImageData(16,16,1,1).data[0];case"unicode8":return g.fillText(h(55356,57135),0,0),0!==g.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+	</script>
+	<style type="text/css">
+		img.wp-smiley,
+		img.emoji {
+			display: inline !important;
+			border: none !important;
+			box-shadow: none !important;
+			height: 1em !important;
+			width: 1em !important;
+			margin: 0 .07em !important;
+			vertical-align: -0.1em !important;
+			background: none !important;
+			padding: 0 !important;
+		}
+	</style>
+	<link rel='https://api.w.org/' href='https://api.jqueryui.com/wp-json/' />
+	<meta name="generator" content="WordPress 4.5.2" />
+	<link rel="alternate" type="application/json+oembed" href="https://api.jqueryui.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fapi.jqueryui.com%2Faccordion%2F" />
+	<link rel="alternate" type="text/xml+oembed" href="https://api.jqueryui.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fapi.jqueryui.com%2Faccordion%2F&#038;format=xml" />
+</head>
+<body class="api jquery-ui single single-post postid-2 single-format-standard single-author singular">
+	<!--
+	<header>
+		<section id="global-nav">
+			<nav>
+				<div class="constrain">
+					<ul class="projects">
+						<li class="project jquery"><a href="http://jquery.com/" title="jQuery">jQuery</a></li>
+						<li class="project jquery-ui"><a href="http://jqueryui.com/" title="jQuery UI">jQuery UI</a></li>
+						<li class="project jquery-mobile"><a href="http://jquerymobile.com/" title="jQuery Mobile">jQuery Mobile</a></li>
+						<li class="project sizzlejs"><a href="http://sizzlejs.com/" title="Sizzle">Sizzle</a></li>
+						<li class="project qunitjs"><a href="http://qunitjs.com/" title="QUnit">QUnit</a></li>
+					</ul>
+					<ul class="links">
+						<li><a href="http://plugins.jquery.com/">Plugins</a></li>
+						<li class="dropdown"><a href="http://contribute.jquery.org/">Contribute</a>
+							<ul>
+								<li><a href="http://contribute.jquery.org/CLA/">CLA</a></li>
+								<li><a href="http://contribute.jquery.org/style-guide/">Style Guides</a></li>
+								<li><a href="http://contribute.jquery.org/triage/">Bug Triage</a></li>
+								<li><a href="http://contribute.jquery.org/code/">Code</a></li>
+								<li><a href="http://contribute.jquery.org/documentation/">Documentation</a></li>
+								<li><a href="http://contribute.jquery.org/web-sites/">Web Sites</a></li>
+							</ul>
+						</li>
+						<li class="dropdown"><a href="http://events.jquery.org/">Events</a>
+							<ul class="wide">
+																			</ul>
+						</li>
+						<li class="dropdown"><a href="https://jquery.org/support/">Support</a>
+							<ul>
+								<li><a href="http://learn.jquery.com/">Learning Center</a></li>
+								<li><a href="http://try.jquery.com/">Try jQuery</a></li>
+								<li><a href="http://irc.jquery.org/">IRC/Chat</a></li>
+								<li><a href="http://forum.jquery.com/">Forums</a></li>
+								<li><a href="http://stackoverflow.com/tags/jquery/info">Stack Overflow</a></li>
+								<li><a href="https://jquery.org/support/">Commercial Support</a></li>
+							</ul>
+						</li>
+						<li class="dropdown"><a href="https://jquery.org/">jQuery Foundation</a>
+							<ul>
+								<li><a href="https://jquery.org/join/">Join</a></li>
+								<li><a href="https://jquery.org/members/">Members</a></li>
+								<li><a href="https://jquery.org/team/">Team</a></li>
+								<li><a href="https://jquery.org/conduct/">Conduct</a></li>
+								<li><a href="http://brand.jquery.org/">Brand Guide</a></li>
+								<li><a href="https://jquery.org/donate/">Donate</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</section>
+	</header>
+	-->
+	<div id="container">
+		<div id="logo-events" class="constrain clearfix">
+			<!--
+			<h2 class="logo"><a href="http://jqueryui.com/" title="jQuery UI API Documentation">jQuery UI API Documentation</a></h2>
+
+			<aside><div id="broadcast"></div></aside>
+			-->
+		</div>
+		<!-- //div#logo-events -->
+		
+		<nav id="main" class="constrain clearfix">
+			<div class="menu-top-container">
+				<ul id="menu-top" class="menu">
+					<!--<li class="menu-item"><a href="http://jqueryui.com/demos/">Demos</a></li>-->
+					<!--<li class="menu-item"><a href="http://jqueryui.com/download/">Download</a></li>-->
+					<li class="menu-item current"><a href="http://api.jqueryui.com/">API Documentation</a></li>
+					<!--<li class="menu-item"><a href="http://jqueryui.com/themeroller/">Themes</a></li>-->
+					<!--<li class="menu-item"><a href="http://jqueryui.com/development/">Development</a></li>-->
+					<!--<li class="menu-item"><a href="http://jqueryui.com/support/">Support</a></li>-->
+					<!--<li class="menu-item"><a href="http://blog.jqueryui.com/">Blog</a></li>-->
+					<!--<li class="menu-item"><a href="http://jqueryui.com/about/">About</a></li>-->
+				</ul>
+			</div>
+
+			<form method="get" class="searchform" action="//api.jqueryui.com/">
+				<button type="submit" class="icon-search"><span class="visuallyhidden">search</span></button>
+				<label>
+					<span class="visuallyhidden">Search API Documentation</span>
+					<input type="text" name="s" value="" placeholder="Search" />
+				</label>
+			</form>
+		</nav>
+		<!-- //nav#main -->
+
+		<div id="content-wrapper" class="clearfix row">
+
+			<div class="content-right twelve columns">
+				<div id="content">
+						
+					<article id="post-2" class="post-2 post type-post status-publish format-standard hentry category-widgets">
+						<header class="entry-header">
+							<h1 class="entry-title">API Documentation</h1>
+							<hr>
+							<!--
+							<div class="entry-meta">
+								Categories: <span class="category"><a href="//api.jqueryui.com/category/widgets/">Widgets</a></span>
+							</div>
+							-->
+							<!-- //div.entry-meta -->
+						</header>
+						<!-- //header.entry-header -->
+
+						<div class="entry-content">
+							<article id="accordion1" class="entry widget">
+								<h2 class="section-title">
+									<span>API Documentation</span><span class="version-details">version added: 1.0</span>
+								</h2>
+								<div class="entry-wrapper">
+									<p class="desc"><strong>Description: </strong>API 설명설명</p>
+									<section id="quick-nav">
+										<header><h2>QuickNav<a href="#entry-examples">Examples</a></h2></header>
+										<div class="quick-nav-section">
+											<div style="margin-bottom:50px;">
+												<h3>Options</h3>
+												<div><a href="#option-setGrid">setGrid</a></div>
+											</div>
+											<div>
+												<h3>Attributes</h3>
+												<div><a href="#attr-CGRow">CGRow</a></div>
+												<div><a href="#attr-GBtn">GBtn</a></div>
+												<div><a href="#attr-GBtnCheck">GBtnCheck</a></div>
+												<div><a href="#attr-GCol">GCol</a></div>
+												<div><a href="#attr-GF">GF</a></div>
+												<div><a href="#attr-GInfoArea">GInfoArea</a></div>
+											</div>
+										</div>
+										<div class="quick-nav-section">
+											<h3>Methods</h3>
+											<div><a href="#method-addNewRow">addNewRow</a></div>
+											<div><a href="#method-addSort">addSort</a></div>
+											<div><a href="#method-appendCols">appendCols</a></div>
+											<div><a href="#method-checkAll">checkAll</a></div>
+											<div><a href="#method-checkResult">checkResult</a></div>
+											<div><a href="#method-copyCols">copyCols</a></div>
+											<div><a href="#method-copyData">copyData</a></div>
+											<div><a href="#method-deleteRow ">deleteRow</a></div>
+											<div><a href="#method-getColData">getColData</a></div>
+											<div><a href="#method-getFocusRowNum">getFocusRowNum</a></div>
+											<div><a href="#method-getGridAvailData">getGridAvailData</a></div>
+											<div><a href="#method-getGridData">getGridData</a></div>
+											<div><a href="#method-getGridDataCount">getGridDataCount</a></div>
+											<div><a href="#method-getModifyList">getModifyList</a></div>
+											<div><a href="#method-getModifyRowCount">getModifyRowCount</a></div>
+											<div><a href="#method-getRowData">getRowData</a></div>
+											<div><a href="#method-getRowState">getRowState</a></div>
+											<div><a href="#method-getRowStatus">getRowStatus</a></div>
+											<div><a href="#method-getSelectData">getSelectData</a></div>
+											<div><a href="#method-getSelectIndex">getSelectIndex</a></div>
+											<div><a href="#method-getSelectModifyData">getSelectModifyData</a></div>
+											<div><a href="#method-getSelectModifyList">getSelectModifyList</a></div>
+											<div><a href="#method-getSelectRowNumList">getSelectRowNumList</a></div>
+											<div><a href="#method-getSelectType">getSelectType</a></div>
+											<div><a href="#method-gridColModify">gridColModify</a></div>
+											<div><a href="#method-gridList">gridList</a></div>
+											<div><a href="#method-gridSave">gridSave</a></div>
+											<div><a href="#method-headColBg">headColBg</a></div>
+											<div><a href="#method-pageList">pageList</a></div>
+											<div><a href="#method-removeUnselect">removeUnselect</a></div>
+											<div><a href="#method-resetGrid">resetGrid</a></div>
+											<div><a href="#method-resetGridReadOnly">resetGridReadOnly</a></div>
+											<div><a href="#method-setAddRow">setAddRow</a></div>
+											<div><a href="#method-setBtnView">setBtnView</a></div>
+											<div><a href="#method-setColFocus">setColFocus</a></div>
+											<div><a href="#method-setColGrouping">setColGrouping</a></div>
+											<div><a href="#method-setColValue">setColValue</a></div>
+											<div><a href="#method-setComboOption">setComboOption</a></div>
+											<div><a href="#method-setGridData">setGridData</a></div>
+											<div><a href="#method-setNextRowFocus">setNextRowFocus</a></div>
+											<div><a href="#method-setPreRowFocus">setPreRowFocus</a></div>
+											<div><a href="#method-setReadOnly">setReadOnly</a></div>
+											<div><a href="#method-setRowCheck">setRowCheck</a></div>
+											<div><a href="#method-setRowFocus">setRowFocus</a></div>
+											<div><a href="#method-setRowReadOnly">setRowReadOnly</a></div>
+											<div><a href="#method-setRowState">setRowState</a></div>
+											<div><a href="#method-validationCheck ">validationCheck</a></div>
+										</div>
+										<div class="quick-nav-section">
+											<h3>Events</h3>
+											<div><a href="#event-gridExcelDownloadEventBefore">gridExcelDownloadEventBefore</a></div>
+											<div><a href="#event-gridListColTextColorChange">gridListColTextColorChange</a></div>
+											<div><a href="#event-gridListEventColBtnClick">gridListEventColBtnClick</a></div>
+											<div><a href="#event-gridListEventColValueChange">gridListEventColValueChange</a></div>
+											<div><a href="#event-gridListEventDataBindEnd">gridListEventDataBindEnd</a></div>
+											<div><a href="#event-gridListEventDataViewEnd">gridListEventDataViewEnd</a></div>
+											<div><a href="#event-gridListEventInputColFocus">gridListEventInputColFocus</a></div>
+											<div><a href="#event-gridListEventRowAddAfter">gridListEventRowAddAfter</a></div>
+											<div><a href="#event-gridListEventRowAddBefore">gridListEventRowAddBefore</a></div>
+											<div><a href="#event-gridListEventRowCheck">gridListEventRowCheck</a></div>
+											<div><a href="#event-gridListEventRowCheckAll">gridListEventRowCheckAll</a></div>
+											<div><a href="#event-gridListEventRowClick">gridListEventRowClick</a></div>
+											<div><a href="#event-gridListEventRowDblclick">gridListEventRowDblclick</a></div>
+											<div><a href="#event-gridListEventRowFocus">gridListEventRowFocus</a></div>
+											<div><a href="#event-gridListEventRowRemove">gridListEventRowRemove</a></div>
+											<div><a href="#event-gridListRowBgColorChange">gridListRowBgColorChange</a></div>
+											<div><a href="#event-gridListRowTextColorChange">gridListRowTextColorChange</a></div>
+											<div><a href="#event-gridPageLinkEventBefore">gridPageLinkEventBefore</a></div>
+										</div>
+									</section>
+									<div class="longdesc" id="entry-longdesc">
+										<!--
+										<p>The markup of your accordion container needs pairs of headers and content panels:</p>
+										
+										<div class="syntaxhighlighter xml">
+											<table>
+												<tbody>
+													<tr>
+														<td class="gutter">
+															<div class="line n1">1</div>
+															<div class="line n2">2</div>
+															<div class="line n3">3</div>
+															<div class="line n4">4</div>
+															<div class="line n5">5</div>
+															<div class="line n6">6</div>
+														</td>
+														
+														<td class="code">
+															<pre><div class="container"><div class="line"><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">&quot;accordion&quot;</span>&gt;</span></code></div></div><div class="container"><div class="line"><code>  <span class="tag">&lt;<span class="title">h3</span>&gt;</span>First header<span class="tag">&lt;/<span class="title">h3</span>&gt;</span></code></div></div><div class="container"><div class="line"><code>  <span class="tag">&lt;<span class="title">div</span>&gt;</span>First content panel<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></div></div><div class="container"><div class="line"><code>  <span class="tag">&lt;<span class="title">h3</span>&gt;</span>Second header<span class="tag">&lt;/<span class="title">h3</span>&gt;</span></code></div></div><div class="container"><div class="line"><code>  <span class="tag">&lt;<span class="title">div</span>&gt;</span>Second content panel<span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></div></div><div class="container"><div class="line"><code><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></div></div></pre>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										
+										<p>Accordions support arbitrary markup, but each content panel must always be the next sibling after its associated header. See the <a href="#option-header"><code>header</code></a> option for information on how to use custom markup structures.</p>
+										<p>The panels can be activated programmatically by setting the <a href="#option-active"><code>active</code></a> option.</p>
+										-->
+
+										<h3>Keyboard interaction</h3>
+
+										<p>When focus is on a header, the following key commands are available:</p>
+										<ul>
+											<li><code>UP</code>/<code>LEFT</code>: Move focus to the previous header. If on first header, moves focus to last header.</li>
+											<li><code>DOWN</code>/<code>RIGHT</code>: Move focus to the next header. If on last header, moves focus to first header.</li>
+											<li><code>HOME</code>: Move focus to the first header.</li>
+											<li><code>END</code>: Move focus to the last header.</li>
+											<li><code>SPACE</code>/<code>ENTER</code>: Activate panel associated with focused header.</li>
+										</ul>
+
+										<p>When focus is in a panel:</p>
+										<ul>
+											<li><code>CTRL</code> + <code>UP</code>: Move focus to associated header.</li>
+										</ul>
+
+										<!--
+										<div>
+											<h3 id="theming">Theming</h3>
+
+											<p>The accordion widget uses the <a href="/theming/css-framework/">jQuery UI CSS framework</a> to style its look and feel. If accordion specific styling is needed, the following CSS class names can be used:</p>
+										</div>
+
+										<ul>
+											<li>
+												<code>ui-accordion</code>: The outer container of the accordion.
+												<ul>
+													<li><code>ui-accordion-header</code>: The headers of the accordion. The headers will additionally have a <code>ui-accordion-icons</code> class if they contain <a href="#option-icons"><code>icons</code></a>.</li>
+													<li><code>ui-accordion-content</code>: The content panels of the accordion.</li>
+												</ul>
+											</li>
+										</ul>
+										
+										<h3>Dependencies</h3>
+										<ul>
+											<li><a href="/category/ui-core/">UI Core</a></li>
+											<li><a href="/jQuery.widget/">Widget Factory</a></li>
+											<li><a href="/category/effects-core/">Effects Core</a> (optional; for use with the <a href="#option-animate"><code>animate</code></a> option)</li>
+										</ul>
+										-->
+									</div>
+									
+									<!--
+									<h3>Additional Notes:</h3>
+									<div class="longdesc">
+										<ul>
+											<li>This widget requires some functional CSS, otherwise it won&apos;t work. If you build a custom theme, use the widget&apos;s specific CSS file as a starting point.</li>
+										</ul>
+									</div>
+									-->
+
+									<section id="options">
+										<header><h2>Options</h2></header>
+										
+										<div id="option-setGrid">
+											<div class="api-item first-item">
+												<h3>
+													setGrid( options )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>설명설명</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowData</strong></div>
+														<div>Value: DataMap</div>
+														<div>Description: 추가되는 행에 데이터 지정</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGrid(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#option-setGrid -->
+										
+									</section>
+									<!-- //section#options -->
+
+									<section id="attributes">
+										<header><h2>Attributes</h2></header>
+										
+										<div id="attr-CGRow">
+											<div class="api-item first-item">
+												<h3>
+													CGRow&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<!-- <div>Grid Row</div>
+												<div>Value: true</div> -->
+												<ul>
+													<li>Grid Row</li>
+													<li>Value: true</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGrid(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#attr-CGRow -->
+										
+										<div id="attr-GBtn">
+											<div class="api-item">
+												<h3>
+													GBtn&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>그리드 버튼 표시</div>
+												<ul>
+													<li>
+														<div><strong>Type</strong></div>
+														<ul>
+															<li>ckeck: 전체 Row Check Box 연결 버튼</li>
+															<li>add: 행 추가</li>
+															<li>copy: 행 복사</li>
+															<li>delete: 행 삭제</li>
+															<li>up: 행 위로</li>
+															<li>down: 행 아래로</li>
+															<li>excel: excel download</li>
+															<li>find: 찾기</li>
+															<li>layout: layout show</li>
+															<li>sortReset: 컬럼 정렬 초기화</li>
+															<li>total: total 표시</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGrid(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#attr-GBtn -->
+										
+										<div id="attr-GBtnCheck">
+											<div class="api-item">
+												<h3>
+													GBtnCheck&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>전체 Row Check Box 연결 Check Box 표시.</div>
+												<div>Grid Head에 적용</div>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGrid(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#attr-GBtnCheck -->
+										
+										<div id="attr-GCol">
+											<div class="api-item">
+												<h3>
+													GCol&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<ul>
+													<li>Value: type, column name, option</li>
+													<li>Description: Grid Column 속성</li>
+													<li>
+														<div><strong>Type</strong></div>
+														<ul>
+															<li>ckeck: 전체 Row Check Box 연결 버튼</li>
+															<li>add: 행 추가</li>
+															<li>copy: 행 복사</li>
+															<li>delete: 행 삭제</li>
+															<li>up: 행 위로</li>
+															<li>down: 행 아래로</li>
+															<li>excel: excel download</li>
+															<li>find: 찾기</li>
+															<li>layout: layout show</li>
+															<li>sortReset: 컬럼 정렬 초기화</li>
+															<li>total: total 표시</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGrid(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#attr-GCol -->
+										
+										
+										<!-- 
+												<div><a href="#attr-GF">GF</a></div>
+												<div><a href="#attr-GInfoArea">GInfoArea</a></div>
+										
+										 -->
+										
+									</section>
+									<!-- //section#attributes -->
+									
+									<section id="methods">
+										<header><h2>Methods</h2></header>
+										
+										<div id="method-addNewRow">
+											<div class="api-item first-item">
+												<h3>
+													addNewRow( gridId , [rowData] )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>새로운 행 추가</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowData</strong></div>
+														<div>Value: DataMap</div>
+														<div>Description: 추가되는 행에 데이터 지정</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.addNewRow(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<strong>동일 Method:</strong>
+												<ul>
+													<li><a href="#method-setAddRow">setAddRow</a></li>
+												</ul>
+											</div>
+										</div>
+										<!-- //div#method-addNewRow -->
+
+										<div id="method-addSort">
+											<div class="api-item">
+												<h3>
+													addSort( gridId , colName , ascType , [viewType] )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>컬럼 소트 지정</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grdi Id</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>ascType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: false</div>
+														<div>Description: 오름차순 여부(false 내림차순)</div>
+													</li>
+													<li>
+														<div><strong>viewType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: 그리드를 갱신하면서 포커스를 첫 행으로 이동 여부</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.addSort(<span class="string">"gridList"</span>, <span class="string">"colName"</span>, <span class="literal">false</span>, <span class="literal">true</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-addSort -->
+
+										<div id="method-appendCols">
+											<div class="api-item">
+												<h3>
+													appendCols( gridId , colList )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>화면 조회 전 그리드 핸들링을 위해 데이터 컬럼을 추가</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>colList</strong></div>
+														<div>Value: Array</div>
+														<div>Description: Column Name List</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.appendCols(<span class="string">"gridList"</span>, <span class="literal">colList</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-appendCols -->
+
+										<div id="method-checkAll">
+											<div class="api-item">
+												<h3>
+													checkAll( gridId , checkType )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>전체 행 선택 지정</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>checkType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: 행 선택 지정</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.checkAll(<span class="string">"gridList"</span>, <span class="literal">true</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-checkAll -->
+
+										<div id="method-checkResult">
+											<div class="api-item">
+												<h3>
+													checkResult( json )&#xA0;
+													<span class="returns">Return: Boolean</span>
+												</h3>
+												<div>저장 이후 결과의 성공 여부를 판단</div>
+												<ul>
+													<li>
+														<div><strong>json</strong></div>
+														<div>Value: Json</div>
+														<div>Description: 결과값</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.checkResult(<span class="string">json</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-checkResult -->
+										
+										<div id="method-copyCols">
+											<div class="api-item">
+												<h3>
+													copyCols( sourceGridId , targetGridId )&#xA0;
+													<!-- <span class="returns">Return: DataMap</span> -->
+												</h3>
+												<div>컬럼 정보를 복사</div>
+												<ul>
+													<li>
+														<div><strong>sourceGridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Source Grid Id</div>
+													</li>
+													<li>
+														<div><strong>targetGridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Target Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.copyCols(<span class="string">"sourceGridId"</span>, <span class="string">"targetGridId"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-copyCols -->
+										
+										<div id="method-copyData">
+											<div class="api-item">
+												<h3>
+													copyData( sourceGridId , targetGridId , copyType )&#xA0;
+													<!-- <span class="returns">Return: DataMap</span> -->
+												</h3>
+												<div>컬럼 정보를 복사</div>
+												<ul>
+													<li>
+														<div><strong>sourceGridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Source Grid Id</div>
+													</li>
+													<li>
+														<div><strong>targetGridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Target Grid Id</div>
+													</li>
+													<li>
+														<div><strong>copyType</strong></div>
+														<div>Value: String</div>
+														<div>Description:</div>
+														<div></div>
+														<ul>
+															<li>
+																<div><strong>modify</strong>:</div><div>수정된 행</div>
+															</li>
+															<li>
+																<div><strong>select</strong>:</div><div>선택된 행</div>
+															</li>
+															<li>
+																<div><strong>all</strong>:</div><div>수정되고 선택된 행</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.copyData(<span class="string">"sourceGridId"</span>, <span class="string">"targetGridId"</span>, <span class="string">"all"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-copyData -->
+										
+										<div id="method-deleteRow">
+											<div class="api-item">
+												<h3>
+													deleteRow( gridId , rowNum , msgType )&#xA0;
+													<!-- <span class="returns">Return: Object</span> -->
+												</h3>
+												<div>지정 행 데이터 삭제 상태로 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>msgType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: 삭제 여부 메세지 표시 유무</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.deleteRow(<span class="string">"gridList"</span>, <span class="literal">0</span>, <span class="literal">true</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-deleteRow -->
+										
+										<div id="method-getColData">
+											<div class="api-item">
+												<h3>
+													getColData( gridId , rowNum , colName )&#xA0;
+													<span class="returns">Return: String</span>
+												</h3>
+												<div>컬럼 데이터 추출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> rowData = gridList.getColData(<span class="string">"gridList"</span>, <span class="literal">0</span>, <span class="string">"colName"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getColData -->
+										
+										<div id="method-getFocusRowNum">
+											<div class="api-item">
+												<h3>
+													getFocusRowNum( gridId )&#xA0;
+													<span class="returns">Return: Number</span>
+												</h3>
+												<div>포커스가 위치한 행 번호</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> rowNum = gridList.getFocusRowNum(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getFocusRowNum -->
+										
+										<div id="method-getGridAvailData">
+											<div class="api-item">
+												<h3>
+													getGridAvailData( gridId )&#xA0;
+													<span class="returns">Return: Array&lt;DataMap&gt;</span>
+												</h3>
+												<div>삭제된 데이터를 제외한 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getGridAvailData(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getGridAvailData -->
+										
+										<div id="method-getGridData">
+											<div class="api-item">
+												<h3>
+													getGridData( gridId )&#xA0;
+													<span class="returns">Return: Array&lt;DataMap&gt;</span>
+												</h3>
+												<div>그리드 전체 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getGridData(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getGridData -->
+										
+										<div id="method-getGridDataCount">
+											<div class="api-item">
+												<h3>
+													getGridDataCount( gridId )&#xA0;
+													<span class="returns">Return: Number</span>
+												</h3>
+												<div>데이터 행 수</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> count = gridList.getGridDataCount(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getGridDataCount -->
+										
+										<div id="method-getModifyList">
+											<div class="api-item">
+												<h3>
+													getModifyList( gridId , modifyType )&#xA0;
+													<span class="returns">Return: List&li;DataMap&gt;</span>
+												</h3>
+												<div>수정 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>modifyType</strong></div>
+														<div>Value: String</div>
+														<div>Default: E</div>
+														<div>Description:</div>
+														<div></div>
+														<ul>
+															<li>
+																<div><strong>A</strong>:</div><div>전체</div>
+															</li>
+															<li>
+																<div><strong>M</strong>:</div><div>수정된 데이터</div>
+															</li>
+															<li>
+																<div><strong>E</strong>:</div><div>수정 가능 컬럼</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getModifyList(<span class="string">"gridList"</span>, <span class="string">"A"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getModifyList -->
+										
+										<div id="method-getModifyRowCount">
+											<div class="api-item">
+												<h3>
+													getModifyRowCount( gridId )&#xA0;
+													<span class="returns">Return: Number</span>
+												</h3>
+												<div>수정된 행 갯수</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> count = gridList.getModifyRowCount(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getModifyRowCount -->
+										
+										<div id="method-getRowData">
+											<div class="api-item">
+												<h3>
+													getRowData( gridId , rowNum )&#xA0;
+													<span class="returns">Return: DataMap</span>
+												</h3>
+												<div>행 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> rowData = gridList.getRowData(<span class="string">"gridList"</span>, 0);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getRowData -->
+										
+										<div id="method-getRowState">
+											<div class="api-item">
+												<h3>
+													getRowState( gridId , rowNum )&#xA0;
+													<span class="returns">Return: String</span>
+												</h3>
+												<div>행 상태 확인</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> state = gridList.getRowState(<span class="string">"gridList"</span>, 0);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getRowState -->
+										
+										<div id="method-getRowStatus">
+											<div class="api-item">
+												<h3>
+													getRowStatus( gridId , rowNum )&#xA0;
+													<span class="returns">Return: String</span>
+												</h3>
+												<div>행 상태 확인</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> status = gridList.getRowStatus(<span class="string">"gridList"</span>, 0);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getRowStatus -->
+										
+										<div id="method-getSelectData">
+											<div class="api-item">
+												<h3>
+													getSelectData( gridId )&#xA0;
+													<span class="returns">Return: Array&lt;DataMap&gt;</span>
+												</h3>
+												<div>선택된 행 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getSelectData(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectData -->
+										
+										<div id="method-getSelectIndex">
+											<div class="api-item">
+												<h3>
+													getSelectIndex( gridId )&#xA0;
+													<span class="returns">Return: Number</span>
+												</h3>
+												<div>포커스가 위치한 행 번호</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> index = gridList.getSelectIndex(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectIndex -->
+										
+										<div id="method-getSelectModifyData">
+											<div class="api-item">
+												<h3>
+													getSelectModifyData( gridId )&#xA0;
+													<span class="returns">Return: Array&lt;DataMap&gt;</span>
+												</h3>
+												<div>선택되고 수정된 행 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getSelectModifyData(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectModifyData -->
+										
+										<div id="method-getSelectModifyList">
+											<div class="api-item">
+												<h3>
+													getSelectModifyList( gridId )&#xA0;
+													<span class="returns">Return: Array&lt;DataMap&gt;</span>
+												</h3>
+												<div>선택되고 수정된 행 데이터</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getSelectModifyList(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectModifyList -->
+										
+										<div id="method-getSelectRowNumList">
+											<div class="api-item">
+												<h3>
+													getSelectRowNumList( gridId )&#xA0;
+													<span class="returns">Return: List</span>
+												</h3>
+												<div>선택된 행 번호 리스트</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> list = gridList.getSelectRowNumList(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectRowNumList -->
+										
+										<div id="method-getSelectType">
+											<div class="api-item">
+												<h3>
+													getSelectType( gridId , rowNum )&#xA0;
+													<span class="returns">Return: Boolean</span>
+												</h3>
+												<div>행 선택 여부 확인</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">var</span> selectType = gridList.getSelectType(<span class="string">"gridList"</span>, 0);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-getSelectType -->
+										
+										<div id="method-gridColModify">
+											<div class="api-item">
+												<h3>
+													gridColModify( gridId , rowNum , colName , colValue )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>해당 컬럼에 데이터 입력</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>colValue</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Value</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.gridColModify(<span class="string">"gridList"</span>, 0, <span class="string">"colName"</span>, <span class="string">"colValue"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<strong>동일 Method:</strong>
+												<ul>
+													<li><a href="#method-setColValue">setColValue</a></li>
+												</ul>
+											</div>
+										</div>
+										<!-- //div#method-gridColModify -->
+										
+										<div id="method-gridList">
+											<div class="api-item">
+												<h3>
+													gridList( options )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>
+													<p>그리드에 데이터를 조회</p>
+													<div class="warning">
+														<strong>module, command + bigdata</strong> : "/common/" + <code>module</code> + "/asynclist/json/" + <code>command</code> + ".data"
+														<strong>module, command + 일반</strong> : "/common/" + <code>module</code> +"/list/json/"+ <code>command</code> +".data"
+													</div>
+												</div>
+												<ul>
+													<li>
+														<div><strong>Options</strong></div>
+														<div>Type: Object</div>
+														<ul>
+															<li>
+																<div><strong>id</strong></div>
+																<div>Value: String</div>
+																<div>Description: Grid Id</div>
+															</li>
+															<li>
+																<div><strong>command</strong></div>
+																<div>Value: String</div>
+																<div>Description: 그리드 설정 시 지정된 command를 변경하고자 하는 경우 적용</div>
+															</li>
+															<li>
+																<div><strong>url</strong></div>
+																<div>Value: String</div>
+																<div>Description: 조회 Url 지정. Url이 있는 경우 module, command 보다 우선적용</div>
+															</li>
+															<li>
+																<div><strong>param</strong></div>
+																<div>Value: DataMap</div>
+																<div>Description: 조회시 적용할 Parameter</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																	<div class="line n8">8</div>
+																	<div class="line n9">9</div>
+																	<div class="line n10">10</div>
+																	<div class="line n11">11</div>
+																	<div class="line n12">12</div>
+																	<div class="line n13">13</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="comment">// Command</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>gridList.gridList({</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   id : <span class="string">"gridList"</span>,</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   command : <span class="string">"command"</span>,</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   param : <span class="literal">param</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>});</code></div></div><!--
+																		--><div class="container"><div class="line"><code> </code></div></div><!--
+																		--><div class="container"><div class="line"><code><span class="comment">// Url</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>gridList.gridList({</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   id : <span class="string">"gridList"</span>,</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   url : <span class="string">"/json/test.data"</span>,</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   param : <span class="literal">param</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>});</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-gridList -->
+										
+										<div id="method-gridSave">
+											<div class="api-item">
+												<h3>
+													gridSave( options )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>
+													<p>그리드에 데이터 저장</p>
+													<div class="warning">
+														<strong>module, command + bigdata</strong> : "/common/" + <code>module</code> + "/gridSave/json/" + <code>command</code> + ".data"
+													</div>
+												</div>
+												<ul>
+													<li>
+														<div><strong>Options</strong></div>
+														<div>Type: Object</div>
+														<ul>
+															<li>
+																<div><strong>id</strong></div>
+																<div>Value: String</div>
+																<div>Description: Grid Id</div>
+															</li>
+															<li>
+																<div><strong>param</strong></div>
+																<div>Value: DataMap</div>
+																<div>Description: 조회시 적용할 Parameter</div>
+															</li>
+															<li>
+																<div><strong>modifyType</strong></div>
+																<div>Value: String</div>
+																<div>Default: E</div>
+																<div>Description:</div>
+																<div></div>
+																<ul>
+																	<li>
+																		<div><strong>A</strong>:</div><div>전체</div>
+																	</li>
+																	<li>
+																		<div><strong>M</strong>:</div><div>수정된 데이터</div>
+																	</li>
+																	<li>
+																		<div><strong>E</strong>:</div><div>수정 가능 컬럼</div>
+																	</li>
+																</ul>
+															</li>
+															<li>
+																<div><strong>msgType</strong></div>
+																<div>Value: Boolean</div>
+																<div>Default: true</div>
+																<div>Description: 저장 여부 메세지 표시 여부</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.gridSave({</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   id : <span class="string">"gridList"</span>,</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   param : <span class="literal">param</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>   modifyType : <span class="string">"E"</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>   msgType : <span class="literal">true</span></code></div></div><!--
+																		--><div class="container"><div class="line"><code>});</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-gridSave -->
+										
+										<div id="method-headColBg">
+											<div class="api-item">
+												<h3>
+													headColBg( gridId , colName , className )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>컬럼에 색 지정</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>className</strong></div>
+														<div>Value: String</div>
+														<div>Description: Class Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.headColBg(<span class="string">"gridList"</span>, <span class="string">"colName"</span>, <span class="string">"className"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-headColBg -->
+										
+										<div id="method-pageList">
+											<div class="api-item">
+												<h3>
+													pageList( gridId , pageNum )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>
+													<p>페이징 처리되는 경우 해당 페이지로 이동</p>
+													<div class="warning">
+														<strong>module, command</strong> : "/common/" + <code>module</code> + "/paging/json/" + <code>command</code> + ".data"
+													</div>
+												</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>pageNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: 이동할 페이지 숫자</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.pageList(<span class="string">"gridList"</span>, 10);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-pageList -->
+										
+										<div id="method-removeUnselect">
+											<div class="api-item">
+												<h3>
+													removeUnselect( gridId )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>선택되지 않은 행 삭제</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.removeUnselect(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-removeUnselect -->
+										
+										<div id="method-resetGrid">
+											<div class="api-item">
+												<h3>
+													resetGrid( gridId )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드 초기화</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.resetGrid(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-resetGrid -->
+										
+										<div id="method-resetGridReadOnly">
+											<div class="api-item">
+												<h3>
+													resetGridReadOnly( gridId )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드 readOnly만 초기화</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.resetGridReadOnly(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-resetGridReadOnly -->
+										
+										<div id="method-setAddRow">
+											<div class="api-item">
+												<h3>
+													setAddRow( gridId , data )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>새로운 행 추가</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>data</strong></div>
+														<div>Value: DataMap</div>
+														<div>Description: 추가되는 행에 데이터 지정</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setAddRow(<span class="string">"gridList"</span>, <span class="literal">[rowData]</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<strong>동일 Method:</strong>
+												<ul>
+													<li><a href="#method-addNewRow">addNewRow</a></li>
+												</ul>
+											</div>
+										</div>
+										<!-- //div#method-setAddRow -->
+										
+										<div id="method-setBtnView">
+											<div class="api-item">
+												<h3>
+													setBtnView( gridId , btnName , viewType )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드 공통 버튼 표시 유무</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>btnName</strong></div>
+														<div>Value: String</div>
+														<div>Description: 적용할 버튼, <a href="#">GBtn Attribute</a> 참조</div>
+													</li>
+													<li>
+														<div><strong>viewType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: 버튼 표시 여부</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setBtnView(<span class="string">"gridList"</span>, <span class="string">"btnName"</span>, true);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setBtnView -->
+										
+										<div id="method-setColFocus">
+											<div class="api-item">
+												<h3>
+													setColFocus( gridId , rowNum , colName )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>컬럼에 포커스</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setColFocus(<span class="string">"gridList"</span>, 0, <span class="string">"colName"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setColFocus -->
+										
+										<div id="method-setColGrouping">
+											<div class="api-item">
+												<h3>
+													setColGrouping( gridId , colName )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>컬럼에 연결된 같은 데이터를 묶어서 표시해줌</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setColGrouping(<span class="string">"gridList"</span>, <span class="string">"colName"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setColGrouping -->
+										
+										<div id="method-setColValue">
+											<div class="api-item">
+												<h3>
+													setColValue( gridId , rowNum , colName , colValue )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>컬럼에 데이터 입력</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>colValue</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Value</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setColValue(<span class="string">"gridList"</span>, 0, <span class="string">"colName"</span>, <span class="string">"colValue"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<strong>동일 Method:</strong>
+												<ul>
+													<li><a href="#method-gridColModify">gridColModify</a></li>
+												</ul>
+											</div>
+										</div>
+										<!-- //div#method-setColValue -->
+										
+										<div id="method-setComboOption">
+											<div class="api-item">
+												<h3>
+													setComboOption( gridId , colName , comboType , comboData )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>Select 컬럼의 Option List 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>comboType</strong></div>
+														<div>Value: String</div>
+														<div>Description: Combo Type(INPUT_COMMON_COMBO, INPUT_REASON_COMBO, INPUT_COMBO)</div>
+													</li>
+													<li>
+														<div><strong>comboData</strong></div>
+														<div>Value: String</div>
+														<div>Description: Combo Type에 따른 지정값. <a href="#">Attribute</a>(CommonCombo, ReasonCombo, Combo) 참조</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setComboOption(<span class="string">"gridList"</span>, <span class="string">"colName"</span>, <span class="literal">INPUT_COMMON_COMBO</span>, <span class="literal">comboData</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setComboOption -->
+										
+										<div id="method-setGridData">
+											<div class="api-item">
+												<h3>
+													setGridData( gridId , dataList )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드에 데이터 적용</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>dataList</strong></div>
+														<div>Value: Array&lt;DataMap&gt;</div>
+														<div>Description: Data List</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setGridData(<span class="string">"gridList"</span>, <span class="literal">dataList</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setGridData -->
+										
+										<div id="method-setNextRowFocus">
+											<div class="api-item">
+												<h3>
+													setNextRowFocus( gridId )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>현재 포커스 행을 뒤로 이동</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setNextRowFocus(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setNextRowFocus -->
+										
+										<div id="method-setPreRowFocus">
+											<div class="api-item">
+												<h3>
+													setPreRowFocus( gridId )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>현재 포커스 행을 앞으로 이동</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setPreRowFocus(<span class="string">"gridList"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setPreRowFocus -->
+										
+										<div id="method-setReadOnly">
+											<div class="api-item">
+												<h3>
+													setReadOnly( gridId , readonlyType , [colList] )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드 전체 또는 특정컬럼의 Readonly 지정</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>readonlyType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: Readonly 지정 여부</div>
+													</li>
+													<li>
+														<div><strong>colList</strong></div>
+														<div>Value: Array</div>
+														<div>Description: Column Name List</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setReadOnly(<span class="string">"gridList"</span>, <span class="literal">true</span>, <span class="literal">colList</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setReadOnly -->
+										
+										<div id="method-setRowCheck">
+											<div class="api-item">
+												<h3>
+													setRowCheck( gridId , rowNum , checkType )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>지정 행의 행 선택 지정</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>checkType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: 행 선택 지정 여부</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setRowCheck(<span class="string">"gridList"</span>, 0, <span class="literal">true</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setRowCheck -->
+										
+										<div id="method-setRowFocus">
+											<div class="api-item">
+												<h3>
+													setRowFocus( gridId , rowNum , eventType )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>지정 그리드의 행 포커스</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>eventType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: Focus Event Call 여부(gridListEventRowFocus)</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setRowFocus(<span class="string">"gridList"</span>, 0, <span class="literal">true</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setRowFocus -->
+										
+										<div id="method-setRowReadOnly">
+											<div class="api-item">
+												<h3>
+													setRowReadOnly( gridId , rowNum , readonlyType , [colList] )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>컬럼 데이터 추출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>readonlyType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Default: true</div>
+														<div>Description: Readonly 지정 여부</div>
+													</li>
+													<li>
+														<div><strong>colList</strong></div>
+														<div>Value: Array</div>
+														<div>Description: Column Name List</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setRowReadOnly(<span class="string">"gridList"</span>, 0, <span class="literal">true</span>, <span class="literal">colList</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setRowReadOnly -->
+										
+										<div id="method-setRowState">
+											<div class="api-item">
+												<h3>
+													setRowState( gridId , rowState , rowNum )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드의 행에 상태를 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowState</strong></div>
+														<div>Value: String</div>
+														<div>Description: 행 상태 지정(GRID_ROW_STATE_START, GRID_ROW_STATE_READ, GRID_ROW_STATE_INSERT, GRID_ROW_STATE_UPDATE, GRID_ROW_STATE_DELETE)</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.setRowState(<span class="string">"gridList"</span>, <span class="literal">GRID_ROW_STATE_START</span>, 0);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-setRowState -->
+										
+										<div id="method-validationCheck">
+											<div class="api-item">
+												<h3>
+													validationCheck( gridId , checkType )&#xA0;
+													<!-- <span class="returns">Return: Number</span> -->
+												</h3>
+												<div>그리드 데이터에 대한 유효성 체크</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>checkType</strong></div>
+														<div>Value: String</div>
+														<div>Default: modify</div>
+														<div>Description:</div>
+														<div></div>
+														<ul>
+															<li>
+																<div><strong>all</strong>:</div><div>수정되고 선택된 행</div>
+															</li>
+															<li>
+																<div><strong>modify</strong>:</div><div>수정된 행</div>
+															</li>
+															<li>
+																<div><strong>select</strong>:</div><div>선택된 행</div>
+															</li>
+														</ul>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code>gridList.validationCheck(<span class="string">"gridList"</span>, <span class="string">"modify"</span>);</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#method-validationCheck -->
+
+									</section>
+									<!-- //section#methods -->
+									
+									<section id="events">
+										<header><h2>Events</h2></header>
+										
+										<div id="event-gridExcelDownloadEventBefore">
+											<div class="api-item first-item">
+												<h3>
+													gridExcelDownloadEventBefore( gridId )&#xA0;
+													<span class="returns">Return: DataMap</span>
+												</h3>
+												<div>excel down 호출 전</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																	<div class="line n8">8</div>
+																	<div class="line n9">9</div>
+																	<div class="line n10">10</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridExcelDownloadEventBefore(<span class="literal">gridId</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      <span class="keyword">var</span> param = inputList.setRangeParam(<span class="string">"searchArea"</span>);</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>      <span class="comment">// 공통처리가 아닌 경우 사용</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      param.put("url", "/sample/WmsAdmin/excel/ZONMA.data");</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>      return param;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridExcelDownloadEventBefore -->
+										
+										<div id="event-gridListColTextColorChange">
+											<div class="api-item">
+												<h3>
+													gridListColTextColorChange( gridId , rowNum , colName , colValue )&#xA0;
+												</h3>
+												<div>grid cell text color 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>colValue</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Value</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																	<div class="line n8">8</div>
+																	<div class="line n9">9</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListColTextColorChange(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>, <span class="literal">colValue</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      if(colName == <span class="string">"COLNAME"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         if(colValue.indexOf(<span class="string">"A"</span>) != -1){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>            return configData.GRID_COLOR_TEXT_RED_CLASS;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListColTextColorChange -->
+										
+										<div id="event-gridListEventColBtnClick">
+											<div class="api-item">
+												<h3>
+													gridListEventColBtnClick( gridId , rowNum , colName )&#xA0;
+												</h3>
+												<div>Grid에 Button 속성을 준 Column에 Button을 클릭한 경우</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventColBtnClick(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventColBtnClick -->
+										
+										<div id="event-gridListEventColValueChange">
+											<div class="api-item">
+												<h3>
+													gridListEventColValueChange( gridId , rowNum , colName , colValue )&#xA0;
+												</h3>
+												<div>Grid Column Value 변경시</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>colValue</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Value</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																	<div class="line n8">8</div>
+																	<div class="line n9">9</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventColValueChange(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>, <span class="literal">colValue</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      if(colName == <span class="string">"COLNAME"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         if(colValue != <span class="string">""</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>            </code></div></div><!--
+																		--><div class="container"><div class="line"><code>         }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventColValueChange -->
+										
+										<div id="event-gridListEventDataBindEnd">
+											<div class="api-item">
+												<h3>
+													gridListEventDataBindEnd( gridId , dataLength )&#xA0;
+												</h3>
+												<div>Grid 조회 시, Data 적용이 완료된 후</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>dataLength</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Data 갯수</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventDataBindEnd(<span class="literal">gridId</span>, <span class="literal">dataLength</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span> && dataLength &gt; 0){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventDataBindEnd -->
+										
+										<div id="event-gridListEventDataViewEnd">
+											<div class="api-item">
+												<h3>
+													gridListEventDataViewEnd( gridId , dataLength )&#xA0;
+												</h3>
+												<div>Grid Data 적용 후 화면에 적용 후</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>dataLength</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Data 갯수</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventDataViewEnd(<span class="literal">gridId</span>, <span class="literal">dataLength</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span> && dataLength &gt; 0){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventDataViewEnd -->
+										
+										<div id="event-gridListEventInputColFocus">
+											<div class="api-item">
+												<h3>
+													gridListEventInputColFocus( gridId , rowNum , colName )&#xA0;
+												</h3>
+												<div>Input 속성의 Column에 Focus가 가는 경우</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventInputColFocus(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      if(colName == <span class="string">"COLNAME"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         </code></div></div><!--
+																		--><div class="container"><div class="line"><code>      }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventInputColFocus -->
+										
+										<div id="event-gridListEventRowAddAfter">
+											<div class="api-item">
+												<h3>
+													gridListEventRowAddAfter( gridId , rowNum )&#xA0;
+												</h3>
+												<div>Grid Row 추가 후 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowAddAfter(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowAddAfter -->
+										
+										<div id="event-gridListEventRowAddBefore">
+											<div class="api-item">
+												<h3>
+													gridListEventRowAddBefore( gridId , rowNum , beforeData )&#xA0;
+												</h3>
+												<div>설명설명</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>beforeData</strong></div>
+														<div>Value: DataMap</div>
+														<div>Description: 행 추가 호출 시 전달된 데이터</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowAddBefore(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">beforeData</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      var newData = dataBind.paramData(<span class="string">"searchArea"</span>);</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      newData.put(<span class="string">"ZONETY"</span>, <span class="string">"STOR"</span>);</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      return newData;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowAddBefore -->
+										
+										<div id="event-gridListEventRowCheck">
+											<div class="api-item">
+												<h3>
+													gridListEventRowCheck( gridId , rowNum , checkType )&#xA0;
+												</h3>
+												<div>행 선택  Check Box 선택 시 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>checkType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Description: 행 선택 여부</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowCheck(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">checkType</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowCheck -->
+										
+										<div id="event-gridListEventRowCheckAll">
+											<div class="api-item">
+												<h3>
+													gridListEventRowCheckAll( gridId , checkType )&#xA0;
+												</h3>
+												<div>전체 행 선택 Check Box 선택시 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>checkType</strong></div>
+														<div>Value: Boolean</div>
+														<div>Description: 행 선택 여부</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowCheckAll(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">checkType</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowCheckAll -->
+										
+										<div id="event-gridListEventRowClick">
+											<div class="api-item">
+												<h3>
+													gridListEventRowClick( gridId , rowNum , colName )&#xA0;
+												</h3>
+												<div>그리드 행 클릭시 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowClick(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowClick -->
+										
+										<div id="event-gridListEventRowDblclick">
+											<div class="api-item">
+												<h3>
+													gridListEventRowDblclick( gridId , rowNum , colName , colValue )&#xA0;
+												</h3>
+												<div>그리드 행 더블클릭시 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+													<li>
+														<div><strong>colName</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Name</div>
+													</li>
+													<li>
+														<div><strong>colValue</strong></div>
+														<div>Value: String</div>
+														<div>Description: Column Value</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowDblclick(<span class="literal">gridId</span>, <span class="literal">rowNum</span>, <span class="literal">colName</span>, <span class="literal">colValue</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowDblclick -->
+										
+										<div id="event-gridListEventRowFocus">
+											<div class="api-item">
+												<h3>
+													gridListEventRowFocus( gridId , rowNum )&#xA0;
+												</h3>
+												<div>그리드 행 포커스시 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowFocus(<span class="literal">gridId</span>, <span class="literal">rowNum</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowFocus -->
+										
+										<div id="event-gridListEventRowRemove">
+											<div class="api-item">
+												<h3>
+													gridListEventRowRemove( gridId , rowNum )&#xA0;
+												</h3>
+												<div>그리드 행 삭제시 호출</div>
+												<div>true 값을 리턴하는 경우만 삭제 실행</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowRemove(<span class="literal">gridId</span>, <span class="literal">rowNum</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      </code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListEventRowRemove -->
+										
+										<div id="event-gridListRowBgColorChange">
+											<div class="api-item">
+												<h3>
+													gridListRowBgColorChange( gridId , rowNum )&#xA0;
+												</h3>
+												<div>그리드 행 배경색 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListEventRowRemove(<span class="literal">gridId</span>, <span class="literal">rowNum</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      if(rowNum == <span class="literal">10</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         return configData.GRID_COLOR_BG_YELLOW_CLASS;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListRowBgColorChange -->
+										
+										<div id="event-gridListRowTextColorChange">
+											<div class="api-item">
+												<h3>
+													gridListRowTextColorChange( gridId , rowNum )&#xA0;
+												</h3>
+												<div>그리드 행 텍스트색 변경</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>rowNum</strong></div>
+														<div>Value: Number</div>
+														<div>Description: Row Number</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridListRowTextColorChange(<span class="literal">gridId</span>, <span class="literal">rowNum</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      if(rowNum == <span class="literal">9</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>         return configData.GRID_COLOR_TEXT_RED_CLASS;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridListRowTextColorChange -->
+										
+										<div id="event-gridPageLinkEventBefore">
+											<div class="api-item">
+												<h3>
+													gridPageLinkEventBefore( gridId , linkPage )&#xA0;
+												</h3>
+												<div>페이징 처리시 페이지 이동 전에 호출</div>
+												<ul>
+													<li>
+														<div><strong>gridId</strong></div>
+														<div>Value: String</div>
+														<div>Description: Grid Id</div>
+													</li>
+													<li>
+														<div><strong>linkPage</strong></div>
+														<div>Value: Number</div>
+														<div>Description: 이동할 페이지 숫자</div>
+													</li>
+												</ul>
+												<strong>Code examples:</strong>
+												<!--<p>Invoke the destroy method:</p>-->
+												<div class="syntaxhighlighter javascript">
+													<table>
+														<tbody>
+															<tr>
+																<td class="gutter">
+																	<div class="line n1">1</div>
+																	<div class="line n2">2</div>
+																	<div class="line n3">3</div>
+																	<div class="line n4">4</div>
+																	<div class="line n5">5</div>
+																	<div class="line n6">6</div>
+																	<div class="line n7">7</div>
+																</td>
+																
+																<td class="code">
+																	<pre><!--
+																		--><div class="container"><div class="line"><code><span class="keyword">function</span> gridPageLinkEventBefore(<span class="literal">gridId</span>, <span class="literal">linkPage</span>) {</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   if(gridId == <span class="string">"gridList"</span>){</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      <span class="keyword">var</span> <span class="literal">param</span> = inputList.setRangeParam(<span class="string">"searchArea"</span>);</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      <span class="literal">param</span>.put(<span class="string">"ZONETY"</span>, <span class="string">"STOR"</span>);</code></div></div><!--
+																		--><div class="container"><div class="line"><code>      return <span class="literal">param</span>;</code></div></div><!--
+																		--><div class="container"><div class="line"><code>   }</code></div></div><!--
+																		--><div class="container"><div class="line"><code>}</code></div></div><!--
+																	--></pre>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<!-- //div#event-gridPageLinkEventBefore -->
+										
+									</section>
+									<!-- //section#events -->
+									
+								</div>
+								<!-- //div.entry-wrapper -->
+							</article>
+							<!-- //article#accordion1 -->
+						</div>
+						<!-- //div.entry-content -->
+					</article>
+					<!-- //article#post-2 -->
+				</div>
+				<!-- //div#content -->
+			
+				<div id="sidebar" class="widget-area" role="complementary">
+					<aside id="categories" class="widget">
+						<h3 class="widget-title">API Documentation</h3>
+						<ul>
+							<li class="cat-item cat-item-2"><a href="/api/grid" >GridList</a></li>
+							<li class="cat-item cat-item-3"><a href="/api/input" >InputList</a></li>
+							<li class="cat-item cat-item-4"><a href="/api/common" >CommonUtil</a></li>
+							<li class="cat-item cat-item-5"><a href="/api/data" >DataBind</a></li>
+							<li class="cat-item cat-item-6"><a href="/api/net" >netUtil</a></li>
+							<li class="cat-item cat-item-7"><a href="/api/ui" >UiList</a></li>
+							<li class="cat-item cat-item-8"><a href="/api/valid" >Validation</a></li>
+							<!--
+							<li class="cat-item cat-item-10"><a href="//api.jqueryui.com/category/effects-core/" >Effects Core</a></li>
+							<li class="cat-item cat-item-4"><a href="//api.jqueryui.com/category/interactions/" >Interactions</a></li>
+							<li class="cat-item cat-item-8"><a href="//api.jqueryui.com/category/overrides/" >Method Overrides</a></li>
+							<li class="cat-item cat-item-6"><a href="//api.jqueryui.com/category/methods/" >Methods</a></li>
+							<li class="cat-item cat-item-7"><a href="//api.jqueryui.com/category/selectors/" >Selectors</a></li>
+							<li class="cat-item cat-item-12"><a href="//api.jqueryui.com/category/theming/" >Theming</a></li>
+							<li class="cat-item cat-item-9"><a href="//api.jqueryui.com/category/ui-core/" >UI Core</a></li>
+							<li class="cat-item cat-item-5"><a href="//api.jqueryui.com/category/utilities/" >Utilities</a></li>
+							<li class="cat-item cat-item-3 current-cat"><a href="//api.jqueryui.com/category/widgets/" >Widgets</a></li>
+							-->
+						</ul>
+					</aside>
+	
+					<!--
+					<aside id="categories" class="widget">
+						<h3 class="widget-title">Other Versions</h3>
+						<ul>
+							<li><a href="/1.11/">jQuery UI 1.11</a></li><li><a href="/1.10/">jQuery UI 1.10</a></li><li><a href="/1.9/">jQuery UI 1.9</a></li><li><a href="/1.8/">jQuery UI 1.8</a></li>
+						</ul>
+					</aside>
+					-->
+				</div>
+				<!-- //div#sidebar -->
+	
+			</div>
+		</div>
+	</div>
+	<footer class="clearfix simple" style="padding-top:20px;">
+		<div class="constrain">
+			<!--
+			<div class="row">
+				<div class="six columns offset-by-three">
+					<h3><span>Books</span></h3>
+					<ul class="books">
+						<li>
+							<a href="http://www.manning.com/vantoll/">
+								<span><img src="//api.jqueryui.com/jquery-wp-content/themes/jquery/content/books/jquery-ui-in-action.jpg" alt="jQuery UI in Action by TJ VanToll" width="92" height="114"></span>
+								<strong>jQuery UI in Action</strong><br>
+								<cite>TJ VanToll</cite>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.packtpub.com/web-development/jquery-ui-themes-beginners-guide">
+								<img src="//api.jqueryui.com/jquery-wp-content/themes/jquery/content/books/jquery-ui-themes.jpg" alt="jQuery UI Themes by Adam Boduch" width="92" height="114">
+								<span class="book-title">jQuery UI Themes</span>
+								<cite>Adam Boduch</cite>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.packtpub.com/web-development/jquery-ui-cookbook">
+								<img src="//api.jqueryui.com/jquery-wp-content/themes/jquery/content/books/jquery-ui-cookbook.jpg" alt="jQuery UI Cookbook by Adam Boduch" width="92" height="114">
+								<span class="book-title">jQuery UI Cookbook</span>
+								<cite>Adam Boduch</cite>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			-->
+	
+			<div id="legal">
+				<!--
+				<ul class="footer-site-links">
+					<li><a class="icon-pencil" href="http://learn.jquery.com/">Learning Center</a></li>
+					<li><a class="icon-group" href="http://forum.jquery.com/using-jquery-ui/">Forum</a></li>
+					<li><a class="icon-wrench" href="http://api.jqueryui.com/">API</a></li>
+					<li><a class="icon-twitter" href="https://twitter.com/jqueryui">Twitter</a></li>
+					<li><a class="icon-comments" href="http://irc.jquery.org/">IRC</a></li>
+					<li><a class="icon-github" href="https://github.com/jquery">GitHub</a></li>
+				</ul>
+				-->
+				<p class="copyright">
+					Copyright 2016 <a href="https://jquery.org/team/">The jQuery Foundation</a>.
+					<!--
+					<a href="https://jquery.org/license/">jQuery License</a>
+					<span class="sponsor-line"><a href="http://mediatemple.net" rel="nofollow" class="mt-link">Web hosting by Media Temple</a> | <a href="http://www.maxcdn.com" rel="nofollow" class="mc-link">CDN by MaxCDN</a> | <a href="http://wordpress.org/" class="wp-link">Powered by WordPress</a> | Thanks: <a href="https://jquery.org/members/">Members</a>, <a href="https://jquery.org/sponsors/">Sponsors</a></span>
+					-->
+				</p>
+			</div>
+	
+		</div>
+	</footer>
+
+	<script>
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1076265-1']);
+		_gaq.push(['_setDomainName', 'api.jqueryui.com']);
+		_gaq.push(['_setAllowLinker', true]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+	<script type='text/javascript' src='//api.jqueryui.com/wp-includes/js/comment-reply.min.js?ver=4.5.2'></script>
+	<script type='text/javascript' src='//api.jqueryui.com/wp-includes/js/wp-embed.min.js?ver=4.5.2'></script>
+
+</body>
+</html>

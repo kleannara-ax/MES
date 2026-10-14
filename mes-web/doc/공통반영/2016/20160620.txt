@@ -1,0 +1,13 @@
+grid.js
+ - row의 상태를 행번호 컬럼에 표시 : insert = I, update = U
+ - gridList.validationCheck(gridId, option) : option을 config로 표준화
+   configData.GRID_VALIDATION_TYPE_SELECT_MODIFY : 선택된 행중에 수정된 행
+   configData.GRID_VALIDATION_TYPE_MODIFY : 수정된행
+   configData.GRID_VALIDATION_TYPE_SELECT : 선택된행
+   configData.GRID_VALIDATION_TYPE_ALL : 데이터 전체
+ - validation required인경우 msg를 지정하지 않으면 header에 나온 label이 자동으로 표시 되도록 기능 추가
+   : VALID_required 메세지 변경 "{1}은/는 필수 입력항목입니다."
+     validate="required(STD_CREUSR)" 라벨키를 지정하는 경우 해당 라벨이 적용.
+   
+조회항목의 경우 validation required인 경우 입력값 앞에 있는 텍스트(화면상 입력값 앞에 나오는 라벨)이 기본 "{1}은/는 필수 입력항목입니다." {1}에 표시. validate="required(STD_CREUSR)" 라벨키를 지정하는 경우 해당 라벨이 적용.
+ - validate.js, input.js

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WCS">
+	
+	<!-- AGV 오토라벨러 -->
+	<!-- Step4. WCS 호출 -->
+	<select id="WCS_STOCK_IN_LIST" parameterType="hashmap" statementType="CALLABLE">
+		<![CDATA[{
+			CALL SP_INSERT_TB_PLT_STOCK(
+				#{P_ORDER_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ORDER_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_PLANT_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR_NM, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_LOT_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_UNIT, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_QTY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RESULT, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RESULT_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}]]>
+	</select>
+	
+	<select id="TEST_LIST" parameterType="hashmap" resultType="int">
+		select 1;
+	</select>
+</mapper>

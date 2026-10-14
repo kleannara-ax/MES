@@ -1,0 +1,20 @@
+grid.js
+ - 추가된 로우 삭제 시 데이터 연동 버그 수정
+ - rowCheck radio 옵션에서 checkAll 기능 제거
+ - 특정 컬럼 format을 변경 가능한 이벤트 함수 제공 : gridListEventColFormat(gridId, rowNum, colName)
+ - 특정 컬럼이 수정된 상테인지 판단하는 함수 추가 : gridList.getColModifyType(rowNum, colName)
+
+input.js
+ - 레인지 날자 기본값 주는 경우 오류 수정
+  
+event function 호출시 try처리로 인한 함수내 스크립트 오류 체크 문제 해결
+ - grid.js, input.js, netUtil.js, validateUtil.js
+  
+commonUtil.js
+ - removeRow 함수 오류수정 
+ 
+ui.js
+ - 숫자형태 변환 시 view type이 false이면 자릿수 변황이 않되는 오류 해결
+
+validateUtil.js
+ - unequal 체크 추가

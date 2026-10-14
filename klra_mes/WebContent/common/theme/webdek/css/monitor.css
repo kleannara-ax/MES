@@ -1,0 +1,5 @@
+.status_graph{height:350px;}
+.status_graph h2{font-size:20px;font-weight: bold;color: #444;}
+.status_graph>img{display:inline-block;width:130px;height:130px;}
+.status_graph ul{vertical-align: top;display:inline-block;width:80%;text-align: center;width:100%;height:173px;background-color:#f8f8f8;}
+.status_graph ul li{width:100%; }

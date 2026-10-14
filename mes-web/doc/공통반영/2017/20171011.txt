@@ -1,0 +1,7 @@
+site별 별도의 input format을 적용 가능하도록 기능 추가
+ - site.js, ui.js
+ - site.js 에 해당 format정의와 변경기능 구현
+ - 추가 format이 없는경우 
+ getDataFormat : function(formatList, data, viewType) {
+ 	return data;
+ },

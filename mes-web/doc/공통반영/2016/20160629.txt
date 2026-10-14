@@ -1,0 +1,11 @@
+레인지 데이터가 변경된 경우 발생하는 inputListEventRangeDataChange(rangeName, singleData, rangeData) 이벤트 추가
+ - input.js, ui.js
+ 
+그리드에서 select 초기값 셋팅 오류 수정
+ - grid.js, configData.js
+ 
+Number format 에서 문자 제외 처리 문제 수정
+ - commonUtil.js, ui,js
+ 
+Button에 라벨 적용 가능하게 기능 추가
+ - ui.js

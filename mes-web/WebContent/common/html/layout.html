@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=1150">
+<link rel="stylesheet" type="text/css" href="/common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/common/css/style.css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+</head>
+<body>
+
+<!-- header -->
+<header class="header">
+	<div class="innerContainer">
+
+		<h1 class="logo"><a href="#"><img src="/common/images/logo.png" alt="SM CUBE" /></a></h1>
+
+		<nav class="gnb">
+			<ul class="list">
+				<li class="active"><a href="#">마스터관리</a></li>
+				<li><a href="#">입하관리</a></li>
+				<li><a href="#">출하관리</a></li>
+				<li><a href="#">재고관리</a></li>
+				<li><a href="#">보고서</a></li>
+				<li><a href="#">즐겨찾기</a></li>
+			</ul>
+		</nav>
+
+		<div class="rightArea">
+			<div class="util">
+				<p class="user">송성일님</p>
+				<button class="logOut" type="button">로그아웃</button>
+				<button class="setting" type="button">설정</button>
+			</div>
+
+			<div class="selection">
+				<select>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+				</select>
+				<select>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+				</select>
+			</div>
+		</div>
+
+	</div>
+</header>
+<!-- //header -->
+
+<!-- lnb --->
+<nav class="lnb">
+	<h2><span>마스터관리</span></h2>
+	<ul class="list">
+		<li>
+			<a href="#"><span>즐겨찾기</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>마스터관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>입하관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>출하관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>재고관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>운임정산</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>보고서</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>WOS</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>시스템관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+<!-- //lnb -->
+
+<button type="button" class="lnbCloser"><img src="/common/images/ico_lnb_closer.png" alt="LNB Close" /></button>
+
+<nav class="tab type1">
+	<a href="#" class="active"><span>제품소식</span></a>
+	<a href="#"><span>전자업무</span></a>
+	<a href="#"><span>공지사항</span></a>
+	<a href="#"><span>서비스</span></a>
+</nav>
+
+<div class="contentHeader">
+	<div class="pathIndicator">
+		<span class="depth1">마스터관리</span>
+		<span>구성</span>
+	</div>
+	<div class="util">
+		<button class="button type1" type="button"><img src="/common/images/ico_btn1.png" alt="Previous" /></button>
+		<button class="button type1" type="button"><img src="/common/images/ico_btn2.png" alt="Save" /></button>
+		<button class="button type1 last" type="button"><img src="/common/images/ico_btn3.png" alt="Write" /></button>
+		<div class="inWrap">
+			<button class="button type2" type="button"><img src="/common/images/ico_btn4.png" alt="List" /></button>
+		</div>
+	</div>
+
+</div>
+
+
+<!-- content -->
+<section class="content">
+	<div class="innerContainer">
+
+		<!-- contentContainer -->
+		<div class="contentContainer">
+
+			<div class="foldSect">
+				<nav class="tab type2">
+					<a href="#" class="active"><span>탭메뉴1</span></a>
+					<a href="#"><span>탭메뉴2</span></a>
+					<a href="#"><span>탭메뉴3</span></a>
+				</nav>
+
+				<section class="section type1">
+					<table class="table type1">
+						<colgroup>
+							<col />
+							<col />
+							<col />
+							<col />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th>거점</th>
+								<td colspan="3">
+									<input type="text" class="inputText" />
+									<button class="button type3" type="button"><img src="/common/images/ico_find.png" alt="" /></button>
+									<button class="button type3" type="button"><img src="/common/images/ico_enter.png" alt="" /></button>
+								</td>
+							</tr>
+							<tr>
+								<th>구역</th>
+								<td><input type="text" class="inputText" /></td>
+								<th>구역타입</th>
+								<td>
+									<select>
+										<option>[STOR]보관</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>설명</th>
+								<td><input type="text" class="inputText" /></td>
+								<th>창고</th>
+								<td><input type="text" class="inputText" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</div>
+
+			<nav class="tab type2 mt">
+				<a href="#"><span>탭메뉴1</span></a>
+				<a href="#" class="active"><span>탭메뉴2</span></a>
+				<a href="#"><span>탭메뉴3</span></a>
+				<button type="button" class="button type2 fullSizer"><img src="/common/images/ico_full.png" alt="Full Size" /></button>
+			</nav>
+
+			<section class="section type1">
+				<div class="table type2">
+					<table>
+						<colgroup>
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+							<col />
+						</colgroup>
+						<thead>
+							<tr>
+								<th></th>
+								<th>번호</th>
+								<th>설명</th>
+								<th>창고</th>
+								<th>생성일자</th>
+								<th>생성시간</th>
+								<th>생성자</th>
+								<th>수정일자</th>
+								<th>수정시간</th>
+								<th>수정자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>□</td>
+								<td>1</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr class="active">
+								<td>■</td>
+								<td>2</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>■</td>
+								<td>3</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>4</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable editActive"><div class="inWrap" contenteditable>20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable selectable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>5</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>6</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>7</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>8</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>9</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>10</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>11</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>12</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>13</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>14</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>15</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>16</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>17</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>18</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>19</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>20</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>21</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+							<tr>
+								<td>□</td>
+								<td>22</td>
+								<td class="unEditable">RCYZONE</td>
+								<td class="unEditable">AR03</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+								<td class="editable">20130214</td>
+								<td class="editable">175400</td>
+								<td class="editable alignLeft">SYSTEM</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tableUtil">
+					<div class="leftArea">
+						<button class="button type4" type="button"><img src="/common/images/ico_btn5.png" alt="" /></button>
+						<button class="button type4" type="button"><img src="/common/images/ico_btn6.png" alt="" /></button>
+						<button class="button type4" type="button"><img src="/common/images/ico_btn7.png" alt="" /></button>
+						<button class="button type4" type="button"><img src="/common/images/ico_btn8.png" alt="" /></button>
+						<button class="button type4" type="button"><img src="/common/images/ico_btn9.png" alt="" /></button>
+					</div>
+					<div class="rightArea">
+						<p class="record">17 Record</p>
+					</div>
+				</div>
+			</section>
+
+
+
+		</div>
+		<!-- //contentContainer -->
+
+	</div>
+</section>
+<!-- //content -->
+
+</body>
+</html>

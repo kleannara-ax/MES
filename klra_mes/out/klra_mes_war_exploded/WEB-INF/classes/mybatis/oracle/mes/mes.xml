@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mes">
+	<sql id="RANGESQL">
+		<if test="RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+	</sql>
+	
+	<resultMap id="resultMap" type="DataMap"></resultMap>
+	
+	<select id="SELECTCOMBO_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_PROC_COMMONCOMBO(
+				#{P_CMCDKY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="COMMONCOMBO_LIST" parameterType="Map" resultType="DataMap">
+		SELECT CMCDVL AS VALUE_COL,
+			   CDESC1 AS TEXT_COL
+		  FROM CMCDV
+		 WHERE CMCDKY = #{CMCDKY}
+		   AND USE_YN = 'Y'
+	</select>
+	
+	<select id="OWNER_MAP" parameterType="Map" resultType="DataMap">
+		SELECT COMPKY AS OWNER
+		FROM WAHMA 
+		WHERE WAREKY = #{WAREKY}
+	</select>
+	
+	<!-- CC01 공통코드 위에 그리드 시작-->
+	<select id="CC01_LIST1" resultType="DataMap">
+		SELECT DISTINCT
+		CM.CMCDKY AS "CMCDKY"
+		, CM.SHORTX AS "SHORTX"
+		, CM.DBFILD AS "DBFILD"
+		, CM.USARL1 AS "USARL1"
+		, CM.USARL2 AS "USARL2"
+		, CM.USARL3 AS "USARL3"
+		, CM.USARL4 AS "USARL4"
+		, CM.USARL5 AS "USARL5"
+		, CM.SYONLY AS "SYONLY"
+		, CM.CREDAT AS "CREDAT"
+		, CM.CRETIM AS "CRETIM"
+		, CM.CREUSR AS "CREUSR"
+		, NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CM.CREUSR),' ') AS "CUSRNM"
+		, CM.LMODAT AS "LMODAT"
+		, CM.LMOTIM AS "LMOTIM"
+		, CM.LMOUSR AS "LMOUSR"
+		, NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CM.LMOUSR),' ') AS "LUSRNM"
+		, CM.CMCDKY AS "KEY"
+		, ' ' AS STATUS
+		FROM CMCDM CM
+		INNER JOIN CMCDV CV
+		ON CM.CMCDKY = CV.CMCDKY
+		WHERE 1 = 1
+		<include refid="RANGESQL"/>
+		ORDER BY CM.CMCDKY ASC
+	</select>
+
+	<!-- CC01 공통코드 아래 그리드 시작-->
+	<select id="CC01Sub_LIST" resultType="DataMap">
+		SELECT  CV.CMCDKY AS "CMCDKY"
+		, CV.CMCDVL AS "CMCDVL"
+		, CV.CDESC1 AS "CDESC1"
+		, CV.CDESC2 AS "CDESC2"
+		, CV.USARG1 AS "USARG1"
+		, CV.USARG2 AS "USARG2"
+		, CV.USARG3 AS "USARG3"
+		, CV.USARG4 AS "USARG4"
+		, CV.USARG5 AS "USARG5"
+		, CV.CREDAT AS "CREDAT"
+		, CV.CRETIM AS "CRETIM"
+		, CV.CREUSR AS "CREUSR"
+		, NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CV.CREUSR),' ') AS "CUSRNM"
+		, CV.LMODAT AS "LMODAT"
+		, CV.LMOTIM AS "LMOTIM"
+		, CV.LMOUSR AS "LMOUSR"
+		, NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CV.LMOUSR),' ') AS "LUSRNM"
+		, CV.CMCDKY AS "KEY"
+		, ' ' AS STATUS
+		FROM   CMCDV CV
+		WHERE   1 = 1
+		AND   CV.CMCDKY = #{CMCDKY}
+		<include refid="RANGESQL"/>
+	</select>
+
+	<select id="CDMST_MAP" resultType="DataMap">
+		SELECT *
+		FROM CMCDM
+		WHERE CMCDKY = #{CMCDKY}
+	</select>
+
+	<select id="PLANT_LIST" resultType="DataMap">
+		SELECT WERKS,
+			PLANTNM,
+			COMPKY,
+            WAREKY,
+            BUSICD,
+			WERKS AS VALUE_COL,
+			PLANTNM AS TEXT_COL
+		FROM TB_MAS002
+		WHERE USE_YN = 'Y'
+		ORDER BY WERKS
+	</select>
+	<select id="PROC_MAP" resultType="DataMap">
+		SELECT PROC_CD,
+			   PROC_NM,
+			   PROC_GRP_CD,
+			   PROD_GRP_CD,
+			   WERKS,
+			   PROC_CD AS VALUE_COL,
+			   PROC_NM AS TEXT_COL
+		FROM TB_MAS013
+		WHERE  1 = 1
+		  AND PROC_CD= #{PROC_CD}
+		ORDER BY PROC_CD
+	</select>
+	<select id="PROC_LIST" resultType="DataMap">
+		SELECT PROC_CD,
+			PROC_NM,
+			PROC_GRP_CD,
+			PROD_GRP_CD,
+			WERKS,
+			PROC_CD AS VALUE_COL,
+			PROC_NM AS TEXT_COL
+		FROM TB_MAS013
+		WHERE  1 = 1
+			AND WERKS = #{SES_PLNTKY}
+		ORDER BY PROC_CD
+	</select>
+	<select id="MACH_MAP" resultType="DataMap">
+		SELECT MACH_CD
+			 ,MACH_NM
+			 ,MACH_SHRT_NM
+			 ,PROC_CD
+			 ,LINE
+			 ,INST_DT
+			 ,ASST_NO
+			 ,PRD_UNIT
+			 ,DISPO_DT
+			 ,SAP_WRK_CD
+			 ,SAP_WRK_NM
+			 ,SAP_COST_CD
+			 ,PRFM_GTHR_YN
+			 ,ABN_STD_TM
+			 ,CYCLE_TM
+		FROM TB_MAS012
+		WHERE  1 = 1
+		  AND MACH_CD = #{MACH_CD}
+		ORDER BY MACH_CD
+	</select>
+	<select id="MACH_LIST" resultType="DataMap">
+		SELECT MACH_CD 
+			,MACH_NM
+			,MACH_SHRT_NM
+			,PROC_CD
+			,LINE
+			,INST_DT
+			,ASST_NO
+			,PRD_UNIT
+			,DISPO_DT
+			,SAP_WRK_CD
+			,SAP_WRK_NM
+			,SAP_COST_CD
+			,PRFM_GTHR_YN
+			,ABN_STD_TM
+			,CYCLE_TM
+		FROM TB_MAS012
+		WHERE  1 = 1
+		  AND PROC_CD = #{PROC_CD}
+		ORDER BY MACH_CD
+	</select>
+	
+	<select id="MACH2_LIST" resultType="DataMap">
+		SELECT MACH_CD AS VALUE_COL
+			,MACH_NM AS TEXT_COL
+		FROM TB_MAS012
+		WHERE  1 = 1
+		  AND PROC_CD = #{SES_PROC_CD}
+		ORDER BY MACH_CD
+	</select>
+	<select id="LOGINDUP_MAP" resultType="DataMap">
+		SELECT * FROM USRMA WHERE USERID = #{sessUserId}
+	</select>
+
+	<select id="CDDTL_MAP" resultType="DataMap">
+		SELECT *
+		FROM CMCDV
+		WHERE CMCDKY = #{CMCDKY}
+		  AND CMCDVL = #{CMCDVL}
+	</select>
+
+	<select id="CC01CMCDVLval_MAP" resultType="DataMap">
+		SELECT COUNT(*) CNT
+		FROM CMCDV
+		WHERE CMCDKY = #{CMCDKY}
+		  AND CMCDVL = #{CMCDVL}
+	</select>
+
+	<select id="WAHMACOMBO_LIST" resultType="DataMap">
+		SELECT
+			WAREKY AS VALUE_COL,
+			NAME01 AS TEXT_COL
+		FROM WAHMA
+		WHERE DELMAK = ' '
+		ORDER BY WAREKY
+	</select>
+
+	<select id="CC01CMCDKYval_MAP" resultType="DataMap">
+		SELECT COUNT(*) CNT
+		FROM CMCDM
+		WHERE CMCDKY = #{CMCDKY}
+	</select>
+
+	<select id="RFMDT_LIST">
+		SELECT
+			UUID,
+			SECNO,
+			ZDEL_FLAG,
+			ZCODE,
+			ZGUBUN,
+			ZMSG,
+			DELETEYN
+		FROM RFMDT
+		WHERE 1 = 1
+		<include refid="RANGESQL"/>
+	</select>
+
+	<insert id="RFMDT_INSERT" useGeneratedKeys="true">
+		<selectKey keyProperty="UUID" resultType="string" order="BEFORE">
+			SELECT SYS_GUID() UUID FROM DUAL
+		</selectKey>
+		INSERT INTO RFMDT(
+			UUID,
+			SECNO,
+			ZDEL_FLAG,
+			ZCODE,
+			ZGUBUN,
+			ZMSG
+		)
+		VALUES (
+			#{UUID},
+		  	#{SECNO},
+		  	#{ZDEL_FLAG},
+		  	#{ZCODE},
+		  	#{ZGUBUN},
+		  	#{ZMSG}
+		)
+	</insert>
+
+	<insert id="CC01_INSERT">
+		INSERT INTO CMCDM
+		(
+			CMCDKY,
+			SHORTX,
+			DBFILD,
+			USARL1,
+			USARL2,
+			USARL3,
+			USARL4,
+			USARL5,
+			SYONLY,
+			CREDAT,
+			CRETIM,
+			CREUSR,
+			LMODAT,
+			LMOTIM,
+			LMOUSR
+		)VALUES(
+		   #{CMCDKY},
+		   NVL(#{SHORTX},' '),
+		   NVL(#{DBFILD},' '),
+		   NVL(#{USARL1},' '),
+		   NVL(#{USARL2},' '),
+		   NVL(#{USARL3},' '),
+		   NVL(#{USARL4},' '),
+		   NVL(#{USARL5},' '),
+		   NVL(#{SYONLY},' '),
+		   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		   TO_CHAR(SYSDATE, 'HH24MISS'),
+		   #{SES_USER_ID},
+		   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		   TO_CHAR(SYSDATE, 'HH24MISS'),
+		   #{SES_USER_ID}
+		   )
+</insert>
+
+	<insert id="CC01Sub_INSERT">
+		INSERT INTO CMCDV
+		(
+			CMCDKY,
+			CMCDVL,
+			CDESC1,
+			CDESC2,
+			USARG1,
+			USARG2,
+			USARG3,
+			USARG4,
+			USARG5,
+			CREDAT,
+			CRETIM,
+			CREUSR,
+			LMODAT,
+			LMOTIM,
+			LMOUSR
+		)VALUES(
+		   #{CMCDKY},
+		   #{CMCDVL},
+		   NVL(#{CDESC1},' '),
+		   NVL(#{CDESC2},' '),
+		   NVL(#{USARG1},' '),
+		   NVL(#{USARG2},' '),
+		   NVL(#{USARG3},' '),
+		   NVL(#{USARG4},' '),
+		   NVL(#{USARG5},' '),
+		   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		   TO_CHAR(SYSDATE, 'HH24MISS'),
+		   #{SES_USER_ID},
+		   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		   TO_CHAR(SYSDATE, 'HH24MISS'),
+		   #{SES_USER_ID}
+		   )
+</insert>
+
+	<update id="CC01_UPDATE">
+		UPDATE	CMCDM
+		SET
+		<if test="SHORTX != ''">
+			SHORTX = #{SHORTX},
+		</if>
+		<if test="DBFILD != ''">
+			DBFILD = #{DBFILD},
+		</if>
+		<if test="USARL1 != ''">
+			USARL1 = #{USARL1},
+		</if>
+		<if test="USARL2 != ''">
+			USARL2 = #{USARL2},
+		</if>
+		<if test="USARL3 != ''">
+			USARL3 = #{USARL3},
+		</if>
+		<if test="USARL4 != ''">
+			USARL4 = #{USARL4},
+		</if>
+		<if test="USARL5 != ''">
+			USARL5 = #{USARL5},
+		</if>
+		<if test="SYONLY != ''">
+			SYONLY = #{SYONLY},
+		</if>
+		LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+		LMOUSR = #{SES_USER_ID}
+		WHERE	CMCDKY = #{CMCDKY}
+	</update>
+
+	<update id="CC01Sub_UPDATE" >
+		UPDATE	CMCDV
+		SET
+		<if test="CDESC1 != ''">
+			CDESC1 = #{CDESC1},
+		</if>
+		<if test="CDESC2 != ''">
+			CDESC2 = #{CDESC2},
+		</if>
+		<if test="USARG1 != ''">
+			USARG1 = #{USARG1},
+		</if>
+		<if test="USARG2 != ''">
+			USARG2 = #{USARG2},
+		</if>
+		<if test="USARG3 != '''">
+			USARG3 = #{USARG3},
+		</if>
+		<if test="USARG4 != ''">
+			USARG4 = #{USARG4},
+		</if>
+		<if test="USARG5 != ''">
+			USARG5 = #{USARG5},
+		</if>
+		LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+		LMOUSR = #{SES_USER_ID}
+		WHERE	CMCDKY = #{CMCDKY}
+		AND		CMCDVL = #{CMCDVL}
+	</update>
+
+
+	<delete id="CC01_DELETE">
+		DELETE
+		FROM	CMCDM
+		WHERE	CMCDKY = #{CMCDKY}
+	</delete>
+
+	<delete id="CC01Sub_DELETE">
+		DELETE
+		FROM	CMCDV
+		WHERE	CMCDKY = #{CMCDKY}
+		<if test="CMCDVL != ''">
+			AND	CMCDVL = #{CMCDVL}
+		</if>
+	</delete>
+
+	<select id="CC01_VALIDATION"  resultType="DataMap">
+		SELECT CASE
+				   WHEN A.CMCDKY IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.CMCDKY
+				   ELSE 'OK'
+				   END AS MSG
+		FROM (
+				 ${VALIDATION_SQL}
+				 ) STD
+				 LEFT OUTER JOIN CMCDM A
+								 ON A.CMCDKY = STD.CMCDKY
+		WHERE A.CMCDKY IS NULL
+	</select>
+
+	<select id="CC01Sub_VALIDATION" resultType="DataMap">
+		SELECT CASE
+				   WHEN A.CMCDVL IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.CMCDVL
+				   ELSE 'OK'
+				   END AS MSG
+		FROM (${VALIDATION_SQL}) STD
+				 LEFT OUTER JOIN CMCDV A
+			ON A.CMCDKY = STD.CMCDKY AND A.CMCDVL = STD.CMCDVL
+		WHERE A.CMCDVL IS NULL
+	</select>
+
+	<!-- ==================================================================================================================== -->
+	<!-- 마스터관리 - 구성 - [MW01] 물류센터 :: BEGIN -->
+	<!-- ==================================================================================================================== -->
+	<select id="WAHMA_LIST" parameterType="Map" resultType="DataMap">
+		SELECT WAREKY
+		     , COMPKY
+		     , NAME01
+		     , NAME02
+		     , ADDR01
+		     , POSTCD
+		     , NATNKY
+		     , VATREG
+		     , FAXTL1
+		     , TELN01
+		     , WADM01
+		     , WADN01
+		     , TSPKEY
+		     , DELMAK
+		     , CHKSHA
+		     , NAME03
+		     , ADDR02
+		     , ADDR03
+		     , ADDR04
+		     , ADDR05
+		     , CITY01
+		     , REGN01
+		     , TELN02
+		     , TELN03
+		     , FAXTL2
+		     , TAXCD1
+		     , TAXCD2
+		     , POBOX1
+		     , POBPC1
+		     , WADT01
+		     , WADT02
+		     , EXCOMK
+		     , INDOVA
+		     , PLOCOV
+		     , DRECLO
+		     , INDUAC
+		     , DSORKY
+		     , DRECLO
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		     , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+		  FROM WAHMA A
+		 WHERE 1 = 1
+		<if test="COMPKY != null and COMPKY != ''">
+		   AND COMPKY = #{COMPKY}
+		</if>
+		<if test="DELMAK == &quot;V&quot;">
+		   AND DELMAK = #{DELMAK}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		   ${RANGE_SQL}
+		</if>
+	  ORDER BY COMPKY, WAREKY
+	</select> 
+
+	<resultMap id="resultMap1" type="DataMap"></resultMap>
+	<select id="IFmaterial_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_MAS_GET_IFR(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+			)
+		}
+	</select>
+
+	<select id="TEST_QLT07_LIST" resultType="DataMap">
+		SELECT   Q020.INSP_ITEM_GRP_CD AS "INSP_ITEM_GRP_CD"
+			 , Q020.MATNR            AS "MATNR"           -- 자재코드
+			 , M001.MATNR_NM         AS "MATNR_NM"           -- 자재명
+			 , Q020.WERKS            AS "WERKS"           -- 플랜트
+			 , Q020.MSRM_DATE        AS "MSRM_DATE"       -- 측정일시
+			 , Q020.PRC_SEQNO        AS "PRC_SEQNO"       -- 처리순번(H)
+			 , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.MSRM_ID),'') AS "MSRM_NM"
+			 , Q020.SMPL_AMT         AS "SMPL_AMT"         -- 시료량(H)
+			 ,(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'FNL_JDGM'  AND CMCDVL = Q020.FNL_JDGM) AS "FNL_JDGM_NM"
+			 , Q020.LOT_NO           AS "LOT_NO"           -- 로트번호
+			 , Q020.IND_BCD          AS "IND_BCD"          -- 개별바코드
+			 , Q020.VND_LOT_NO       AS "VND_LOT_NO"       -- 공급업체 로트번호
+			 , Q020.SUPY_VND_BCD     AS "SUPY_VND_BCD"     -- 공급업체 바코드
+			 , Q020.UCFMTY_AMT       AS "UCFMTY_AMT"       -- 부적합량
+			 , W501.WRK_ORDR_NO      AS "WRK_ORDR_NO"      -- 작업지시번호
+			 , W501.WRK_ORDR_SEQNO   AS "WRK_ORDR_SEQNO"   -- 작업지시번호순번
+			 , W501.MACH_CD          AS "MACH_CD"          -- 설비코드(H)
+			 , NVL((SELECT MACH_NM FROM TB_MAS012 WHERE MACH_CD = W501.MACH_CD ),'') AS "MACH_NM"
+			 , (SELECT SUM(DECODE(UNIT, 'PAL', PLT_QTY, 'ROL', PLT_QTY, 'BOX', BOX_QTY, 'BAG', BAG_QTY, 'EA', EA_QTY))
+				FROM TB_WRK001
+				WHERE WERKS          = W501.WERKS
+				  AND LOT_NO         = W501.LOT_NO
+				  AND WRK_ORDR_NO    = W501.WRK_ORDR_NO
+				  AND WRK_ORDR_SEQNO = W501.WRK_ORDR_SEQNO) AS "PRFM_QTY" -- 실적수량
+			 , Q020.APVR_STA        AS "APVR_STA"       -- 결재상태
+			 , Q020.CFRM_ID         AS "CFRM_ID"        -- 승인자
+			 , Q020.CFRM_DATE       AS "CFRM_DATE"      -- 승인일시
+			 , Q020.REGDATE
+			 , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.REGID),'') AS "REGNM"
+			 , Q020.UPDDATE
+			 , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.UPDID),'') AS "UPDNM"
+		FROM TB_QLT020 Q020,
+			 TB_MAS001 M001,
+			 TB_WRK501 W501,
+			 TB_WRK001 W001
+		WHERE Q020.WERKS    = W501.WERKS(+)
+		  AND Q020.LOT_NO   = W501.LOT_NO(+)
+		  AND Q020.MATNR    = M001.MATNR(+)
+		  AND Q020.WERKS    = M001.WERKS(+)
+		  AND Q020.WERKS    = W001.WERKS(+)
+		  AND Q020.MATNR    = W001.MATNR(+)
+		  AND Q020.LOT_NO   = W001.LOT_NO(+)
+		  AND Q020.IND_BCD  = W001.IND_BCD(+)
+	</select>
+
+	<select id="APPRVDOC_MAP" parameterType="Map" resultType="DataMap">
+		SELECT 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_APPR_DOC_NO.NEXTVAL, '00000000'))) AS DOC_ID FROM DUAL
+	</select>
+	<select id="MES001_MAP" parameterType="Map" resultType="DataMap">
+	   SELECT *
+		 FROM TB_QLT020
+		WHERE 1 = 1
+		  AND INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+		  AND MATNR = #{MATNR}
+		  AND WERKS = #{WERKS}
+		  AND MSRM_DATE = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+		  AND PRC_SEQNO = #{PRC_SEQNO}
+	</select>
+	<select id="MES001_UPDATE" parameterType="Map" resultType="DataMap">
+		UPDATE TB_QLT020 
+		   SET DOC_ID = #{DOC_ID}, CFRM_ID = #{SES_USER_ID}
+		 WHERE 1 = 1
+		   AND INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+		   AND MATNR = #{MATNR}
+		   AND WERKS = #{WERKS}
+		   AND MSRM_DATE = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+		   AND PRC_SEQNO = #{PRC_SEQNO}
+	</select>
+	<select id="MES001STA_UPDATE" parameterType="Map" resultType="DataMap">
+		UPDATE TB_QLT020 SET
+		APVR_STA = #{APVR_STA},CFRM_DATE=sysdate
+		WHERE DOC_ID = #{DOC_ID}
+	</select>
+	<select id="MES001LIST_LIST" resultType="DataMap">
+		SELECT INV001.WERKS	        WERKS	        --플랜트코드
+			 , INV001.IND_BCD	    IND_BCD	        --개별바코드
+			 , INV001.STOR_LOC_CD    STOR_LOC_CD     --저장위치
+			 , MAS003.STOR_LOC_NM    STOR_LOC_NM     --저장위치명
+			 , INV001.MATNR	        MATNR	        --자재코드
+			 , MAS001.MATNR_NM       MATNR_NM        --자재명
+			 , INV001.LOT_NO	        LOT_NO	        --LOT NO
+			 , INV001.STCK_QTY	    STCK_QTY	    --재고수량
+			 , INV001.UNIT	        UNIT            --단위
+			 , INV001.DOC_ID
+			 , NVL(INV001.APVR_STA, '0')       APVR_STA        --결재상태
+			 , FN_CD_VAL('APVR_STA', NVL(INV001.APVR_STA,'0'))   APVR_STA_NM        --결재상태
+		FROM TB_INV001  INV001   --창고별 재고현황
+		   , TB_MAS001 MAS001    --플랜트별 제품/자재 마스터
+		   , TB_MAS003 MAS003    --저장위치 마스터(공정창고내 저장위치 포함)
+		WHERE INV001.MATNR      = MAS001.MATNR(+)
+		  AND INV001.WERKS        = MAS001.WERKS(+)
+		  AND INV001.WERKS        = MAS003.WERKS(+)
+		  AND INV001.STOR_LOC_CD  = MAS003.STOR_LOC_CD(+)
+		  AND INV001.DOC_ID   = #{DOC_ID}
+	</select>
+	<select id="MES003DOCID_MAP" resultType="DataMap">
+		SELECT DOC_ID,NVL(APVR_STA, '0') APVR_STA
+		FROM TB_INV001
+		WHERE WERKS = #{WERKS}
+		  AND STOR_LOC_CD=#{STOR_LOC_CD}
+		  AND IND_BCD=#{IND_BCD}
+		  AND MATNR=#{MATNR}
+	</select>
+	<update id="MES003DOCID_UPDATE">
+		UPDATE TB_INV001 
+		   SET DOC_ID = #{DOC_ID}
+		     , CFRM_ID = #{USERID}
+		     , CFRM_DATE = SYSDATE
+		 WHERE WERKS = #{WERKS}
+		   AND STOR_LOC_CD = #{STOR_LOC_CD}
+		   AND IND_BCD = #{IND_BCD}
+           AND MATNR = #{MATNR}
+	</update>
+	<select id="MES003STA_UPDATE" parameterType="Map" resultType="DataMap">
+		UPDATE TB_INV001 SET APVR_STA = #{APVR_STA},CFRM_DATE=sysdate WHERE DOC_ID=#{DOC_ID}
+	</select>
+
+	<select id="DOC_BAS_MAP" resultType="DataMap">
+		SELECT  A.WAREKY  AS "WAREKY",
+				A.COMPKY   AS "COMPKY",
+				A.NAME01   AS "NAME01",
+				A.NAME02   AS "NAME02",
+				A.ADDR01   AS "ADDR01",
+				A.POSTCD   AS "POSTCD",
+				A.FAXTL1   AS "FAXTL1",
+				A.TELN01   AS "TELN01",
+				A.WADM01   AS "WADM01",
+				A.WADN01   AS "WADN01"
+		FROM WAHMA A
+		WHERE 1 = 1
+			AND WAREKY = #{SES_WAREKY}
+			AND ROWNUM = 1
+	</select>
+
+	<!--SP_QLT07_S01(P_TYPE=APVR)-->
+	<select id="APRVDOCDATA_LIST" parameterType="hashmap" resultType="DataMap">
+	SELECT Q020.INSP_ITEM_GRP_CD,
+			   Q021.MATNR,        --품목코드
+			   M001.MATNR_NM,        --품목
+			   M001.MATNR_SPEC,   --규격
+			   Q020.LOT_NO,        --Lot No
+			   (SELECT SUM(EA_QTY) FROM TB_WRK001 WHERE WERKS = Q020.WERKS AND LOT_NO = Q020.LOT_NO AND MATNR = Q020.MATNR) AS "QTY",  -- 수량
+			   M016.INSP_ITEM_NM, --항목명
+			   M016.MSRM_UNIT,    --측정단위
+			   M016.INSP_SPEC,    --시험규격
+			   M016.STD_VAL,      --기준값
+			   M016.UPP_VAL,      --상한값
+			   M016.LOW_VAL,      --하한값
+			   M016.STD_SEL,      --기준선택값
+			   M016.INSP_STD_1,   --검사기준(1)
+			   M016.INSP_STD_2,   --검사기준(2)
+			   Q021.RST_VAL,      --결과값(숫자)
+			   Q021.RST_SEL,      --결과값(선택)
+			   Q021.RST_TXT,      --결과값(문자열)
+			   Q021.RMK,          --특이사항
+			   (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'FITYN' AND CMCDVL = Q021.FIT_YN) AS "FIT_YN"       --적합여부(Y/N)
+		FROM TB_QLT021 Q021,
+			(SELECT M016.INSP_ITEM_GRP_CD,
+			M016.INSP_ITEM_CD,
+			M014.INSP_ITEM_NM,
+			M014.PROD_GRP_CD,
+			M014.MID_CAT_NM,
+			M014.BIG_CAT_NM,
+			(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'INPTDIV' AND CMCDVL = M014.INPT_DIV) AS "INPT_DIV",
+			(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'MSRMUNIT' AND CMCDVL = M014.MSRM_CYC) AS "MSRM_CYC",
+			M014.MSRM_ACC, --측정차수
+			M014.NECSY_YN, -- 필수입력 여부
+			(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'INPTTYP' AND CMCDVL = M014.INPT_TYP) AS "INPT_TYP",
+			(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'INPTMTD' AND CMCDVL = M014.INPT_MTD) AS "INPT_MTD",
+			M014.MSRM_MTD, -- 측정방법
+			M014.MSRM_UNIT,-- 측정단위
+			M014.INSP_SPEC,
+			M014.DISP_SEQ,
+			M016.MATNR,
+			M016.WERKS,
+			M016.STD_VAL,
+			M016.UPP_VAL,
+			M016.LOW_VAL,
+			M016.STD_SEL,
+			M016.INSP_STD_1,
+			M016.INSP_STD_2
+			FROM TB_MAS016 M016,
+			TB_MAS014 M014
+			WHERE M016.INSP_ITEM_GRP_CD =  M014.INSP_ITEM_GRP_CD(+)
+			AND M016.INSP_ITEM_CD     =  M014.INSP_ITEM_CD(+)
+			AND M016.INSP_ITEM_GRP_CD = 'H3'
+			AND M014.INSP_REP_YN      = 'Y'
+			AND M016.MATNR            = #{MATNR}
+			AND M016.WERKS            = #{WERKS} ) M016,
+			TB_QLT020 Q020,
+			TB_MAS001 M001
+		WHERE Q021.INSP_ITEM_GRP_CD = M016.INSP_ITEM_GRP_CD(+)
+		  AND Q021.INSP_ITEM_CD     = M016.INSP_ITEM_CD(+)
+		  AND Q021.MATNR            = M016.MATNR(+)
+		  AND Q021.WERKS            = M016.WERKS(+)
+		  AND Q021.INSP_ITEM_GRP_CD = Q020.INSP_ITEM_GRP_CD(+)
+		  AND Q021.MATNR            = Q020.MATNR(+)
+		  AND Q021.WERKS            = Q020.WERKS(+)
+		  AND Q021.MSRM_DATE        = Q020.MSRM_DATE(+)
+		  AND Q021.PRC_SEQNO        = Q020.PRC_SEQNO(+)
+		  AND Q020.MATNR            = M001.MATNR(+)
+		  AND Q020.WERKS            = M001.WERKS(+)
+		  AND Q021.INSP_ITEM_GRP_CD = 'H3'
+		  AND Q021.MATNR            = #{MATNR}
+		  AND Q021.WERKS            = #{WERKS}
+		  AND Q021.MSRM_DATE        = TO_DATE(#{MSRM_DATE},'YYYY-MM-DD HH24:MI:SS')
+		  AND Q021.PRC_SEQNO        = TO_NUMBER(#{PRC_SEQNO})
+		ORDER BY  M016.DISP_SEQ
+	</select>
+
+	<select id="COMPANY_MAP" resultType="DataMap">
+		SELECT * FROM OWNER WHERE OWNRKY = #{SES_USER_COMPANY} AND ROWNUM = 1
+	</select>
+	
+	<!-- 20220905 여한진 공정코드 콤보박스 조회 -->
+	<select id='PROC_CD_LIST' parameterType='hashmap' resultType='DataMap'>
+		SELECT PROC_CD		AS VALUE_COL
+			 , PROC_NM		AS TEXT_COL
+		  FROM TB_MAS013
+		 WHERE WERKS = #{WERKS}
+	</select>
+	<!-- 20221026 여한진 시스템점검 유무판단 -->
+	<select id='SYSTEMCHECK_MAP' resultType='DataMap'>
+		SELECT USE_YN
+		  FROM CMCDV
+ 		 WHERE CMCDKY='SYSTEMCHECK'
+	</select>
+	
+</mapper>

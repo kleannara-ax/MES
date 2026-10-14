@@ -1,0 +1,122 @@
+@charset "utf-8";
+*{margin:0;padding:0; font-family: '맑은 고딕','Malgun Gothic',dotum,'돋움',sans-serif ;font-size:inherit;}
+
+
+/* GC녹십자 폰트 */
+/* @font-face {font-family: GC110; src: url(/common/theme/webdek/fonts/GC110.eot); src: url(/common/theme/webdek/fonts/GC110.eot?#iefix) format('embedded-opentype'), url(/common/theme/webdek/fonts/GC110.woff) format('woff'); src:local(※), url(/common/theme/webdek/fonts/GC110.woff) format('woff');}
+@font-face {font-family: GC120; src: url(/common/theme/webdek/fonts/GC120.eot); src: url(/common/theme/webdek/fonts/GC120.eot?#iefix) format('embedded-opentype'), url(/common/theme/webdek/fonts/GC120.woff) format('woff'); src:local(※), url(/common/theme/webdek/fonts/GC120.woff) format('woff');}
+@font-face {font-family: GC110; src: url(/common/theme/webdek/fonts/GC130.eot); src: url(/common/theme/webdek/fonts/GC130.eot?#iefix) format('embedded-opentype'), url(/common/theme/webdek/fonts/GC130.woff) format('woff'); src:local(※), url(/common/theme/webdek/fonts/GC130.woff) format('woff');}
+@font-face {font-family: GC110; src: url(/common/theme/webdek/fonts/GC140.eot); src: url(/common/theme/webdek/fonts/GC140.eot?#iefix) format('embedded-opentype'), url(/common/theme/webdek/fonts/GC140.woff) format('woff'); src:local(※), url(/common/theme/webdek/fonts/GC140.woff) format('woff');}
+@font-face {font-family: GC110; src: url(/common/theme/webdek/fonts/GC150.eot); src: url(/common/theme/webdek/fonts/GC150.eot?#iefix) format('embedded-opentype'), url(/common/theme/webdek/fonts/GC150.woff) format('woff'); src:local(※), url(/common/theme/webdek/fonts/GC150.woff) format('woff');} */
+
+html{font-size: 12px;}
+
+body,object,iframe,
+h1,h2,h3,h4,h5,h6,div,span,p,blockquote,pre,abbr,acronym,address,cite,code,del,dfn,em,img,figure,
+ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,
+form,fieldset,legend,a,textarea,input,select,option,button,label,table,caption,tbody,tfoot,thead,tr,th,td,
+article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;background:transparent}
+/* html 5 tag */
+article, aside, hgroup, header, footer, figure, figcaption, nav, section{display:block}
+/* =====  Media ===== */
+audio:not([controls]){display:none;height:0}
+
+/* =====  Link ===== */
+a:link{text-decoration:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0;text-decoration:none}
+a:visited{text-decoration:none}
+
+/* =====  Typography ===== */
+h1, h2, h3, h4, h5, h6{font-weight:normal;font-size:inherit}
+b, strong{font-weight:bold}
+hr{display:none;box-sizing:content-box;height:0}
+address, caption, cite, code, dfn, em, var{font-style:normal;font-weight:normal}
+abbr, acronym, img, button{border:0}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+sub, sup{line-height:0;position:relative;vertical-align:baseline}
+sup{top:-0.5em}
+sub{bottom:-0.25em}
+span,em,strong{vertical-align:top}
+
+/* List */
+ul, ol, li{list-style:none}
+
+/* =====  Figures ===== */
+figure{margin:0}
+
+/* =====  Forms ===== */
+button{cursor:pointer; border:0 none;outline:0 none; background-color:transparent;}
+input, select, textarea{border:0 none;outline:0 none;background-color:#fff;}
+/* button, select{text-transform:none} */
+textarea{vertical-align:top;border:solid 1px #ccc}
+
+/* =====  Table ===== */
+/*2022.04.08 이범준 [행고정] : border-collapse를 separate로 변경.*/
+table{border-collapse:separate;empty-cells:show;border-spacing:0;table-layout:fixed}/* border-collapse:collapse; */
+table caption, fieldset legend{display:none}
+table:active, table:focus, 
+table th:active, table th:focus, 
+table td:active, table td:focus, 
+table tr:active, table tr:focus, 
+input[type="text"]:active, input[type="text"]:focus, 
+select:active, select:focus,
+span:active, span:focus {outline:none !important;}
+
+ 
+
+/*==========================================================================
+ - summary :common
+==========================================================================*/
+/* scroll */
+.scroll{overflow:auto;z-index:10;margin:0}
+abbr[title]{border-bottom:1px dotted}
+.mt05{margin-top:5px !important}
+.mt10{margin-top:10px !important}
+.mt20{margin-top:20px !important}
+.mt30{margin-top:30px !important}
+.mb10{margin-bottom:10px !important}
+
+/* Align */
+.ta_r{text-align:right !important}
+.ta_l{text-align:left !important}
+.ta_c{text-align:center !important}
+.va_t{vertical-align:top !important}
+.va_m{vertical-align:middle !important}
+.va_b{vertical-align:bottom !important}
+.fl_l{display:inline-block;float:left !important;vertical-align:middle}
+.fl_r{display:inline-block;float:right !important;vertical-align:middle}
+.over_h{overflow:hidden;width:100%}
+.clear{clear:both !important}
+.clear_l{clear:left !important}
+.clear_r{clear:right !important}
+.posi_a{position:absolute !important}
+.posi_r{position:relative !important}
+
+/* display style */
+.block{display:block !important}
+.inline{display:inline !important}
+
+/* Font */
+.normal{font-weight:normal !important}
+.bold{font-weight:bold !important}
+.pc01{color:#c00000 !important}
+.pc02{color:#285ad2 !important}
+
+/* hidden */
+.blind{visibility:hidden;font-size:0;text-indent:-20000px}
+.none{display:none !important}
+
+/* Text overflow with ellipsis */
+.ellipsis{text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.ellipsis_2{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;display:-moz-box;display:box;-webkit-line-clamp:2;-moz-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;-moz-box-orient:vertical;box-orient:vertical;word-wrap:break-word}
+
+/* 영역을 벗어나는 텍스트 줄 바꿈 처리(예:긴 URL) */
+.break{word-break:break-all;word-break:break-word;-webkit-hyphens:auto;hyphens:auto}
+
+
+/* ie input x버튼 삭제 */
+input[type=text]::-ms-clear {
+  display:none;
+}

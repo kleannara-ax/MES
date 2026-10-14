@@ -1,0 +1,2 @@
+그리드 행을 삭제한 후 이벤트 발생 추가
+ - grid.js : gridListEventRowRemoveAfter(gridId, rowNum);

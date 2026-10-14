@@ -1,0 +1,27 @@
+grid.js
+ - head item 구조에서 head에 rowcheck가 없는 경우 발생하는 오류수정
+ - 스크롤페이징 기능 추가  : gridList.setGrid scrollPageCount : 15
+그리드 엑셀 업로드시 그리드 바인드 이벤트에 엑셀 업로드 구분하기 위한 인자 추가
+ - gridListEventDataBindEnd(gridId, dataLength, excelLoadType)
+ - grid.js, netUtil.js
+ 
+check box 데이터 기본값, empty 데이터 기본값을 site.js에 설정하여 사용하도록 변경
+  - 공통 js 전체
+
+라벨을 main frame에만 참조하도록 한 구조를 변경
+ - 공통 include 전체  
+ 
+search help 규칙변경
+ - readonly인 경우 일반 input
+ - check box 만 빼고 모두 range
+ - 회사, 화주, 창고를 세션값 셋팅
+ 
+search help loaging 레이어 안나오는 오류 수정
+ - searchHead.jsp, search.jsp
+ 
+darkness 테마추가
+ - 테마폴더 파일
+ 
+ragne multi 기능 추가
+ - select 테그에  UIInput="M" 옵션 추가시 선택한 값들이 우측에 추가되고 range single value와 동일하게 조회 조건으로 생성
+ - input.js, configData.js

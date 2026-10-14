@@ -1,0 +1,2 @@
+grid.js
+ - row check 가 readonly인 경우 전체 선택 시 값이 적용되는 오류 수정 

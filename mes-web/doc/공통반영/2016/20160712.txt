@@ -1,0 +1,14 @@
+grid.js
+ - rowcheck 개수 출력기능 추가 : GCheckInfoArea="true"
+ - 삭제 버튼 속성 추가 : <td GCol="delete"></td>
+ 
+append paging  기능 추가
+ - gridList.setGrid appendPageCount : 15
+ - grid.js, configData.js, netUtil.js
+ 
+그리드 head text 변경 함수 추가
+ - grid.js : gridList.setHeadText(gridId, colName, colText)
+ 
+Calendar 월요일 셋팅 옵션 추가
+ - UIFormat="C W1"
+ - grid.js, configData.js

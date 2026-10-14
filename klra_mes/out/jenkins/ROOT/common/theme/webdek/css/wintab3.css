@@ -1,0 +1,124 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "system_red.css"; /* color CSS */
+
+.content_top {
+	background-color: #39405a;
+	border-top: 1px solid #39405a;
+}
+.tab_style_wrap {
+	left:40px;
+	
+}
+.btn_bigger {
+	width:40px;
+	border-right:1px solid #39405a;
+	display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    background-color: #39405a;
+}
+.tab_style01 li.selected, .tab_style01 li.selected:before, .tab_style01 li.selected:after {
+	background-color: #e9ecf6;
+}
+.tab_style01 li {
+	border-right:1px solid #2e3348;
+	margin:0;
+	height:32px;
+	text-align: center;
+	background-color: #555b72;
+	border-radius : 10px 10px 0px 0px;	
+}
+
+.tab_style01 li.selected, .tab_style01 li.selected:before, .tab_style01 li.selected:after,
+.tab_style01 li, .tab_style01 li:before, .tab_style01 li:after {
+	display: none;
+}
+
+/*
+2022.08.16 이범준, 안상현 적용 
+.tab_style01 li a
+float: left; 추가
+
+원본 : 
+.tab_style01 li a {
+	line-height: 32px;
+	height:32px;	
+	padding: 0 7px;
+}
+*/
+.tab_style01 li a {
+	line-height: 32px;
+	height:32px;	
+	padding: 0 7px;
+	float: left;
+}
+
+.tab_style01 li.selected a {
+	color: #4c78ea; font-weight: bold;
+}
+
+/*
+2022.08.16 이범준, 안상현 적용 
+.btn_tab_del
+float: left; 추가
+
+원본 :
+.btn_tab_del {
+    margin-right: 0;
+} 
+*/
+.btn_tab_del {
+    margin-right: 0;
+    float: left;
+}
+
+.tab_style01 li.selected .btn_tab_del {
+	background: url(/common/theme/webdek/images/icon_close2.png)no-repeat center center;
+}
+.btn_top {
+	display:flex;
+	padding:0;
+	height:32px;
+}
+.tab_arrow{
+	margin:9px;
+}
+.btn_fav_after,
+.btn_fav_before,
+.btn-3 {
+	width:30px;
+	height:30px;
+	border-radius: 50%;
+	line-height: 30px;
+	margin-top: 0px;
+}
+
+.btn_fav_after,
+.btn_fav_before {
+	background: transparent;
+	background: url(/common/theme/webdek/images/star.png)no-repeat 50% 50%;
+	background-size: 18px;
+}
+.btn_fav_before {
+	background: transparent;
+	background: url(/common/theme/webdek/images/star_off.png)no-repeat 50% 50%;
+}
+.btn-3 {
+	background: transparent;
+	background: url(/common/theme/webdek/images/icon_Refresh.png)no-repeat 50% 50%;
+	background-size: 14px;
+}
+.btn-4 {
+	width:40px;
+	height:30px;
+	line-height:30px;
+	border-left:1px solid #39405a;
+	background: transparent;
+	background: url(/common/theme/webdek/images/icon_allc.png)no-repeat 50% 50%;
+	background-size: 54px;
+}
+
+
+

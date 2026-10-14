@@ -1,0 +1,6427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsAdmin">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<!-- ==================================================================================================================== -->
+	<!-- 마스터관리 - 구성 - [MW01] 물류센터 :: BEGIN -->
+	<!-- ==================================================================================================================== -->
+	<select id="WAHMA_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		     , COMPKY
+		     , NAME01
+		     , NAME02
+		     , ADDR01
+		     , POSTCD
+		     , NATNKY
+		     , VATREG
+		     , FAXTL1
+		     , TELN01
+		     , WADM01
+		     , WADN01
+		     , TSPKEY
+		     , DELMAK
+		     , CHKSHA
+		     , NAME03
+		     , ADDR02
+		     , ADDR03
+		     , ADDR04
+		     , ADDR05
+		     , CITY01
+		     , REGN01
+		     , TELN02
+		     , TELN03
+		     , FAXTL2
+		     , TAXCD1
+		     , TAXCD2
+		     , POBOX1
+		     , POBPC1
+		     , WADT01
+		     , WADT02
+		     , EXCOMK
+		     , INDOVA
+		     , PLOCOV
+		     , DRECLO
+		     , INDUAC
+		     , DSORKY
+		     , DRECLO
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		     , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+		  FROM WAHMA A
+		 WHERE 1 = 1
+		<isNotEmpty property="COMPKY">
+		   AND COMPKY = #COMPKY#
+		</isNotEmpty>
+		<isEqual property="DELMAK" compareValue="V">
+		   AND DELMAK = #DELMAK#
+		</isEqual>
+		<isNotEmpty property="RANGE_SQL">
+		   $RANGE_SQL$
+		</isNotEmpty>
+	  ORDER BY COMPKY, WAREKY
+	</select> 
+	
+	<!-- 구성> 거점 validation -->
+	<select id="WAHMA_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE
+		     WHEN B.LOCAKY IS NULL THEN 'VALID_M0204' || ' ' || A.PLOCOV
+		     ELSE 'OK' 
+		 END AS MSG
+		FROM ( $VALIDATION_SQL$ ) A,
+		       LOCMA B
+		WHERE 1=1
+		AND A.WAREKY = B.WAREKY(+)
+		AND A.PLOCOV = B.LOCAKY(+)
+	</select>
+
+	<!-- 구성> 거점 수정 -->
+	<update id="WAHMA_UPDATE" parameterClass="Map">
+		UPDATE WAHMA SET 
+		 	    LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+			  , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+			  , LMOUSR = #SES_USER_ID#
+			<isNotEmpty property="TSPKEY">
+			  , TSPKEY = #TSPKEY#
+			</isNotEmpty> 
+			<isNotEmpty property="DELMAK">
+			  , DELMAK = #DELMAK#
+			</isNotEmpty> 
+			<isNotEmpty property="CHKSHA">
+			  , CHKSHA = #CHKSHA#
+			</isNotEmpty> 
+			<isNotEmpty property="NAME01">
+			  , NAME01 = #NAME01#
+			</isNotEmpty> 
+			<isNotEmpty property="NAME02">
+			  , NAME02 = #NAME02#
+			</isNotEmpty> 
+			<isNotEmpty property="NAME03">
+			  , NAME03 = #NAME03#
+			</isNotEmpty> 
+			<isNotEmpty property="ADDR01"> 
+			  , ADDR01 = #ADDR01#
+			</isNotEmpty>
+				<isNotEmpty property="ADDR02"> 
+			  , ADDR02 = #ADDR02#
+			</isNotEmpty>
+				<isNotEmpty property="ADDR03"> 
+			  , ADDR03 = #ADDR03#
+			</isNotEmpty>
+				<isNotEmpty property="ADDR04"> 
+			  , ADDR04 = #ADDR04#
+			</isNotEmpty>
+				<isNotEmpty property="ADDR05"> 
+			  , ADDR05 = #ADDR05#
+			</isNotEmpty>
+			<isNotEmpty property="CITY01">
+			  , CITY01 = #CITY01#
+			</isNotEmpty>
+			<isNotEmpty property="REGN01">
+			  , REGN01 = #REGN01#
+			</isNotEmpty>
+			<isNotEmpty property="POSTCD">
+			  , POSTCD = #POSTCD#
+			</isNotEmpty>
+			<isNotEmpty property="NATNKY">
+			  , NATNKY = #NATNKY#
+			</isNotEmpty>
+			<isNotEmpty property="TELN01">
+			  , TELN01 = #TELN01#
+			</isNotEmpty>
+			<isNotEmpty property="TELN02">
+			  , TELN02 = #TELN02#
+			</isNotEmpty>
+			<isNotEmpty property="TELN03">
+			  , TELN03 = #TELN03#
+			</isNotEmpty>
+			<isNotEmpty property="FAXTL1">
+			  , FAXTL1 = #FAXTL1#
+			</isNotEmpty>
+			<isNotEmpty property="FAXTL2">
+			  , FAXTL2 = #FAXTL2#
+			</isNotEmpty>
+			<isNotEmpty property="TAXCD1">
+			  , TAXCD1 = #TAXCD1#
+			</isNotEmpty>
+			<isNotEmpty property="TAXCD2">
+			  , TAXCD2 = #TAXCD2#
+			</isNotEmpty>
+			<isNotEmpty property="VATREG">
+			  , VATREG = #VATREG#
+			</isNotEmpty>
+			<isNotEmpty property="POBOX1">
+			  , POBOX1 = #POBOX1#
+			</isNotEmpty>
+			<isNotEmpty property="POBPC1">
+			  , POBPC1 = #POBPC1#
+			</isNotEmpty>
+			<isNotEmpty property="WADN01">
+			  , WADN01 = #WADN01#
+			</isNotEmpty>
+			<isNotEmpty property="WADT01">
+			  , WADT01 = #WADT01#
+			</isNotEmpty>
+			<isNotEmpty property="WADT02">
+			  , WADT02 = #WADT02#
+			</isNotEmpty>
+			<isNotEmpty property="WADM01">
+			  , WADM01 = #WADM01#
+			</isNotEmpty>
+			<isNotEmpty property="EXCOMK">
+			  , EXCOMK = #EXCOMK#
+			</isNotEmpty>
+			<isNotEmpty property="INDOVA">
+			  , INDOVA = #INDOVA#
+			</isNotEmpty>
+			<isNotEmpty property="PLOCOV">
+			  , PLOCOV = #PLOCOV#
+			</isNotEmpty>
+			<isNotEmpty property="DRECLO">
+			  , DRECLO = #DRECLO#
+			</isNotEmpty>
+			<isNotEmpty property="INDUAC">
+			  , INDUAC = #INDUAC#
+			</isNotEmpty>
+			<isNotEmpty property="DSORKY">
+			  , DSORKY = #DSORKY#
+			</isNotEmpty>
+		  WHERE WAREKY = #WAREKY#
+	</update>
+	<!-- ==================================================================================================================== -->
+	<!-- 마스터관리 - 구성 - [MW01] 물류센터 :: END -->
+	<!-- ==================================================================================================================== -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<sql id="ZONMA_WHERE">
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty> 
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		<isNotEmpty property="ZONETY">
+		 AND   ZONETY = #ZONETY# 
+		</isNotEmpty>
+	</sql>
+	
+	<select id="WEIGHTCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT	CMCDVL AS VALUE_COL,
+				CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE 1 = 1
+		  AND CMCDKY = 'WEIGHT'
+	</select>
+	
+	<sql id="ZONMA_SELECT">
+		SELECT  WAREKY
+			   ,' ' AS CHECKDATA
+			   ,ROWNUM AS TMPNUM 
+		       ,ZONEKY
+		       ,ZONETY
+		       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'ZONETY' AND C.CMCDVL = Z.ZONETY) AS ZONETYT
+		       ,SHORTX
+		       ,AREAKY
+		       ,(SELECT SHORTX FROM AREMA A WHERE A.WAREKY = Z.WAREKY AND A.AREAKY = Z.AREAKY) AS AREAKYT
+		       ,CREDAT
+		       ,CRETIM
+		       ,CREUSR
+		       ,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = Z.CREUSR),' ') AS CUSRNM
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR
+		       ,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = Z.LMOUSR),' ') AS LUSRNM
+		       ,INDBZL
+		       ,INDARC
+		       ,UPDCHK
+		FROM ZONMA Z
+	</sql>
+	
+	<select id="ZONMAP_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT  COUNT(*) 
+		FROM ZONMA Z
+		WHERE 1 = 1
+		<include refid="ZONMA_WHERE" /> 
+	</select>
+	
+	<select id="ZONMAP_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="ZONMA_SELECT" />
+		WHERE 1 = 1
+		<include refid="ZONMA_WHERE" />
+		ORDER BY ZONEKY
+	</select>
+	
+	<select id="ZONMA_LIST" parameterClass="Map" resultClass="StringMap">
+		<include refid="ZONMA_SELECT" />
+		WHERE 1 = 1
+		<include refid="ZONMA_WHERE" />
+		ORDER BY ZONEKY
+	</select>
+	
+	<select id="ZONMA2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT   #WAREKY# AS WAREKY
+		       , #ZONEKY# AS ZONEKY
+		       , #ZONETY# AS ZONETY
+		       , #SHORTX# AS SHORTX
+		       , #AREAKY# AS AREAKY
+		       , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+			   , TO_CHAR(SYSDATE, 'HHMISS') AS CRETIM
+			   , #SES_USER_ID# AS CREUSR
+		   	   , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+			   , TO_CHAR(SYSDATE, 'HHMISS') AS LMOTIM
+			   , #SES_USER_ID# AS LMOUSR
+		FROM DUAL
+	</select>
+	
+	<insert id="ZONMA_INSERT" parameterClass="Map">
+		INSERT INTO ZONMA (WAREKY,AREAKY,ZONEKY,ZONETY,SHORTX,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#WAREKY#,#AREAKY#,#ZONEKY#,#ZONETY#,#SHORTX#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="ZONMA_DELETE" parameterClass="Map">
+		DELETE FROM ZONMA 
+		 WHERE WAREKY = #WAREKY# 
+	       AND ZONEKY = #ZONEKY#
+	</delete>
+	
+	<update id="ZONMA_UPDATE" parameterClass="Map">
+		UPDATE ZONMA SET 
+			<isNotEmpty property="ZONETY">
+				 ZONETY = #ZONETY#,
+			</isNotEmpty>
+			<isNotEmpty property="SHORTX">			
+				 SHORTX = #SHORTX#,
+			</isNotEmpty> 
+			<isNotEmpty property="AREAKY">			
+				 AREAKY = #AREAKY#,
+			</isNotEmpty>
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE WAREKY = #WAREKY# 
+			AND ZONEKY = #ZONEKY# 
+	</update>
+	<select id="ZONMA_VALIDATION" parameterClass="Map" resultClass="DataMap"> 
+		SELECT
+		  CASE
+		    WHEN A.AREAKY IS NULL THEN 'MASTER_M0255' || ' ' || P.AREAKY
+		    WHEN Z.ZONEKY IS NOT NULL THEN 'VALID_M0103' || ' ' || P.ZONEKY
+		    ELSE 'OK'
+		  END AS MSG
+		FROM(
+		    	$VALIDATION_SQL$ 
+		    ) P 
+		    LEFT OUTER JOIN AREMA A ON A.WAREKY = P.WAREKY AND A.AREAKY = P.AREAKY
+		    LEFT OUTER JOIN ZONMA Z ON Z.ZONEKY = P.ZONEKY AND Z.WAREKY = P.WAREKY
+		WHERE 1=1
+		   OR A.AREAKY IS NULL
+		   OR Z.ZONEKY IS NOT NULL
+	</select>
+	
+	<!-- 구성> 구역 삭제 전 Validation 체크-->
+	<select id="ZONMAdel_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM LOCMA
+		WHERE WAREKY = #WAREKY#
+		AND ZONEKY=#ZONEKY#
+	</select>
+	
+	<select id="AREAKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			WAREKY AS GROUP_COL,
+		    AREAKY AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM AREMA 
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty> 
+	</select>
+	
+	<select id="ZONEKY_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT  WAREKY
+		       ,ZONEKY
+		FROM ZONMA
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty> 
+		<isNotEmpty property="ZONEKY">
+			AND ZONEKY = #ZONEKY# 
+		</isNotEmpty> 
+	</select>
+	
+	<select id="PTNRTYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM BZPTN
+		<isNotEmpty property="PTNRTY">
+		WHERE PTNRTY = #PTNRTY#
+		</isNotEmpty> 
+	</select>	
+	
+	<!-- 구성> 영역 조회 -->
+	<select id="AREMA_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		, AREAKY
+		, AREATY
+		,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'AREATY' AND C.CMCDVL = A.AREATY)
+		AS AREATYT
+		, SHORTX
+		, NEGSTK
+		, INDCDO
+		, INDAES
+		, INDSHW
+		, INDULT
+		, RDDALL
+		, CREDAT
+		, CRETIM
+		, CREUSR
+		, NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+		, LMODAT
+		, LMOTIM
+		, LMOUSR
+		, NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+		, INDBZL
+		, INDARC
+		, UPDCHK
+		FROM AREMA A
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+		 AND   WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		<isNotEmpty property="AREATY">
+		 AND   AREATY = #AREATY# 
+		</isNotEmpty>
+	</select>
+
+	<!-- 구성> 영역 조회 -->
+	<select id="AREMA1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		, AREAKY
+		, AREATY
+		,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'AREATY' AND C.CMCDVL = A.AREATY)
+		AS AREATYT
+		, SHORTX
+		, NEGSTK
+		, INDCDO
+		, INDAES
+		, INDSHW
+		, INDULT
+		, RDDALL
+		, CREDAT
+		, CRETIM
+		, CREUSR
+		, NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+		, LMODAT
+		, LMOTIM
+		, LMOUSR
+		, NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+		, INDBZL
+		, INDARC
+		, UPDCHK
+		FROM AREMA A
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND   WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		<isNotEmpty property="AREATY">
+			AND   AREATY = #AREATY#
+		</isNotEmpty>
+	</select>
+
+
+
+	<!-- 구성> 영역 수정 -->
+	<update id="AREMA_UPDATE" parameterClass="Map">
+		 UPDATE AREMA SET 
+		        LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+			  , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+			  , LMOUSR = #SES_USER_ID#
+		 	<isNotEmpty property="AREATY">
+		      , AREATY = #AREATY#
+		    </isNotEmpty>
+		    <isNotEmpty property="SHORTX">
+		      , SHORTX = #SHORTX#
+		    </isNotEmpty>
+		    <isNotEmpty property="NEGSTK">
+		      , NEGSTK = #NEGSTK#
+		    </isNotEmpty>
+		    <isNotEmpty property="INDCDO">
+		      , INDCDO = #INDCDO#
+		    </isNotEmpty>
+		    <isNotEmpty property="INDAES">
+		      , INDAES = #INDAES#
+		    </isNotEmpty>
+		 WHERE WAREKY = #WAREKY#
+		   AND AREAKY = #AREAKY#
+	</update>
+	
+	<!-- 구성> 영역 신규 -->
+		<insert id="AREMA_INSERT" parameterClass="Map">
+		INSERT INTO AREMA(
+					WAREKY,
+					AREAKY,
+					AREATY,
+					SHORTX,
+					NEGSTK,
+					INDCDO,
+					INDAES,
+					CREDAT,
+					CRETIM,
+					CREUSR,
+					LMODAT,
+					LMOTIM,
+					LMOUSR
+					)
+			VALUES (
+					#WAREKY#,
+					#AREAKY#,
+					#AREATY#,
+					#SHORTX#,
+					#NEGSTK#,
+					#INDCDO#,
+					#INDAES#,
+					TO_CHAR(SYSDATE, 'YYYYMMDD'),
+					TO_CHAR(SYSDATE, 'HH24MISS'),
+					#SES_USER_ID#,
+					TO_CHAR(SYSDATE, 'YYYYMMDD'),
+					TO_CHAR(SYSDATE, 'HH24MISS'),
+					#SES_USER_ID#
+					)
+	</insert>
+	
+	 	<!-- 구성> 영역 삭제 전 Validation 체크-->
+	<select id="AREMAval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM ZONMA
+		WHERE WAREKY  = #WAREKY#
+		AND AREAKY = #AREAKY#
+	</select>
+	
+	<!-- 구성> 영역 삭제 -->
+	<delete id="AREMA_DELETE" parameterClass="Map">
+		DELETE FROM AREMA
+		WHERE WAREKY = #WAREKY#
+		AND AREAKY = #AREAKY#
+	</delete>
+	
+	<select id="PTNRTYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDKY AS GROUP_COL,
+		    CMCDVL AS VALUE_COL,
+		    CDESC1 AS TEXT_COL
+		FROM CMCDV 
+		WHERE CMCDKY = 'PTNRTY'
+	</select>
+
+	<select id="PTNRTYCOMBO2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDKY AS GROUP_COL,
+			CMCDVL AS VALUE_COL,
+			CDESC1 AS TEXT_COL
+		FROM CMCDV 
+		WHERE CMCDKY = 'PTNRTY'
+	</select>
+	
+	<select id="BZ01COMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    CMCDVL AS VALUE_COL,
+		    CDESC1 AS TEXT_COL
+		FROM CMCDV 
+		WHERE CMCDKY = 'PTNRTY'
+	</select>
+	
+	<!-- 파트너관리> 파트너 조회 -->
+	<select id="BZPTN_LIST" parameterClass="Map" resultClass="DataMap" fetchSize="10000">
+		 SELECT 
+				OWNRKY,
+				NVL((SELECT NAME01 FROM OWNER O WHERE O.OWNRKY = A.OWNRKY), ' ') AS OWNRNM,
+				PTNRTY,
+				NVL((SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'PTNRTY' AND C.CMCDVL = A.PTNRTY),' ') AS PTNRTYT,
+				PTNRKY,
+				DELMAK,
+				NAME01,
+				NAME02,
+				NAME03,
+				ADDR01,
+				ADDR02,
+				ADDR03,
+				ADDR04,
+				ADDR05,
+				CITY01,
+				REGN01,
+				POSTCD,
+				NATNKY,
+				NVL((SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'NATNKY' AND C.CMCDVL = A.NATNKY),' ') AS NATNKYT,
+				TELN01,
+				TELN02,
+				TELN03,
+				FAXTL1,
+				FAXTL2,
+				TAXCD1,
+				TAXCD2,
+				VATREG,
+				POBOX1,
+				POBPC1,
+				EMAIL1,
+				EMAIL2,
+				CTTN01,
+				CTTT01,
+				CTTT02,
+				CTTM01,
+				SALN01,
+				SALT01,
+				SALT02,
+				SALM01,
+				EXPTNK,
+				CUSTMR,
+				PTNG01,
+				PTNG02,
+				PTNG03,
+				PTNG04,
+				PTNG05,
+				PTNL01,
+				NVL((SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'PTNL01' AND C.CMCDVL = A.PTNL01),' ') AS PTNL01NM,
+				PTNL02,
+				PTNL03,
+				PTNL04,
+				PTNL05,
+				WTOPPM,
+				WTOPMU,
+				WTOPDV,
+				PROCHA,
+				CREDAT,
+				CRETIM,
+				CREUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USERID = A.CREUSR),' ') AS CUSRNM,
+				LMODAT,
+				LMOTIM,
+				LMOUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USERID = A.LMOUSR),' ') AS LUSRNM,
+				INDBZL,
+				INDARC,
+				UPDCHK
+		 FROM   BZPTN A
+		WHERE  1 = 1
+		<isNotEmpty property="PTNRKY">
+			AND A.PTNRKY = #PTNRKY#
+		</isNotEmpty>
+		<isNotEmpty property="PTNRTY">
+			AND A.PTNRTY = #PTNRTY#
+		</isNotEmpty>
+		<isNotEmpty property="DELMAK">
+			AND A.DELMAK LIKE DECODE(#DELMAK#,' ','%','V')
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>  
+	
+	<!-- 파트너관리> 파트너  중복 확인 -->
+	<select id="BZPTNval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		FROM BZPTN 
+		WHERE 1 = 1 
+		AND PTNRKY = #PTNRKY#
+		AND PTNRTY = #PTNRTY#
+		AND PTNL05 = #PTNL05#
+	</select>
+	
+	<!-- 파트너관리> 파트너 validation -->
+	<select id="BZPTN_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+	      CASE
+	        WHEN B.PTNRKY IS NOT NULL THEN 'COMMON_M0446' || ' ' || STD.PTNRKY
+	        WHEN B.PTNRTY IS NOT NULL THEN 'COMMON_M0446' || ' ' || STD.PTNRTY
+	        WHEN C.CMCDVL IS NULL THEN 'IN_M0036' || ' ' || STD.PTNRTY
+	        ELSE 'OK'
+	      END AS MSG
+	    FROM (
+	            $VALIDATION_SQL$
+	          ) STD 
+	        LEFT OUTER JOIN BZPTN B ON B.PTNRKY = STD.PTNRKY AND B.PTNRTY = STD.PTNRTY 
+	        LEFT OUTER JOIN CMCDV C ON C.CMCDVL = STD.PTNRTY AND C.CMCDKY = 'PTNRTY'
+	    WHERE 1 = 1
+	      AND B.PTNRKY IS NOT NULL
+	       OR B.PTNRTY IS NOT NULL
+	       OR C.CMCDVL IS NULL
+	</select>
+	
+	<!-- 파트너관리> 파트너 신규 -->
+	<insert id="BZPTN_INSERT" parameterClass="Map">
+		INSERT INTO BZPTN 
+		(
+			 PTNRKY,PTNRTY,DELMAK,NAME01,NAME02,ADDR01,POSTCD,TELN01,VATREG,PTNL03,PTNL04,PROCHA,PTNG01,EWGUBN
+		 ) 
+		VALUES 
+		(
+			 ('BZP' || LPAD(BZP_SEQ.NEXTVAL, 7, '0')),#PTNRTY#,#DELMAK#,#NAME01#,#NAME02#,#ADDR01#,#POSTCD#,#TELN01#,#VATREG#,
+			 #PTNL03#,#PTNL04#,#PROCHA#,#PTNG01#,'W'
+		)
+	</insert>
+	
+		<!-- 마스터관리> 마스터수정 -->
+	<update id="BZPTN_UPDATE" parameterClass="Map">
+		UPDATE BZPTN SET
+		 	   LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+			 , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+			 , LMOUSR = #SES_USER_ID#
+		      <isNotEmpty property="PTNRKY">
+		      ,PTNRKY = #PTNRKY#
+		      </isNotEmpty>
+			  <isNotEmpty property="PTNRTY">
+		      ,PTNRTY = #PTNRTY#
+		      </isNotEmpty>
+		      <isNotEmpty property="DELMAK">
+		      ,DELMAK = #DELMAK#
+		      </isNotEmpty>
+		      <isNotEmpty property="NAME01">
+		      ,NAME01 = #NAME01#
+		      </isNotEmpty>
+		      <isNotEmpty property="NAME02">
+		      ,NAME02 = #NAME02#
+		       </isNotEmpty>
+		      <isNotEmpty property="ADDR01">
+		      ,ADDR01 = #ADDR01#
+		      </isNotEmpty>
+		      <isNotEmpty property="POSTCD">
+		      ,POSTCD = #POSTCD#
+		      </isNotEmpty>
+		      <isNotEmpty property="TELN01">
+		      ,TELN01 = #TELN01#
+		      </isNotEmpty>
+		      <isNotEmpty property="VATREG">
+		      ,VATREG = #VATREG#
+		      </isNotEmpty>
+		      <isNotEmpty property="PTNL3">
+		      ,PTNL3 = #PTNL3#
+		      </isNotEmpty>
+		      <isNotEmpty property="PTNL4">
+		      ,PTNL4 = #PTNL4#
+		      </isNotEmpty>
+		      <isNotEmpty property="PROCHA1">
+		      ,PROCHA1 = #PROCHA1#
+		      </isNotEmpty>
+		      <isNotEmpty property="EXPTNK">
+		      ,EXPTNK = #EXPTNK#
+		      </isNotEmpty>
+		      <isNotEmpty property="PTNG01">
+		      ,PTNG01 = #PTNG01#
+		      </isNotEmpty>
+		      <isNotEmpty property="PTNL05">
+		      ,PTNL05 = #PTNL05#
+		      </isNotEmpty>
+		      <isNotEmpty property="PROCHA">
+		      ,PROCHA = #PROCHA#
+		      </isNotEmpty>
+		 WHERE 1 = 1
+		   AND PTNRKY = #PTNRKY#
+		   AND PTNRTY = #PTNRTY#
+	</update>
+	
+		<!-- 파트너관리> 파트너 삭제 -->
+	<delete id="BZPTN_DELETE" parameterClass="Map">
+		DELETE FROM BZPTN
+		WHERE PTNRKY = #PTNRKY#
+		  AND PTNRTY = #PTNRTY#
+		  AND PTNL05 = #PTNL05#
+	</delete>
+
+	<!-- 구성> 지번★ 조회 -->
+	<select id="LOCMA_LIST" parameterClass="Map" resultClass="DataMap">
+	  SELECT WAREKY
+			,LOCAKY
+			,LOCAKY AS ALOCAKY
+			,LOCATY
+			,SHORTX
+			,TASKTY
+			,ZONEKY
+			,ZONEKY AS AZONEKY
+			,AREAKY
+			,AREAKY AS AAREAKY
+			,NVL((SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'LOCATY' AND C.CMCDVL = A.LOCATY),' ') AS LOCATYT
+			,TKZONE
+			,FACLTY
+			,ARLVLL
+			,INDCPC
+			,INDTUT
+			,IBROUT
+			,OBROUT
+			,RPROUT
+			,STATUS
+			,NVL((SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'STATUS' AND C.CMCDVL = A.STATUS),' ') AS STATUST
+			,ABCANV
+			,LENGTH
+			,WIDTHW
+			,HEIGHT
+			,CUBICM
+			,MAXCPC
+			,MAXQTY
+			,MAXWGT
+			,MAXLDR
+			,MAXSEC
+			,MIXSKU
+			,MIXLOT
+			,RPNCAT
+			,INDQTC
+			,QTYCHK
+			,NEDSID
+			,INDUPA
+			,INDUPK
+			,AUTLOC
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+			,INDBZL AS INDBZL
+			,INDARC AS INDARC
+			,UPDCHK AS UPDCHK
+		FROM LOCMA A
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="LOCATY">
+			AND LOCATY = #LOCATY#
+		</isNotEmpty>
+		<isNotEmpty property="STATUS">
+			AND STATUS = #STATUS#
+		</isNotEmpty>
+		<isEqual property="INDAVB" compareValue="INDUPA">
+			AND INDUPA ='V'
+		</isEqual>
+		<isEqual property="INDAVB" compareValue="INDUPK">
+			AND INDUPK ='V'
+		</isEqual>
+<!-- 		<isEqual property="INDUPK" compareValue="on"> -->
+<!-- 			AND INDUPK ='V' -->
+<!-- 		</isEqual> -->
+<!-- 		<isNotEqual property="INDUPK" compareValue="on" > -->
+<!-- 			AND INDUPK=' ' -->
+<!-- 		</isNotEqual> -->
+<!-- 		<isEqual property="INDUPA" compareValue="on"> -->
+<!-- 			AND INDUPA ='V' -->
+<!-- 		</isEqual> -->
+<!-- 		<isNotEqual property="INDUPA" compareValue="on" > -->
+<!-- 			AND INDUPA=' ' -->
+<!-- 		</isNotEqual> -->
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 구성> 지번★ 조회 -->
+	<select id="LOCMA_MAP" parameterClass="Map" resultClass="DataMap">
+	SELECT WAREKY
+			,LOCAKY
+			,LOCATY
+			,SHORTX
+			,TASKTY
+			,ZONEKY
+			,AREAKY
+			,NVL((SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'LOCATY' AND C.CMCDVL = A.LOCATY),' ') AS LOCATYT
+			,TKZONE
+			,FACLTY
+			,ARLVLL
+			,INDCPC
+			,INDTUT
+			,IBROUT
+			,OBROUT
+			,RPROUT
+			,STATUS
+			,NVL((SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'STATUS' AND C.CMCDVL = A.STATUS),' ') AS STATUST
+			,ABCANV
+			,LENGTH
+			,WIDTHW
+			,HEIGHT
+			,CUBICM
+			,MAXCPC
+			,MAXQTY
+			,MAXWGT
+			,MAXLDR
+			,MAXSEC
+			,MIXSKU
+			,MIXLOT
+			,RPNCAT
+			,INDQTC
+			,QTYCHK
+			,NEDSID
+			,INDUPA
+			,INDUPK
+			,AUTLOC
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+			,INDBZL AS INDBZL
+			,INDARC AS INDARC
+			,UPDCHK AS UPDCHK
+		FROM LOCMA A
+		WHERE 1 = 1
+			AND WAREKY = #WAREKY#
+			AND LOCAKY = #LOCAKY#
+	</select>
+	
+	<select id="LOCMA2_LIST" parameterClass="Map" resultClass="DataMap">
+	     SELECT  #WAREKY# AS WAREKY
+		       , #LOCAKY# AS LOCAKY
+		       , #LOCATY# AS LOCATY
+		       , #SHORTX# AS SHORTX
+		       , #TASKTY# AS TASKTY
+		       , #ZONEKY# AS ZONEKY
+		       , #ZONEKY# AS ZONEKY2
+		       , #AREAKY# AS AREAKY
+		       , #TKZONE# AS TKZONE
+		       , #FACLTY# AS FACLTY
+		       , #ARLVLL# AS ARLVLL
+		       , #INDCPC# AS INDCPC
+		       , #INDTUT# AS INDTUT
+		       , #IBROUT# AS IBROUT
+		       , #OBROUT# AS OBROUT
+		       , #RPROUT# AS RPROUT
+		       , #STATUS# AS STATUS
+		       , #ABCANV# AS ABCANV
+		       , #LENGTH# AS LENGTH
+		       , #WIDTHW# AS WIDTHW
+		       , #HEIGHT# AS HEIGHT
+		       , #CUBICM# AS CUBICM
+		       , #MAXCPC# AS MAXCPC
+		       , #MAXQTY# AS MAXQTY
+		       , #MAXWGT# AS MAXWGT
+		       , #MAXLDR# AS MAXLDR
+		       , #MAXSEC# AS MAXSEC
+		       , #MIXSKU# AS MIXSKU
+		       , #MIXLOT# AS MIXLOT
+		       , #RPNCAT# AS RPNCAT
+		       , #INDQTC# AS INDQTC
+		       , #QTYCHK# AS QTYCHK
+		       , #NEDSID# AS NEDSID
+		       , #INDUPA# AS INDUPA
+		       , #INDUPK# AS INDUPK
+		       , #AUTLOC# AS AUTLOC
+		       , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+		       , TO_CHAR(SYSDATE, 'HHMISS') AS CRETIM
+		       , #SES_USER_ID# AS CREUSR
+		       , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = #SES_USER_ID#),' ') AS CUSRNM
+		       , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+		       , TO_CHAR(SYSDATE, 'HHMISS') AS LMOTIM
+			   , #SES_USER_ID# AS LMOUSR
+			   , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = #SES_USER_ID#),' ') AS LUSRNM
+			   , #INDBZL# AS INDBZL
+			   , #INDARC# AS INDARC
+			   , #UPDCHK# AS UPDCHK 
+		FROM DUAL 
+	</select>
+	
+		<!-- 구성> 지번★  신규 -->
+	<insert id="LOCMA_INSERT" parameterClass="Map">
+		INSERT INTO LOCMA 
+		    (
+		     WAREKY,AREAKY,ZONEKY,LOCAKY,LOCATY,TKZONE,
+		     STATUS,INDUPA,INDUPK,INDCPC,MAXCPC,
+		     WIDTHW,HEIGHT,MIXSKU,
+		     MIXLOT,CREDAT,CRETIM,CREUSR
+		    ) 
+		 VALUES 
+		     (
+		      #WAREKY#,#AREAKY#,#ZONEKY#,#LOCAKY#,#LOCATY#,#TKZONE#,
+		      #STATUS#,#INDUPA#,#INDUPK#,#INDCPC#,#MAXCPC#,
+		      #WIDTHW#,#HEIGHT#,#MIXSKU#,#MIXLOT#,
+		      TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		      TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+		     )
+	</insert>
+	<select id="LOCMA_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			  <!-- CASE
+			    WHEN B.ZONEKY IS NULL THEN 'MASTER_M0989' || ' ' || A.ZONEKY
+			    WHEN C.LOCAKY IS NOT NULL THEN 'VALID_M0104' || ' ' || A.LOCAKY
+			    ELSE 'OK'
+			  END AS MSG -->
+			  'OK'  AS MSG
+		FROM (
+			   		$VALIDATION_SQL$ 
+			 ) A
+			  LEFT OUTER JOIN ZONMA B ON B.ZONEKY = A.ZONEKY AND B.WAREKY = A.WAREKY
+			  LEFT OUTER JOIN LOCMA C ON C.LOCAKY = A.LOCAKY AND B.WAREKY = A.WAREKY
+			  WHERE 1 = 1
+			  AND ROWNUM = 1
+	</select>
+	
+	<!-- 구성> 거점명 -->
+	<select id="WAREKY_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY, NAME01 
+		FROM WAHMA
+		WHERE 1 = 1 
+		AND WAREKY = #WAREKY# 
+	</select>
+
+	<!-- 구성> 지번★  창고키 -->
+	<select id="AREAKY_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT AREAKY AS AREAKY 
+		FROM ZONMA 
+		WHERE 1 = 1 
+		AND WAREKY = #WAREKY# 
+		AND ZONEKY = #ZONEKY#
+		AND ROWNUM = 1
+	</select>
+	
+	<select id="AREAKY2_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT  SHORTX AS ZONENM, 
+                AREAKY AS AREAKY , 
+                (SELECT SHORTX FROM AREMA WHERE WAREKY = ZONMA.WAREKY AND AREAKY =  ZONMA.AREAKY) AS AREANM 
+	  	  FROM ZONMA 
+	  	  WHERE 1 = 1 
+  	  	    AND WAREKY = #WAREKY# 
+	  	    AND ZONEKY = #ZONEKY#
+	  	    AND ROWNUM = 1
+	</select>
+	
+	<!-- 구성> 지번★  창고키 유무 확인 -->
+	<select id="ZONEKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM ZONMA 
+		 WHERE 1 = 1 
+    	   AND WAREKY = #WAREKY# 
+           AND ZONEKY = #ZONEKY#
+	</select>
+	
+	<!-- 구성> 지번★ 작업구역 유무 확인 -->
+	<select id="TKZONEval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM ZONMA 
+		 WHERE 1 = 1 
+    	   AND WAREKY = #WAREKY# 
+           AND ZONEKY = #TKZONE#
+	</select>
+	
+	 	<!-- 구성> 지번★  삭제 전 Validation 체크-->
+	<select id="LOCMAval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM LOCMA 
+		WHERE 1 = 1
+		AND WAREKY = #WAREKY#
+		AND LOCAKY = #LOCAKY#
+	</select>
+
+	<!-- 구성> 지번★ 수정 -->
+	<update id="LOCMA_UPDATE" parameterClass="Map">
+		UPDATE LOCMA SET 
+			<isNotEmpty property="WAREKY"> 
+				 WAREKY = #WAREKY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LOCAKY"> 
+				 LOCAKY = #LOCAKY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LOCATY"> 
+				 LOCATY = #LOCATY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="SHORTX"> 
+				 SHORTX = #SHORTX# ,
+			</isNotEmpty> 
+			<isNotEmpty property="TASKTY"> 
+				 TASKTY = #TASKTY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="ZONEKY"> 
+				 ZONEKY = #ZONEKY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="AREAKY"> 
+				 AREAKY = #AREAKY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="TKZONE"> 
+				 TKZONE = #TKZONE# ,
+			</isNotEmpty> 
+			<isNotEmpty property="FACLTY"> 
+				 FACLTY = #FACLTY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="ARLVLL"> 
+				 ARLVLL = #ARLVLL# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDCPC"> 
+				 INDCPC = #INDCPC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDTUT"> 
+				 INDTUT = #INDTUT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="IBROUT"> 
+				 IBROUT = #IBROUT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="OBROUT"> 
+				 OBROUT = #OBROUT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="RPROUT"> 
+				 RPROUT = #RPROUT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="STATUS"> 
+				 STATUS = #STATUS# ,
+			</isNotEmpty> 
+			<isNotEmpty property="ABCANV"> 
+				 ABCANV = #ABCANV# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LENGTH"> 
+				 LENGTH = #LENGTH# ,
+			</isNotEmpty> 
+			<isNotEmpty property="WIDTHW"> 
+				 WIDTHW = #WIDTHW# ,
+			</isNotEmpty> 
+			<isNotEmpty property="HEIGHT"> 
+				 HEIGHT = #HEIGHT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="CUBICM"> 
+				 CUBICM = #CUBICM# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MAXCPC"> 
+				 MAXCPC = #MAXCPC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MAXQTY"> 
+				 MAXQTY = #MAXQTY# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MAXWGT"> 
+				 MAXWGT = #MAXWGT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MAXLDR"> 
+				 MAXLDR = #MAXLDR# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MAXSEC"> 
+				 MAXSEC = #MAXSEC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MIXSKU"> 
+				 MIXSKU = #MIXSKU# ,
+			</isNotEmpty> 
+			<isNotEmpty property="MIXLOT"> 
+				 MIXLOT = #MIXLOT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="RPNCAT"> 
+				 RPNCAT = #RPNCAT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDQTC"> 
+				 INDQTC = #INDQTC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="QTYCHK"> 
+				 QTYCHK = #QTYCHK# ,
+			</isNotEmpty> 
+			<isNotEmpty property="NEDSID"> 
+				 NEDSID = #NEDSID# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDUPA"> 
+				 INDUPA = #INDUPA# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDUPK"> 
+				 INDUPK = #INDUPK# ,
+			</isNotEmpty> 
+			<isNotEmpty property="AUTLOC"> 
+				 AUTLOC = #AUTLOC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="CREDAT"> 
+				 CREDAT = #CREDAT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="CRETIM"> 
+				 CRETIM = #CRETIM# ,
+			</isNotEmpty> 
+			<isNotEmpty property="CREUSR"> 
+				 CREUSR = #CREUSR# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LMODAT"> 
+				 LMODAT = #LMODAT# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LMOTIM"> 
+				 LMOTIM = #LMOTIM# ,
+			</isNotEmpty> 
+			<isNotEmpty property="LMOUSR"> 
+				 LMOUSR = #LMOUSR# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDBZL"> 
+				 INDBZL = #INDBZL# ,
+			</isNotEmpty> 
+			<isNotEmpty property="INDARC"> 
+				 INDARC = #INDARC# ,
+			</isNotEmpty> 
+			<isNotEmpty property="UPDCHK"> 
+				 UPDCHK = #UPDCHK# 
+			</isNotEmpty> 
+		 WHERE
+			 WAREKY = #WAREKY# 
+			 AND LOCAKY = #LOCAKY# 
+	</update>
+
+	<!-- 구성> 지번★ 삭제 -->
+	<delete id="LOCMA_DELETE" parameterClass="Map">
+		DELETE FROM LOCMA
+		WHERE WAREKY = #WAREKY#
+		AND LOCAKY = #LOCAKY#
+	</delete>
+
+	<!-- SKU> SKU★ 조회 -->
+	<select id="SKUMA_LIST" parameterClass="Map" resultClass="DataMap" fetchSize="10000">
+	   SELECT A.OWNRKY AS OWNRKY
+			, A.SKUKEY AS SKUKEY
+			, A.DELMAK AS DELMAK
+			, A.DESC01 AS DESC01
+			, A.DESC02 AS DESC02
+			, A.VENDKY AS VENDKY
+			, A.ASKU01 AS ASKU01
+			, A.ASKU02 AS ASKU02
+			, A.ASKU03 AS ASKU03
+			, A.ASKU04 AS ASKU04
+			, A.ASKU05 AS ASKU05
+			, A.ASKL01 AS ASKL01
+			, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'OERE' AND CMCDVL = A.ASKL01),' ') AS ASKL01M
+			, A.ASKL02 AS ASKL02
+			, A.ASKL03 AS ASKL03
+			, A.ASKL04 AS ASKL04
+			, A.ASKL05 AS ASKL05
+			, A.EANCOD AS EANCOD
+			, A.GTINCD AS GTINCD
+			, A.SKUG01 AS SKUG01
+			, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'SKUG01' AND CMCDVL = A.SKUG01),' ') AS SKUG01T
+			, A.SKUG02 AS SKUG02
+			, A.SKUG03 AS SKUG03
+			, A.SKUG04 AS SKUG04
+			, A.SKUG05 AS SKUG05
+			, A.SKUL01 AS SKUL01
+			, A.SKUL02 AS SKUL02
+			, A.SKUL03 AS SKUL03
+			, A.SKUL04 AS SKUL04
+			, A.SKUL05 AS SKUL05
+			, A.GRSWGT AS GRSWGT
+			, A.NETWGT AS NETWGT
+			, A.WGTUNT AS WGTUNT
+			, A.LENGTH AS LENGTH
+			, A.WIDTHW AS WIDTHW
+			, A.HEIGHT AS HEIGHT
+			, A.CUBICM AS CUBICM
+			, A.CAPACT AS CAPACT
+			, A.DUOMKY AS DUOMKY
+			, A.QTDUOM AS QTDUOM
+			, A.ABCANV AS ABCANV
+			, A.LOTL01 AS LOTL01
+			, A.LOTL02 AS LOTL02
+			, A.LOTL03 AS LOTL03
+			, A.LOTL04 AS LOTL04
+			, A.LOTL05 AS LOTL05
+			, A.LOTL06 AS LOTL06
+			, A.LOTL07 AS LOTL07
+			, A.LOTL08 AS LOTL08
+			, A.LOTL09 AS LOTL09
+			, A.LOTL10 AS LOTL10
+			, A.LOTL11 AS LOTL11
+			, A.LOTL12 AS LOTL12
+			, A.LOTL13 AS LOTL13
+			, A.LOTL14 AS LOTL14
+			, A.LOTL15 AS LOTL15
+			, A.LOTL16 AS LOTL16
+			, A.LOTL17 AS LOTL17
+			, A.LOTL18 AS LOTL18
+			, A.LOTL19 AS LOTL19
+			, A.LOTL20 AS LOTL20
+			, A.OUTDMT AS OUTDMT
+			, A.RIMDMT AS RIMDMT
+			, A.INNDPT AS INNDPT
+			, A.SECTWD AS SECTWD
+			, A.WEIGHT AS WEIGHT
+			, A.LGPRO AS LGPRO
+			, A.DLGORT AS DLGORT
+			, A.BATMNG AS BATMNG
+			, A.CSTDAT AS CSTDAT
+			, A.CPSKUG AS CPSKUG
+			, A.DESC03 AS DESC03
+			, A.QTYMON AS QTYMON
+			, A.QTYSTD AS QTYSTD
+			, A.QTYCNT AS QTYCNT
+			, A.DESC04 AS DESC04
+			, A.BUFMNG AS BUFMNG
+			, B.WAREKY AS WAREKY
+			, B.MEASKY AS MEASKY
+			, B.LOCARV AS LOCARV
+			, B.LOCAQC AS LOCAQC
+			, B.RCSTKY AS RCSTKY
+			, B.PASTKY AS PASTKY
+			, B.CAPACR AS CAPACR
+			, B.SASTKY AS SASTKY
+			, B.ALSTKY AS ALSTKY
+			, B.TKFLKY AS TKFLKY
+			, B.SPRIKY AS SPRIKY
+			, B.IBPROT AS IBPROT
+			, B.OBPROT AS OBPROT
+			, B.UOMDIN AS UOMDIN
+			, B.UOMDOU AS UOMDOU
+			, B.UOMDTA AS UOMDTA
+			, B.INDSLC AS INDSLC
+			, B.SLCLAT AS SLCLAT
+			, B.SLCTYP AS SLCTYP
+			, B.SLCPDI AS SLCPDI
+			, B.SLCPDO AS SLCPDO
+			, B.DPUTZO AS DPUTZO
+			, B.DPUTAR AS DPUTAR
+			, B.DPUTLO AS DPUTLO
+			, B.CPVNDR AS CPVNDR
+			, B.CPMEAS AS CPMEAS
+			, B.LOCOVR AS LOCOVR
+			, B.PLOCOV AS PLOCOV
+			, B.TARIKY AS TARIKY
+			, B.LOTRKY AS LOTRKY
+			, B.EXPDCK AS EXPDCK
+			, B.PRODCK AS PRODCK
+			, B.SHPPRT AS SHPPRT
+			, B.IFFLAG AS IFFLAG
+			, B.CREDAT AS CREDAT
+			, B.CRETIM AS CRETIM
+			, B.CREUSR AS CREUSR
+			, NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = B.CREUSR),' ') AS CUSRNM
+			, B.LMODAT AS LMODAT
+			, B.LMOTIM AS LMOTIM
+			, B.LMOUSR AS LMOUSR
+			, NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = B.LMOUSR),' ') AS LUSRNM
+			, B.UPDCHK AS UPDCHK
+			, '' AS ROWSTATUS
+		FROM SKUMA A, SKUWC B
+		WHERE 1 = 1
+		<!-- AND A.OWNRKY = #SES_OWNER# -->
+		<isNotEmpty property="WAREKY">
+		AND B.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isEqual property="PROGID" compareValue="SK02">
+		AND B.DPUTLO ='UNKNOWN'
+		</isEqual>
+		<isEqual property="DELMAK" compareValue="Y">
+		AND TRIM(A.DELMAK) IS NOT NULL
+		</isEqual>
+		<isEqual property="DELMAK" compareValue="N">
+		AND TRIM(A.DELMAK) IS NULL
+		</isEqual>
+		<isEqual property="IBROUT" compareValue="Y">
+		AND TRIM(B.IBROUT) IS NOT NULL
+		</isEqual>
+		<isEqual property="IBROUT" compareValue="N">
+		AND TRIM(B.IBROUT) IS NULL
+		</isEqual>
+		<isEqual property="OBROUT" compareValue="Y">
+		AND TRIM(B.IBROUT) IS NOT NULL
+		</isEqual>
+		<isEqual property="OBROUT" compareValue="N">
+		AND TRIM(B.IBROUT) IS NULL
+		</isEqual>
+		<isNotEmpty property="BATMNG">
+		AND	A.BATMNG = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="BUFMNG">
+		AND	A.BUFMNG = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="ASKU05">
+		AND	A.ASKU05 = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="SKUL01">
+		AND	A.SKUL01 = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="SKUL02">
+		AND	A.SKUL02 = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		<isNotEmpty property="DELMAK">
+			AND A.DELMAK LIKE DECODE(#DELMAK#,' ','%','V')
+		</isNotEmpty>
+		AND A.OWNRKY = B.OWNRKY
+		AND A.SKUKEY = B.SKUKEY
+	</select>
+	
+	<select id="SKUKEYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM SKUMA 
+		 WHERE 1 = 1 
+           AND SKUKEY = #SKUKEY#
+	</select>
+	
+		<!-- SKU> SKU★ 체크 -->
+	<select id="SKUMA_VALIDATION" parameterClass="Map" resultClass="DataMap"> 
+		SELECT
+		  CASE
+		    WHEN MH.MEASKY IS NULL THEN 'IN_M0074' || ' ' || STD.MEASKY
+		    WHEN (STD.LOCARV != ' ' AND RLA.LOCAKY IS NULL) THEN 'IN_M0006' || ' ' || STD.LOCARV 
+    	  <!--    WHEN PH.PASTKY IS NULL THEN 'VALID_M0208' || ' ' || STD.PASTKY  -->
+		    WHEN (STD.PASTKY != ' ' AND PH.PASTKY IS NULL) THEN 'VALID_M0208' || ' ' || STD.PASTKY 
+		    WHEN (STD.DPUTLO != ' ' AND PLA.LOCAKY IS NULL) THEN 'MASTER_M0440' || ' ' || STD.DPUTLO 
+		  <!--   WHEN AH.ALSTKY IS NULL THEN 'MASTER_M0585' || ' ' || STD.ALSTKY -->
+		    WHEN (STD.DPUTZO != ' ' AND ZE.ZONEKY IS NULL) THEN 'MASTER_M0457' || ' ' || STD.DPUTZO  
+		    ELSE 'OK'
+		  END AS MSG
+		FROM (
+		    	$VALIDATION_SQL$ 
+		      ) STD 
+		    LEFT OUTER JOIN MEASH MH ON MH.MEASKY = STD.MEASKY AND MH.WAREKY = STD.WAREKY
+		    LEFT OUTER JOIN LOCMA RLA ON RLA.LOCAKY = STD.LOCARV AND RLA.WAREKY = STD.WAREKY
+		    LEFT OUTER JOIN PASTH PH ON PH.PASTKY = STD.PASTKY AND PH.WAREKY = STD.WAREKY
+		    LEFT OUTER JOIN LOCMA PLA ON PLA.LOCAKY = STD.DPUTLO AND PLA.WAREKY = STD.WAREKY
+		    LEFT OUTER JOIN ALSTH AH ON AH.ALSTKY = STD.ALSTKY AND AH.WAREKY = STD.WAREKY
+		    LEFT OUTER JOIN ZONMA ZE ON ZE.ZONEKY = STD.DPUTZO AND ZE.WAREKY = STD.WAREKY
+		WHERE 1 = 1
+		  AND MH.MEASKY IS NULL
+		  OR PH.PASTKY IS NULL
+		  OR AH.ALSTKY IS NULL
+		  OR (STD.LOCARV != ' ' AND RLA.LOCAKY IS NULL)
+		  OR (STD.DPUTLO != ' ' AND PLA.LOCAKY IS NULL)
+		  OR (STD.DPUTZO != ' ' AND ZE.ZONEKY IS NULL)
+	</select>
+	
+	<!-- SKU> SKU★  신규 -->
+	<insert id="SKUMA_INSERT" parameterClass="Map">
+		INSERT INTO SKUMA 
+		    (
+		     OWNRKY,SKUKEY,DELMAK,DESC01,DESC02,VENDKY,
+		     ASKU01,ASKU02,ASKU03,ASKU04,ASKU05,ASKL01,
+		     ASKL02,ASKL03,ASKL04,ASKL05,EANCOD,GTINCD,
+		     SKUG01,SKUG02,SKUG03,SKUG04,SKUG05,SKUL01,
+		     SKUL02,SKUL03,SKUL04,SKUL05,GRSWGT,NETWGT,
+		     WGTUNT,LENGTH,WIDTHW,HEIGHT,CUBICM,CAPACT,
+		     DUOMKY,QTDUOM,ABCANV,LOTL01,LOTL02,LOTL03,
+		     LOTL04,LOTL05,LOTL06,LOTL07,LOTL08,LOTL09,
+		     LOTL10,LOTL11,LOTL12,LOTL13,LOTL14,LOTL15,
+		     LOTL16,LOTL17,LOTL18,LOTL19,LOTL20,OUTDMT,
+		     RIMDMT,INNDPT,SECTWD,WEIGHT,DLGORT,BATMNG,
+		     LGPRO,CSTDAT,CPSKUG,DESC03,DESC04,QTYMON,
+		     QTYSTD,QTYCNT,BUFMNG,CREDAT,CRETIM,CREUSR,
+		     LMODAT,LMOTIM,LMOUSR,INDBZL
+		     ) 
+		 VALUES  
+		    (
+		     NVL(#OWNRKY#,' '),NVL(#SKUKEY#,' '),NVL(#DELMAK#,' '),NVL(#DESC01#,' '),NVL(#DESC02#,' '),NVL(#VENDKY#,' '),
+			NVL(#ASKU01#,' '),NVL(#ASKU02#,' '),NVL(#ASKU03#,' '),NVL(#ASKU04#,' '),NVL(#ASKU05#,' '),NVL(#ASKL01#,' '),
+			NVL(#ASKL02#,' '),NVL(#ASKL03#,' '),NVL(#ASKL04#,' '),NVL(#ASKL05#,' '),NVL(#EANCOD#,' '),NVL(#GTINCD#,' '),
+			NVL(#SKUG01#,' '),NVL(#SKUG02#,' '),NVL(#SKUG03#,' '),NVL(#SKUG04#,' '),NVL(#SKUG05#,' '),NVL(#SKUL01#,' '),
+			NVL(#SKUL02#,' '),NVL(#SKUL03#,' '),NVL(#SKUL04#,' '),NVL(#SKUL05#,' '),TO_NUMBER(NVL(TRIM(#GRSWGT#), 0)),TO_NUMBER(NVL(TRIM(#NETWGT#), 0)),
+			TO_NUMBER(NVL(TRIM(#WGTUNT#), 0)),TO_NUMBER(NVL(TRIM(#LENGTH#), 0)),TO_NUMBER(NVL(TRIM(#WIDTHW#), 0)),TO_NUMBER(NVL(TRIM(#HEIGHT#), 0)),TO_NUMBER(NVL(TRIM(#CUBICM#), 0)),TO_NUMBER(NVL(TRIM(#CAPACT#), 0)),
+			NVL(#DUOMKY#,' '),TO_NUMBER(NVL(TRIM(#QTDUOM#), 0)),NVL(#ABCANV#,' '),NVL(#LOTL01#,' '),NVL(#LOTL02#,' '),NVL(#LOTL03#,' '),
+			NVL(#LOTL04#,' '),NVL(#LOTL05#,' '),NVL(#LOTL06#,' '),NVL(#LOTL07#,' '),NVL(#LOTL08#,' '),NVL(#LOTL09#,' '),
+			NVL(#LOTL10#,' '),NVL(#LOTL11#,' '),NVL(#LOTL12#,' '),NVL(#LOTL13#,' '),NVL(#LOTL14#,' '),NVL(#LOTL15#,' '),
+			NVL(#LOTL16#,' '),NVL(#LOTL17#,' '),NVL(#LOTL18#,' '),NVL(#LOTL19#,' '),NVL(#LOTL20#,' '),TO_NUMBER(NVL(TRIM(#OUTDMT#), 0)),
+			TO_NUMBER(NVL(TRIM(#RIMDMT#), 0)),TO_NUMBER(NVL(TRIM(#INNDPT#), 0)),TO_NUMBER(NVL(TRIM(#SECTWD#), 0)),TO_NUMBER(NVL(TRIM(#WEIGHT#), 0)),NVL(#DLGORT#,' '),NVL(#BATMNG#,' '),
+			NVL(#LGPRO#,' '),NVL(#CSTDAT#,' '),NVL(#CPSKUG#,' '),NVL(#DESC03#,' '),NVL(#DESC04#,' '),TO_NUMBER(NVL(TRIM(#QTYMON#), 0)),
+			TO_NUMBER(NVL(TRIM(#QTYSTD#), 0)),TO_NUMBER(NVL(TRIM(#QTYCNT#), 0)),NVL(#BUFMNG#, ' '),TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,NVL(#INDBZL#,' ')
+		     )
+	</insert>
+	
+		<!-- SKU> SKU★  신규 -->
+	<insert id="SKUWC_INSERT" parameterClass="Map">
+		INSERT INTO SKUWC
+		    (     
+		     WAREKY,OWNRKY,SKUKEY,CAPACT,MEASKY,LOCARV,LOCAQC,
+		     RCSTKY,PASTKY,CAPACR,SASTKY,ALSTKY,TKFLKY,SPRIKY,
+		     IBPROT,OBPROT,UOMDIN,UOMDOU,UOMDTA,ABCANV,INDSLC,
+		     SLCLAT,SLCTYP,SLCPDI,SLCPDO,DPUTZO,DPUTLO,CPVNDR,
+		     CPMEAS,LOCOVR,PLOCOV,TARIKY,LOTRKY,EXPDCK,PRODCK,
+		     OUTDMT,RIMDMT,INNDPT,SECTWD,WEIGHT,SHPPRT,IFFLAG,
+		     CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR,INDBZL,
+		     INDARC,UPDCHK
+		     ) 
+		 VALUES 
+		    (
+		     NVL(#WAREKY#, ' '),NVL(#OWNRKY#, ' '),NVL(#SKUKEY#, ' '),TO_NUMBER(NVL(TRIM(#CAPACT#), 0)),NVL(#MEASKY#, ' '),NVL(#LOCARV#, ' '),NVL(#LOCAQC#, ' '),
+		     NVL(#RCSTKY#, ' '),NVL(#PASTKY#, ' '),NVL(#CAPACR#, ' '),NVL(#SASTKY#, ' '),NVL(#ALSTKY#, ' '),NVL(#TKFLKY#, ' '),NVL(#SPRIKY#, ' '),
+		     NVL(#IBPROT#, ' '),NVL(#OBPROT#, ' '),NVL(#UOMDIN#, ' '),NVL(#UOMDOU#, ' '),NVL(#UOMDTA#, ' '),NVL(#ABCANV#, ' '),NVL(#INDSLC#, ' '),
+		     NVL(#SLCLAT#, ' '),NVL(#SLCTYP#, ' '),TO_NUMBER(NVL(TRIM(#SLCPDI#), 0)),TO_NUMBER(NVL(TRIM(#SLCPDO#), 0)),NVL(#DPUTZO#, ' '),NVL(#DPUTLO#, ' '),NVL(#CPVNDR#, ' '),
+		     NVL(#CPMEAS#, ' '),NVL(#LOCOVR#, ' '),NVL(#PLOCOV#, ' '),NVL(#TARIKY#, ' '),NVL(#LOTRKY#, ' '),NVL(#EXPDCK#, ' '),NVL(#PRODCK#, ' '),
+		     TO_NUMBER(NVL(TRIM(#OUTDMT#), 0)),TO_NUMBER(NVL(TRIM(#RIMDMT#), 0)),TO_NUMBER(NVL(TRIM(#INNDPT#), 0)),TO_NUMBER(NVL(TRIM(#SECTWD#), 0)),TO_NUMBER(NVL(TRIM(#WEIGHT#), 0)),NVL(#SHPPRT#, ' '),NVL(#IFFLAG#, ' '),
+		     TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,NVL(#INDBZL#, ' '),
+		     NVL(#INDARC#, ' '),TO_NUMBER(NVL(TRIM(#UPDCHK#), 0))
+		     )
+	</insert>
+
+
+<!-- SKU> SKU★ 수정 -->
+<update id="SKUMA_UPDATE" parameterClass="Map">
+	 UPDATE SKUMA SET 
+		    LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD') ,
+	        LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS') ,
+	        LMOUSR = #SES_USER_ID# ,
+	    <isNotEmpty property="OWNRKY">
+			OWNRKY = #OWNRKY#,
+		</isNotEmpty>
+		<isNotEmpty property="SKUKEY">
+			SKUKEY = #SKUKEY#,
+		</isNotEmpty>
+		<isNotEmpty property="DELMAK">
+			DELMAK = #DELMAK#,
+		</isNotEmpty>
+		<isNotEmpty property="DESC01">
+			DESC01 = #DESC01#,
+		</isNotEmpty>
+		<isNotEmpty property="SKUG01">
+			SKUG01 = #SKUG01#,
+		</isNotEmpty>
+		<isNotEmpty property="SKUG02">
+			SKUG02 = #SKUG02#,
+		</isNotEmpty>
+		<isNotEmpty property="LENGTH">
+			LENGTH = #LENGTH#,
+		</isNotEmpty>
+		<isNotEmpty property="WIDTHW">
+			WIDTHW = #WIDTHW#,
+		</isNotEmpty>
+		<isNotEmpty property="HEIGHT">
+			HEIGHT = #HEIGHT#,
+		</isNotEmpty>
+		<isNotEmpty property="CUBICM">
+			CUBICM = #CUBICM#,
+		</isNotEmpty>
+		<isNotEmpty property="CAPACT">
+			CAPACT = #CAPACT#,
+		</isNotEmpty>
+		<isNotEmpty property="DUOMKY">
+			DUOMKY = #DUOMKY#,
+		</isNotEmpty>
+		<isNotEmpty property="QTDUOM">
+			QTDUOM = #QTDUOM#,
+		</isNotEmpty>
+		<isNotEmpty property="ABCANV">
+			ABCANV = #ABCANV#,
+		</isNotEmpty>
+		<isNotEmpty property="LOTL08">
+			LOTL08 = #LOTL08#,
+		</isNotEmpty>
+		<isNotEmpty property="ECTWD">
+			SECTWD = #ECTWD#,
+		</isNotEmpty>
+		<isNotEmpty property="WEIGHT">
+			WEIGHT = #WEIGHT#,
+		</isNotEmpty>
+		<isNotEmpty property="BATMNG">
+			BATMNG = #BATMNG#,
+		</isNotEmpty>
+		<isNotEmpty property="ASKU04">
+			ASKU04 = #ASKU04#,
+		</isNotEmpty>
+		<isNotEmpty property="INNDPT">
+			INNDPT = #INNDPT#,
+		</isNotEmpty>
+        <isNotEmpty property="EANCOD">
+			EANCOD = #EANCOD#,
+		</isNotEmpty>
+        <isNotEmpty property="GTINCD">
+			GTINCD = #GTINCD#,
+		</isNotEmpty>
+        <isNotEmpty property="GRSWGT">
+			GRSWGT = #GRSWGT#,
+		</isNotEmpty>
+        <isNotEmpty property="NETWGT">
+			NETWGT = #NETWGT#,
+		</isNotEmpty>
+        <isNotEmpty property="WGTUNT">
+			WGTUNT = #WGTUNT#,
+		</isNotEmpty>
+		<isNotEmpty property="ASKL03"> 
+		 ASKL03 = #ASKL03# ,
+		</isNotEmpty> 
+		<isNotEmpty property="BUFMNG">
+			BUFMNG = #BUFMNG#
+		</isNotEmpty>
+	WHERE 1 = 1
+	AND OWNRKY = #OWNRKY# 
+	AND SKUKEY = #SKUKEY# 
+	</update>
+	
+	<!-- SKU> SKU★22 수정 -->
+<update id="SKUWC_UPDATE" parameterClass="Map">
+	 UPDATE SKUWC SET 
+	<isNotEmpty property="WAREKY"> 
+		 WAREKY = #WAREKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="OWNRKY"> 
+		 OWNRKY = #OWNRKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SKUKEY"> 
+		 SKUKEY = #SKUKEY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="CAPACT"> 
+		 CAPACT = #CAPACT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="MEASKY"> 
+		 MEASKY = #MEASKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="LOCARV"> 
+		 LOCARV = #LOCARV# ,
+	</isNotEmpty> 
+	<isNotEmpty property="LOCAQC"> 
+		 LOCAQC = #LOCAQC# ,
+	</isNotEmpty> 
+	<isNotEmpty property="RCSTKY"> 
+		 RCSTKY = #RCSTKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="PASTKY"> 
+		 PASTKY = #PASTKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="CAPACR"> 
+		 CAPACR = #CAPACR# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SASTKY"> 
+		 SASTKY = #SASTKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="ALSTKY"> 
+		 ALSTKY = #ALSTKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="TKFLKY"> 
+		 TKFLKY = #TKFLKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SPRIKY"> 
+		 SPRIKY = #SPRIKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="IBPROT"> 
+		 IBPROT = #IBPROT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="OBPROT"> 
+		 OBPROT = #OBPROT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="UOMDIN"> 
+		 UOMDIN = #UOMDIN# ,
+	</isNotEmpty> 
+	<isNotEmpty property="UOMDOU"> 
+		 UOMDOU = #UOMDOU# ,
+	</isNotEmpty> 
+	<isNotEmpty property="UOMDTA"> 
+		 UOMDTA = #UOMDTA# ,
+	</isNotEmpty> 
+	<isNotEmpty property="ABCANV"> 
+		 ABCANV = #ABCANV# ,
+	</isNotEmpty> 
+	<isNotEmpty property="INDSLC"> 
+		 INDSLC = #INDSLC# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SLCLAT"> 
+		 SLCLAT = #SLCLAT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SLCTYP"> 
+		 SLCTYP = #SLCTYP# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SLCPDI"> 
+		 SLCPDI = #SLCPDI# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SLCPDO"> 
+		 SLCPDO = #SLCPDO# ,
+	</isNotEmpty> 
+	<isNotEmpty property="DPUTZO"> 
+		 DPUTZO = #DPUTZO# ,
+	</isNotEmpty> 
+	<isNotEmpty property="DPUTLO"> 
+		 DPUTLO = #DPUTLO# ,
+	</isNotEmpty>
+	<isNotEmpty property="DPUTAR"> 
+		 DPUTAR = #DPUTAR# ,
+	</isNotEmpty>  
+	<isNotEmpty property="CPVNDR"> 
+		 CPVNDR = #CPVNDR# ,
+	</isNotEmpty> 
+	<isNotEmpty property="CPMEAS"> 
+		 CPMEAS = #CPMEAS# ,
+	</isNotEmpty> 
+	<isNotEmpty property="LOCOVR"> 
+		 LOCOVR = #LOCOVR# ,
+	</isNotEmpty> 
+	<isNotEmpty property="PLOCOV"> 
+		 PLOCOV = #PLOCOV# ,
+	</isNotEmpty> 
+	<isNotEmpty property="TARIKY"> 
+		 TARIKY = #TARIKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="LOTRKY"> 
+		 LOTRKY = #LOTRKY# ,
+	</isNotEmpty> 
+	<isNotEmpty property="EXPDCK"> 
+		 EXPDCK = #EXPDCK# ,
+	</isNotEmpty> 
+	<isNotEmpty property="PRODCK"> 
+		 PRODCK = #PRODCK# ,
+	</isNotEmpty> 
+	<isNotEmpty property="OUTDMT"> 
+		 OUTDMT = #OUTDMT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="RIMDMT"> 
+		 RIMDMT = #RIMDMT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="INNDPT"> 
+		 INNDPT = #INNDPT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SECTWD"> 
+		 SECTWD = #SECTWD# ,
+	</isNotEmpty> 
+	<isNotEmpty property="WEIGHT"> 
+		 WEIGHT = #WEIGHT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="SHPPRT"> 
+		 SHPPRT = #SHPPRT# ,
+	</isNotEmpty> 
+	<isNotEmpty property="IFFLAG"> 
+		 IFFLAG = #IFFLAG# ,
+	</isNotEmpty> 
+		LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD') ,
+	    LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS') ,
+	    LMOUSR = #SES_USER_ID# 
+	 WHERE WAREKY = #WAREKY# 
+	 AND OWNRKY = #OWNRKY# 
+	 AND SKUKEY = #SKUKEY# 
+	</update>
+	
+	<!-- SKU> SKU★22  삭제 -->
+	<delete id="SKUWC_DELETE" parameterClass="Map">
+		 DELETE FROM SKUWC
+ 		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND OWNRKY = #OWNRKY# 
+		 AND SKUKEY = #SKUKEY# 
+
+	</delete>
+	
+	<!-- SKU> SKU★  삭제 -->
+	<delete id="SKUMA_DELETE" parameterClass="Map">
+		 DELETE FROM SKUMA
+ 		 WHERE 1 = 1
+		 AND OWNRKY = #OWNRKY# 
+		 AND SKUKEY = #SKUKEY# 
+
+	</delete>
+
+	
+	<select id="UOMKEYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL
+		      ,CDESC1 AS TEXT_COL
+		FROM CMCDV C
+		WHERE C.CMCDKY = 'DUOMKY'
+	</select>
+	
+	<select id="DELMAKCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL
+		      ,CDESC1 AS TEXT_COL
+		FROM CMCDV C
+		WHERE C.CMCDKY = 'DELMAK'
+	</select>
+	
+	<select id="IBPROTCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL
+		      ,CDESC1 AS TEXT_COL
+		FROM CMCDV C
+		WHERE C.CMCDKY = 'IBPROT'
+	</select>
+	
+	<select id="OBPROTCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL
+		      ,CDESC1 AS TEXT_COL
+		FROM CMCDV C
+		WHERE C.CMCDKY = 'OBPROT'
+	</select>
+
+	<select id="UOMMA_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT UOMMA.*
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = UOMMA.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = UOMMA.LMOUSR), ' ') AS LUSRNM
+		  FROM UOMMA
+		 WHERE 1 = 1
+		   <isNotEmpty property="UOMKEY">AND UOMKEY = #UOMKEY#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+		 ORDER BY UOMKEY
+	</select>
+	
+	<select id="UOMMA_DUPL_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT CASE WHEN STATUS_SUM > 1
+		                 THEN '단위 [' || UOMKEY || ']이/가 중복 되었습니다.'
+		            ELSE ' '
+		       END AS VALIDATION_MSG
+		  FROM (
+		         SELECT UOMKEY, SUM(STATUS) AS STATUS_SUM
+		           FROM (
+		                  SELECT 1 AS STATUS, UOMKEY FROM UOMMA UNION ALL
+		                  $VALIDATION_DUPL_SQL$
+		                )
+		          GROUP BY UOMKEY
+		         HAVING SUM(STATUS) > 1
+		          ORDER BY UOMKEY
+		       ) VALID
+		 WHERE ROWNUM = 1
+	</select>
+
+	<insert id="UOMMA_INSERT" parameterClass="Map">
+		INSERT INTO UOMMA
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , UOMKEY -- PK_1
+		  <isNotEmpty property="SHORTX">, SHORTX</isNotEmpty>
+		  <isNotEmpty property="INDDEC">, INDDEC</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #UOMKEY# -- PK_1
+		  <isNotEmpty property="SHORTX">, #SHORTX#</isNotEmpty>
+		  <isNotEmpty property="INDDEC">, #INDDEC#</isNotEmpty>
+		)
+	</insert>
+
+	<update id="UOMMA_UPDATE" parameterClass="Map">
+		UPDATE UOMMA
+		   SET LMODAT = TO_CHAR(SYSDATE,'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE,'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		     <isNotEmpty property="SHORTX">, SHORTX = #SHORTX#</isNotEmpty>
+		     <isNotEmpty property="INDDEC">, INDDEC = #INDDEC#</isNotEmpty>
+		 WHERE 1 = 1
+		   <isNotEmpty property="UOMKEY">AND UOMKEY = #UOMKEY#</isNotEmpty>
+	</update>
+
+	<delete id="UOMMA_DELETE" parameterClass="Map">
+		DELETE FROM UOMMA
+		 WHERE 1 = 1
+		   <isNotEmpty property="UOMKEY">AND UOMKEY = #UOMKEY#</isNotEmpty>
+	</delete>
+	
+	<!-- SKU> 단위구성 조회 상단 -->
+	<select id="MEASH_LIST" parameterClass="Map" resultClass="DataMap" fetchSize="10000">
+		SELECT A.WAREKY
+		,A.MEASKY
+		,A.SHORTX
+		,A.CREDAT
+		,A.CRETIM
+		,A.CREUSR
+		,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM
+		,A.LMODAT
+		,A.LMOTIM
+		,A.LMOUSR
+		,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM
+		,A.INDBZL
+		,A.INDARC
+		,A.UPDCHK
+		,A.WAREKY || A.MEASKY AS KEY
+		, ' ' AS STATUS
+		FROM MEASH A
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND A.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY A.MEASKY
+	</select>
+	
+	<!-- SKU> head 재조회 상단 -->
+	<select id="MEASHHEAD_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.WAREKY
+		,A.MEASKY
+		,A.SHORTX
+		,A.CREDAT
+		,A.CRETIM
+		,A.CREUSR
+		,A.LMODAT
+		,A.LMOTIM
+		,A.LMOUSR
+		,A.INDBZL
+		,A.INDARC
+		,A.UPDCHK
+		,A.WAREKY || A.MEASKY AS KEY
+		, ' ' AS STATUS
+		FROM MEASH A
+		WHERE 1 = 1
+		AND WAREKY = #WAREKY# 
+		ORDER BY A.MEASKY
+	</select>
+
+	<!-- SKU> 단위구성 조회 하단 -->
+	<select id="MEASHSub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  B.WAREKY AS WAREKY
+		       ,B.MEASKY AS MEASKY
+		       ,B.ITEMNO AS ITEMNO
+		       ,B.UOMKEY AS UOMKEY
+		       ,B.QTPUOM AS QTPUOM
+		       ,NVL((SELECT DUOMKY FROM SKUMA SM WHERE SM.SKUKEY = B.MEASKY), ' ') AS DUOMKY
+		       ,B.INDDFU AS INDDFU
+		       ,B.DISREC AS DISREC
+		       ,B.DISSHP AS DISSHP
+		       ,B.DISTAS AS DISTAS
+		       ,B.UPDCHK AS UPDCHK
+		       ,B.WAREKY || B.MEASKY AS KEY
+		       , ' ' AS STATUS
+		       ,B.QTAUOM AS QTAUOM
+		       ,A.CREDAT
+			   ,A.CRETIM
+			   ,A.CREUSR
+			   ,A.LMODAT
+			   ,A.LMOTIM
+			   ,A.LMOUSR
+			   ,A.INDBZL
+			   ,A.INDARC
+			   ,NVL((SELECT NMLAST FROM USRMA X WHERE X.USERID = B.CREUSR),' ') AS CUSRNM
+			   ,NVL((SELECT NMLAST FROM USRMA X WHERE X.USERID = B.LMOUSR),' ') AS LUSRNM
+		FROM  MEASH A
+		      INNER JOIN MEASI B
+		              ON A.WAREKY = B.WAREKY
+		             AND A.MEASKY = B.MEASKY
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND A.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="MEASKY">
+			AND A.MEASKY = #MEASKY#
+		</isNotEmpty>
+		ORDER BY B.MEASKY
+	</select>
+	
+	 	<!-- SKU> 단위구성  ITEMNO-->
+	<select id="ITEMNO_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT  LPAD(MAX(ITEMNO)+10,6,'0') AS ITEMNO FROM  MEASH A
+		      INNER JOIN MEASI B
+		              ON A.WAREKY = B.WAREKY
+		             AND A.MEASKY = B.MEASKY
+		WHERE 1 = 1
+			AND A.WAREKY = #WAREKY#
+			AND A.MEASKY = #MEASKY#
+	</select>
+	
+	<select id="SM01MEASKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM MEASH
+		WHERE WAREKY  = #WAREKY#
+		AND MEASKY = #MEASKY#
+		AND ROWNUM = 1
+	</select>
+    
+    
+		<!-- SKU> 단위구성  ITEMNO-->
+	<select id="ITEMNOval_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT COUNT(*)CNT
+		FROM  MEASH A
+		      INNER JOIN MEASI B
+		              ON A.WAREKY = B.WAREKY
+		             AND A.MEASKY = B.MEASKY
+		WHERE 1 = 1
+		    AND A.WAREKY = #WAREKY#
+			AND A.MEASKY = #MEASKY#
+	</select>
+	
+	<!-- SKU> 단위구성  상단 신규 -->
+	<insert id="MEASH_INSERT" parameterClass="Map">
+		INSERT INTO MEASH 
+			(
+			 WAREKY,MEASKY,SHORTX,CREDAT,
+			 CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR
+			) 
+ 		VALUES 
+ 			(
+ 			NVL(#WAREKY#,' '),NVL(#MEASKY#,' '),NVL(#SHORTX#,' '),TO_CHAR(SYSDATE, 'YYYYMMDD'),
+ 			TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+		     TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+ 			 )
+	</insert>
+
+	
+	<!-- SKU> 단위구성  하단 신규 -->
+	<insert id="MEASHSub_INSERT" parameterClass="Map">
+		INSERT INTO MEASI 
+			(
+			 WAREKY,MEASKY,ITEMNO,UOMKEY,QTPUOM,INDDFU,
+			 DISREC,DISSHP,DISTAS,LENGTH,WIDTHW,HEIGHT,
+			 CUBICM,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,
+			 LMOUSR
+			) 
+ 		VALUES
+ 			(
+ 			 NVL(#WAREKY#,' '),NVL(#MEASKY#,' '),NVL(#ITEMNO#,' '),NVL(#UOMKEY#,' '),TO_NUMBER(NVL(TRIM(#QTPUOM#), 0)),NVL(#INDDFU#,' '),
+ 			 NVL(#DISREC#,' '),NVL(#DISSHP#,' '),NVL(#DISTAS#,' '),TO_NUMBER(NVL(#LENGTH#, 0)),TO_NUMBER(NVL(#WIDTHW#, 0)),TO_NUMBER(NVL(#HEIGHT#, 0)),
+ 			 TO_NUMBER(NVL(#CUBICM#, 0)),TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+		     TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+ 			 )
+	</insert>
+		
+	<!-- SKU> 단위구성  상단 삭제 -->
+	<delete id="MEASH_DELETE" parameterClass="Map">
+		 DELETE FROM MEASH
+	 	 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND MEASKY = #MEASKY#
+	</delete>
+	
+	<!-- SKU> 단위구성  하단 삭제 -->
+	<delete id="MEASHSub_DELETE" parameterClass="Map">
+		 DELETE FROM MEASI
+ 		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND MEASKY = #MEASKY#
+		 AND ITEMNO = #ITEMNO#
+	</delete>
+	
+	<!-- SKU> 단위구성 헤드 삭제 -->
+	<delete id="MEASHSubAll_DELETE" parameterClass="Map">
+		 DELETE FROM MEASI
+ 		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND MEASKY = #MEASKY#
+	</delete>
+	
+	<!-- SKU> 단위구성 조회 상단 수정 -->
+	<update id="MEASH_UPDATE" parameterClass="Map">
+		 UPDATE MEASH SET 
+	<isNotEmpty property="SHORTX"> 
+		 SHORTX = #SHORTX# ,
+	</isNotEmpty> 
+	<isNotEmpty property="INDBZL"> 
+		 INDBZL = #INDBZL# ,
+	</isNotEmpty> 
+	<isNotEmpty property="INDARC"> 
+		 INDARC = #INDARC# ,
+	</isNotEmpty> 
+	<isNotEmpty property="UPDCHK"> 
+		 UPDCHK = #UPDCHK# ,
+	</isNotEmpty> 
+	LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+	LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+	LMOUSR = #SES_USER_ID#
+ 	 WHERE 1 = 1
+	 AND WAREKY = #WAREKY# 
+	 AND MEASKY = #MEASKY# 
+		</update>
+		
+	<!-- SKU> 단위구성 조회 하단 수정 -->
+	<update id="MEASHSub_UPDATE" parameterClass="Map">
+		UPDATE MEASI SET 
+		<isNotEmpty property="QTPUOM"> 
+			 QTPUOM = #QTPUOM# ,
+		</isNotEmpty> 
+		<isNotEmpty property="INDDFU"> 
+			 INDDFU = #INDDFU# ,
+		</isNotEmpty> 
+		<isNotEmpty property="DISREC"> 
+			 DISREC = #DISREC# ,
+		</isNotEmpty> 
+		<isNotEmpty property="DISSHP"> 
+			 DISSHP = #DISSHP# ,
+		</isNotEmpty> 
+		<isNotEmpty property="DISTAS"> 
+			 DISTAS = #DISTAS# ,
+		</isNotEmpty> 
+		<isNotEmpty property="UOMKEY"> 
+			 UOMKEY = #UOMKEY# ,
+		</isNotEmpty> 
+		<isNotEmpty property="LENGTH"> 
+			 LENGTH = #LENGTH# ,
+		</isNotEmpty> 
+		<isNotEmpty property="WIDTHW"> 
+			 WIDTHW = #WIDTHW# ,
+		</isNotEmpty> 
+		<isNotEmpty property="HEIGHT"> 
+			 HEIGHT = #HEIGHT# ,
+		</isNotEmpty> 
+		<isNotEmpty property="CUBICM"> 
+			 CUBICM = #CUBICM# ,
+		</isNotEmpty> 
+		<isNotEmpty property="INDBZL"> 
+			 INDBZL = #INDBZL# ,
+		</isNotEmpty> 
+		<isNotEmpty property="INDARC"> 
+			 INDARC = #INDARC# ,
+		</isNotEmpty> 
+		<isNotEmpty property="UPDCHK"> 
+			 UPDCHK = #UPDCHK#, 
+		</isNotEmpty> 
+		LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+		LMOUSR = #SES_USER_ID#
+ 	 WHERE 1 = 1
+	 AND WAREKY = #WAREKY# 
+	 AND MEASKY = #MEASKY# 
+	 AND ITEMNO = #ITEMNO#
+		</update>
+		
+		<!-- SKU> SET/BOM 상단 조회 상단 -->
+	<select id="SORTSQ_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT  MAX(SORTSQ)+1 AS SORTSQ FROM PAKMA A
+		WHERE  1 = 1
+		AND A.WAREKY = #WAREKY#
+		AND A.PACKID = #PACKID#
+
+	</select>
+	
+		<!-- SKU> SET/BOM 하단 CNT -->
+	<select id="SORTSQval_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT COUNT(*)CNT
+		FROM PAKMA A
+		   LEFT OUTER JOIN SKUMA SM
+		           ON SM.OWNRKY = #SES_OWNER#
+		          AND SM.SKUKEY = A.PACKID
+		   LEFT OUTER JOIN SKUMA SM2
+		           ON SM2.OWNRKY = #SES_OWNER#
+		          AND SM2.SKUKEY = A.SKUKEY
+		   LEFT OUTER JOIN USRMA CU
+		           ON CU.USERID = A.CREUSR
+		   LEFT OUTER JOIN USRMA LU
+		           ON LU.USERID = A.CREUSR
+		WHERE  1 = 1
+		AND A.WAREKY = #WAREKY#
+		AND A.PACKID = #PACKID#
+	</select>	
+
+	<!-- SKU> SET/BOM 상단 조회 상단 -->
+	<select id="PAKMA_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.WAREKY||A.PACKID AS KEY,
+		       A.WAREKY,
+		       A.PACKID,
+		       NVL(B.DESC01,' ') AS SHORTX,
+		       A.PAKQTY AS PAKQTY,
+		       ' ' AS STATUS
+		  FROM PAKMA A
+		       LEFT OUTER JOIN SKUMA B
+		               ON B.OWNRKY = #SES_OWNER#
+		              AND B.SKUKEY = A.PACKID
+		 WHERE 1=1
+		   <isNotEmpty property="WAREKY">
+			AND A.WAREKY = #WAREKY#
+			</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+			</isNotEmpty>
+		 GROUP BY A.WAREKY, A.PACKID, A.PAKQTY, B.DESC01
+		 ORDER BY A.WAREKY, A.PACKID, A.PAKQTY
+	</select>
+	
+		<!-- SKU> SET/BOM 하단 조회  -->
+	<select id="PAKMAsub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.WAREKY||A.PACKID AS KEY,
+		       A.WAREKY AS WAREKY,
+		       A.PACKID AS PACKID,
+		       NVL(SM.DESC01,' ') AS SHORTX,
+		       A.PAKQTY AS PAKQTY,
+		       A.SKUKEY AS SKUKEY,
+		       NVL(SM2.DESC01,' ') AS DESC01,
+		       A.UOMQTY AS UOMQTY,
+		       A.SORTSQ AS SORTSQ,
+		       A.CREDAT AS CREDAT,
+		       A.CRETIM AS CRETIM,
+		       A.CREUSR AS CREUSR,
+		       CU.NMLAST AS CUSRNM,
+		       A.LMODAT AS LMODAT,
+		       A.LMOTIM AS LMOTIM,
+		       A.LMOUSR AS LMOUSR,
+		       LU.NMLAST AS LUSRNM, 
+		       ' ' AS STATUS
+		  FROM PAKMA A
+		       LEFT OUTER JOIN SKUMA SM
+		               ON SM.OWNRKY = #SES_OWNER#
+		              AND SM.SKUKEY = A.PACKID
+		       LEFT OUTER JOIN SKUMA SM2
+		               ON SM2.OWNRKY = #SES_OWNER#
+		              AND SM2.SKUKEY = A.SKUKEY
+		       LEFT OUTER JOIN USRMA CU
+		               ON CU.USERID = A.CREUSR
+		       LEFT OUTER JOIN USRMA LU
+		               ON LU.USERID = A.CREUSR
+		 WHERE  1 = 1
+		<isNotEmpty property="WAREKY">
+			AND A.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="PACKID">
+			AND A.PACKID = #PACKID#
+		</isNotEmpty>
+		ORDER BY A.SORTSQ
+	</select>
+	
+		<!-- SKU> SET/BOM 하단 수정 -->
+	<update id="PAKMA_UPDATE" parameterClass="Map">
+			UPDATE PAKMA SET
+		<isNotEmpty property="UOMQTY"> 
+	 		UOMQTY = #UOMQTY# ,
+		</isNotEmpty> 
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+			WHERE 1 = 1
+			 AND WAREKY = #WAREKY# 
+			 AND PACKID = #PACKID# 
+			 AND SKUKEY = #SKUKEY#
+	</update>
+	
+	<!-- SKU> SET/BOM 상단 신규 -->
+	<insert id="PAKMA_INSERT" parameterClass="Map">
+		INSERT INTO PAKMA 
+			(
+			 WAREKY,PACKID,SKUKEY,SORTSQ,DESC01,
+			 SHORTX,UOMQTY,PAKQTY,CREDAT,CRETIM,
+			 CREUSR,LMODAT,LMOTIM,LMOUSR
+			 )
+		 VALUES 
+			(
+			 #WAREKY#,NVL(#PACKID#,' '),NVL(#SKUKEY#,' '),#SORTSQ#,NVL(#DESC01#,' '),
+			 NVL(#SETSKUNM#,' '),TO_NUMBER(NVL(TRIM(#UOMQTY#), 0)),TO_NUMBER(NVL(TRIM(#PAKQTY#), 0)),TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),
+			 #SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+			 )
+	</insert>
+	
+		<!-- SKU> SET/BOM SKUKEY 유무 확인 -->
+	<select id="PACKIDval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM SKUMA
+		   WHERE 1 = 1
+           AND OWNRKY = #SES_OWNER#
+		   AND SKUKEY = #PACKID#
+	</select>
+	
+		<!-- SKU> SET/BOM SKUKEY 유무 확인 -->
+	<select id="SKUKEY2val_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM SKUMA
+		   WHERE SKUKEY = #SKUKEY#
+	</select>
+	
+	<select id="PAKMA_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		       CASE
+		         WHEN SM.SKUKEY IS NULL THEN 'MASTER_M0669' || ' ' || STD.PACKID
+		         WHEN SM2.SKUKEY IS NULL THEN 'MASTER_M0669' || ' ' || STD.SKUKEY
+		         ELSE 'OK'
+		       END AS MSG
+		FROM   ( $VALIDATION_SQL$ 
+                ) STD 
+		        LEFT OUTER JOIN SKUMA SM ON SM.OWNRKY = #SES_OWNER# AND SM.SKUKEY = STD.PACKID
+		       LEFT OUTER JOIN SKUMA SM2
+		               ON SM2.OWNRKY = #SES_OWNER#
+		              AND SM2.SKUKEY = STD.SKUKEY
+	</select>
+	
+	<!-- SKU> SET/BOM  아이템리스트 삭제 -->
+	<delete id="PAKMA_DELETE" parameterClass="Map">
+		 DELETE FROM PAKMA
+	 	 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND PACKID = #PACKID#
+		 AND SKUKEY = #SKUKEY#
+	</delete>
+	
+	<!-- SKU> SET/BOM  헤드 삭제 -->
+	<delete id="PAKMAHEAD_DELETE" parameterClass="Map">
+		 DELETE FROM PAKMA
+ 		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND PACKID = #PACKID#
+	</delete>
+	
+	<!-- SKU> SET/BOM  SET재품명 가져오기-->
+	<select id="SET_MAP" parameterClass="Map" resultClass="DataMap">
+		 SELECT DESC01 AS SHORTX
+		  FROM SKUMA
+		 WHERE 1 = 1
+		   AND OWNRKY = #SES_OWNER#
+		   AND SKUKEY = #PACKID#
+		   AND ROWNUM = 1
+	</select>
+
+	<!-- SKU> SET/BOM  BOM재품명 가져오기-->
+	<select id="BOM_MAP" parameterClass="Map" resultClass="DataMap">
+		 SELECT DESC01 AS DESC01
+           FROM SKUMA 
+           WHERE 1 = 1
+           AND SKUKEY = #SKUKEY#
+           AND ROWNUM = 1
+	</select>
+	
+	<!-- SKU> LOT/Information 조회 상단 -->
+	<select id="LOTAT_LIST" parameterClass="Map" resultClass="DataMap" fetchSize="10000">
+		 SELECT LOTNUM
+		       ,WAREKY
+		       ,OWNRKY
+		       ,SKUKEY
+		       ,LOTA01
+		       ,LOTA02
+		       ,LOTA03
+		       ,LOTA04
+		       ,LOTA05
+		       ,LOTA06
+		       ,LOTA07
+		       ,LOTA08
+		       ,LOTA09
+		       ,LOTA10
+		       ,LOTA11
+		       ,LOTA12
+		       ,LOTA13
+		       ,LOTA14
+		       ,LOTA15
+		       ,LOTA16
+		       ,LOTA17
+		       ,LOTA18
+		       ,LOTA19
+		       ,LOTA20
+		       ,CREDAT
+		       ,CRETIM
+		       ,CREUSR
+		       ,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = LOTAT.CREUSR),' ') AS CUSRNM
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR 
+		       ,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = LOTAT.LMOUSR),' ') AS LUSRNM
+		       ,INDBZL 
+		       ,INDARC
+		       ,UPDCHK 
+		   FROM LOTAT
+		  WHERE 1 = 1
+		  <isNotEmpty property="OWNRKY">
+		  AND OWNRKY = #OWNRKY# 
+		  </isNotEmpty>
+		<isNotEmpty property="WAREKY"> 
+          AND WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<!-- DT01 문서종류 시작 -->
+	<select id="DT01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT DT.DOCUTY AS DOCUTY
+			 , DT.DOCCAT AS DOCCAT
+			 , DT.SHORTX AS SHORTX
+			 , DT.ITNINC AS ITNINC
+			 , DT.INSINC AS INSINC
+			 , DT.CDOCTY AS CDOCTY
+			 , DT.TRNHTY AS TRNHTY
+			 , DT.SKUVND AS SKUVND
+			 , DT.SYSLOC AS SYSLOC
+			 , DT.INDCHK AS INDCHK
+			 , DT.DOCGRP AS DOCGRP
+			 , DT.PRIORT AS PRIORT
+			 , DT.CREDAT AS CREDAT
+			 , DT.CRETIM AS CRETIM
+			 , DT.CREUSR AS CREUSR
+			 , DT.LMODAT AS LMODAT
+			 , DT.LMOTIM AS LMOTIM
+			 , DT.LMOUSR AS LMOUSR
+			 , DT.UPDCHK AS UPDCHK
+			 , NJ.NUMOBJ AS NUMOBJ
+			 , NJ.SHORTX AS NUMOBJNM
+			 , NVL((SELECT NMLAST FROM USRMA UA WHERE UA.USERID = DT.CREUSR),' ') AS CUSRNM
+			 , NVL((SELECT NMLAST FROM USRMA UA WHERE UA.USERID = DT.LMOUSR),' ') AS LUSRNM
+			 , TA.SHORTX AS TRNHTYNM
+		FROM DOCTM DT
+			LEFT OUTER JOIN NMOBJ NJ ON DT.NUMOBJ = NJ.NUMOBJ
+			LEFT OUTER JOIN THTMA TA ON DT.TRNHTY = TA.TRNHTY
+		WHERE 1 = 1
+		<isNotEmpty property="DOCCAT">
+			AND DT.DOCCAT = #DOCCAT#
+		</isNotEmpty>
+		ORDER BY DOCUTY ASC
+	</select>
+	
+	<select id="DT01TOP_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT #DOCCAT# AS DOCCAT
+		  FROM DUAL
+	</select>
+	
+	<select id="DT01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT *
+		  FROM ( SELECT CASE WHEN NM.NUMOBJ IS NULL THEN 'MASTER_M0074' || ' ' ||  STD.NUMOBJ
+							 WHEN LC.LOCAKY IS NULL THEN 'MASTER_M0477'  || ' ' || STD.SYSLOC
+							 WHEN STD.PRIORT != ' ' AND (SELECT COUNT(*) FROM ALCUS WHERE WAREKY = #SES_WAREKY# AND SEQCUS = STD.PRIORT) = 0 THEN 'VALID_M0941'
+							 ELSE 'OK'
+						END AS MSG
+				  FROM ( $VALIDATION_SQL$ )STD 
+					LEFT OUTER JOIN NMOBJ NM ON NM.NUMOBJ = STD.NUMOBJ
+					LEFT OUTER JOIN LOCMA LC ON LC.LOCAKY = STD.SYSLOC AND LC.WAREKY = #SES_WAREKY#
+				)
+		WHERE MSG != 'OK'
+	<!--   WHERE NM.NUMOBJ IS NULL OR (STD.SYSLOC != ' ' AND LC.LOCAKY IS NULL) -->
+	</select>
+	
+	<update id="DT01_UPDATE" parameterClass="Map">
+		UPDATE DOCTM SET
+			   LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+			 , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+			 , LMOUSR = #SES_USER_ID#
+		<isNotEmpty property="SHORTX">
+			, SHORTX = #SHORTX#
+		</isNotEmpty>
+		<isNotEmpty property="NUMOBJ">
+			, NUMOBJ = #NUMOBJ#
+		</isNotEmpty>
+		<isNotEmpty property="TRNHTY">
+			, TRNHTY = #TRNHTY#
+		</isNotEmpty>
+		<isNotEmpty property="SKUVND">
+			, SKUVND = #SKUVND#
+		</isNotEmpty>
+		<isNotEmpty property="SYSLOC">
+			, SYSLOC = #SYSLOC#
+		</isNotEmpty>
+		<isNotEmpty property="INDCHK">
+			, INDCHK = #INDCHK#
+		</isNotEmpty>
+		<isNotEmpty property="DOCGRP">
+			, DOCGRP = #DOCGRP#
+		</isNotEmpty>
+		<isNotEmpty property="DOCGRP">
+			, PRIORT = #PRIORT#
+		</isNotEmpty>
+		WHERE  1 = 1
+		  AND  DOCUTY = #DOCUTY#
+	</update>
+	
+	<insert id="DT01_INSERT" parameterClass="Map">
+		INSERT
+		INTO   DOCTM (DOCCAT, SHORTX, NUMOBJ, ITNINC, INSINC, CDOCTY, TRNHTY, SKUVND, SYSLOC, INDCHK, DOCGRP, PRIORT, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, UPDCHK, DOCUTY )
+		VALUES (
+					#DOCCAT#,
+					NVL(#SHORTX#, ' '),
+					#NUMOBJ#,
+					#ITNINC#,
+					#INSINC#,
+					NVL(#CDOCTY#,' '),
+					#TRNHTY#,
+					#SKUVND#,
+					NVL(#SYSLOC#, ' '),
+					#INDCHK#,
+					#DOCGRP#,
+					#PRIORT#,
+					TO_CHAR(SYSDATE, 'YYYYMMDD'),
+					TO_CHAR(SYSDATE, 'HH24MISS'),
+					#SES_USER_ID#,
+					TO_CHAR(SYSDATE, 'YYYYMMDD'),
+					TO_CHAR(SYSDATE, 'HH24MISS'),
+					#SES_USER_ID#,
+					TO_NUMBER(NVL(TRIM(#UPDCHK#), 0)),
+					#DOCUTY#
+				)
+	</insert>
+	
+	<delete id="DT01_DELETE" parameterClass="Map">
+		DELETE FROM DOCTM
+		 WHERE DOCUTY = #DOCUTY#
+	</delete>
+	
+	<select id="DOCCATCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    DOCCAT AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM DOCCM 
+		WHERE 1 = 1
+	</select>
+	<!-- DT01 문서종류 끝 -->
+	
+	<!-- 메세지 추가 -->
+	<insert id="CreateJMSGM_INSERT" parameterClass="Map">
+		INSERT INTO JMSGM
+			(
+			   LANGKY, MESGGR, MESGKY, MESGTX, CREDAT, CRETIM, CREUSR
+			)VALUES(
+			   'KO', 'MASTER', 'M0991', '*작업구역을 입력해 주세요.' , '00000000', '000000', 'DEV'
+			)
+	</insert>
+
+	<!-- 전략규칙> 전략연결 조회 상단 -->
+	<select id="ALCUS_LIST" parameterClass="Map" resultClass="DataMap">
+	 SELECT A.WAREKY,
+			A.SEQCUS,
+			A.CUSTMR,
+			(SELECT B.NAME01 FROM BZPTN B
+			WHERE A.CUSTMR = B.PTNRKY AND B.PTNRTY = 'CT') AS CUSTMRNM,
+			A.ALSTKY ,
+			A.OWNRKY ,
+			(SELECT SHORTX FROM ALSTH D
+			WHERE A.ALSTKY = D.ALSTKY
+			AND A.WAREKY = D.WAREKY) AS SHORTX,
+			A.REGN01 ,
+			A.NATNKY ,
+			NVL((SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'NATNKY' AND C.CMCDVL = A.NATNKY),' ') AS NATNKYT,
+			NVL((SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'NATNKY' AND A.NATNKY = C.CMCDVL),' ') AS NATNKYNM,
+			A.DOCUTY,
+			A.SLGORT,
+			A.CHANEL, 
+			A.SLGORT,
+			A.CREDAT,
+			A.CRETIM ,
+			A.CREUSR ,
+			NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.CREUSR),' ') AS CUSRNM,
+			A.LMODAT ,
+			A.LMOTIM ,
+			A.LMOUSR ,
+			NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = A.LMOUSR),' ') AS LUSRNM,
+			A.INDBZL ,
+			A.INDARC ,
+			A.UPDCHK
+		FROM ALCUS A
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND A.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 전략규칙> 전략연결 조회 체크 -->
+	<select id="ALCUS_VALIDATION" parameterClass="Map" resultClass="DataMap">    
+	 	SELECT
+		  CASE
+		    WHEN E.ALSTKY IS NULL THEN 'MASTER_M0287' || ' ' || STD.ALSTKY
+		    WHEN A.ALSTKY IS NOT NULL THEN 'MASTER_M0581' || ' ' || STD.ALSTKY
+		    WHEN A.NATNKY IS NOT NULL THEN 'MASTER_M0581' || ' ' || STD.NATNKY
+		    WHEN A.WAREKY IS NOT NULL THEN 'MASTER_M0581' || ' ' || STD.ALSTKY
+		    WHEN B.PTNRKY IS NULL THEN 'VALID_M0205' || ' ' || STD.CUSTMR
+		    WHEN N.NATNKY IS NULL THEN 'MASTER_M0583' || ' ' || STD.NATNKY
+		    ELSE 'OK'
+		  END AS MSG
+		FROM (
+		   		$VALIDATION_SQL$ 
+		   	) STD LEFT OUTER JOIN ALSTH E ON E.ALSTKY = STD.ALSTKY
+		  AND E.WAREKY = STD.WAREKY LEFT OUTER JOIN ALCUS A ON A.ALSTKY = STD.ALSTKY
+		  AND A.CUSTMR = STD.CUSTMR
+		  AND A.NATNKY = STD.NATNKY
+		  AND A.WAREKY = STD.WAREKY LEFT OUTER JOIN VNATNKY N ON N.NATNKY = STD.NATNKY 
+		  LEFT OUTER JOIN BZPTN B ON B.PTNRKY = STD.CUSTMR
+		WHERE 1 = 2 --2017.05.22 comment
+		 -- AND E.ALSTKY IS NULL
+		--  OR (STD.ALSTKY != ' ' AND A.ALSTKY IS NULL)
+		--  OR (STD.CUSTMR != ' ' AND A.CUSTMR IS NOT NULL OR B.PTNRKY IS NULL)
+		--  OR (STD.NATNKY != ' ' AND A.NATNKY IS NOT NULL OR N.NATNKY IS NULL)
+
+	</select>
+	
+		<!-- 전략규칙> 전략연결  신규 -->
+	<insert id="ALCUS_INSERT" parameterClass="Map">
+		INSERT INTO ALCUS
+		    (
+		     WAREKY,SEQCUS,CUSTMR,ALSTKY,REGN01,
+		     NATNKY,DOCUTY,SLGORT,CREDAT,CRETIM,
+		     CREUSR,LMODAT,LMOTIM,LMOUSR,INDBZL,
+		     INDARC,UPDCHK
+		    ) 
+		 VALUES
+		    (
+		     #WAREKY#,
+		     (SELECT LPAD(nvl(MAX(SEQCUS),0)+1,10,'0') FROM ALCUS WHERE WAREKY = #WAREKY#),
+		     NVL(#CUSTMR#,' '),
+		     NVL(#ALSTKY#,' '),
+		     NVL(#REGN01#,' '),
+		     NVL(#NATNKY#,' '),
+		     NVL(#DOCUTY#,' '),
+		     NVL(#SLGORT#,' '),
+		     TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		     TO_CHAR(SYSDATE, 'HH24MISS'),
+			 #SES_USER_ID#,
+			 TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			 TO_CHAR(SYSDATE, 'HH24MISS'),
+			 #SES_USER_ID#,
+			 NVL(#INDBZL#,' '),
+		     NVL(#INDARC#,' '),
+		     TO_NUMBER(NVL(TRIM(#UPDCHK#), 0))
+		    )
+	</insert>
+	
+	<!-- 전략규칙> 전략연결  신규 -->
+	<update id="ALCUS_UPDATE" parameterClass="Map">
+			UPDATE ALCUS SET 
+		<isNotEmpty property="WAREKY"> 
+			 WAREKY = #WAREKY# ,
+		</isNotEmpty> 
+		<isNotEmpty property="SEQCUS"> 
+			 SEQCUS = #SEQCUS# ,
+		</isNotEmpty> 
+		<isNotEmpty property="CUSTMR"> 
+			 CUSTMR = #CUSTMR# ,
+		</isNotEmpty> 
+		<isNotEmpty property="ALSTKY"> 
+			 ALSTKY = #ALSTKY# ,
+		</isNotEmpty> 
+		<isNotEmpty property="REGN01"> 
+			 REGN01 = #REGN01# ,
+		</isNotEmpty> 
+		<isNotEmpty property="NATNKY"> 
+			 NATNKY = #NATNKY# ,
+		</isNotEmpty> 
+		<isNotEmpty property="DOCUTY"> 
+			 DOCUTY = #DOCUTY# ,
+		</isNotEmpty> 
+		<isNotEmpty property="SLGORT"> 
+			 SLGORT = #SLGORT# ,
+		</isNotEmpty> 
+		LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+	         LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+	         LMOUSR = #SES_USER_ID#
+		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND SEQCUS = #SEQCUS# 
+	</update>
+
+	<!-- 전략규칙> 전략연결  삭제 -->
+	<delete id="ALCUS_DELETE" parameterClass="Map">
+		 DELETE FROM ALCUS
+ 		 WHERE 1 = 1
+		 AND WAREKY = #WAREKY# 
+		 AND SEQCUS = #SEQCUS# 
+	</delete>
+
+	<!-- 전략규칙> 전략연결  설명 -->
+	<select id="SHORTX_MAP" parameterClass="Map" resultClass="DataMap">
+	 	SELECT SHORTX 
+		  FROM ALSTH 
+		 WHERE 1 = 1
+			AND WAREKY = #WAREKY#
+		   AND ALSTKY = #ALSTKY#
+	</select>
+
+	<!-- 전략규칙> 전략연결  거래처명22 -->
+	<select id="NAME012_MAP" parameterClass="Map" resultClass="DataMap">
+	 	   SELECT B.NAME01 
+	 	     FROM BZPTN B
+			WHERE 1 = 1
+			  AND B.PTNRKY = #CUSTMR#
+			  AND ROWNUM = 1
+	</select>
+	
+	<!-- 전략규칙> 전략연결  국가명 -->
+	<select id="NATNKY_MAP" parameterClass="Map" resultClass="DataMap">
+	 	SELECT DESC01 
+		  FROM VNATNKY 
+		 WHERE 1 = 1 
+		   AND NATNKY = #NATNKY#
+	</select>
+		<!-- 전략규칙> 전략연결 유무 확인 -->
+	<select id="ALSTKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM ALSTH 
+		WHERE 1 = 1
+		AND WAREKY = #WAREKY#
+		AND	ALSTKY = #ALSTKY#
+	</select>
+	
+	<select id="ALSTKYY_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SHORTX AS SHORTX
+		  FROM ALSTH 
+		 WHERE 1 = 1 
+		   AND WAREKY = #WAREKY#
+           AND ALSTKY = #ALSTKY#
+           AND ROWNUM = 1
+	</select>
+		<!-- 전략규칙> 전략연결 유무 확인 -->
+	<select id="PTNRKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM BZPTN 
+		 WHERE 1 = 1 
+           AND PTNRKY = #CUSTMR#
+	</select>
+
+		<!-- 전략규칙> 전략연결 유무 확인 -->
+	<select id="NATNKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM VNATNKY 
+		 WHERE 1 = 1 
+           AND NATNKY = #NATNKY#
+	</select>
+	
+	<!-- 전략규칙> Sorting Rule 조회 상단 -->
+	
+	<!-- RC01 사유코드 시작 -->
+    <select id="RC01_LIST" parameterClass="Map" resultClass="DataMap">
+       SELECT  A.OWNRKY AS OWNRKY
+          , A.DOCCAT AS DOCCAT
+          , A.DOCUTY AS DOCUTY
+          , A.RSNCOD AS RSNCOD
+          , A.SHORTX AS DOCCATNM
+          , B.SHORTX AS DOCTYPNM
+          , C.SHORTX AS SHORTX
+          , A.DIFLOC AS DIFLOC
+          , A.CREDAT AS CREDAT
+		  , A.CRETIM AS CRETIM
+		  , A.CREUSR AS CREUSR
+          , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = A.CREUSR),' ') AS CUSRNM
+          , A.LMODAT AS LMODAT
+	      , A.LMOTIM AS LMOTIM
+	      , A.LMOUSR AS LMOUSR
+		  , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = A.LMOUSR),' ') AS LUSRNM
+      FROM RSNCD A, DOCTM B, DOCCM C
+      WHERE A.DOCUTY = B.DOCUTY
+      AND   A.DOCCAT = C.DOCCAT 
+      AND   A.OWNRKY = #SES_OWNER#
+      <isNotEmpty property="DOCCAT">
+         AND   A.DOCCAT = #DOCCAT#
+      </isNotEmpty>
+      <isNotEmpty property="DOCUTY">
+         AND   A.DOCUTY = #DOCUTY#
+      </isNotEmpty>
+      ORDER BY A.DOCCAT, A.DOCUTY, A.RSNCOD
+    </select>
+   
+	<select id="RC01RSNCODval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM RSNCD
+		WHERE DOCCAT  = #DOCCAT#
+		AND OWNRKY = #OWNRKY#
+		AND DOCUTY = #DOCUTY#
+		AND RSNCOD = #RSNCOD#
+		AND ROWNUM = 1
+	</select>
+	
+	<select id="RC01DOCCATNM_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT SHORTX AS SHORTX
+	  	  FROM DOCCM 
+	  	  WHERE 1 = 1 
+	  	    AND DOCCAT = #DOCCAT# 
+	</select>
+	
+	<select id="RC01DOCCATval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		FROM RSNCD 
+		WHERE 1 = 1 
+		AND DOCCAT = #DOCCAT#
+	</select>
+	
+	<select id="RC01DOCTYPNM_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT SHORTX AS DOCTYPNM
+	  	  FROM DOCTM 
+	  	  WHERE 1 = 1 
+	  	    AND DOCUTY = #DOCUTY#
+	  	    AND DOCCAT = #DOCCAT#
+	</select>
+	
+	<select id="RC01DOCUTYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+		FROM DOCTM 
+		WHERE 1 = 1 
+		AND DOCUTY = #DOCUTY#
+		AND DOCCAT = #DOCCAT#
+	</select>
+	
+	<select id="RC01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+	    CASE
+	    	WHEN B.OWNRKY IS NULL
+	            THEN 'MASTER_M0023' || ' ' || A.OWNRKY
+	        WHEN B.DOCCAT IS NULL
+	            THEN 'MASTER_M0677' || ' ' || A.DOCCAT
+	        WHEN B.DOCUTY IS NULL
+	            THEN 'MASTER_M0415' || ' ' || A.DOCUTY
+	        WHEN B.RSNCOD IS NULL
+	            THEN 'IN_M0021' || ' ' || A.RSNCOD
+	        ELSE 'OK'
+	    END AS MSG
+	    FROM(
+	        $VALIDATION_SQL$
+	    ) A
+	    LEFT OUTER JOIN RSNCD B ON B.DOCCAT = A.DOCCAT AND B.DOCUTY = A.DOCUTY
+	    WHERE B.RSNCOD IS NULL
+	</select>
+	
+	<update id="RC01_UPDATE" parameterClass="Map">
+       UPDATE RSNCD SET 
+		<isNotEmpty property="DOCCATNM">			
+              SHORTX = #DOCCATNM#,
+              DIFLOC = #DIFLOC#,
+		</isNotEmpty> 
+              LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+              LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+              LMOUSR = #SES_USER_ID#
+        WHERE DOCCAT = #DOCCAT# 
+          AND DOCUTY = #DOCUTY# 
+          AND OWNRKY = #OWNRKY# <!-- 2020.04.10 LHJ수정 후 update오류 수정 -->
+          AND RSNCOD = #RSNCOD#
+	</update> 
+	
+	<insert id="RC01_INSERT" parameterClass="Map">
+	INSERT INTO RSNCD ( 
+		SHORTX, 
+		INDBZL, 
+		INDARC, 
+		OWNRKY, 
+		DOCCAT, 
+		DOCUTY, 
+		RSNCOD,
+		DIFLOC,
+		CREDAT, 
+		CRETIM, 
+		CREUSR, 
+		LMODAT, 
+		LMOTIM, 
+		LMOUSR 
+		) VALUES (
+		#DOCCATNM#, 
+		NVL(#INDBZL#,' '),
+		NVL(#INDARC#,' '), 
+		#OWNRKY#, 
+		#DOCCAT#, 
+		#DOCUTY#, 
+		#RSNCOD#,
+		NVL(#DIFLOC#,' '), 
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#
+		)
+	</insert>
+	
+	<delete id="RC01_DELETE" parameterClass="Map">   <!-- 2020.04.01 -->
+		DELETE FROM RSNCD
+		WHERE DOCCAT = #DOCCAT#
+		AND DOCUTY = #DOCUTY#
+		AND OWNRKY = #OWNRKY#
+		AND RSNCOD = #RSNCOD#
+	</delete>
+	<!-- RC01 사유코드 끝 -->
+	
+	<!-- DC01 문서유형 시작 -->
+	<select id="DC01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.DOCCAT AS DOCCAT,
+		       A.SHORTX AS SHORTX,
+		       A.DOCUFM AS DOCUFM,
+		       A.DEFLIN AS DEFLIN,
+		       A.CREDAT AS CREDAT,
+		       A.CRETIM AS CRETIM,
+		       NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = A.CREUSR),' ') AS CUSRNM,
+		       A.CREUSR AS CREUSR,
+		       A.LMODAT AS LMODAT,
+		       A.LMOTIM AS LMOTIM,
+		       A.LMOUSR AS LMOUSR,
+		       NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = A.LMOUSR),' ') AS LUSRNM
+		  FROM DOCCM A
+		 ORDER BY DOCCAT ASC
+	</select>
+	
+	<insert id="DC01_INSERT" parameterClass="Map">
+		INSERT
+		INTO   DOCCM (
+		SHORTX, 
+		DOCUFM, 
+		DEFLIN, 
+		CREDAT, 
+		CRETIM, 
+		CREUSR, 
+		LMODAT, 
+		LMOTIM, 
+		LMOUSR, 
+		DOCCAT 
+		) VALUES (
+		#SHORTX#,
+		NVL(#DOCUFM#,'10'), 
+		NVL(#DEFLIN#,'50'), 
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		#DOCCAT#)
+	</insert>
+	
+	<delete id="DC01_DELETE" parameterClass="Map">
+		DELETE FROM DOCCM WHERE DOCCAT=#DOCCAT#
+	</delete>
+	
+	<update id="DC01_UPDATE" parameterClass="Map">
+		UPDATE DOCCM SET 
+		<isNotEmpty property="DOCCAT"> 
+			 DOCCAT = #DOCCAT# ,
+		</isNotEmpty> 
+		<isNotEmpty property="SHORTX"> 
+			 SHORTX = #SHORTX#
+		</isNotEmpty> 
+		 WHERE 
+			 DOCCAT = #DOCCAT# 
+	</update>
+	
+	<select id="RSNCD_DUPL_VALIDATION_MAP" parameterClass="Map" resultClass="DataMap">
+		<!-- SELECT
+		    CASE
+		        WHEN B.DOCCAT IS NULL
+		            THEN 'MASTER_M0414' || ' ' || A.DOCCAT
+		        ELSE 'OK'
+		    END AS MSG
+	    FROM(
+	        $VALIDATION_SQL$
+	    ) A
+	    LEFT OUTER JOIN DOCCM B ON A.DOCCAT = B.DOCCAT
+	    WHERE B.DOCCAT IS NULL -->
+	    SELECT CASE WHEN STATUS_SUM > 1
+		                 THEN '사유코드 [' || OWNRKY || DOCCAT || '-' || DOCUTY || '-' || RSNCOD || ']이/가 중복 되었습니다.'
+		            ELSE ' '
+		       END AS VALIDATION_MSG
+		  FROM (
+		         SELECT OWNRKY, DOCCAT, DOCUTY, RSNCOD, SUM(STATUS) AS STATUS_SUM
+		           FROM (
+		                  SELECT 1 AS STATUS, OWNRKY, DOCCAT, DOCUTY, RSNCOD FROM RSNCD UNION ALL
+		                  $VALIDATION_DUPL_SQL$
+		                )  A
+		          GROUP BY OWNRKY, DOCCAT, DOCUTY, RSNCOD
+		         HAVING SUM(STATUS) > 1
+		          <!-- ORDER BY DOCCAT, DOCUTY, RSNCOD  -->
+		       ) VALID
+		 WHERE 1=1
+	</select>
+	<!-- DC01 문서유형 끝 -->
+	
+	<!-- CC01 공통코드 위에 그리드 시작-->
+	<select id="CC01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT DISTINCT
+		    CM.CMCDKY AS "CMCDKY"
+		  , CM.SHORTX AS "SHORTX"
+		  , CM.DBFILD AS "DBFILD"
+		  , CM.USARL1 AS "USARL1"
+		  , CM.USARL2 AS "USARL2"
+		  , CM.USARL3 AS "USARL3"
+		  , CM.USARL4 AS "USARL4"
+		  , CM.USARL5 AS "USARL5"
+		  , CM.SYONLY AS "SYONLY"
+		  , CM.CREDAT AS "CREDAT"
+		  , CM.CRETIM AS "CRETIM"
+		  , CM.CREUSR AS "CREUSR"
+		  , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CM.CREUSR),' ') AS "CUSRNM"
+		  , CM.LMODAT AS "LMODAT"
+		  , CM.LMOTIM AS "LMOTIM"
+		  , CM.LMOUSR AS "LMOUSR"
+		  , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CM.LMOUSR),' ') AS "LUSRNM"
+		  , CM.CMCDKY AS "KEY"
+		  , ' ' AS STATUS
+		FROM CMCDM CM
+		INNER JOIN CMCDV CV
+		ON CM.CMCDKY = CV.CMCDKY
+		WHERE 1 = 1		
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		 ORDER BY CM.CMCDKY ASC
+	</select>
+	
+	<select id="CC01CMCDKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM CMCDM
+		WHERE CMCDKY = #CMCDKY#
+	</select>
+	
+	<!-- CC01 공통코드 아래 그리드 시작-->
+	<select id="CC01Sub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  CV.CMCDKY AS "CMCDKY"
+			  , CV.CMCDVL AS "CMCDVL"
+			  , CV.CDESC1 AS "CDESC1"
+			  , CV.CDESC2 AS "CDESC2"
+			  , CV.USARG1 AS "USARG1"
+			  , CV.USARG2 AS "USARG2"
+			  , CV.USARG3 AS "USARG3"
+			  , CV.USARG4 AS "USARG4"
+			  , CV.USARG5 AS "USARG5"
+			  , CV.CREDAT AS "CREDAT"
+		      , CV.CRETIM AS "CRETIM"
+		      , CV.CREUSR AS "CREUSR"
+		      , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CV.CREUSR),' ') AS "CUSRNM"
+		      , CV.LMODAT AS "LMODAT"
+	          , CV.LMOTIM AS "LMOTIM"
+		      , CV.LMOUSR AS "LMOUSR"
+		      , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = CV.LMOUSR),' ') AS "LUSRNM"
+			  , CV.CMCDKY AS "KEY"
+			  , ' ' AS STATUS
+		 FROM   CMCDV CV
+		WHERE   1 = 1	
+		  AND   CV.CMCDKY = #CMCDKY#	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="CC01CMCDVLval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM CMCDV
+		WHERE CMCDKY = #CMCDKY#
+		AND CMCDVL = #CMCDVL#
+	</select>
+
+	<insert id="CC01_INSERT" parameterClass="Map">
+		INSERT INTO CMCDM
+		(
+			CMCDKY,
+			SHORTX,
+			DBFILD,
+			USARL1,
+			USARL2,
+			USARL3,
+			USARL4,
+			USARL5,
+			SYONLY,
+			CREDAT,
+			CRETIM,
+			CREUSR,
+			LMODAT,
+			LMOTIM,
+			LMOUSR
+		)VALUES(
+			#CMCDKY#,
+			NVL(#SHORTX#,' '),
+			NVL(#DBFILD#,' '),
+			NVL(#USARL1#,' '),
+			NVL(#USARL2#,' '),
+			NVL(#USARL3#,' '),
+			NVL(#USARL4#,' '),
+			NVL(#USARL5#,' '),
+			NVL(#SYONLY#,' '),
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			TO_CHAR(SYSDATE, 'HH24MISS'),
+			#SES_USER_ID#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			TO_CHAR(SYSDATE, 'HH24MISS'),
+			#SES_USER_ID#
+		)
+	</insert>
+	
+	<insert id="CC01Sub_INSERT" parameterClass="Map">
+		INSERT INTO CMCDV
+			(
+			   CMCDKY,
+			   CMCDVL,
+			   CDESC1,
+			   CDESC2,
+			   USARG1,
+			   USARG2,
+			   USARG3,
+			   USARG4,
+			   USARG5,
+			   CREDAT,
+			   CRETIM,
+			   CREUSR,
+			   LMODAT,
+			   LMOTIM,
+			   LMOUSR
+			)VALUES(
+			   #CMCDKY#,
+			   #CMCDVL#,
+			   NVL(#CDESC1#,' '),
+			   NVL(#CDESC2#,' '),
+			   NVL(#USARG1#,' '),
+			   NVL(#USARG2#,' '),
+			   NVL(#USARG3#,' '),
+			   NVL(#USARG4#,' '),
+			   NVL(#USARG5#,' '),
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#,
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#
+			)
+	</insert>
+	
+	<update id="CC01_UPDATE" parameterClass="Map">
+		UPDATE	CMCDM
+		SET		
+		<isNotEmpty property="SHORTX">
+				SHORTX = #SHORTX#,
+		</isNotEmpty>
+		<isNotEmpty property="DBFILD">
+				DBFILD = #DBFILD#,
+		</isNotEmpty>
+		<isNotEmpty property="USARL1">
+				USARL1 = #USARL1#,
+		</isNotEmpty>
+		<isNotEmpty property="USARL2">
+				USARL2 = #USARL2#,
+		</isNotEmpty>
+		<isNotEmpty property="USARL3">
+				USARL3 = #USARL3#,
+		</isNotEmpty>
+		<isNotEmpty property="USARL4">
+				USARL4 = #USARL4#,
+		</isNotEmpty>
+		<isNotEmpty property="USARL5">
+				USARL5 = #USARL5#,
+		</isNotEmpty>
+		<isNotEmpty property="SYONLY">
+				SYONLY = #SYONLY#,
+		</isNotEmpty>
+				LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+				LMOUSR = #SES_USER_ID#
+		WHERE	CMCDKY = #CMCDKY#
+	</update>
+	
+	<update id="CC01Sub_UPDATE" parameterClass="Map">
+		UPDATE	CMCDV
+		SET		
+		<isNotEmpty property="CDESC1">
+				CDESC1 = #CDESC1#,
+		</isNotEmpty>
+		<isNotEmpty property="CDESC2">
+				CDESC2 = #CDESC2#,
+		</isNotEmpty>
+		<isNotEmpty property="USARG1">
+				USARG1 = #USARG1#,
+		</isNotEmpty>
+		<isNotEmpty property="USARG2">
+				USARG2 = #USARG2#,
+		</isNotEmpty>
+		<isNotEmpty property="USARG3">
+				USARG3 = #USARG3#,
+		</isNotEmpty>
+		<isNotEmpty property="USARG4">
+				USARG4 = #USARG4#,
+		</isNotEmpty>
+		<isNotEmpty property="USARG5">
+				USARG5 = #USARG5#,
+		</isNotEmpty>
+				LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+				LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+				LMOUSR = #SES_USER_ID#
+		WHERE	CMCDKY = #CMCDKY#
+		AND		CMCDVL = #CMCDVL#
+	</update>
+	
+	
+	<delete id="CC01_DELETE" parameterClass="Map">
+		DELETE	
+		FROM	CMCDM
+		WHERE	CMCDKY = #CMCDKY#
+	</delete>
+	
+	<delete id="CC01Sub_DELETE" parameterClass="Map">
+		DELETE	
+		FROM	CMCDV
+		WHERE	CMCDKY = #CMCDKY#
+	<isNotEmpty property="CMCDVL"> <!-- 2020.04.13 LHJ -->
+		AND		CMCDVL = #CMCDVL#
+	</isNotEmpty>
+	</delete>
+	
+	<select id="CC01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE
+         	WHEN A.CMCDKY IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.CMCDKY
+         	ELSE 'OK'
+		END AS MSG
+		FROM (  
+			 $VALIDATION_SQL$ 
+		) STD 
+		LEFT OUTER JOIN CMCDM A
+		     ON A.CMCDKY = STD.CMCDKY
+		WHERE A.CMCDKY IS NULL
+	</select>
+	
+	<select id="CC01Sub_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE
+         	WHEN A.CMCDVL IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.CMCDVL
+         	ELSE 'OK'
+		END AS MSG
+		FROM (  
+			 $VALIDATION_SQL$ 
+		) STD 
+		LEFT OUTER JOIN CMCDV A
+		     ON A.CMCDKY = STD.CMCDKY AND A.CMCDVL = STD.CMCDVL
+		WHERE A.CMCDVL IS NULL
+	</select>
+	<!-- ADMIN CC01 끝-->
+
+	<!-- TA01 -->
+	<select id="TA01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			WAREKY,
+			ALSTKY,
+			SHORTX,
+			CREDAT,
+			CRETIM,
+			CREUSR,
+			NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = ALSTH.CREUSR),' ') AS CUSRNM,
+			LMODAT,
+			LMOTIM,
+			LMOUSR,
+			NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = ALSTH.LMOUSR),' ') AS LUSRNM,
+			WAREKY || ALSTKY AS KEY,
+			' ' AS STATUS
+		FROM ALSTH
+		WHERE 1=1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<update id="TA01_UPDATE" parameterClass="Map">
+			UPDATE ALSTH SET 
+	 		SHORTX = #SHORTX#,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+			WHERE 1 = 1
+			 AND WAREKY = #WAREKY# 
+			 AND ALSTKY = #ALSTKY# 
+	</update>
+	
+	<insert id="TA01_INSERT" parameterClass="Map">
+		INSERT INTO ALSTH
+			(
+			   WAREKY,
+			   ALSTKY,
+			   SHORTX,
+			   CREDAT,
+			   CRETIM,
+			   CREUSR,
+			   LMODAT,
+			   LMOTIM,
+			   LMOUSR
+			)VALUES(
+			   #WAREKY#,
+			   #ALSTKY#,
+			   NVL(#SHORTX#,' '),
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#,
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#
+			)
+	</insert>
+	
+	<delete id="TA01_DELETE" parameterClass="Map">
+		DELETE FROM ALSTH 
+		WHERE WAREKY = #WAREKY#
+			AND ALSTKY = #ALSTKY#
+	</delete>
+	
+	<select id="TA01ALFTKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM RLRRH
+		WHERE WAREKY = #WAREKY#
+		AND LOTRKY = #LOTRKY#
+	</select>	
+	
+	<select id="TA01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE
+         	WHEN A.ALSTKY IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.ALSTKY
+         	ELSE 'OK'
+		END AS MSG
+		FROM (  
+			 $VALIDATION_SQL$ 
+		) STD 
+		LEFT OUTER JOIN ALSTH A
+		     ON A.ALSTKY = STD.ALSTKY AND A.WAREKY = STD.WAREKY
+		WHERE A.ALSTKY IS NULL
+	</select>
+	
+	<select id="TA01Sub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			WAREKY,
+			ALSTKY,
+			STEPNO,
+			SSORKY,
+			ALFTKY,
+			ALORTO,
+			ALUNIT,
+			SUALKY,
+			CREDAT,
+			CRETIM,
+			CREUSR,
+			NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = ALSTI.CREUSR),' ') AS CREUNM,
+			LMODAT,
+			LMOTIM,
+			LMOUSR,
+			NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = ALSTI.LMOUSR),' ') AS LUSRNM,
+			WAREKY || ALSTKY AS KEY,
+			' ' AS STATUS
+		FROM ALSTI
+		WHERE 1 = 1
+			AND WAREKY = #WAREKY#
+			AND ALSTKY = #ALSTKY#
+	</select>
+	
+	<update id="TA01Sub_UPDATE" parameterClass="Map">
+			UPDATE ALSTI SET 
+	 		STEPNO = #STEPNO#,
+	 		SSORKY = #SSORKY#,
+	 		ALFTKY = #ALFTKY#,
+	 		ALORTO = #ALORTO#,
+	 		ALUNIT = #ALUNIT#,
+	 		SUALKY = #SUALKY#,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+			WHERE 1 = 1
+			 AND WAREKY = #WAREKY# 
+			 AND ALSTKY = #ALSTKY# 
+			 AND STEPNO = #STEPNO#
+	</update>
+	
+	<insert id="TA01Sub_INSERT" parameterClass="Map">
+		INSERT INTO ALSTI
+			(
+			   WAREKY,
+			   ALSTKY,
+			   STEPNO,
+			   SSORKY,
+			   ALFTKY,
+			   ALORTO,
+			   ALUNIT,
+			   SUALKY,
+			   CREDAT,
+			   CRETIM,
+			   CREUSR,
+			   LMODAT,
+			   LMOTIM,
+			   LMOUSR
+			)VALUES(
+			   #WAREKY#,
+			   #ALSTKY#,
+			   #STEPNO#,
+			   #SSORKY#,
+			   #ALFTKY#,
+			   NVL(#ALORTO#,'100'),
+			   NVL(#ALUNIT#,'1'),
+			   NVL(#SUALKY#,' '),
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#,
+			   TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			   TO_CHAR(SYSDATE, 'HH24MISS'),
+			   #SES_USER_ID#
+			)
+	</insert>
+	
+	<delete id="TA01Sub_DELETE" parameterClass="Map">
+		DELETE FROM ALSTI 
+		WHERE WAREKY = #WAREKY# 
+			AND ALSTKY = #ALSTKY#
+		<isNotEmpty property="STEPNO">
+			AND STEPNO = #STEPNO#
+		</isNotEmpty>
+	</delete>
+	
+	<select id="TA01Sub_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE
+         	WHEN A.ALSTKY IS NULL THEN 'MASTER_M0097' || ' ' ||  STD.ALSTKY
+         	WHEN A.STEPNO IS NULL THEN 'OUT_M0020' || ' ' ||  STD.STEPNO
+         	ELSE 'OK'
+		END AS MSG
+		FROM (  
+			 $VALIDATION_SQL$ 
+		) STD 
+		LEFT OUTER JOIN ALSTI A
+		     ON A.ALSTKY = STD.ALSTKY AND A.STEPNO = STD.STEPNO
+		WHERE A.ALSTKY IS NULL
+	</select>
+	
+	<!-- TA01 끝 -->
+
+ 	<select id="TP01PASTHval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM PASTH
+		WHERE WAREKY  = #WAREKY#
+		AND PASTKY = #PASTKY#
+	</select>
+	
+	<select id="LOCAval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	COUNT(*) CNT 
+		  FROM	LOCMA
+		 WHERE	LOCAKY = #LOCASR#
+		   AND	ROWNUM = 1
+	</select>
+	
+	<select id="LOCATGval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	COUNT(*) CNT 
+		  FROM  LOCMA
+		 WHERE	LOCAKY = #LOCATG#
+		   AND	ROWNUM = 1
+	</select>
+	
+	<select id="ZONETGval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	COUNT(*) CNT 
+		  FROM	ZONMA
+		 WHERE	ZONEKY = #ZONETG#
+		   AND	ROWNUM = 1
+	</select>
+	<!-- TP01 Grid -->
+	<!-- <select id="TP01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			 WAREKY
+			,PASTKY
+			,SHORTX
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = PASTH.CREUSR),' ') AS CUSRNM
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = PASTH.LMOUSR),' ') AS LUSRNM
+			,WAREKY|| PASTKY AS KEY
+			,' ' AS STATUS
+		FROM PASTH
+			WHERE 1=1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select> -->
+	
+	<select id="TP01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT   DISTINCT
+		         H.WAREKY
+		       , H.PASTKY
+		       , H.SHORTX
+		       , H.CREDAT
+		       , H.CRETIM
+		       , H.CREUSR
+		       , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = H.CREUSR),' ') AS CUSRNM
+		       , H.LMODAT
+		       , H.LMOTIM
+		       , H.LMOUSR
+		       , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = H.LMOUSR),' ') AS LUSRNM
+		       , H.WAREKY || H.PASTKY AS KEY
+		       , ' ' AS STATUS
+		  FROM  PASTH H
+	  		<isEqual property="ZONE" compareValue="V">
+		       ,(SELECT * FROM PASTI WHERE LOCASR = #AREAKY# AND RMTGLS = '02' AND ZONETG = ' ') Z
+	        </isEqual>
+	        <isEqual property="LOC" compareValue="V">
+		       ,(SELECT * FROM PASTI WHERE LOCASR = #AREAKY# AND RMTGLS = '01' AND LOCATG = ' ') L
+	        </isEqual>
+		 WHERE  1 = 1
+		   AND  H.WAREKY = #WAREKY#
+		   <isEqual property="ZONE" compareValue="V">
+		   AND  H.WAREKY = Z.WAREKY
+		   AND  H.PASTKY = Z.PASTKY
+		   </isEqual>
+		   <isEqual property="LOC" compareValue="V">
+		   AND  H.WAREKY = L.WAREKY
+		   AND  H.PASTKY = L.PASTKY
+		   </isEqual>
+		   <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		   </isNotEmpty>
+	</select>
+	
+	<insert id="TP01_INSERT" parameterClass="Map">
+		INSERT
+		INTO PASTH
+		(
+		WAREKY,
+		PASTKY,
+		SHORTX,
+		CREDAT,
+		CRETIM,
+		CREUSR,
+		LMODAT,
+		LMOTIM,
+		LMOUSR
+		)
+		VALUES(
+		#WAREKY#,
+		#PASTKY#,
+		NVL(#SHORTX#,' '),
+		TO_CHAR(SYSDATE,'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#
+		)
+	</insert>
+
+	<delete id="TP01_DELETE" parameterClass="Map">
+		DELETE 
+		FROM PASTH 
+		WHERE PASTKY=#PASTKY#
+		AND WAREKY=#WAREKY#
+	</delete>
+	
+	<!-- TP01 하단그리드 -->
+	<select id="TP01Sub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 	WAREKY,
+				PASTKY,
+				STEPNO,
+				SRMEKY,
+				USDOCT,
+				LOCASR,
+				RMTGLS,
+				LOCATG,
+				ZONETG,
+				CAPACR,
+				CREDAT,
+				CRETIM,
+				CREUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = PASTI.CREUSR),' ') AS CUSRNM,
+				LMODAT,
+				LMOTIM,
+				LMOUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = PASTI.LMOUSR),' ') AS LUSRNM,
+				WAREKY || PASTKY,
+				' ' AS STATUS
+		 FROM 	PASTI
+		WHERE 	WAREKY = #WAREKY#
+		  AND 	PASTKY = #PASTKY#
+	</select>
+	
+	<insert id="TP01Sub_INSERT" parameterClass="Map">
+		INSERT INTO PASTI
+		(
+		WAREKY,
+		PASTKY,
+		STEPNO,
+		SRMEKY,
+		USDOCT,
+		LOCASR,
+		RMTGLS,
+		LOCATG,
+		ZONETG,
+		CAPACR,
+		CREDAT,
+		CRETIM,
+		CREUSR,
+		LMODAT,
+		LMOTIM,
+		LMOUSR
+		)
+		VALUES(
+		#WAREKY#,
+		#PASTKY#,
+		#STEPNO#,
+		NVL(#SRMEKY#, ' '),
+		NVL(#USDOCT#, ' '),
+		NVL(#LOCASR#, ' '),
+		NVL(#RMTGLS#, ' '),
+		NVL(#LOCATG#, ' '),
+		NVL(#ZONETG#, ' '),
+		NVL(#CAPACR#, ' '),
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE,'HH24MISS'),
+		#SES_USER_ID#,
+		TO_CHAR(SYSDATE,'YYYYMMDD'),
+		TO_CHAR(SYSDATE,'HH24MISS'),
+		#SES_USER_ID#
+		)
+	</insert>
+
+	<delete id="TP01Sub_DELETE" parameterClass="Map">
+		DELETE 
+		  FROM	PASTI
+		 WHERE	WAREKY = #WAREKY#
+		   AND	PASTKY = #PASTKY#
+		<isNotEmpty property="STEPNO">
+		   AND	STEPNO = #STEPNO#
+		</isNotEmpty>
+	</delete>
+	
+	<select id="TP01STEPNOval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	COUNT(*) CNT 
+		  FROM	PASTI
+		 WHERE 	WAREKY = #WAREKY#
+		   AND 	PASTKY = #PASTKY#
+		   AND 	STEPNO = #STEPNO#
+		   AND 	ROWNUM = 1
+	</select>
+
+	<!-- TF01 Util -->
+	<select id="TF01_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    LOTRKY,
+		    WAREKY,
+		    SHORTX
+		FROM RLRRH
+		WHERE LOTRKY = #LOTRKY#
+		   AND WAREKY = #WAREKY#
+	</select>
+	
+	 <select id="TF01New_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			#WAREKY# AS WAREKY,
+			#LOTRKY# AS LOTRKY
+		FROM DUAL
+	</select> 
+	
+	<!-- TF01 field -->
+	<select id="TF01SUB_LIST" parameterClass="Map" resultClass="DataMap">
+	SELECT  A.WAREKY 
+	       ,A.LOTRKY 
+	       ,A.ITEMNO 
+	       ,A.DBFILD 
+	       ,A.RNGVIE 
+	       ,A.RNGVOP 
+	       ,A.RNGVMI 
+	       ,A.RNGVMX 
+	       ,A.LGCOPT
+	       ,A.CREDAT 
+	       ,A.CRETIM 
+	       ,A.CREUSR 
+	       ,A.LMODAT 
+	       ,A.LMOTIM 
+	       ,A.LMOUSR 
+	       ,A.INDBZL 
+	       ,A.INDARC 
+	       ,A.UPDCHK 
+	FROM RLRRI A
+	WHERE 1 = 1
+		AND   A.LOTRKY = #LOTRKY#
+		AND   A.WAREKY = #WAREKY#
+	</select>
+	<select id="TF01SubNew_MAP" parameterClass="Map" resultClass="DataMap">
+	SELECT  #WAREKY# AS WAREKY
+	       ,#LOTRKY# AS LOTRKY
+	       ,#ITEMNO# AS ITEMNO
+	       ,#DBFILD# AS DBFILD
+	       ,#RNGVIE# AS RNGVIE
+	       ,#RNGVOP# AS RNGVOP
+	       ,#RNGVMI# AS RNGVMI
+	       ,#RNGVMX# AS RNGVMX
+	       ,#LGCOPT# AS LGCOPT
+	       , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+		   , TO_CHAR(SYSDATE, 'HHMISS') AS CRETIM
+		   , #SES_USER_ID# AS CREUSR
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+		   , TO_CHAR(SYSDATE, 'HHMISS') AS LMOTIM
+		   , #SES_USER_ID# AS LMOUSR
+	       ,#INDBZL# AS INDBZL
+	       ,#INDARC# AS INDARC
+	       ,#UPDCHK# AS UPDCHK
+	FROM DUAL 
+	</select>
+
+	<insert id="TF01I_UPDATE" parameterClass="Map">
+		INSERT INTO RLRRH
+		(
+			 SHORTX,
+			 WAREKY,
+			 LOTRKY,
+			 CREDAT,
+		     CRETIM,
+			 CREUSR,
+			 LMODAT,
+			 LMOTIM,
+			 LMOUSR,
+			 INDBZL,
+			 INDARC,
+			 UPDCHK
+		)
+		VALUES
+		(
+			 NVL(#SHORTX#,' ')
+		   , #WAREKY#
+		   , #LOTRKY#
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+	       , ' '
+	       , ' ' 
+	       , 0 
+		)
+	</insert>
+	<insert id="TF01SubI_UPDATE" parameterClass="Map">
+	INSERT INTO RLRRI(
+			  DBFILD
+		    , RNGVIE
+   	        , RNGVOP
+            , RNGVMI
+      	    , RNGVMX
+      	    , LGCOPT
+	        , CREDAT
+	        , CRETIM
+            , CREUSR
+            , LMODAT
+		    , LMOTIM
+		    , LMOUSR
+            , INDBZL
+            , INDARC
+            , UPDCHK
+	        , WAREKY
+	        , LOTRKY
+	        , ITEMNO)
+	VALUES
+		(
+			 #DBFILD#
+			,#RNGVIE#	
+			,#RNGVOP#
+			,#RNGVMI#
+			,#RNGVMX#
+			,#LGCOPT#
+			, TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+		   ,' '
+		   ,' '
+		   ,'0'
+		   ,#WAREKY#
+		   ,#LOTRKY#
+		   ,LPAD(#ITEMNO#,6,'0')
+		)
+	</insert>
+	<delete id="TF01I_DELETE" parameterClass="Map">
+		DELETE FROM
+			RLRRH
+		WHERE WAREKY=#WAREKY#
+			AND LOTRKY=#LOTRKY#
+	</delete>
+	<delete id="TF01SubI_DELETE" parameterClass="Map">
+		DELETE FROM
+			RLRRI
+		WHERE WAREKY=#WAREKY#
+			AND LOTRKY=#LOTRKY#
+	</delete>
+	<select id="LOTRKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+        FROM   
+        	RLRRH
+		WHERE  
+			LOTRKY = #LOTRKY#
+			AND WAREKY =#WAREKY# 
+	</select>
+	<!-- NR01 -->
+	<select id="NR01_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT NUMOBJ
+		 	  ,SHORTX
+			  ,NUMBFR
+			  ,NUMBTO
+			  ,NUMBST
+			  ,CREDAT
+			  ,CRETIM
+			  ,CREUSR
+			  ,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = NMOBJ.CREUSR),' ') AS CUSRNM
+			  ,LMODAT
+			  ,LMOTIM
+			  ,LMOUSR
+			  ,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = NMOBJ.LMOUSR),' ') AS LUSRNM
+			  ,INDBZL
+			  ,INDARC
+			  ,UPDCHK
+		FROM   NMOBJ
+		WHERE  NUMOBJ = #NUMOBJ#
+	</select>
+	
+	<update id="NR01UP_UPDATE" parameterClass="Map">
+		UPDATE NMOBJ
+		SET    SHORTX=#SHORTX#,
+		       NUMBST=#NUMBST#
+		WHERE  NUMOBJ=#NUMOBJ#
+	</update>
+
+	<delete id="NR01DEL_DELETE" parameterClass="Map">
+		DELETE FROM NMOBJ
+		WHERE  NUMOBJ=#NUMOBJ#
+	</delete>
+	<select id="TF01val_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		FROM   RLRRI
+		WHERE  WAREKY = #WAREKY#
+	</select>
+	<select id="NUMOBJval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		FROM   NMOBJ
+		WHERE  NUMOBJ = #NUMOBJ#
+	</select>
+	<insert id="NR01UP_INSERT" parameterClass="Map">
+		INSERT INTO NMOBJ
+		(NUMOBJ
+		,SHORTX
+		,NUMBFR
+		,NUMBTO
+		,NUMBST
+		,CREDAT
+		,CRETIM
+		,CREUSR
+		,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID =NMOBJ.CREUSR),' ') AS NMLAST1
+		,LMODAT
+		,LMOTIM
+		,LMOUSR
+		,NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = NMOBJ.LMOUSR),' ') AS NMLAST2
+		,INDBZL
+		,INDARC
+		,UPDCHK)
+		VALUES(
+		#NUMOBJ#,
+		#SHORTXTO#,
+		#NUMBFR#,
+		#NUMBTO#,
+		#NUMBST#,
+		#NMLAST#,
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'HH24MISS'),
+		#SES_USER_ID#,
+		#NMLAST#,
+		NVL(#INDBZL#, ' '),
+		NVL(#INDARC#, ' '),
+		TO_NUMBER(NVL(TRIM(#UPDCHK#), 0)))
+	</insert>
+	<!-- VALIDATION -->
+	<select id="TS01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL , '['|| CMCDVL || '] ' || CDESC1 AS TEXT_COL
+		FROM CMCDV WHERE CMCDKY = 'INDASD'
+	</select>
+
+	<select id="PATYPECOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL , CDESC1 AS
+		TEXT_COL FROM CMCDV WHERE CMCDKY = 'PATYPE'
+	</select>
+	
+	<select id="TKZONECOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL ,CDESC1 AS 
+		TEXT_COL FROM CMCDV WHERE CMCDKY = 'TKZONE' 
+	</select>
+	
+	<select id="STKQTYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL , CDESC1 AS 
+		TEXT_COL FROM CMCDV WHERE CMCDKY = 'STKQTY' 
+	</select>
+	
+	<!-- TS01 util -->
+	<select id="STSRHead_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			SSORKY,
+			WAREKY,
+			SHORTX
+		FROM STSRH
+		WHERE SSORKY = #SSORKY#
+		AND WAREKY= #WAREKY#
+	</select>
+	
+	<select id="SSORKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+        FROM STSRH
+		WHERE SSORKY = #SSORKY#
+		AND WAREKY= #WAREKY#
+	</select>
+	
+	<select id="STSRITOP_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT	ITEMNO,
+				FIELDN,
+				FLDCMT,
+				ACTVAT,
+		  		CASE WHEN TRIM(SORTSQ) IS NULL THEN SORTSQ ELSE TO_CHAR(TO_NUMBER(SORTSQ)) END AS SORTSQ,
+				INDASD,
+				WAREKY,
+				SSORKY,
+				CREDAT,
+				CRETIM,
+				CREUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = STSRI.CREUSR),' ') AS CUSRNM,
+				LMODAT,
+				LMOTIM,
+				LMOUSR,
+				NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = STSRI.CREUSR),' ') AS LUSRNM
+		FROM    STSRI
+		WHERE   WAREKY=#WAREKY#
+	  <isNotEmpty property="SSORKY">
+		AND     SSORKY = #SSORKY#
+	  </isNotEmpty>
+	</select>
+	
+	<select id="STSRH22_LIST" parameterClass="Map" resultClass="DataMap">
+  		 SELECT '010' AS ITEMNO
+              , 'WAREKY'  AS FIELDN
+              , (SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'WAREKY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CRETIM
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMOTIM
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '020' AS ITEMNO
+              , 'AREAKY'  AS FIELDN
+              , (SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'AREAKY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '030' AS ITEMNO
+              , 'ZONEKY'  AS FIELDN
+              , (SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'ZONEKY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '040' AS ITEMNO
+              , 'LOCAKY'  AS FIELDN
+              , (SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOCAKY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '050' AS ITEMNO
+              , 'UOMKEY'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'UOMKEY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '060' AS ITEMNO
+              , 'LOTNUM'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTNUM' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '070' AS ITEMNO
+              , 'TRNUID'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'TRNUID' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '080' AS ITEMNO
+              , 'OWNRKY'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'OWNRKY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '090' AS ITEMNO
+              , 'QTSIWH'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'QTSIWH' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '100' AS ITEMNO
+              , 'SKUKEY'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'SKUKEY' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '110' AS ITEMNO
+              , 'LOTA01'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA01' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '120' AS ITEMNO
+              , 'LOTA02'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA02' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL
+        SELECT '130' AS ITEMNO
+              , 'LOTA03'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA03' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL       
+        SELECT '140' AS ITEMNO
+              , 'LOTA11'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA11' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL   
+        SELECT '150' AS ITEMNO
+              , 'LOTA12'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA12' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL 
+        SELECT '160' AS ITEMNO
+              , 'LOTA13'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'LOTA13' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+        UNION ALL 
+        SELECT '170' AS ITEMNO
+              , 'OBROUT'  AS FIELDN
+              ,(SELECT LBLTXL FROM JLBLM WHERE LABLGR = 'STD' AND LABLKY = 'OBROUT' AND LANGKY = #SES_LANGUAGE# AND ROWNUM = 1)AS FLDCMT
+              , ' ' AS ACTVAT
+              , '0' AS SORTSQ
+              , ' ' AS INDASD
+              , #WAREKY# AS WAREKY
+              , #SSORKY# AS SSORKY
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS CREDAT
+              , #SES_USER_ID# AS CREUSR
+              , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+              , TO_CHAR(SYSDATE, 'HHMISS') AS LMODAT
+              , #SES_USER_ID# AS LMOUSR
+        FROM DUAL
+	</select>
+	
+	<delete id="STSRIDEL_DELETE" parameterClass="Map">
+		DELETE 
+		FROM   STSRI
+		WHERE  WAREKY=#WAREKY#
+		AND    SSORKY=#SSORKY#
+	</delete>
+	
+	<update id="STSRH1_UPDATE" parameterClass="Map">
+		UPDATE STSRH 
+		SET    SHORTX=#SHORTX#, 
+			   STLCAT=#STLCAT#, 
+		WHERE  WAREKY=#WAREKY# 
+		AND    SSORKY=#SSORKY#
+		AND    ITEMNO=#ITEMNO#
+	</update>
+	
+	<!-- TS01 grid update -->
+	<update id="STSRHTOP_UPDATE" parameterClass="Map">
+		UPDATE STSRI 
+		SET    ACTVAT = #ACTVAT#,
+		       SORTSQ = #SORTSQ#,
+		       INDASD = #INDASD#,
+		       LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		       LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+		       LMOUSR = #SES_USER_ID#
+		WHERE  1=1
+		AND    WAREKY=#WAREKY#
+		AND    ITEMNO=#ITEMNO#
+	</update>
+
+	<select id="STSRHTOP_VALIDATION" parameterClass="Map" resultClass="DataMap"> 
+		SELECT CASE WHEN W.WAREKY IS NULL THEN 'MASTER_M0255' || ' ' || P.WAREKY 
+					WHEN A.AREAKY IS NULL THEN 'MASTER_M0230' || ' ' || P.AREAKY 
+					ELSE 'OK'
+			   END AS MSG\
+		FROM( $VALIDATION_SQL$ ) P 
+			  LEFT OUTER JOIN WAHMA W ON W.WAREKY = P.WAREKY 
+			  LEFT OUTER JOIN AREMA A ON A.WAREKY = W.WAREKY AND A.AREAKY = P.AREAKY 
+		WHERE W.WAREKY IS NULL OR A.AREAKY IS NULL 
+	</select> 
+		
+	<update id="STSRHU_UPDATE" parameterClass="Map">
+		UPDATE STSRH SET     
+        <isNotEmpty property="SHORTX">
+			  SHORTX = #SHORTX#	 
+		</isNotEmpty>
+		WHERE 1=1
+		AND   WAREKY=#WAREKY#
+		AND   SSORKY=#SSORKY#
+	</update>
+	
+	 <select id="STSRH2_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			#WAREKY# AS WAREKY,
+			#SSORKY# AS SSORKY
+		FROM DUAL
+	</select> 
+	 
+	<select id="STSRH12_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			#WAREKY# AS WAREKY,
+			#SSORKY# AS SSORKY
+		FROM DUAL
+	</select> 
+	
+	<insert id="TS01I_UPDATE" parameterClass="Map">
+	INSERT INTO STSRH(
+					 WAREKY 
+					,SSORKY 
+					,SHORTX 
+					,STLCAT 
+					,CREDAT 
+					,CRETIM 
+					,CREUSR 
+					,LMODAT 
+					,LMOTIM 
+					,LMOUSR 
+					,INDBZL 
+					,INDARC 
+					,UPDCHK)
+	VALUES(
+	      	 #WAREKY#
+	       , #SSORKY#
+		   , NVL(#SHORTX#, ' ')
+		   , 10
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+		   , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		   , TO_CHAR(SYSDATE, 'HHMISS')
+		   , #SES_USER_ID#
+	       , ' '
+	       , ' ' 
+	       , 0  )
+	</insert>
+	
+	<insert id="TS01SubI_UPDATE" parameterClass="Map">
+		INSERT INTO 
+		STSRI(
+			 WAREKY
+			,SSORKY
+			,ITEMNO
+			,FIELDN
+			,FLDCMT
+			,TABLEN
+			,ACTVAT
+			,SORTSQ
+			,INDASD
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,INDBZL
+			,INDARC
+			,UPDCHK)
+		VALUES (
+			#WAREKY#,
+			#SSORKY#,
+			#ITEMNO#,
+			#FIELDN#,
+			#FLDCMT#,
+			' ',
+			#ACTVAT#,
+			NVL(#SORTSQ#,'0'),
+			NVL(#INDASD#,' '),
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			TO_CHAR(SYSDATE, 'HHMISS'),
+			#SES_USER_ID#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			TO_CHAR(SYSDATE, 'HHMISS'),
+			#SES_USER_ID#,
+		    ' ',
+		    ' ' ,
+		     0  )
+	</insert> 
+	
+	<select id="SSORKval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM   ALSTI
+		WHERE  WAREKY = #WAREKY#
+		AND    SSORKY = #SSORKY#
+	</select>
+
+	<delete id="STSRHTOP_DELETE" parameterClass="Map">
+		DELETE FROM STSRH
+		WHERE  WAREKY = #WAREKY#
+		AND    SSORKY = #SSORKY#
+	</delete>
+	
+	 <select id="TS01SORTSQval_MAP" parameterClass="Map" resultClass="DataMap">
+      SELECT COUNT(*) CNT 
+      FROM   STSRI
+      WHERE  WAREKY= #WAREKY# 
+      AND    SSORKY = #SSORKY# 
+      AND    SORTSQ = #SORTSQ#
+   </select>
+   
+   	<!-- TS01 Grid Insert -->
+   	<insert id="STSRH_INSERT" parameterClass="Map">
+		INSERT INTO STSRH
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY -- PK_1
+		  , SSORKY -- PK_2
+		  <isNotEmpty property="SHORTX">, SHORTX</isNotEmpty>
+		  <isNotEmpty property="STLCAT">, STLCAT</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #WAREKY# -- PK_1
+		  , #SSORKY# -- PK_2
+		  <isNotEmpty property="SHORTX">, #SHORTX#</isNotEmpty>
+		  <isNotEmpty property="STLCAT">, #STLCAT#</isNotEmpty>
+		)
+	</insert>
+	
+	<insert id="STSRI_INSERT" parameterClass="Map">
+		INSERT INTO STSRI
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY -- PK_1
+		  , SSORKY -- PK_2
+		  , ITEMNO -- PK_3
+		  <isNotEmpty property="FIELDN">, FIELDN</isNotEmpty>
+		  <isNotEmpty property="FLDCMT">, FLDCMT</isNotEmpty>
+		  <isNotEmpty property="TABLEN">, TABLEN</isNotEmpty>
+		  <isNotEmpty property="ACTVAT">, ACTVAT</isNotEmpty>
+		  <isNotEmpty property="SORTSQ">, SORTSQ</isNotEmpty>
+		  <isNotEmpty property="INDASD">, INDASD</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #WAREKY# -- PK_1
+		  , #SSORKY# -- PK_2
+		  , #ITEMNO# -- PK_3
+		  <isNotEmpty property="FIELDN">, #FIELDN#</isNotEmpty>
+		  <isNotEmpty property="FLDCMT">, #FLDCMT#</isNotEmpty>
+		  <isNotEmpty property="TABLEN">, #TABLEN#</isNotEmpty>
+		  <isNotEmpty property="ACTVAT">, #ACTVAT#</isNotEmpty>
+		  <isNotEmpty property="SORTSQ">, #SORTSQ#</isNotEmpty>
+		  <isNotEmpty property="INDASD">, #INDASD#</isNotEmpty>
+		)
+	</insert>
+	
+	<delete id="STSRI_DELETE" parameterClass="Map">
+		DELETE FROM STSRI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="SSORKY">AND SSORKY = #SSORKY#</isNotEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+	</delete>
+	
+	<select id="LOCMADELval_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT COUNT(*) CNT 
+	  	FROM   STKKY 
+		WHERE  1 = 1
+		AND    WAREKY = #WAREKY#
+		AND    LOCAKY = #LOCAKY#
+		AND    QTSIWH > 0
+	</select>
+	
+	<!-- TS01 Grid Update -->
+	<update id="STSRH_UPDATE" parameterClass="Map">
+		UPDATE STSRI SET
+		<isNotEmpty property="">
+			   SORTSQ=#SORTSQ#
+		</isNotEmpty>
+		WHERE  1 = 1
+		AND    WAREKY=#WAREKY#
+	</update>
+	
+	<select id="WAHMA_ADDR05_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT ADDR05 
+		FROM   WAHMA
+		WHERE  WAREKY=#WAREKY#
+	</select>
+   
+   	<insert id="BZ01BZPTN_INSERT" parameterClass="Map">
+   		INSERT INTO BZPTN  (PTNRKY,PTNRTY,DELMAK,NAME01,NAME02,
+							NAME03,ADDR01,ADDR02,ADDR03,ADDR04,
+							ADDR05,CITY01,REGN01,POSTCD,NATNKY,
+							TELN01,TELN02,TELN03,FAXTL1,FAXTL2,
+							TAXCD1,TAXCD2,VATREG,POBOX1,POBPC1,
+							EMAIL1,EMAIL2,CTTN01,CTTT01,CTTT02,
+							CTTM01,SALN01,SALT01,SALT02,SALM01,
+							EXPTNK,OWNRKY,CUSTMR,PTNG01,PTNG02,
+							PTNG03,PTNG04,PTNG05,PTNL01,PTNL02,
+							PTNL03,PTNL04,PTNL05,WTOPPM,WTOPMU,
+							WTOPDV,PROCHA,CREDAT,CRETIM,CREUSR,
+							LMODAT,LMOTIM,LMOUSR,INDBZL,INDARC,
+							UPDCHK,EWGUBN) 
+		 VALUES (#PTNRKY#,#PTNRTY#,#DELMAK#,#NAME01#,#NAME02#,
+				 ' ',#ADDR01#,' ',' ',' ',
+				 ' ',' ',' ',#POSTCD#,' ',
+				 #TELN01#,' ',' ',' ',' ',
+				 ' ',' ',#VATREG#,' ',' ',
+				 ' ',' ',' ',' ',' ',
+				 ' ',' ',' ',' ',' ',
+				 ' ',' ',' ',#PTNG01#,' ',
+				 ' ',' ',' ',' ',' ',
+				 #PTNL03#,#PTNL04#,' ','0','0',
+				 '0',' ',TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+				 TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,' ',' ',
+				 '0',#EWGUBN#)
+   	</insert>
+   
+   <select id="sendSynch_MAP" parameterClass="Map" resultClass="DataMap">
+		 { call P_AIRWMS_IFWMS001()}
+	</select>
+	
+   <select id="sendSynch2_MAP" parameterClass="Map" resultClass="DataMap">
+		 { call P_AIRWMS_IFWMS002()}
+	</select>
+   
+   <select id="SA01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		    #WAREKY# AS WAREKY,
+		    (SELECT NAME01 FROM WAHMA W WHERE W.WAREKY = #WAREKY#) AS NAME01,
+		    #AREAKY# AS AREAKY,
+		    (SELECT SHORTX FROM AREMA A WHERE A.WAREKY = #WAREKY# AND A.AREAKY = #AREAKY#) AS SHORTX,
+		    #SES_OWNER# AS OWNRKY,
+		    (SELECT NAME01 FROM OWNER O WHERE O.OWNRKY = #SES_OWNER#) AS OWNRNM,
+		    SKUKEY,
+		    DESC01,
+		    NVL((SELECT QTYROP FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),0  ) AS QTYROP,
+		    NVL((SELECT QTYMSL FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),0  ) AS QTYMSL,
+		    NVL((SELECT CREDAT FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS CREDAT,
+		    NVL((SELECT CRETIM FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS CRETIM,
+		    NVL((SELECT CREUSR FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS CREUSR,
+		    NVL((SELECT LMODAT FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS LMODAT,
+		    NVL((SELECT LMOTIM FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS LMOTIM,
+		    NVL((SELECT LMOUSR FROM SKURP SR WHERE SR.WAREKY = #WAREKY# AND SR.AREAKY = #AREAKY# AND SR.OWNRKY = #SES_OWNER# AND SR.SKUKEY = SM.SKUKEY),' ') AS LMOUSR
+		  FROM SKUMA SM
+		 WHERE BATMNG = 'V'
+		 AND   OWNRKY = #SES_OWNER#
+		<isNotEmpty property="RANGE_SQL">
+		 $RANGE_SQL$
+		</isNotEmpty>
+	</select>   
+   
+   <select id="SA01VAL_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		       CASE
+		         WHEN WH.WAREKY IS NULL THEN 'MASTER_M0582' || ' ' || STD.WAREKY
+		         WHEN AR.AREAKY IS NULL THEN 'MASTER_M0267' || ' ' || STD.AREAKY
+		         WHEN OW.OWNRKY IS NULL THEN 'MASTER_M0219' || ' ' || STD.OWNRKY
+		         WHEN SM.SKUKEY IS NULL THEN 'MASTER_M0669' || ' ' || STD.SKUKEY
+		         WHEN SW.SKUKEY IS NULL THEN 'MASTER_M0669' || ' ' || STD.SKUKEY
+		         ELSE 'OK'
+		       END AS MSG
+		FROM   ( 
+					$VALIDATION_SQL$ 
+                ) STD 
+               LEFT OUTER JOIN WAHMA WH ON WH.WAREKY = STD.WAREKY
+               LEFT OUTER JOIN AREMA AR ON AR.WAREKY = STD.WAREKY AND AR.AREAKY = STD.AREAKY AND AR.AREATY = 'STOR'
+               LEFT OUTER JOIN OWNER OW ON OW.OWNRKY = STD.OWNRKY
+		       LEFT OUTER JOIN SKUMA SM ON SM.OWNRKY = #SES_OWNER# AND SM.SKUKEY = STD.SKUKEY
+		       LEFT OUTER JOIN SKUWC SW ON SW.OWNRKY = #SES_OWNER# AND SW.SKUKEY = STD.SKUKEY
+   </select> 
+   
+   <select id="SA01_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			CASE WHEN COUNT(*) > 1 
+			THEN 'VALID_M1552' || ' ' || STD.AREAKY||'/'||STD.SKUKEY
+			ELSE 'OK'
+			END AS MSG
+		FROM (
+			SELECT WAREKY, AREAKY, OWNRKY, SKUKEY FROM SKURP
+			UNION ALL
+			$VALIDATION_SQL$ 
+		) STD
+		GROUP BY WAREKY, AREAKY, OWNRKY, SKUKEY
+		HAVING COUNT(*) > 1
+   </select>
+   
+   <select id="WAREKYNM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT NAME01 
+		FROM   WAHMA 
+		WHERE  1 = 1
+		AND    WAREKY = #WAREKY# 
+   </select>
+	 
+	<select id="AREAKYNM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SHORTX 
+		FROM   AREMA 
+		WHERE  1 = 1
+		AND    WAREKY = #WAREKY# 
+		AND    AREAKY = #AREAKY#
+		AND    AREATY = 'STOR' 
+	</select>
+	
+	<select id="SKUKEYNM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT DESC01 
+		FROM   SKUMA
+		WHERE  1 = 1
+		AND    OWNRKY = #OWNRKY#
+		AND    SKUKEY = #SKUKEY# 
+	</select>
+	
+	<insert id="SA01_INSERT" parameterClass="Map">
+		INSERT INTO SKURP 
+		(	WAREKY, AREAKY, OWNRKY, SKUKEY,
+		    QTYROP, QTYMSL, CREDAT, CRETIM,
+		    CREUSR, LMODAT, LMOTIM, LMOUSR) 
+ 		VALUES 
+ 		(	#WAREKY#, #AREAKY#, #OWNRKY#, #SKUKEY#,
+ 			TO_NUMBER(NVL(TRIM(#QTYROP#), 0)), TO_NUMBER(NVL(TRIM(#QTYMSL#), 0)), TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'),
+ 			#SES_USER_ID#, TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#)
+	</insert>
+	
+	<update id="SA01_UPDATE" parameterClass="Map">
+		MERGE INTO SKURP
+		USING DUAL
+		ON (
+		         WAREKY = #WAREKY# 
+			 AND AREAKY = #AREAKY# 
+			 AND OWNRKY = #OWNRKY#
+			 AND SKUKEY = #SKUKEY#
+		   )
+		WHEN MATCHED  THEN
+		UPDATE SET QTYROP = #QTYROP#
+		         , QTYMSL = #QTYMSL#
+			     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+			     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+			     , LMOUSR = #SES_USER_ID#
+		WHEN NOT MATCHED THEN
+		INSERT (WAREKY, AREAKY, OWNRKY, SKUKEY, QTYROP, QTYMSL, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR)
+		VALUES (#WAREKY#, #AREAKY#, #OWNRKY#, #SKUKEY#, #QTYROP#, #QTYMSL#, TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#, TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#)
+	</update>
+	
+	<delete id="SA01_DELETE" parameterClass="Map">
+		DELETE FROM SKURP 
+		 WHERE WAREKY = #WAREKY# 
+	       AND AREAKY = #AREAKY#
+	       AND OWNRKY = #OWNRKY#
+	       AND SKUKEY = #SKUKEY#
+	</delete>
+	
+	<select id="AREACOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT AREAKY AS VALUE_COL,
+		       SHORTX AS TEXT_COL
+		FROM   AREMA 
+		WHERE  1 = 1
+		AND    WAREKY = #SES_WAREKY# 
+		AND    AREATY = 'STOR'
+	</select>
+	
+	<select id="SA01ROWADD_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		    #WAREKY#,
+		    (SELECT NAME01 FROM WAHMA W WHERE W.WAREKY = #WAREKY# ) AS NAME01,
+		    #AREAKY# ,
+		    (SELECT SHORTX FROM AREMA A WHERE A.WAREKY = #WAREKY#  AND A.AREAKY = #AREAKY# ) AS SHORTX,
+		    #SES_OWNER# AS OWNRKY,
+		    (SELECT NAME01 FROM OWNER O WHERE O.OWNRKY = #SES_OWNER#) AS OWNRNM
+		FROM DUAL
+		WHERE 1 = 1
+	</select>
+	
+	<select id="SK03_LIST" parameterClass="Map" resultClass="DataMap">
+	   SELECT A.OWNRKY AS OWNRKY
+			, A.SKUKEY AS SKUKEY
+			, A.DELMAK AS DELMAK
+			, A.DESC01 AS DESC01
+			, A.DESC02 AS DESC02
+			, A.VENDKY AS VENDKY
+			, A.ASKU01 AS ASKU01
+			, A.ASKU02 AS ASKU02
+			, A.ASKU03 AS ASKU03
+			, A.ASKU04 AS ASKU04
+			, A.ASKU05 AS ASKU05
+			, A.ASKL01 AS ASKL01
+			, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'OERE' AND CMCDVL = A.ASKL01),' ') AS ASKL01M
+			, A.ASKL02 AS ASKL02
+			, A.ASKL03 AS ASKL03
+			, A.ASKL04 AS ASKL04
+			, A.ASKL05 AS ASKL05
+			, A.EANCOD AS EANCOD
+			, A.GTINCD AS GTINCD
+			, A.SKUG01 AS SKUG01
+			, NVL((SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'SKUG01' AND CMCDVL = A.SKUG01),' ') AS SKUG01T
+			, A.SKUG02 AS SKUG02
+			, A.SKUG03 AS SKUG03
+			, A.SKUG04 AS SKUG04
+			, A.SKUG05 AS SKUG05
+			, A.SKUL01 AS SKUL01
+			, A.SKUL02 AS SKUL02
+			, A.SKUL03 AS SKUL03
+			, A.SKUL04 AS SKUL04
+			, A.SKUL05 AS SKUL05
+			, A.GRSWGT AS GRSWGT
+			, A.NETWGT AS NETWGT
+			, A.WGTUNT AS WGTUNT
+			, A.LENGTH AS LENGTH
+			, A.WIDTHW AS WIDTHW
+			, A.HEIGHT AS HEIGHT
+			, A.CUBICM AS CUBICM
+			, A.CAPACT AS CAPACT
+			, A.DUOMKY AS DUOMKY
+			, A.QTDUOM AS QTDUOM
+			, A.ABCANV AS ABCANV
+			, A.LOTL01 AS LOTL01
+			, A.LOTL02 AS LOTL02
+			, A.LOTL03 AS LOTL03
+			, A.LOTL04 AS LOTL04
+			, A.LOTL05 AS LOTL05
+			, A.LOTL06 AS LOTL06
+			, A.LOTL07 AS LOTL07
+			, A.LOTL08 AS LOTL08
+			, A.LOTL09 AS LOTL09
+			, A.LOTL10 AS LOTL10
+			, A.LOTL11 AS LOTL11
+			, A.LOTL12 AS LOTL12
+			, A.LOTL13 AS LOTL13
+			, A.LOTL14 AS LOTL14
+			, A.LOTL15 AS LOTL15
+			, A.LOTL16 AS LOTL16
+			, A.LOTL17 AS LOTL17
+			, A.LOTL18 AS LOTL18
+			, A.LOTL19 AS LOTL19
+			, A.LOTL20 AS LOTL20
+			, A.OUTDMT AS OUTDMT
+			, A.RIMDMT AS RIMDMT
+			, A.INNDPT AS INNDPT
+			, A.SECTWD AS SECTWD
+			, A.WEIGHT AS WEIGHT
+			, A.LGPRO AS LGPRO
+			, A.DLGORT AS DLGORT
+			, A.BATMNG AS BATMNG
+			, A.CSTDAT AS CSTDAT
+			, A.CPSKUG AS CPSKUG
+			, A.DESC03 AS DESC03
+			, A.QTYMON AS QTYMON
+			, A.QTYSTD AS QTYSTD
+			, A.QTYCNT AS QTYCNT
+			, A.DESC04 AS DESC04
+			, A.BUFMNG AS BUFMNG
+			, B.WAREKY AS WAREKY
+			, B.MEASKY AS MEASKY
+			, B.LOCARV AS LOCARV
+			, B.LOCAQC AS LOCAQC
+			, B.RCSTKY AS RCSTKY
+			, B.PASTKY AS PASTKY
+			, B.CAPACR AS CAPACR
+			, B.SASTKY AS SASTKY
+			, B.ALSTKY AS ALSTKY
+			, B.TKFLKY AS TKFLKY
+			, B.SPRIKY AS SPRIKY
+			, B.IBPROT AS IBPROT
+			, B.OBPROT AS OBPROT
+			, B.UOMDIN AS UOMDIN
+			, B.UOMDOU AS UOMDOU
+			, B.UOMDTA AS UOMDTA
+			, B.INDSLC AS INDSLC
+			, B.SLCLAT AS SLCLAT
+			, B.SLCTYP AS SLCTYP
+			, B.SLCPDI AS SLCPDI
+			, B.SLCPDO AS SLCPDO
+			, B.DPUTZO AS DPUTZO
+			, B.DPUTLO AS DPUTLO
+			, B.CPVNDR AS CPVNDR
+			, B.CPMEAS AS CPMEAS
+			, B.LOCOVR AS LOCOVR
+			, B.PLOCOV AS PLOCOV
+			, B.TARIKY AS TARIKY
+			, B.LOTRKY AS LOTRKY
+			, B.EXPDCK AS EXPDCK
+			, B.PRODCK AS PRODCK
+			, B.SHPPRT AS SHPPRT
+			, B.IFFLAG AS IFFLAG
+			, B.CREDAT AS CREDAT
+			, B.CRETIM AS CRETIM
+			, B.CREUSR AS CREUSR
+			, NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = B.CREUSR),' ') AS CUSRNM
+			, B.LMODAT AS LMODAT
+			, B.LMOTIM AS LMOTIM
+			, B.LMOUSR AS LMOUSR
+			, NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = B.LMOUSR),' ') AS LUSRNM
+			, B.UPDCHK AS UPDCHK
+			, '' AS ROWSTATUS
+		FROM  SKUMA A, SKUWC B
+		WHERE 1 = 1
+		<!-- AND A.OWNRKY = #SES_OWNER# -->
+		AND   A.SKUG04 = 'WMS'
+		<isNotEmpty property="WAREKY">
+		AND   B.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isEqual property="PROGID" compareValue="SK02">
+		AND   B.DPUTLO ='UNKNOWN'
+		</isEqual>
+		<isEqual property="DELMAK" compareValue="Y">
+		AND   TRIM(B.DELMAK) IS NOT NULL
+		</isEqual>
+		<isEqual property="DELMAK" compareValue="N">
+		AND   TRIM(B.DELMAK) IS NULL
+		</isEqual>
+		<isEqual property="IBROUT" compareValue="Y">
+		AND   TRIM(B.IBROUT) IS NOT NULL
+		</isEqual>
+		<isEqual property="IBROUT" compareValue="N">
+		AND   TRIM(B.IBROUT) IS NULL
+		</isEqual>
+		<isEqual property="OBROUT" compareValue="Y">
+		AND   TRIM(B.IBROUT) IS NOT NULL
+		</isEqual>
+		<isEqual property="OBROUT" compareValue="N">
+		AND   TRIM(B.IBROUT) IS NULL
+		</isEqual>
+		<isNotEmpty property="BATMNG">
+		AND	  A.BATMNG = 'V'
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+		    $RANGE_SQL$
+		</isNotEmpty>
+		AND   A.OWNRKY = B.OWNRKY
+		AND   A.SKUKEY = B.SKUKEY
+	</select>
+	
+	<select id="CREATESK03_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 'IMV' AS OWNRKY,
+			 #WAREKY# AS WAREKY,
+			 ' ' AS SKUKEY,
+			 ' ' AS DELMAK,
+			 ' ' AS DESC01,
+			 ' ' AS DESC02,
+			 ' ' AS VENDKY,
+			 ' ' AS ASKU01,
+			 ' ' AS ASKU02,
+			 ' ' AS ASKU03,
+			 ' ' AS ASKU04,
+			 ' ' AS ASKU05,
+			 ' ' AS ASKL01,
+			 ' ' AS ASKL02,
+			 ' ' AS ASKL03,
+			 ' ' AS ASKL04,
+			 ' ' AS ASKL05,
+			 ' ' AS EANCOD,
+			 ' ' AS GTINCD,
+			 ' ' AS SKUG01,
+			 ' ' AS SKUG02,
+			 ' ' AS SKUG03,
+			 'WMS' AS SKUG04,
+			 ' ' AS SKUG05,
+			 ' ' AS SKUL01,
+			 ' ' AS SKUL02,
+			 ' ' AS SKUL03,
+			 ' ' AS SKUL04,
+			 ' ' AS SKUL05,
+			 ' ' AS GRSWGT,
+			 ' ' AS NETWGT,
+			 ' ' AS WGTUNT,
+			 ' ' AS LENGTH,
+			 ' ' AS WIDTHW,
+			 ' ' AS HEIGHT,
+			 ' ' AS CUBICM,
+			 ' ' AS CAPACT,
+			 ' ' AS DUOMKY,
+			 ' ' AS QTDUOM,
+			 ' ' AS ABCANV,
+			 ' ' AS LOTL01,
+			 ' ' AS LOTL02,
+			 ' ' AS LOTL03,
+			 ' ' AS LOTL04,
+			 ' ' AS LOTL05,
+			 ' ' AS LOTL06,
+			 ' ' AS LOTL07,
+			 ' ' AS LOTL08,
+			 ' ' AS LOTL09,
+			 ' ' AS LOTL10,
+			 ' ' AS LOTL11,
+			 ' ' AS LOTL12,
+			 ' ' AS LOTL13,
+			 ' ' AS LOTL14,
+			 ' ' AS LOTL15,
+			 ' ' AS LOTL16,
+			 ' ' AS LOTL17,
+			 ' ' AS LOTL18,
+			 ' ' AS LOTL19,
+			 ' ' AS LOTL20,
+			 ' ' AS OUTDMT,
+			 ' ' AS RIMDMT,
+			 ' ' AS INNDPT,
+			 ' ' AS SECTWD,
+			 ' ' AS WEIGHT,
+			 ' ' AS DLGORT,
+			 ' ' AS BATMNG,
+			 ' ' AS LGPRO,
+			 ' ' AS CSTDAT,
+			 ' ' AS CPSKUG,
+			 ' ' AS DESC03,
+			 ' ' AS DESC04,
+			 ' ' AS QTYMON,
+			 ' ' AS QTYSTD,
+			 ' ' AS QTYCNT,
+			 ' ' AS BUFMNG,
+			 TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT,
+			 TO_CHAR(SYSDATE, 'HH24MISS') AS CRETIM,
+			 #SES_USER_ID# AS CREUSR,
+			 NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = #SES_USER_ID#),' ') AS CUSRNM,
+			 TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT,
+			 TO_CHAR(SYSDATE, 'HH24MISS') AS LMOTIM,
+			 #SES_USER_ID# AS LMOUSR,
+			 NVL((SELECT NMLAST FROM USRMA D WHERE D.USERID = #SES_USER_ID#),' ') AS LUSRNM
+		FROM DUAL
+	</select>
+	
+	<select id="SK03SKUKEY_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT  COUNT(*) CNT
+		FROM	VSKUMA
+		WHERE	1 = 1
+		AND		OWNRKY = #SES_OWNER#
+		AND		WAREKY = #WAREKY#
+		AND		SKUKEY = #SKUKEY#
+	</select>
+	
+	<update id="SK03SKU_UPDATE" parameterClass="Map">
+	 UPDATE SKUMA SET 
+		    LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD') ,
+	        LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS') ,
+	        LMOUSR = #SES_USER_ID# ,
+	    <isNotEmpty property="OWNRKY">
+			OWNRKY = #OWNRKY#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUKEY">
+			SKUKEY = #SKUKEY#,
+		</isNotEmpty>
+	    <isNotEmpty property="DELMAK">
+			DELMAK = #DELMAK#,
+		</isNotEmpty>
+	    <isNotEmpty property="DESC01">
+			DESC01 = #DESC01#,
+		</isNotEmpty>
+	    <isNotEmpty property="DESC02">
+			DESC02 = #DESC02#,
+		</isNotEmpty>
+	    <isNotEmpty property="DESC03">
+			DESC03 = #DESC03#,
+		</isNotEmpty>
+	    <isNotEmpty property="DESC04">
+			DESC04 = #DESC04#,
+		</isNotEmpty>
+	    <isNotEmpty property="DUOMKY">
+			DUOMKY = #DUOMKY#,
+		</isNotEmpty>
+	    <isNotEmpty property="ABCANV">
+			ABCANV = #ABCANV#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUG01">
+			SKUG01 = #SKUG01#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUG02">
+			SKUG02 = #SKUG02#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUG03">
+			SKUG03 = #SKUG03#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUG04">
+			SKUG04 = #SKUG04#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUG05">
+			SKUG05 = #SKUG05#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUL01">
+			SKUL01 = #SKUL01#,
+		</isNotEmpty>
+	    <isNotEmpty property="SKUL02">
+			SKUL02 = #SKUL02#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL01">
+			LOTL01 = #LOTL01#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL02">
+			LOTL02 = #LOTL02#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL03">
+			LOTL03 = #LOTL03#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL04">
+			LOTL04 = #LOTL04#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL05">
+			LOTL05 = #LOTL05#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL06">
+			LOTL06 = #LOTL06#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL07">
+			LOTL07 = #LOTL07#,
+		</isNotEmpty>
+	    <isNotEmpty property="LOTL08">
+			LOTL08 = #LOTL08#,
+		</isNotEmpty>
+	    <isNotEmpty property="EANCOD">
+			EANCOD = #EANCOD#,
+		</isNotEmpty>
+	    <isNotEmpty property="GTINCD">
+			GTINCD = #GTINCD#,
+		</isNotEmpty>
+	    <isNotEmpty property="WEIGHT">
+			WEIGHT = #WEIGHT#,
+		</isNotEmpty>
+	    <isNotEmpty property="GRSWGT">
+			GRSWGT = #GRSWGT#,
+		</isNotEmpty>
+	    <isNotEmpty property="NETWGT">
+			NETWGT = #NETWGT#,
+		</isNotEmpty>
+	    <isNotEmpty property="WGTUNT">
+			WGTUNT = #WGTUNT#,
+		</isNotEmpty>
+	    <isNotEmpty property="LENGTH">
+			LENGTH = #LENGTH#,
+		</isNotEmpty>
+	    <isNotEmpty property="WIDTHW">
+			WIDTHW = #WIDTHW#,
+		</isNotEmpty>
+	    <isNotEmpty property="HEIGHT">
+			HEIGHT = #HEIGHT#,
+		</isNotEmpty>
+	    <isNotEmpty property="CUBICM">
+			CUBICM = #CUBICM#,
+		</isNotEmpty>
+	    <isNotEmpty property="CAPACT">
+			CAPACT = #CAPACT#,
+		</isNotEmpty>
+	    <isNotEmpty property="BATMNG">
+			BATMNG = #BATMNG#,
+		</isNotEmpty>
+	    <isNotEmpty property="ASKL03">
+			ASKL03 = #ASKL03#,
+		</isNotEmpty>
+	    <isNotEmpty property="BUFMNG">
+			BUFMNG = #BUFMNG#
+		</isNotEmpty>
+	WHERE 1 = 1
+ 	  AND   OWNRKY = #OWNRKY# 
+	  AND   SKUKEY = #SKUKEY# 
+	</update>
+	
+	<select id="SK04_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT B.MATNR,
+			B.SKUKEY,
+			NVL((SELECT DESC01 FROM SKUMA WHERE 1=1 AND OWNRKY = #SES_OWNER# AND SKUKEY =  B.SKUKEY),' ') AS DESC01
+		FROM BUYER B
+		WHERE 1 = 1
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="VH01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT	
+			  VEHIID
+			, VEHINO
+			, VEHINM
+			, VEHIOW
+			, VEHITY
+			, VEHIWG
+			, DRIVER
+			, TELN01
+			, VEHSTS
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		FROM VEHMA
+		WHERE 1 = 1
+		<isNotEmpty property="VEHIOW">
+			AND VEHIOW = #VEHIOW#
+		</isNotEmpty>
+		<isNotEmpty property="VEHITY">
+			AND VEHITY = #VEHITY#
+		</isNotEmpty>
+		<isNotEmpty property="VEHIWG">
+			AND VEHIWG = #VEHIWG#
+		</isNotEmpty>
+		<isNotEmpty property="VEHSTS">
+			AND VEHSTS = #VEHSTS#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY VEHINO, VEHIID 
+	</select>
+	
+	<delete id="VH01_DELETE" parameterClass="Map">
+		DELETE FROM VEHMA
+		 WHERE VEHIID = #VEHIID# 
+	</delete>
+	
+	<update id="VH01_UPDATE" parameterClass="Map">
+		UPDATE VEHMA SET 
+			<isNotEmpty property="VEHINO">
+				 VEHINO = #VEHINO#,
+			</isNotEmpty>
+			<isNotEmpty property="VEHINM">			
+				 VEHINM = #VEHINM#,
+			</isNotEmpty> 
+			<isNotEmpty property="VEHIOW">			
+				 VEHIOW = #VEHIOW#,
+			</isNotEmpty>
+			<isNotEmpty property="VEHITY">
+				 VEHITY = #VEHITY#,
+			</isNotEmpty>
+			<isNotEmpty property="VEHIWG">			
+				 VEHIWG = #VEHIWG#,
+			</isNotEmpty> 
+			<isNotEmpty property="DRIVER">			
+				 DRIVER = #DRIVER#,
+			</isNotEmpty>
+			<isNotEmpty property="TELN01">
+				 TELN01 = #TELN01#,
+			</isNotEmpty>
+			<isNotEmpty property="VEHSTS">			
+				 VEHSTS = #VEHSTS#,
+			</isNotEmpty> 
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE VEHIID = #VEHIID# 
+	</update>
+	
+	<insert id="VH01_INSERT" parameterClass="Map">
+		INSERT INTO VEHMA
+			(	 VEHIID, VEHINO, VEHINM, VEHIOW, VEHITY,
+				 VEHIWG, DRIVER, TELN01, VEHSTS, CREDAT,
+				 CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR  ) 
+ 		VALUES 
+ 			(   #VEHIID#, #VEHINO#, #VEHINM#, #VEHIOW#, #VEHITY#,
+ 				#VEHIWG#, #DRIVER#, #TELN01#, #VEHSTS#, TO_CHAR(SYSDATE, 'YYYYMMDD'),
+ 				TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,	TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<select id="STORY_LIST" parameterClass="Map" resultClass="StringMap">
+		SELECT  WAREKY
+			   ,ROWNUM AS TMPNUM 
+		       ,LSTORY
+		       ,LSTOTY
+		       ,SHORTX
+		       ,LBUILD
+			   ,ZONEKY
+			   ,NVL((SELECT SHORTX FROM ZONMA Z WHERE Z.WAREKY = S.WAREKY AND Z.ZONEKY = S.ZONEKY),' ') AS ZONENM
+		       ,AREAKY
+			   ,NVL((SELECT SHORTX FROM AREMA A WHERE A.WAREKY = S.WAREKY AND A.AREAKY = S.AREAKY),' ') AS AREANM
+		       ,CREDAT
+		       ,CRETIM
+		       ,CREUSR
+		       ,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = S.CREUSR),' ') AS CUSRNM
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR
+		       ,NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = S.LMOUSR),' ') AS LUSRNM
+		       ,INDBZL
+		       ,INDARC
+		       ,UPDCHK
+		FROM STORY S
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">			
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty> 
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY LSTORY
+	</select>
+	
+	<insert id="STORY_INSERT" parameterClass="Map">
+	INSERT INTO 
+		STORY  (WAREKY,LSTORY,LSTOTY,SHORTX,LBUILD,AREAKY,ZONEKY,
+		        CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#WAREKY#,#LSTORY#,#LSTOTY#,#SHORTX#,#LBUILD#,#AREAKY#,#ZONEKY#,
+		 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+		 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="STORY_DELETE" parameterClass="Map">
+		DELETE FROM STORY 
+		 WHERE WAREKY = #WAREKY# 
+		   AND LSTORY = #LSTORY#
+	       AND ZONEKY = #ZONEKY#
+	</delete>
+	
+	<update id="STORY_UPDATE" parameterClass="Map">
+		UPDATE STORY SET 
+			<isNotEmpty property="LSTOTY">
+			   LSTOTY = #LSTOTY#,
+			</isNotEmpty>
+			<isNotEmpty property="SHORTX">			
+			   SHORTX = #SHORTX#,
+			</isNotEmpty> 
+			<isNotEmpty property="LBUILD">			
+			   LBUILD = #LBUILD#,
+			</isNotEmpty>			
+			  LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			  LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			  LMOUSR = #SES_USER_ID#
+		WHERE WAREKY = #WAREKY# 
+		AND   LSTORY = #LSTORY#
+	    AND   ZONEKY = #ZONEKY#
+	</update>	
+
+	<select id="STORY_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT *
+		  FROM (
+		         SELECT CASE WHEN NOT EXISTS ( SELECT '1' FROM CMCDV  WHERE CMCDKY = 'LSTOTY'  AND CMCDVL = STD.LSTOTY )
+		                          THEN 'VALID_M1574†' || STD.LSTOTY
+		                     WHEN NOT EXISTS ( SELECT '1' FROM ZONMA WHERE WAREKY = STD.WAREKY AND ZONEKY = STD.ZONEKY )
+		                          THEN 'VALID_M1575†' || STD.ZONEKY
+		                     WHEN NOT EXISTS ( SELECT '1' FROM AREMA WHERE WAREKY = STD.WAREKY AND AREAKY = STD.AREAKY )
+		                          THEN 'VALID_M1576†' || STD.AREAKY
+		                     ELSE 'OK'
+		                  END AS RESULTMSG
+		           FROM (
+		                  $APPEND_QUERY$
+		                ) STD
+		       )
+		 WHERE RESULTMSG != 'OK'
+	</select>
+	
+	<select id="LOCAKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+        SELECT LOCAKY AS VALUE_COL,
+		       LOCAKY AS TEXT_COL
+		FROM   LOCMA 
+		WHERE  AREAKY = 'RCV'
+	   <isNotEmpty property="WAREKY">
+         AND   WAREKY = #WAREKY# 
+       </isNotEmpty>
+    </select>	
+
+	<select id="LT01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY AS STCKEY
+		     , AREAKY || '_WMS' AS ITFSID
+		     , INFUSE
+		     , OTRUSE
+		     , STCSTS
+		 FROM KT000
+		WHERE 1 = 1
+	 <isNotEmpty property="STCKEY">			
+		AND   WAREKY = #STCKEY# 
+	 </isNotEmpty> 
+	 <isNotEmpty property="IFID">			
+		AND   AREAKY||'_WMS' = #IFID# 
+	 </isNotEmpty>
+	 <isNotEmpty property="INFUSE">			
+		AND   INFUSE = #INFUSE# 
+	 </isNotEmpty>
+	 <isNotEmpty property="OTRUSE">			
+		AND   OTRUSE = #OTRUSE# 
+	 </isNotEmpty>				
+		ORDER BY STCKEY
+	</select>
+	
+	<sql id = "LT01_MERGE">
+		MERGE INTO KT000 A 
+		USING DUAL B ON (A.STCKEY = B.STCKEY)
+		WHEN MATCHED THEN
+			UPDATE SET ITFSID = #ITFSID#
+			         , INFUSE = #INFUSE#
+					 , OTRUSE = #OTRUSE#
+					 , STCSTS = #STCSTS#
+		WHEN NOT MATCHED THEN
+			INSERT (STCKEY, ITFSID, INFUSE, OTRUSE, STCSTS)
+			VALUES (#STCKEY#, #ITFSID#, #INFUSE#, #OTRUSE#, #STCSTS#)
+	</sql>
+	
+	<insert id="LT01_INSERT" parameterClass="Map">
+		<include refid="LT01_MERGE"/>
+	</insert>		
+	
+	<update id="LT01_UPDATE" parameterClass="Map">
+		<include refid="LT01_MERGE"/>
+	</update>
+	
+	<delete id="LT01_DELETE" parameterClass="Map">
+		DELETE FROM KT000 
+		WHERE WAREKY = #STCKEY# 
+	</delete>
+	
+	<select id="UOMKEYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM MEASI
+		WHERE WAREKY  = #WAREKY#
+		AND MEASKY = #MEASKY#
+		AND UOMKEY = #UOMKEY#
+		AND ROWNUM = 1
+	</select>
+	
+	<select id="TR01ALSTKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) AS CNT
+		FROM   ALCUS
+		WHERE  WAREKY = #WAREKY#
+		AND    ALSTKY = #ALSTKY#
+	</select>
+	
+	<!--2020.04.08 LHJ할당필터링 키validation추가-->
+	<select id="TA01ALSTKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM ALSTH
+		WHERE WAREKY = #WAREKY#
+		AND ALSTKY = #ALSTKY#
+	</select>
+
+	<!--2020.04.08 LHJ 재고정렬 키validation추가-->
+	<select id="TA01STSRHval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM STSRH
+		WHERE WAREKY = #WAREKY#
+		AND SSORKY = #SSORKY#
+	</select>
+	
+	<!--2020.04.10 LHJ 할당필터링 키, 재고정렬 키 존재validation추가-->
+	<select id="TA01SSOALFTval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) AS CNT
+		FROM ALSTI
+		WHERE WAREKY = #WAREKY#
+		AND ALSTKY = #ALSTKY#
+		AND ALFTKY = #ALFTKY#
+		AND SSORKY = #SSORKY#
+	</select>
+	<!-- 2020.04.16 구역Validation추가 -->
+	<select id="ZONMAval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM ZONMA
+		WHERE WAREKY = #WAREKY#
+		AND ZONEKY= #ZONEKY#
+	</select>
+	<!-- 2020.04.16 문서유형Validation추가 -->
+	<select id="DOCCval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+		FROM DOCCM
+		WHERE DOCCAT = #DOCCAT#
+	</select>
+
+	<!-- 2020.06.08 [ML01]구역업데이트 시 새로바뀐 구역값 적용쿼리-->
+	<update id="SAVEML01_UPDATE" parameterClass="Map" >
+		UPDATE STKKY 
+		   SET AREAKY = #AREAKY# <!--#수정한 AREAKY-->
+			  ,ZONEKY = #ZONEKY# <!--#수정한 ZONEKY-->
+		 WHERE WAREKY = #WAREKY#
+		   AND OWNRKY = #OWNRKY#
+		   AND AREAKY = #AAREAKY# <!--#기존의OWNRKY에 대한 AREAKY-->
+		   AND ZONEKY = #AZONEKY# <!--#기존ZONEKY-->
+		   AND LOCAKY = #ALOCAKY# <!--#기존LOCAKY-->
+		   AND LOCAKY != 'SHPLOC'
+		   AND LOTA06 IN ('00')
+		   AND AREAKY NOT IN ('SYS','SHP')
+		   AND QTSIWH <![CDATA[>]]> 0
+		   AND QTSALO = 0
+		   AND QTSPMO = 0
+		   AND QTSPMI = 0
+		   AND QTSBLK = 0
+	</update>
+	
+	<select id="MB01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  WAREKY
+		       ,BUILDG
+		       ,MAX(NAMEBD) NAMEBD
+		       ,STOREY
+		       ,MAX(NAMEST) NAMEST
+		       ,MAX(CREDAT) CREDAT
+		       ,MAX(CRETIM) CRETIM
+		       ,MAX(CREUSR) CREUSR
+		       ,MAX(LMODAT) LMODAT
+		       ,MAX(LMOTIM) LMOTIM
+		       ,MAX(LMOUSR) LMOUSR
+		       ,' 'INDBZL
+		       ,' ' INDARC
+       ,0 UPDCHK
+		FROM FACLT Z
+		WHERE WAREKY = #WAREKY# 
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>	
+		GROUP BY WAREKY,BUILDG,STOREY
+	</select>	
+	
+		
+	<select id="MB01Sub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			DECODE(F.BUILDG,NULL,'N','Y') ROWCHECK
+			,#BUILDG# AS BUILDG
+			,#NAMEBD# AS NAMEBD
+			,#STOREY# AS STOREY
+			,#NAMEST# AS NAMEST
+			,Z.WAREKY
+			,Z.AREAKY
+			,Z.ZONEKY
+			,Z.SHORTX 
+		FROM  ZONMA Z
+		LEFT OUTER JOIN FACLT F ON  Z.WAREKY = F.WAREKY 
+								AND Z.ZONEKY = F.ZONEKY 
+								AND F.BUILDG = #BUILDG# 
+								AND F.STOREY = #STOREY#
+		WHERE Z.WAREKY =  #WAREKY#	
+		<isEqual property="ALL" compareValue="N">		
+	        AND (Z.ZONEKY,Z.AREAKY) NOT IN 
+	            (SELECT ZONEKY,AREAKY
+	             FROM FACLT 
+	             WHERE WAREKY = #WAREKY#
+	             AND ( BUILDG != #BUILDG# OR STOREY != #STOREY#) )
+	    </isEqual>            
+		ORDER BY Z.AREAKY,F.ZONEKY
+	</select>	
+	<delete id="DELMB01_DELETE" parameterClass="Map">
+		DELETE 	FROM FACLT
+		WHERE WAREKY = #WAREKY# 
+		<isNotEmpty property="ZONEKY">	
+			AND ZONEKY = #ZONEKY# 
+		</isNotEmpty>	
+		AND BUILDG = #BUILDG# 
+		AND STOREY = #STOREY#
+	</delete>
+
+	<insert id="AGNMB01_INSERT" parameterClass="Map">
+		INSERT INTO FACLT
+		(WAREKY, BUILDG, NAMEBD, STOREY, NAMEST, AREAKY, ZONEKY,
+		 CREDAT, CRETIM, CREUSR,
+		 LMODAT, LMOTIM, LMOUSR,
+		 INDBZL, INDARC, UPDCHK )
+		VALUES
+		(#WAREKY#, #BUILDG#, #NAMEBD#, #STOREY#, #NAMEST#, #AREAKY#, #ZONEKY#,
+		 TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+		 TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+		 ' ',' ',0 )
+	</insert>
+	
+	<select id="MB01RE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  WAREKY
+		       ,BUILDG
+		       ,MAX(NAMEBD) NAMEBD
+		       ,STOREY
+		       ,MAX(NAMEST) NAMEST
+		       ,MAX(CREDAT) CREDAT
+		       ,MAX(CRETIM) CRETIM
+		       ,MAX(CREUSR) CREUSR
+		       ,MAX(LMODAT) LMODAT
+		       ,MAX(LMOTIM) LMOTIM
+		       ,MAX(LMOUSR) LMOUSR
+		       ,' 'INDBZL
+		       ,' ' INDARC
+       ,0 UPDCHK
+		FROM FACLT Z
+		WHERE (WAREKY,BUILDG,STOREY) IN ( $APPEND_QUERY$ )
+		GROUP BY WAREKY,BUILDG,STOREY
+		ORDER BY WAREKY,BUILDG,STOREY
+	</select>
+	
+	<select id="RLRRH_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT RLRRH.*
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = RLRRH.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = RLRRH.LMOUSR), ' ') AS LUSRNM
+		  FROM RLRRH
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND LOTRKY = #LOTRKY#</isNotEmpty>
+	</select>
+	
+	<select id="ALSTI_COUNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS COUNT
+		  FROM ALSTI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="SSORKY">AND SSORKY = #SSORKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND ALFTKY = #LOTRKY#</isNotEmpty>
+	</select>
+	
+	<delete id="RLRRH_RLRRI_DEL_DELETE" parameterClass="Map">
+		BEGIN
+		    DELETE FROM RLRRH WHERE WAREKY = #WAREKY# AND LOTRKY = #LOTRKY#;
+		    DELETE FROM RLRRI WHERE WAREKY = #WAREKY# AND LOTRKY = #LOTRKY#;
+		END;
+	</delete>
+	
+	<select id="STSRH_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT STSRH.*
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STSRH.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STSRH.LMOUSR), ' ') AS LUSRNM
+		  FROM STSRH
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="SSORKY">AND SSORKY = #SSORKY#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<select id="STSRI_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT STSRI.*
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STSRI.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STSRI.LMOUSR), ' ') AS LUSRNM
+		  FROM STSRI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND WAREKY = ' '</isEmpty>
+		   <isNotEmpty property="SSORKY">AND SSORKY = #SSORKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND SSORKY = ' '</isEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<select id="STSRI_DATA_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT VALIDATION_MSG
+		  FROM (
+		         SELECT VALIDATION_MSG
+		           FROM (
+		                  SELECT CASE WHEN EXISTS (SELECT COUNT(SORTSQ) FROM ($VALIDATION_DATA_SQL$) WHERE SORTSQ != 0 GROUP BY SORTSQ HAVING COUNT(SORTSQ) > 1)
+		                                   THEN '할당정렬키 [' || VALID.SSORKY || ']에 중복되는 정렬순서가 있습니다.'
+		                         END AS VALIDATION_MSG
+		                    FROM (
+		                           $VALIDATION_DATA_SQL$
+		                         ) VALID
+		                )
+		          WHERE TRIM(VALIDATION_MSG) IS NOT NULL
+		       )
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<update id="STSRH_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO STSRH T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #SSORKY# AS SSORKY, #SHORTX# AS SHORTX, #STLCAT# AS STLCAT
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.SSORKY = T.SSORKY )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET SHORTX = S.SHORTX
+		         , STLCAT = S.STLCAT
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, SSORKY, SHORTX, STLCAT
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.SSORKY, S.SHORTX, S.STLCAT
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<update id="STSRI_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO STSRI T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #SSORKY# AS SSORKY, #ITEMNO# AS ITEMNO
+		             , #FIELDN# AS FIELDN, #FLDCMT# AS FLDCMT
+		             , NVL(#TABLEN#,' ') AS TABLEN
+		             , NVL(#ACTVAT#,' ') AS ACTVAT
+		             , NVL(#SORTSQ#, 0) AS SORTSQ
+		             , NVL(#INDASD#,' ') AS INDASD
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.SSORKY = T.SSORKY AND S.ITEMNO = T.ITEMNO )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET TABLEN = S.TABLEN
+		         , ACTVAT = S.ACTVAT
+		         , SORTSQ = S.SORTSQ
+		         , INDASD = S.INDASD
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, SSORKY, ITEMNO, FIELDN, FLDCMT
+		      , TABLEN, ACTVAT, SORTSQ, INDASD
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.SSORKY, S.ITEMNO, S.FIELDN, S.FLDCMT
+		            , S.TABLEN, S.ACTVAT, S.SORTSQ, S.INDASD
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<delete id="STSRH_STSRI_DEL_DELETE" parameterClass="Map">
+		BEGIN
+		    DELETE FROM STSRH WHERE WAREKY = #WAREKY# AND SSORKY = #SSORKY#;
+		    DELETE FROM STSRI WHERE WAREKY = #WAREKY# AND SSORKY = #SSORKY#;
+		END;
+	</delete>
+	
+	<!-- TR02 START -->	
+	<select id="ORDPR_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  ORDPR.WAREKY      AS WAREKY
+		       ,ORDPR.PRIORT      AS PRIORT
+		       ,MAX(ORDPR.CDESC1) AS CDESC1
+		       ,WAREKY || PRIORT  AS KEY		       
+		  FROM ORDPR
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="PRIORT">AND PRIORT = #PRIORT#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+		 GROUP BY WAREKY, PRIORT  
+	</select>
+	
+	<!-- SKU> 단위구성 조회 하단 -->
+	<select id="ORDPRSub_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  WAREKY AS WAREKY
+		       ,PRIORT AS PRIORT
+		       ,ITEMNO AS ITEMNO
+		       ,CDESC1 AS CDESC1
+		       ,CDESC2 AS CDESC2
+		       ,FIELDN AS FIELDN
+		       ,FLDCMT AS FLDCMT
+		       ,TABLEN AS TABLEN
+		       ,ACTVAT AS ACTVAT
+		       ,SORTSQ AS SORTSQ	
+		       ,INDASD AS INDASD		       	       
+		       ,UPDCHK AS UPDCHK
+			   ,CREDAT
+			   ,CRETIM
+			   ,CREUSR
+			   ,LMODAT
+			   ,LMOTIM
+			   ,LMOUSR
+			   ,INDBZL
+			   ,INDARC
+			   ,UPDCHK		       
+		FROM  ORDPR
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="PRIORT">
+			AND PRIORT = #PRIORT#
+		</isNotEmpty>
+		ORDER BY WAREKY, PRIORT  
+	</select>	
+	
+	<select id="TR02PRIORTval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM ORDPR
+		WHERE WAREKY  = #WAREKY#
+		AND PRIORT = #PRIORT#
+		AND ROWNUM = 1
+	</select>	
+	
+	<!-- TR02> 분배오더우선순위  ITEMNO-->
+	<select id="TR02ITEMNOval_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT COUNT(*)CNT
+		FROM ORDPR	  	
+		WHERE 1 = 1
+		AND WAREKY = #WAREKY#
+		AND PRIORT = #PRIORT#
+		AND ITEMNO = #ITEMNO#		
+	</select>	
+	
+	<!-- TR02> 분배오더우선순위  FIELDN-->	
+	<select id="TR02FIELDNval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT 
+		FROM ORDPR
+		WHERE WAREKY  = #WAREKY#
+		AND PRIORT = #PRIORT#
+		AND FIELDN = #FIELDN#
+		AND ROWNUM = 1
+	</select>	
+	
+	<select id="ORDPR_DUPL_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT CASE WHEN STATUS_SUM > 1
+		                 THEN '물류센터  [' || WAREKY || ']이/가 중복 되었습니다.'
+		            ELSE ' '
+		       END AS VALIDATION_MSG
+		  FROM (
+		         SELECT WAREKY, PRIORT, SUM(STATUS) AS STATUS_SUM
+		           FROM (
+		                  SELECT 1 AS STATUS, WAREKY, PRIORT FROM ORDPR UNION ALL
+		                  $VALIDATION_DUPL_SQL$
+		                )
+		          GROUP BY WAREKY, PRIORT
+		         HAVING SUM(STATUS) > 1
+		          ORDER BY WAREKY, PRIORT
+		       ) VALID
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<select id="ORDPR_DATA_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT VALIDATION_MSG
+		  FROM (
+		         SELECT VALIDATION_MSG
+		           FROM (
+		                  SELECT CASE WHEN VALID.STATUS IN ('C','U') AND VALID.OWNRKY != ' ' AND NOT EXISTS (SELECT 1 FROM OWNWC WHERE WAREKY = VALID.WAREKY AND OWNRKY = VALID.OWNRKY)
+		                                   THEN '화주 [' || VALID.OWNRKY || ']는 존재하지 않습니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND VALID.PTNRKY != ' ' AND NOT EXISTS (SELECT 1 FROM BZPTN WHERE OWNRKY = VALID.OWNRKY AND PTNRKY = VALID.PTNRKY)
+		                                   THEN '거래처 [' || VALID.PTNRKY || ']는 존재하지 않습니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND VALID.ORDTYP != ' ' AND NOT EXISTS (SELECT 1 FROM DOCTM WHERE DOCCAT = '200' AND DOCUTY = VALID.ORDTYP)
+		                                   THEN '문서타입 [' || VALID.ORDTYP || ']는 유효하지 않습니다.'
+		                         END AS VALIDATION_MSG
+		                    FROM (
+		                           $VALIDATION_DATA_SQL$
+		                         ) VALID
+		                )
+		          WHERE TRIM(VALIDATION_MSG) IS NOT NULL
+		       )
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<delete id="ORDPR_DELETE" parameterClass="Map">
+		DELETE FROM ORDPR
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="PRIORT">AND PRIORT = #PRIORT#</isNotEmpty>
+	</delete>
+	
+	<insert id="ORDPR_INSERT" parameterClass="Map">
+		INSERT INTO ORDPR
+		( 
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY -- PK_1
+		  , PRIORT -- PK_2
+		  <isNotEmpty property="OWNRKY">, OWNRKY</isNotEmpty>
+		  <isNotEmpty property="ORDTYP">, ORDTYP</isNotEmpty>
+		  <isNotEmpty property="CHANEL">, CHANEL</isNotEmpty>
+		  <isNotEmpty property="PTNRKY">, PTNRKY</isNotEmpty>
+		) 
+		VALUES( 
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0 
+		  , #WAREKY# -- PK_1
+		  , #PRIORT# -- PK_2
+		  <isNotEmpty property="OWNRKY">, #OWNRKY#</isNotEmpty>
+		  <isNotEmpty property="ORDTYP">, #ORDTYP#</isNotEmpty>
+		  <isNotEmpty property="CHANEL">, #CHANEL#</isNotEmpty>
+		  <isNotEmpty property="PTNRKY">, #PTNRKY#</isNotEmpty>
+		)
+	</insert>
+	
+	<update id="ORDPR_UPDATE" parameterClass="Map">
+		UPDATE ORDPR
+		   SET CDESC1 = NVL(#CDESC1#,' ')
+		     , LMODAT = TO_CHAR(SYSDATE,'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE,'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		     <isNotEmpty property="OWNRKY">, OWNRKY = #OWNRKY#</isNotEmpty>
+		     <isNotEmpty property="ORDTYP">, ORDTYP = #ORDTYP#</isNotEmpty>
+		     <isNotEmpty property="CHANEL">, CHANEL = #CHANEL#</isNotEmpty>
+		     <isNotEmpty property="PTNRKY">, PTNRKY = #PTNRKY#</isNotEmpty>
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="PRIORT">AND PRIORT = #PRIORT#</isNotEmpty>
+	</update>
+	
+	<!-- TS02 START -->
+	<insert id="STORH_INSERT" parameterClass="Map">
+		INSERT INTO STORH
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY
+		  , SHSTKY
+		  <isNotEmpty property="SHORTX">, SHORTX</isNotEmpty>
+		  <isNotEmpty property="SHLCAT">, SHLCAT</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #WAREKY#
+		  , #SHSTKY#
+		  <isNotEmpty property="SHORTX">, #SHORTX#</isNotEmpty>
+		  <isNotEmpty property="SHLCAT">, #SHLCAT#</isNotEmpty>
+		)
+	</insert>
+	
+	<insert id="STORI_INSERT" parameterClass="Map">
+		INSERT INTO STORI
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY
+		  , SHSTKY
+		  , ITEMNO
+		  <isNotEmpty property="FIELDN">, FIELDN</isNotEmpty>
+		  <isNotEmpty property="FLDCMT">, FLDCMT</isNotEmpty>
+		  <isNotEmpty property="TABLEN">, TABLEN</isNotEmpty>
+		  <isNotEmpty property="ACTVAT">, ACTVAT</isNotEmpty>
+		  <isNotEmpty property="SORTSQ">, SORTSQ</isNotEmpty>
+		  <isNotEmpty property="INDASD">, INDASD</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #WAREKY#
+		  , #SHSTKY#
+		  , #ITEMNO#
+		  <isNotEmpty property="FIELDN">, #FIELDN#</isNotEmpty>
+		  <isNotEmpty property="FLDCMT">, #FLDCMT#</isNotEmpty>
+		  <isNotEmpty property="TABLEN">, #TABLEN#</isNotEmpty>
+		  <isNotEmpty property="ACTVAT">, #ACTVAT#</isNotEmpty>
+		  <isNotEmpty property="SORTSQ">, #SORTSQ#</isNotEmpty>
+		  <isNotEmpty property="INDASD">, #INDASD#</isNotEmpty>
+		)
+	</insert>
+	
+	<select id="ALSTI2_COUNT_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS COUNT
+		  FROM ALSTI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="SSORKY">AND SSORKY = #SHSTKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND ALFTKY = #LOTRKY#</isNotEmpty>
+	</select>
+	
+	<select id="STORH_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		     , SHSTKY
+		     , SHORTX
+		     , SHLCAT
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		     , INDBZL
+		     , INDARC
+		     , UPDCHK
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORH.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORH.LMOUSR), ' ') AS LUSRNM
+		  FROM STORH
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="SHSTKY">AND SHSTKY = #SHSTKY#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<select id="STORI_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		     , SHSTKY
+		     , ITEMNO
+		     , TABLEN
+		     , FIELDN
+		     , FLDCMT
+		     , ACTVAT
+		     , SORTSQ
+		     , INDASD
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		     , INDBZL
+		     , INDARC
+		     , UPDCHK
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORI.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORI.LMOUSR), ' ') AS LUSRNM
+		  FROM STORI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND WAREKY = ' '</isEmpty>
+		   <isNotEmpty property="SHSTKY">AND SHSTKY = #SHSTKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND SHSTKY = ' '</isEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<select id="STORR_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		     , SHSTKY
+		     , FIELDN
+		     , STEPNO
+		     , REFVAL
+		     , ACTVAT
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		     , INDBZL
+		     , INDARC
+		     , UPDCHK
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORR.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = STORR.LMOUSR), ' ') AS LUSRNM
+		  FROM STORR
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND WAREKY = ' '</isEmpty>
+		   <isNotEmpty property="SHSTKY">AND SHSTKY = #SHSTKY#</isNotEmpty>
+		   <isEmpty property="WAREKY">AND SHSTKY = ' '</isEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<select id="STORI_DATA_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT VALIDATION_MSG
+		  FROM (
+		         SELECT VALIDATION_MSG
+		           FROM (
+		                  SELECT CASE WHEN EXISTS (SELECT COUNT(SORTSQ) FROM ($VALIDATION_DATA_SQL$) WHERE SORTSQ != 0 GROUP BY SORTSQ HAVING COUNT(SORTSQ) > 1)
+		                                   THEN '할당정렬키 [' || VALID.SHSTKY || ']에 중복되는 정렬순서가 있습니다.'
+		                         END AS VALIDATION_MSG
+		                    FROM (
+		                           $VALIDATION_DATA_SQL$
+		                         ) VALID
+		                )
+		          WHERE TRIM(VALIDATION_MSG) IS NOT NULL
+		       )
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<update id="STORH_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO STORH T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #SHSTKY# AS SHSTKY, #SHORTX# AS SHORTX, #SHLCAT# AS SHLCAT
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.SHSTKY = T.SHSTKY )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET SHORTX = S.SHORTX
+		         , SHLCAT = S.SHLCAT
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, SHSTKY, SHORTX, SHLCAT
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.SHSTKY, S.SHORTX, S.SHLCAT
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<update id="STORI_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO STORI T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #SHSTKY# AS SHSTKY, #ITEMNO# AS ITEMNO
+		             , #FIELDN# AS FIELDN, #FLDCMT# AS FLDCMT
+		             , NVL(#TABLEN#,' ') AS TABLEN
+		             , NVL(#ACTVAT#,' ') AS ACTVAT
+		             , NVL(#SORTSQ#, 0) AS SORTSQ
+		             , NVL(#INDASD#,' ') AS INDASD
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.SHSTKY = T.SHSTKY AND S.ITEMNO = T.ITEMNO )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET TABLEN = S.TABLEN
+		         , ACTVAT = S.ACTVAT
+		         , SORTSQ = S.SORTSQ
+		         , INDASD = S.INDASD
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, SHSTKY, ITEMNO, FIELDN, FLDCMT
+		      , TABLEN, ACTVAT, SORTSQ, INDASD
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.SHSTKY, S.ITEMNO, S.FIELDN, S.FLDCMT
+		            , S.TABLEN, S.ACTVAT, S.SORTSQ, S.INDASD
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<delete id="STORH_STORI_DEL_DELETE" parameterClass="Map">
+		BEGIN
+		    DELETE FROM STORH WHERE WAREKY = #WAREKY# AND SHSTKY = #SHSTKY#;
+		    DELETE FROM STORI WHERE WAREKY = #WAREKY# AND SHSTKY = #SHSTKY#;
+		END;
+	</delete>
+	
+	<update id="ORDPR_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO ORDPR T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #PRIORT# AS PRIORT, #ITEMNO# AS ITEMNO
+		             , NVL(#CDESC1#,' ') AS CDESC1
+		             , NVL(#CDESC2#,' ') AS CDESC2 
+		             , NVL(#FIELDN#,' ') AS FIELDN		             
+		             , NVL(#FLDCMT#,' ') AS FLDCMT
+		             , NVL(#TABLEN#,' ') AS TABLEN
+		             , NVL(#ACTVAT#,' ') AS ACTVAT
+		             , NVL(#SORTSQ#, 0)  AS SORTSQ
+		             , NVL(#INDASD#,' ') AS INDASD
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.PRIORT = T.PRIORT AND S.ITEMNO = T.ITEMNO )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET FIELDN = S.FIELDN
+		         , FLDCMT = S.FLDCMT
+		         , TABLEN = S.TABLEN
+		         , ACTVAT = S.ACTVAT
+		         , SORTSQ = S.SORTSQ
+		         , INDASD = S.INDASD
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, PRIORT, ITEMNO
+		      , CDESC1, CDESC2  
+		      , FIELDN, FLDCMT
+		      , TABLEN, ACTVAT, SORTSQ, INDASD
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.PRIORT, S.ITEMNO
+		            , S.CDESC1, S.CDESC2 
+		            , S.FIELDN, S.FLDCMT
+		            , S.TABLEN, S.ACTVAT, S.SORTSQ, S.INDASD
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<select id="RLRRI_DATA_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT VALIDATION_MSG
+		  FROM (
+		         SELECT VALIDATION_MSG
+		           FROM (
+		                  SELECT CASE WHEN VALID.STATUS IN ('C','U') AND EXISTS (SELECT 1 FROM RLRRH WHERE WAREKY = VALID.WAREKY AND LOTRKY = VALID.LOTRKY AND VALID.DBFILD = 'LOTA11' AND VALID.RNGVMI = '0' AND VALID.RNGVOP = 'GT')
+		                                   THEN '할당필터링키 [' || VALID.LOTRKY || ']의 월기한이 [' || VALID.RNGVMI || ']개월 보다 길어야 합니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND EXISTS (SELECT 1 FROM RLRRH WHERE WAREKY = VALID.WAREKY AND LOTRKY = VALID.LOTRKY AND VALID.DBFILD = 'LOTA11' AND VALID.RNGVMI = ' ' AND VALID.RNGVOP = 'GT')
+		                                   THEN '할당필터링키 [' || VALID.LOTRKY || ']의 월기한이 [0]개월보다 길어야 합니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND VALID.DBFILD = 'AREAKY' AND NOT EXISTS (SELECT 1 FROM AREMA WHERE WAREKY = VALID.WAREKY AND AREAKY = VALID.RNGVMI)
+		                                   THEN '할당필터링키 [' || VALID.LOTRKY || ']의 위치정보에 입력한 [' || VALID.RNGVMI || ']는 존재하지 않는 영역입니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND VALID.DBFILD = 'ZONEKY' AND NOT EXISTS (SELECT 1 FROM ZONMA WHERE WAREKY = VALID.WAREKY AND ZONEKY = VALID.RNGVMI)
+		                                   THEN '할당필터링키 [' || VALID.LOTRKY || ']의 위치정보에 입력한 [' || VALID.RNGVMI || ']는 존재하지 않는 구역입니다.'
+		                              WHEN VALID.STATUS IN ('C','U') AND VALID.DBFILD = 'LOCAKY' AND NOT EXISTS (SELECT 1 FROM LOCMA WHERE WAREKY = VALID.WAREKY AND LOCAKY = VALID.RNGVMI)
+		                                   THEN '할당필터링키 [' || VALID.LOTRKY || ']의 위치정보에 입력한 [' || VALID.RNGVMI || ']는 존재하지 않는 지번입니다.'
+		                         END AS VALIDATION_MSG
+		                    FROM (
+		                           $VALIDATION_DATA_SQL$
+		                         ) VALID
+		                )
+		          WHERE TRIM(VALIDATION_MSG) IS NOT NULL
+		       )
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<update id="RLRRH_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO RLRRH T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #LOTRKY# AS LOTRKY, #SHORTX# AS SHORTX
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.LOTRKY = T.LOTRKY )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET SHORTX = S.SHORTX
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, LOTRKY, SHORTX
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.LOTRKY, S.SHORTX
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update>
+	
+	<select id="RLRRI_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT RLRRI.*
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = RLRRI.CREUSR), ' ') AS CUSRNM
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = RLRRI.LMOUSR), ' ') AS LUSRNM
+		  FROM RLRRI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND LOTRKY = #LOTRKY#</isNotEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+	</select>
+	
+	<insert id="RLRRI_INSERT" parameterClass="Map">
+		INSERT INTO RLRRI
+		(
+		    CREDAT, CRETIM, CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		  , INDBZL, INDARC, UPDCHK
+		  , WAREKY -- PK_1
+		  , LOTRKY -- PK_2
+		  , ITEMNO -- PK_3
+		  <isNotEmpty property="DBFILD">, DBFILD</isNotEmpty>
+		  <isNotEmpty property="RNGVIE">, RNGVIE</isNotEmpty>
+		  <isNotEmpty property="RNGVOP">, RNGVOP</isNotEmpty>
+		  <isNotEmpty property="RNGVMI">, RNGVMI</isNotEmpty>
+		  <isNotEmpty property="RNGVMX">, RNGVMX</isNotEmpty>
+		  <isNotEmpty property="LGCOPT">, LGCOPT</isNotEmpty>
+		)
+		VALUES(
+		    TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  , ' ', ' ', 0
+		  , #WAREKY# -- PK_1
+		  , #LOTRKY# -- PK_2
+		  , #ITEMNO# -- PK_3
+		  <isNotEmpty property="DBFILD">, #DBFILD#</isNotEmpty>
+		  <isNotEmpty property="RNGVIE">, #RNGVIE#</isNotEmpty>
+		  <isNotEmpty property="RNGVOP">, #RNGVOP#</isNotEmpty>
+		  <isNotEmpty property="RNGVMI">, #RNGVMI#</isNotEmpty>
+		  <isNotEmpty property="RNGVMX">, #RNGVMX#</isNotEmpty>
+		  <isNotEmpty property="LGCOPT">, #LGCOPT#</isNotEmpty>
+		)
+	</insert>
+	
+	<delete id="RLRRI_DELETE" parameterClass="Map">
+		DELETE FROM RLRRI
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND LOTRKY = #LOTRKY#</isNotEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+	</delete>
+	
+	<update id="RLRRI_UPDATE" parameterClass="Map">
+		UPDATE RLRRI
+		   SET LMODAT = TO_CHAR(SYSDATE,'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE,'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		     <isNotEmpty property="DBFILD">, DBFILD = #DBFILD#</isNotEmpty>
+		     <isNotEmpty property="RNGVIE">, RNGVIE = #RNGVIE#</isNotEmpty>
+		     <isNotEmpty property="RNGVOP">, RNGVOP = #RNGVOP#</isNotEmpty>
+		     <isNotEmpty property="RNGVMI">, RNGVMI = #RNGVMI#</isNotEmpty>
+		     <isNotEmpty property="RNGVMX">, RNGVMX = #RNGVMX#</isNotEmpty>
+		     <isNotEmpty property="LGCOPT">, LGCOPT = #LGCOPT#</isNotEmpty>
+		 WHERE 1 = 1
+		   <isNotEmpty property="WAREKY">AND WAREKY = #WAREKY#</isNotEmpty>
+		   <isNotEmpty property="LOTRKY">AND LOTRKY = #LOTRKY#</isNotEmpty>
+		   <isNotEmpty property="ITEMNO">AND ITEMNO = #ITEMNO#</isNotEmpty>
+	</update>
+	
+	<update id="RLRRI_MERGE_UPDATE" parameterClass="Map">
+		MERGE INTO RLRRI T 
+		USING ( 
+		        SELECT #WAREKY# AS WAREKY, #LOTRKY# AS LOTRKY, #ITEMNO# AS ITEMNO
+		             , NVL(#DBFILD#,' ') AS DBFILD
+		             , NVL(#RNGVIE#,'signIn') AS RNGVIE
+		             , NVL(#RNGVOP#,' ') AS RNGVOP
+		             , NVL(#RNGVMI#,' ') AS RNGVMI
+		             , NVL(#RNGVMX#,' ') AS RNGVMX
+		             , NVL(#LGCOPT#,' ') AS LGCOPT
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS CREDAT, TO_CHAR(SYSDATE,'HH24MISS') AS CRETIM, #SES_USER_ID# AS CREUSR
+		             , TO_CHAR(SYSDATE,'YYYYMMDD') AS LMODAT, TO_CHAR(SYSDATE,'HH24MISS') AS LMOTIM, #SES_USER_ID# AS LMOUSR
+		             , ' ' AS INDBZL, ' ' AS INDARC, 0 AS UPDCHK
+		          FROM DUAL
+		      ) S ON ( S.WAREKY = T.WAREKY AND S.LOTRKY = T.LOTRKY AND S.ITEMNO = T.ITEMNO )
+		WHEN MATCHED THEN 
+		    UPDATE 
+		       SET DBFILD = S.DBFILD
+		         , RNGVIE = S.RNGVIE
+		         , RNGVOP = S.RNGVOP
+		         , RNGVMI = S.RNGVMI
+		         , RNGVMX = S.RNGVMX
+		         , LGCOPT = S.LGCOPT
+		         , LMODAT = S.LMODAT
+		         , LMOTIM = S.LMOTIM
+		         , LMOUSR = S.LMOUSR
+		WHEN NOT MATCHED THEN 
+		    INSERT
+		    (
+		        WAREKY, LOTRKY, ITEMNO, DBFILD
+		      , RNGVIE, RNGVOP, RNGVMI, RNGVMX, LGCOPT
+		      , CREDAT, CRETIM, CREUSR
+		      , LMODAT, LMOTIM, LMOUSR
+		      , INDBZL, INDARC, UPDCHK
+		    )
+		    VALUES(
+		              S.WAREKY, S.LOTRKY, S.ITEMNO, S.DBFILD
+		            , S.RNGVIE, S.RNGVOP, S.RNGVMI, S.RNGVMX, S.LGCOPT
+		            , S.CREDAT, S.CRETIM, S.CREUSR
+		            , S.LMODAT, S.LMOTIM, S.LMOUSR
+		            , S.INDBZL, S.INDARC, S.UPDCHK
+		    )
+	</update> 
+	
+	<!-- ==================================================================================================================== -->
+    <!-- 마스터관리 - 구성 - [MS01] 저장위치 :: BEGIN -->
+    <!-- ==================================================================================================================== -->
+    <select id="STLMA_LIST" parameterClass="Map" resultClass="DataMap">
+        SELECT MS.OWNRKY
+             , MS.PLNTKY
+             , SZF_GET_CMCDV_CDESC1_TEXT('KR', 'LOTA02', MS.PLNTKY) AS PLNTNM
+             , MS.STLKY
+             , MS.STLNM
+             , MS.WAREKY
+             , WA.NAME01 AS WARENM
+             , MS.DELMAK
+             , MS.CREDAT
+             , MS.CRETIM
+             , MS.CREUSR
+             , MS.LMODAT
+             , MS.LMOTIM
+             , MS.LMOUSR
+             , MS.INDBZL
+             , MS.INDARC
+             , MS.UPDCHK
+             , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = MS.CREUSR),' ') AS CUSRNM
+             , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = MS.LMOUSR),' ') AS LUSRNM
+          FROM STLMA MS
+            LEFT OUTER JOIN WAHMA WA
+                         ON WA.WAREKY = MS.WAREKY
+         WHERE TRIM(MS.DELMAK) IS NULL
+           <isNotEmpty property="WAREKY">AND MS.WAREKY = #WAREKY#</isNotEmpty>
+           <isNotEmpty property="RANGE_SQL"> $RANGE_SQL$ </isNotEmpty>
+         ORDER BY MS.OWNRKY, MS.PLNTKY, MS.STLKY, MS.STLNM, MS.WAREKY
+    </select>
+    
+    <insert id="STLMA_INSERT" parameterClass="Map">
+        INSERT INTO STLMA
+        (
+            CREDAT, CRETIM, CREUSR
+          , LMODAT, LMOTIM, LMOUSR
+          , INDBZL, INDARC, UPDCHK
+          , OWNRKY -- PK_1
+          , PLNTKY -- PK_2
+          , STLKY -- PK_3
+          <isNotEmpty property="STLNM">, STLNM</isNotEmpty>
+          <isNotEmpty property="WAREKY">, WAREKY</isNotEmpty>
+          <isNotEmpty property="DELMAK">, DELMAK</isNotEmpty>
+        )
+        VALUES(
+            TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+          , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+          , ' ', ' ', 0
+          , #OWNRKY# -- PK_1
+          , #PLNTKY# -- PK_2
+          , #STLKY# -- PK_3
+          <isNotEmpty property="STLNM">, #STLNM#</isNotEmpty>
+          <isNotEmpty property="WAREKY">, #WAREKY#</isNotEmpty>
+          <isNotEmpty property="DELMAK">, #DELMAK#</isNotEmpty>
+        )
+    </insert>
+    
+    <update id="STLMA_UPDATE" parameterClass="Map">
+        UPDATE STLMA
+           SET LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+             , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+             , LMOUSR = #SES_USER_ID#
+             , WAREKY = NVL(#WAREKY#, ' ')
+         WHERE 1 = 1
+           AND OWNRKY = #OWNRKY#
+           AND PLNTKY = #PLNTKY#
+           AND STLKY = #STLKY#
+    </update>
+    
+    <delete id="STLMA_DELETE" parameterClass="Map">
+        DELETE FROM STLMA
+        WHERE 1 = 1
+          AND OWNRKY = #OWNRKY#
+          AND PLNTKY = #PLNTKY#
+          AND STLKY = #STLKY#
+    </delete>
+    
+    <select id="STLMA_DUPL_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+        SELECT CASE WHEN STATUS_SUM > 1
+                         THEN '플랜트, 저장위치, 거점 [' || PLNTKY || ',' || STLKY || ',' || WAREKY || ']이/가 중복 되었습니다.'
+                    ELSE ' '
+               END AS VALIDATION_MSG
+          FROM (
+                 SELECT OWNRKY,PLNTKY,STLKY,WAREKY, SUM(STATUS) AS STATUS_SUM
+                   FROM (
+                          SELECT 1 AS STATUS,OWNRKY,PLNTKY,STLKY,WAREKY FROM STLMA UNION ALL
+                          $VALIDATION_DUPL_SQL$
+                        ) A
+                  GROUP BY OWNRKY,PLNTKY,STLKY,WAREKY
+                 HAVING SUM(STATUS) > 1
+               ) VALID
+         WHERE ROWNUM = 1
+    </select>
+    
+    <!-- ==================================================================================================================== -->
+    <!-- 마스터관리 - 구성 - [MS01] 저장위치 :: END -->
+    <!-- ==================================================================================================================== -->
+    
+    <!-- ==================================================================================================================== -->
+    <!-- 마스터관리 - 구성 - [DT02] 문서 유형 연결 :: BEGIN -->
+    <!-- ==================================================================================================================== -->
+    
+    <select id="DOCPG_H_LIST" parameterClass="Map" resultClass="DataMap">
+        SELECT T1.PROGID
+             , T1.CRETIM
+             , T1.CREDAT
+             , T1.LMOTIM
+             , T1.LMODAT
+             , (
+                 SELECT NVL(MAX(X.LBLTXL), T2.LABLKY)
+                 FROM JLBLM X
+                 WHERE T2.LABLGR = X.LABLGR
+                   AND T2.LABLKY = X.LABLKY
+                   AND X.LANGKY = #LANGKY#
+               ) AS PROGNM
+        FROM (
+            SELECT DT.PROGID
+                 , MIN(DT.CRETIM) AS CRETIM
+                 , MIN(DT.CREDAT) AS CREDAT
+                 , MAX(DT.LMOTIM) AS LMOTIM
+                 , MAX(DT.LMODAT) AS LMODAT
+            FROM DOCPG DT
+            WHERE EXISTS (
+                            SELECT 'X'
+                            FROM MNUDT X
+                            WHERE X.MENUKY = #MENUKY#
+                              AND X.PROGID = DT.PROGID
+                         )
+            GROUP BY DT.PROGID
+        ) T1
+          LEFT OUTER JOIN MNUDT T2
+                       ON T2.MENUKY = #MENUKY#
+                      AND T2.PROGID = T1.PROGID 
+          LEFT OUTER JOIN PROGM T3 
+                       ON T3.PROGID = T1.PROGID
+         ORDER BY T1.PROGID
+    </select>
+    
+    <select id="DOCPG_LIST" parameterClass="Map" resultClass="DataMap">
+        SELECT DT.PROGID
+             , DT.DOCCAT
+             , SZF_GET_DOCCAT_TEXT(#LANGKY#, DT.DOCCAT) AS DOCCATNM
+             , DT.DOCUTY
+             , SZF_GET_DOCUTY_TEXT(#LANGKY#, DT.DOCUTY) AS DOCUTYNM
+             , DT.CREDAT
+             , DT.CRETIM
+             , DT.CREUSR
+             , DT.LMODAT
+             , DT.LMOTIM
+             , DT.LMOUSR
+             , DT.INDBZL
+             , DT.INDARC
+             , DT.UPDCHK
+             , DM.SHORTX
+             , DM.NUMOBJ
+             , DM.TRNHTY
+             , DM.SYSLOC
+             , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = DT.CREUSR),' ') AS CUSRNM
+             , NVL((SELECT NMLAST FROM USRMA B WHERE B.USERID = DT.LMOUSR),' ') AS LUSRNM
+        FROM DOCPG DT
+          LEFT OUTER JOIN DOCTM DM
+                       ON DM.DOCUTY = DT.DOCUTY
+                      AND DM.DOCCAT = DT.DOCCAT
+        WHERE DT.PROGID = #PROGID# 
+          AND EXISTS (
+                        SELECT 'X'
+                        FROM MNUDT X
+                        WHERE 1=1
+                          AND X.MENUKY = #MENUKY#
+                          AND X.PROGID = DT.PROGID
+                     )
+    </select>
+    
+    <insert id="DOCPG_INSERT" parameterClass="Map">
+        INSERT INTO DOCPG
+        (
+            CREDAT, CRETIM, CREUSR
+          , LMODAT, LMOTIM, LMOUSR
+          , INDBZL, INDARC, UPDCHK
+          , PROGID -- PK_1
+          , DOCCAT -- PK_2
+          , DOCUTY -- PK_3
+        )
+        VALUES(
+            TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+          , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+          , ' ', ' ', 0
+          , #PROGID# -- PK_1
+          , #DOCCAT# -- PK_2
+          , #DOCUTY# -- PK_3
+        )
+    </insert>
+    
+    <update id="DOCPG_UPDATE" parameterClass="Map">
+        UPDATE DOCPG
+           SET LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+             , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+             , LMOUSR = #SES_USER_ID#
+             <isNotEmpty property="PROGID">, PROGID = #PROGID#</isNotEmpty>
+             <isNotEmpty property="DOCCAT">, DOCUFM = #DOCCAT#</isNotEmpty>
+             <isNotEmpty property="DOCUTY">, DEFLIN = #DOCUTY#</isNotEmpty>
+         WHERE 1 = 1
+           AND PROGID = #PROGID#
+           AND DOCCAT = #DOCCAT#
+           AND DOCUTY = #DOCUTY#
+    </update>
+    
+    <delete id="DOCPG_DELETE" parameterClass="Map">
+        DELETE FROM DOCPG
+         WHERE 1 = 1
+           AND PROGID = #PROGID#
+           AND DOCCAT = #DOCCAT#
+           AND DOCUTY = #DOCUTY#
+    </delete>
+    
+    <select id="DOCPG_DUPL_VALIDATION_OBJECT" parameterClass="Map" resultClass="String">
+        SELECT CASE WHEN STATUS_SUM > 1
+                         THEN '프로그램ID, 문서 카테고리, 문서유형 [' || PROGID || ',' || DOCCAT || ',' || DOCUTY || ']이/가 중복 되었습니다.'
+                    ELSE ' '
+               END AS VALIDATION_MSG
+          FROM (
+                 SELECT PROGID, DOCCAT, DOCUTY, SUM(STATUS) AS STATUS_SUM
+                   FROM (
+                          SELECT 1 AS STATUS, PROGID, DOCCAT, DOCUTY FROM DOCPG UNION ALL
+                          $VALIDATION_DUPL_SQL$
+                        ) A
+                  GROUP BY PROGID, DOCCAT, DOCUTY
+                 HAVING SUM(STATUS) > 1
+                  <!-- ORDER BY DOCCAT  -->
+               ) VALID
+         WHERE ROWNUM=1
+    </select>
+     
+    <select id="DT02_PROGNM_MAP" parameterClass="Map" resultClass="DataMap">
+        SELECT PM.PGPATH
+             , PM.PROGID
+             , PM.SHORTX
+        FROM PROGM PM
+        WHERE PM.PROGID = #PROGID#
+          AND EXISTS (
+                        SELECT 'X'
+                        FROM MNUDT X
+                        WHERE 1=1
+                          AND X.MENUKY = #MENUKY#
+                          AND X.PROGID = PM.PROGID
+                     )
+    </select>
+    
+    <select id="DT02_DOCCATNM_MAP" parameterClass="Map" resultClass="DataMap">
+        SELECT SZF_GET_DOCCAT_TEXT(#LANGKY#, #DOCCAT#) AS DOCCATNM FROM DUAL
+    </select>
+    
+    <select id="DT02_DOCUTYNM_MAP" parameterClass="Map" resultClass="DataMap">
+        SELECT SZF_GET_DOCUTY_TEXT(#LANGKY#, #DOCUTY#) AS DOCUTYNM
+             , DM.SHORTX
+             , DM.NUMOBJ
+             , DM.TRNHTY
+             , DM.SYSLOC
+        FROM DOCTM DM
+        WHERE DM.DOCUTY = #DOCUTY#
+          AND DM.DOCCAT = #DOCCAT#
+    </select>
+    
+    <!-- ==================================================================================================================== -->
+    <!-- 마스터관리 - 구성 - [DT02] 문서 유형 연결 :: END -->
+    <!-- ==================================================================================================================== -->
+    
+    <!-- ==================================================================================================================== -->
+    <!-- 테스트 쿼리 BEGIN -->
+    <!-- ==================================================================================================================== -->
+    <!-- 구성> 영역 조회 -->
+	<select id="BM01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			'a1'  MANDT,
+			'a2'  PLANT,
+			'a3' MATCODE,
+		    'a4' MATNAME,
+		    'a5' MATFULLNAME,
+		    'a6' MATSPEC,
+		    'a7' BUNIT,
+		    'a8' PTYPE,
+		    'a9' MATTYPE,
+		     'a10' MATGROUP,
+		    'a11' GWT,
+		    'a12' NWT,
+		     'a13' WUNIT,
+		     'a14' LOWCODE,
+			'a15' GMATGROUP,
+			'a16' EXMFLAG,
+			'a17' EXLFLAG,
+			'a18' IMPORTFLAG,
+			'a19' INVENTORYFLAG,
+			'a20' LOTFLAG,
+			'a21' EXPORTFLAG,
+			'a22' WIDTH,
+			'a23' LENGTH,
+			'a24' MATWHCODE,
+			'a25' OPWHCODE,
+			'a26' CREDAT,
+			'a27' CRETIM,
+			'a28' CREUSR,
+			'a29' CUSRNM,
+			'a30' LMODAT,
+			'a31' LMOTIM,
+			'a32' LMOUSR,
+			'a33' LUSRNM
+		FROM DUAL
+		WHERE 1 = 1
+	</select>
+    <!-- ==================================================================================================================== -->
+    <!-- 테스트쿼리 END -->
+    <!-- ==================================================================================================================== -->
+</sqlMap>

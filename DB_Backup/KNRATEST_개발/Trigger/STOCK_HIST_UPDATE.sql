@@ -1,0 +1,157 @@
+--------------------------------------------------------
+--  DDL for Trigger STOCK_HIST_UPDATE
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "KNRAMES"."STOCK_HIST_UPDATE" 
+AFTER UPDATE ON TB_INV001
+FOR EACH ROW
+BEGIN
+   
+  INSERT INTO STOCK_HIST(
+     CHG_DT
+    ,WERKS
+    ,STOR_LOC_CD
+    ,IND_BCD
+    ,MATNR
+    ,LOC_CD
+    ,LOT_NO
+    ,MACH_CD
+    ,MACHINE
+    ,WRK_ORDR_NO
+    ,WRK_ORDR_SEQNO
+    ,ORDER_NO
+    ,PRD_NO
+    ,IN_MR_YN
+    ,STCK_KY
+    ,PRFM_DT
+    ,PRD_DT
+    ,UNIT
+    ,STCK_QTY
+    ,PLT_QTY
+    ,BOX_QTY
+    ,BAG_QTY
+    ,EA_QTY
+    ,ROLLCNT
+    ,WGT
+    ,SUPY_CD
+    ,LOT_NUM
+    ,STCK_STA
+    ,VBELN
+    ,POSNR
+    ,KUNNR
+    ,FNL_JDGM
+    ,MSRM_DATE
+    ,PRC_SEQNO
+    ,INSPR_ID
+    ,CHK_PP_YN
+    ,CHK_PP_DATE
+    ,CHK_PP_ID
+    ,CHK_QC_YN
+    ,CHK_QC_DATE
+    ,CHK_QC_ID
+    ,DOC_NO
+    ,DOC_SEQNO
+    ,WDOC_NO
+    ,WDOC_SEQNO
+    ,DLFL
+    ,UPDDATE
+    ,UPDID
+    ,RUN_STA
+    ,APVR_STA
+    ,CFRM_ID
+    ,CFRM_DATE
+    ,BS_WGT
+    ,CON_TYPE
+    ,PACK_TYPE
+    ,P_WERKS
+    ,P_MATNR
+    ,P_IND_BCD
+    ,P_LOT_NO
+    ,P_STOR_LOC_CD
+    ,P_LOC_CD
+    ,P_STCK_QTY
+    ,P_PLT_QTY
+    ,P_BOX_QTY
+    ,P_BAG_QTY
+    ,P_EA_QTY
+    ,P_ROLLCNT
+    ,P_WGT
+  )VALUES(
+     SYSDATE
+    ,:NEW.WERKS
+    ,:NEW.STOR_LOC_CD
+    ,:NEW.IND_BCD
+    ,:NEW.MATNR
+    ,:NEW.LOC_CD
+    ,:NEW.LOT_NO
+    ,:NEW.MACH_CD
+    ,:NEW.MACHINE
+    ,:NEW.WRK_ORDR_NO
+    ,:NEW.WRK_ORDR_SEQNO
+    ,:NEW.ORDER_NO
+    ,:NEW.PRD_NO
+    ,:NEW.IN_MR_YN
+    ,:NEW.STCK_KY
+    ,:NEW.PRFM_DT
+    ,:NEW.PRD_DT
+    ,:NEW.UNIT
+    ,:NEW.STCK_QTY
+    ,:NEW.PLT_QTY
+    ,:NEW.BOX_QTY
+    ,:NEW.BAG_QTY
+    ,:NEW.EA_QTY
+    ,:NEW.ROLLCNT
+    ,:NEW.WGT
+    ,:NEW.SUPY_CD
+    ,:NEW.LOT_NUM
+    ,:NEW.STCK_STA
+    ,:NEW.VBELN
+    ,:NEW.POSNR
+    ,:NEW.KUNNR
+    ,:NEW.FNL_JDGM
+    ,:NEW.MSRM_DATE
+    ,:NEW.PRC_SEQNO
+    ,:NEW.INSPR_ID
+    ,:NEW.CHK_PP_YN
+    ,:NEW.CHK_PP_DATE
+    ,:NEW.CHK_PP_ID
+    ,:NEW.CHK_QC_YN
+    ,:NEW.CHK_QC_DATE
+    ,:NEW.CHK_QC_ID
+    ,:NEW.DOC_NO
+    ,:NEW.DOC_SEQNO
+    ,:NEW.WDOC_NO
+    ,:NEW.WDOC_SEQNO
+    ,:NEW.DLFL
+    ,:NEW.UPDDATE
+    ,:NEW.UPDID
+    ,:NEW.RUN_STA
+    ,:NEW.APVR_STA
+    ,:NEW.CFRM_ID
+    ,:NEW.CFRM_DATE
+    ,:NEW.BS_WGT
+    ,:NEW.CON_TYPE
+    ,:NEW.PACK_TYPE
+    ,:OLD.WERKS         
+    ,:OLD.MATNR
+    ,:OLD.IND_BCD
+    ,:OLD.LOT_NO
+    ,:OLD.STOR_LOC_CD
+    ,:OLD.LOC_CD
+    ,:OLD.STCK_QTY 
+    ,:OLD.PLT_QTY 
+    ,:OLD.BOX_QTY 
+    ,:OLD.BAG_QTY 
+    ,:OLD.EA_QTY 
+    ,:OLD.ROLLCNT
+    ,:OLD.WGT                                            
+  );
+  
+  EXCEPTION
+   WHEN OTHERS THEN
+   RAISE_APPLICATION_ERROR(-20000, SQLERRM);  
+      
+END;
+
+/
+ALTER TRIGGER "KNRAMES"."STOCK_HIST_UPDATE" DISABLE;

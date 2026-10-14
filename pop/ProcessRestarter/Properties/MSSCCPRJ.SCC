@@ -1,0 +1,14 @@
+SCC = This is a Source Code Control file.
+
+[SmartDas.sln]
+SCC_Aux_Path = 125.141.59.61:8080:SAMMI_Project
+SCC_Project_Name = $/GOOTZ/SmartDas
+
+[DAS.csproj]
+SCC_Aux_Path = 125.141.59.61:8080:SAMMI_Project
+SCC_Project_Name = $/GOOTZ/SmartDas/DAS
+
+[ProcessRestarter.csproj]
+SCC_Aux_Path = 125.141.59.61:8080:SAMMI_Project
+SCC_Project_Name = $/GOOTZ/SmartDas/ProcessRestarter
+

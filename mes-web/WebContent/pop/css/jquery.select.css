@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* Selects */
+.select{position:relative;display:inline-block;height:38px;vertical-align:middle;font-size:24px}
+.select .jq_sel {display:block;position:relative;height:38px;background:url('/pop/images/bg_selbox.gif') no-repeat 0 0}
+.select .jq_sel span {position:absolute;left:0;top:0;white-space:nowrap;height:38px;width:100%;_width:auto;line-height:38px;text-align:left;text-indent:8px;color:#4b4b4b;font-weight:bold;overflow:hidden;cursor:pointer}
+.select .jq_sel a.jqTransformSelectOpen {display:block;position:absolute;right:0px;width:28px;height:38px;background:url('/pop/images/bg_selbox.gif') no-repeat 100% 0}
+.select .jq_sel ul {overflow:auto;position:absolute;z-index:9999;top:38px;left:0px;max-height:300px;width:100%;list-style:none;background-color:#fff;border-top:solid 1px #18181a;border-bottom:solid 1px #18181a;display:none;overflow:auto;overflow-y:auto;z-index:10;white-space:nowrap}
+.select .jq_sel li {border-right:solid 1px #18181a;border-left:solid 1px #18181a}
+.select .jq_sel ul a {display:block;padding:4px 2px 4px 8px;text-decoration:none;color:#9c9daf;text-align:left}
+.select .jq_sel ul a:hover {background-color:#f1f1f1}
+.select .jq_sel ul a.selected {}
+.select .jq_sel_hide {display:none}
+
+.sel_dim .jq_sel {z-index:1!important;background:url('/pop/images/bg_selbox.gif') no-repeat 0 -48px}
+.sel_dim .jq_sel a.jqTransformSelectOpen {background:url('/pop/images/bg_selbox.gif') no-repeat 100% -48px}
+.sel_dim .jq_sel div span {filter:alpha(opacity=50);Opacity:0.5}
+.sel_dim .jq_sel ul {display:none!important}
+
+/* height:34px */
+.search .select .jq_sel{height:36px;background-image:url('/pop/images/bg_selboxb.gif')}
+.search .select .jq_sel a.jqTransformSelectOpen{height:36px;background-image:url('/pop/images/bg_selboxb.gif')}

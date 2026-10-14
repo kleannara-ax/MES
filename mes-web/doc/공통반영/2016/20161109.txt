@@ -1,0 +1,22 @@
+grid.js
+ - sort 순서를 표시하는 기능 추가
+ - excel down시 레이아웃 세이브에서 지운 화면에 표시되지 않는 그리드컬럼까지 전체 다운로드 되는 옵션 추가
+   : excelRequestViewCols : false
+
+ui.js
+ - calendar에 추가 옵션지정을 위해 생성 후 발생 이벤트 추가
+   : uiListCreateCalenderEvent($input)
+   : 오늘 이후로 선택 불가한 옵션을 주고 싶은경우
+     	if($input.attr("name") == "CREDAT"){
+			$input.datepicker("option", "maxDate", '+0d +0m +0w' );
+		}
+
+jquery-ui.custom.js
+ - calendar에서 오늘 버튼을 누르면 오늘 날자가 바로 선택되고 달력이 닫히는 기능 추가
+ 
+grid input박스 꽉차지 않는 오류 수정
+ - grid.js, theme.js
+  
+excel down 최대행 개수 지정시 다운로드 엑셀에 지정행까지만 다운로도 되는기능 추가  : excelRequestMaxRow
+ - CommonConfig.java, BaseController.java, ExcelView.java
+ - configData.js, grid.js

@@ -1,0 +1,63 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "left.css";
+
+/* left */
+.left_wrap{background-color:#fff}
+
+/* info_my */
+.info_my {background-color:red}
+.info_my .name_user{color:#333}
+
+/* Quick menu */
+.guick_tit{color:#fffefe}
+
+/* lnb dep */
+.lnb_dep01{border-top:1px solid #ebebeb}
+.lnb_dep01 li a{color:#333;}
+.dep01_focus {background-color: #485fab; }
+.dep01_focus > a {color: #002849 !important; font-weight: bold; background: #d1d4de url(/common/theme/webdek/white/icon_folder_open.png) no-repeat 20px center !important; background-size: 14px auto !important; }
+.lnb_dep01 > li > a {background: url(/common/theme/webdek/white/icon_folder_close.png) no-repeat 20px center; background-size: 14px auto;}
+
+.lnb_dep02{background-color:#fff}
+.lnb_dep02 > li > a{background:url("/common/theme/webdek/white/icon_folder_close.png") no-repeat 37px center; background-size: 14px auto;}
+.lnb_dep02 > li.on > a {color: #002849; font-weight: bold; background: #e6e7eb url(/common/theme/webdek/white/icon_folder_open.png) no-repeat 37px center !important; background-size: 14px auto !important; }
+.dep02_focus_off > a {color:#666 !important;background-color:#f5f5f7 !important;background: url(/common/theme/webdek/navy/icon_folder_list_on.png) no-repeat 37px center !important; background-size: 14px auto !important;}
+.dep02_focus_on > a {color:#007a33 !important;background: url("/common/theme/webdek/navy/icon_folder_open_navy.png") no-repeat 37px center; background-size: 14px auto;background-color:#f5e2d8 !important;}
+
+.lnb_dep03{background-color:#fff;border-bottom:1px solid #ebebeb}
+.lnb_dep03 > li > a {padding:5px 0px 5px 74px !important; color: #99a4b1; background: url(/common/theme/webdek/navy/icon_folder_list_on.png) no-repeat 54px center; background-size: 14px auto;}
+.lnb_dep03 li a{color:#666;border-bottom:none;}
+.lnb_dep03 li.on a{color:#002849;background: #f8f8f8 url(/common/theme/webdek/navy/icon_folder_list.png) no-repeat 54px center !important; background-size: 14px auto !important;}
+
+/* search */
+.search_box{background:#fff;border:2px solid #fff;border-radius:2px}
+.required:after{background:url("/common/theme/webdek/images/icon.png") no-repeat right -40px}/* 필수 항목 */
+.serch_input{background-color: #fff !important;}
+.input_box{background:#fff;border:2px solid #fff;border-radius:2px}
+.input_box_g{background:#fff;border:1px solid #ececec;border-radius:2px}
+.input_box_bg{background:#f5f5f5;border:2px solid #f5f5f5;border-radius:2px}
+.input_bg{background:#f5f5f5}
+.txt_count{color:#101010}
+.txt_total{color:#101010}
+
+/*tabs*/
+.sys_menu {/* border-left: 1px solid #6e7387; */ width: 140px;  /* background: #ffa000; */}
+.sys_menu.on span {background: url("/common/theme/webdek/green/icon_set01.png") no-repeat left center; background-size: 12px;}
+.my_menu {border-left: 1px solid #e5e7eb; width:139px; background: #785844; padding: 18px 28px 18px 50px;}
+.my_menu.on span {background: url("/common/theme/webdek/green/icn_star02_green_on.png") no-repeat 14px center; background-size: 12px;}
+.tabs .sys_menu.on, .tabs .my_menu.on {border-top: 1px solid #e5e7eb; border-left: 1px solid #e5e7eb; background-color:#ffffff; }
+.tabs .sys_menu.on span, .tabs .my_menu.on span {color:#000;}
+.tabs .sys_menu.off, .tabs .my_menu.off {border-left: 1px solid #e5e7eb;  border-bottom: 1px solid #e5e7eb;  border-top: 1px solid #e5e7eb; background: #f8f9fa; }
+.tabs .sys_menu.off span, .tabs .my_menu.off span {color:#d7d9e0;}  
+.tabs .sys_menu.off span {background: url("/common/theme/webdek/green/icon_set01_off.png") no-repeat left center; background-size: 12px;}
+.tabs .my_menu.off span {background: url("/common/theme/webdek/green/icn_star02.png") no-repeat 14px center; background-size: 12px;}
+ 
+/*btn*/
+.btn_asc {float:left; width: 31px; height: 30px; background-color:#ffffff !important; background: url("/common/theme/webdek/white/icon_sort_asc_01.png") no-repeat center; background-size: 18px 8px; border-left: 1px solid #d4dcde !important; border-top: 1px solid #d4dcde !important; border-bottom: 1px solid #d4dcde !important; border-bottom-left-radius: 2px;  border-top-left-radius: 2px; }
+.btn_desc  {float:right; width: 31px; height: 30px; background: url("/common/theme/webdek/images/icon_sort_desc_02.png") no-repeat center;  background-color: #99a4b1 !important;  background-size: 18px 8px;  border-bottom-right-radius: 2px;  border-top-right-radius: 2px;  } 
+.btn_search{position:absolute; background: url("/common/theme/webdek/white/search.png") no-repeat center; background-size:contain; }
+
+
+/*메뉴 2레벨 프로그램 아이콘변경 */
+.lnb_dep02 > li > a.prg {background: #f1f1f1 url(/common/theme/webdek/navy/icon_folder_list_on.png) no-repeat 37px center;background-size: 14px auto;}

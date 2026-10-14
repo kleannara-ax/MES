@@ -1,0 +1,12 @@
+grid.js
+ - gridMobileType : true 인경우 enter key로 다음 입력값으로 넘어가지 않는 오류 수정
+ 
+input.js
+ - range 점위 데이터가 들어간 경우 데이터가 초기화되는 오류 수정
+ 
+theme.js
+ - 모바일화면에서 gird input 에러 오류 수정
+
+image 파일 validation 옵션 추가
+ - image
+ - validateUtil.js, configData.js

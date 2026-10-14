@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsMobileInventoryDisplay">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<select id="PDST10_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT ST.OWNRKY 
+		     , ST.WAREKY 
+		     , ST.AREAKY 
+		     , ST.ZONEKY 
+		     , ST.LOCAKY 
+		     , ST.TRNUID 
+		     , SM.SKUG05 
+		     , SM.EANCOD 
+<!-- 		     , SL.NAME01  -->
+		     , ST.SKUKEY 
+		     , SM.DESC01 
+		     , SM.ASKU01 /* 유통기한 관리여부 */
+		     , '['|| ST.LOTA10 ||']' || (SELECT CMCDV.CDESC1 FROM CMCDV WHERE CMCDV.CMCDKY = 'LOTA10' AND CMCDV.CMCDVL = ST.LOTA10) AS LOTA10
+		     , TO_CHAR((TO_DATE(ST.LOTA11, 'YYYYMMDDHH24MISS')), 'YYYY.MM.DD') AS LOTA11 /* 제조일자 */
+		     , TO_CHAR((TO_DATE(ST.LOTA12, 'YYYYMMDDHH24MISS')), 'YYYY.MM.DD') AS LOTA12 /* 입고일자 */
+		     , CASE WHEN ST.LOTA13 = ' '
+		                 THEN '9999.12.31'
+		           ELSE TO_CHAR((TO_DATE(ST.LOTA13, 'YYYYMMDDHH24MISS')), 'YYYY.MM.DD')
+		         END AS LOTA13 /* 유통기한 */
+		     , CASE WHEN SM.ASKU01 = 'N'
+		                 THEN '9999.12.31'
+		            <!-- ELSE TO_CHAR((TO_DATE(ST.LOTA13, 'YYYYMMDDHH24MISS') - SM.QTYMON + SM.QTYSTD), 'YYYY.MM.DD') -->
+		         END AS SHP_LIMIT /* 출고제한일 */
+		     , SUM(ST.QTSIWH) AS QTSIWH
+		     , SUM(ST.QTSIWH - GREATEST(ST.QTSALO,ST.QTSPMO) - ST.QTSBLK) AS USEQTY
+		     , SUM(ST.QTSALO) AS QTSALO
+		     , SUM(ST.QTSPMO) - SUM(ST.QTSALO) AS QTSPMV
+		     , SUM(ST.QTSPMO) AS QTSPMO
+		     , SUM(ST.QTSPMI) AS QTSPMI
+		     , SM.DUOMKY AS UOMKEY
+		     , SW.PLOCOV
+		     , NVL((SELECT QTPUOM FROM MEASI WHERE WAREKY = ST.WAREKY AND MEASKY = SW.MEASKY AND UOMKEY = 'BOX'), 1) AS BXIPSU
+				    FROM STKKY ST
+				         INNER JOIN SKUMA SM
+				                 ON SM.OWNRKY = ST.OWNRKY
+				                AND SM.SKUKEY = ST.SKUKEY
+				         INNER JOIN SKUWC SW
+				                 ON SW.OWNRKY = ST.OWNRKY
+				                AND SW.SKUKEY = ST.SKUKEY
+				                AND SW.WAREKY = ST.WAREKY
+<!-- 				         INNER JOIN BZPTN SL
+				                 ON SL.OWNRKY = ST.OWNRKY
+				                AND SL.PTNRKY = SM.SKUG05
+				                AND SL.PTNRTY = 'VD' -->
+				    WHERE 1 = 1
+				      AND NOT (ST.QTSIWH = 0 AND ST.QTSPMI = 0)
+				      AND ST.WAREKY = #SES_WAREKY#
+				     <!--  AND ST.OWNRKY = #SES_OWNER# -->
+				      <isNotEmpty property="LOCAKY">
+				      	AND ST.LOCAKY = #LOCAKY#
+				      </isNotEmpty>
+				      <isNotEmpty property="BARCOD">
+				      	AND (ST.SKUKEY = #BARCOD# OR SM.EANCOD = #BARCOD# OR SM.GTINCD = #BARCOD# OR SM.ASKU05 = #BARCOD#)  
+				      </isNotEmpty>
+				      <isNotEmpty property="TRNUID">
+				      	AND ST.TRNUID = #TRNUID#
+				      </isNotEmpty>
+		 GROUP BY ST.OWNRKY
+		        , ST.WAREKY
+		        , ST.AREAKY
+		        , ST.ZONEKY
+		        , ST.LOCAKY
+		        , ST.TRNUID
+		        , SM.SKUG05
+		        , SM.EANCOD
+<!-- 		        , SL.NAME01 -->
+		        , ST.SKUKEY
+		        , SM.DESC01
+	            , SM.ASKU01
+		        , ST.LOTA09
+		        , ST.LOTA10
+		        , ST.LOTA11
+		        , ST.LOTA12
+		        , ST.LOTA13
+		        , SM.DUOMKY
+		        , SW.MEASKY
+		        , SM.QTYMON 
+		        , SM.QTYSTD
+		        , SW.PLOCOV
+		 ORDER BY ST.LOCAKY
+		</select>
+
+		<select id="PDST20_LIST" parameterClass="Map" resultClass="DataMap">
+		 SELECT 
+		          SW.OWNRKY			AS OWNRKY       --Owner key
+				, SW.WAREKY			AS WAREKY    	--창고코드
+			    , SW.SKUKEY			AS SKUKEY    	--SKU ID
+			    , SM.DESC01			AS DESC01    	--SKU 명
+			    , SM.ASKU01			AS ASKU01    	--유통기한 관리여부
+			    , SM.SKUG05			AS SKUG05    	--SELLER ID
+			    , SL.NAME01			AS SELLERNM 	--SELLER명
+			    , SM.EANCOD			AS EANCOD   	--상품바코드
+			    , SM.ABCANV			AS ABCANV    	--EFM보관등급 1~5 = S~D
+			    , SW.PLOCOV			AS FIXLOC	    --FIX LOCATION
+			    , TRIM(SW.ABCANV)	AS SWABCANV   	--WMS 보관등급
+			    , LM.AREAKY			AS AREAKY 		--층구분
+			    , LM.TKZONE			AS ZONEKY     	--ZONE
+			    , LM.LOCAKY
+			FROM SKUMA SM
+                 INNER JOIN SKUWC SW ON SW.OWNRKY = SM.OWNRKY AND SW.SKUKEY = SM.SKUKEY
+                 INNER JOIN LOCMA LM ON LM.WAREKY = SW.WAREKY AND LM.LOCAKY = SW.PLOCOV
+                 INNER JOIN BZPTN SL On SL.OWNRKY = SW.OWNRKY AND SL.PTNRKY = SM.SKUG05 AND SL.PTNRTY = 'VD'
+			WHERE 1=1
+			AND SW.OWNRKY = #SES_OWNER#
+			AND SW.WAREKY = #SES_WAREKY#
+		<isNotEmpty property="FIXLOC">
+			AND SW.PLOCOV = #FIXLOC#
+		</isNotEmpty>
+		<isNotEmpty property="SKUKEY">
+			AND SW.SKUKEY = #SKUKEY# OR SM.EANCOD = #SKUKEY#
+		</isNotEmpty>
+	</select>
+	
+	<select id="PDST30_LIST" parameterClass="Map" resultClass="DataMap">
+		 SELECT LA.LOCAKY 
+		      , LA.ZONEKY
+		   FROM LOCMA LA
+		        INNER JOIN AREMA AA ON AA.WAREKy = LA.WAREKY AND AA.AREAKY = LA.AREAKY
+		  WHERE 0 = NVL((SELECT SUM(X.QTSIWH + X.QTSPMI)
+		               FROM STKKY X
+		              WHERE X.WAREKY = LA.WAREKY
+		                AND X.LOCAKY = LA.LOCAKY),0)
+		    AND LA.WAREKY = #SES_WAREKY#
+		  <isNotEmpty property="LSTRTY">
+		    AND AA.LSTRTY = #LSTRTY#
+		  </isNotEmpty>
+		  <isNotEmpty property="ZONEKY">
+		    AND LA.ZONEKY LIKE '%'||#ZONEKY#||'%' 
+		  </isNotEmpty>
+		  <isNotEmpty property="LOCATY">
+		    AND LA.LOCATY = #LOCATY#
+		  </isNotEmpty> 
+		  <![CDATA[
+		    AND ROWNUM <=30
+		   ]]>
+		 ORDER BY LA.LOCAKY 
+	</select>
+	
+	<select id="COMBOLSTRTY_PDST30_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT LSTRTY AS VALUE_COL
+		     , LSTTNM AS TEXT_COL
+		  FROM SHPTH
+		 WHERE WAREKY = #SES_WAREKY#
+	</select>
+	
+	<select id="COMBOLOCATY_PDST30_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT CMCDVL AS VALUE_COL
+		     , CDESC1 AS TEXT_COL
+		  FROM CMCDV
+		 WHERE CMCDKY ='LOCATY'
+	</select>
+	
+	<select id="PDST17_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SM.SKUKEY
+		     , SM.DESC01
+		     , SM.EANCOD
+		     , SM.SKUG05
+		     , SM.DUOMKY
+		     , AI.QTPUOM
+		     , BN.NAME01
+		     , SUM(AI.QTYASN) AS QTYASN
+		     , SUM(AI.QTYRCV) AS QTYRCV     
+		  FROM ASNDH AH
+	           INNER JOIN ASNDI AI ON AI.ASNDKY = AH.ASNDKY
+	           INNER JOIN SKUMA SM ON SM.OWNRKY = AH.OWNRKY AND SM.SKUKEY = AI.SKUKEY
+	           INNER JOIN BZPTN BN ON BN.OWNRKY = AH.OWNRKY AND BN.PTNRKY = SM.SKUG05 AND BN.PTNRTY = 'VD'
+		 WHERE AH.WAREKY = #SES_WAREKY#
+	       AND AH.ASNTTY = '131'
+	       <isNotEmpty property="ASNDAT">
+		       AND AH.ASNDAT = #ASNDAT#
+	       </isNotEmpty>
+	       <isNotEmpty property="BARCOD">
+		       AND (AI.SKUKEY = #BARCOD# OR SM.EANCOD = #BARCOD# OR  SM.GTINCD = #BARCOD# OR SM.ASKU05 = #BARCOD#)
+		   </isNotEmpty>
+	     GROUP BY SM.SKUKEY
+	            , SM.DESC01
+		        , SM.EANCOD
+		        , SM.SKUG05
+		        , SM.DUOMKY
+		        , AI.QTPUOM
+		        , BN.NAME01
+		 ORDER BY SM.SKUG05
+	</select>
+
+</sqlMap>

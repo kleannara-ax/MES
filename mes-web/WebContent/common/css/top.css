@@ -1,0 +1,45 @@
+@charset 'utf-8';
+
+/* prettySelect */
+.selectOrigin { display:none;}
+.prettySelectWrap { display:inline-block; position:relative !important; z-index:140; background-color:#4d526a; vertical-align:middle !important;}
+.prettySelect { display:block !important; min-width:120px; z-index:140; position:relative; }
+html.ie7 .prettySelectWrap { display:inline !important;}
+.prettySelect p.selected { position:relative; z-index:12;}
+.prettySelect p.selected a { display:block !important; position:relative !important; height:21px !important; line-height:22px !important; color:#a6abbc !important; font-size:12px !important; cursor:pointer !important; text-decoration:none !important; border-radius:1px;}
+.prettySelect p.selected a .text { display:block; float:left; padding:0 10px !important;}
+.prettySelect p.selected a .ico { display:block; float:right; width:19px; height:100%; background:url("/common/images/ico_select.png") no-repeat left center;}
+.prettySelect .optionList { display:none; position:absolute; left:0; top:21px; width:100%; z-index:140 !important; background-color:#fff; border:1px solid #4d526a; border-top:0 none; border-bottom-left-radius:1px; border-bottom-right-radius:1px; overflow:hidden;}
+.prettySelect .optionList li a { display:block; height:21px; line-height:21px; padding-left:10px; border-top:0 none; border-bottom:0 none; text-decoration:none; text-align:left; font-size:12px; color:#a6abbc;}
+.prettySelect .optionList li a:hover,
+.prettySelect .optionList li a:focus,
+.prettySelect .optionList li.selected a { color:#fff; background-color:#2f313a;}
+.prettySelect.upSide .optionList { overflow:hidden; top:auto; bottom:26px;}
+.prettySelect.upSide p.selected { z-index:14;}
+
+/* header */
+.header {float:left; height:85px; width:100%; background-color:#2f313a;}
+.header:after { display:block; content:""; clear:both;}
+.header .innerContainer { min-width:960px;}
+.header .logo { float:left; width:220px; line-height:30px; text-align:center; padding:4px 0;}
+.header .gnb { float:left; min-width:700px; height:30px;}
+.header .gnb .list { float:left; position:relative; width:100%;}
+.header .gnb .list > li { float:left; }
+.header .gnb .list > li > a { display:block; height:30px; padding:0 15px; line-height:30px; color:#a6abbc; font-weight:bold; font-size:12px;}
+.header .gnb .list > li.active > a,
+.header .gnb .list > li:hover > a { background-color:#4786f6; color:#fff;}
+.header .gnb .list > li > ul { display:none; position:absolute; left:0; top:30px; bottom:0; width:100%; height:29px; background-color:#4786f6; }
+.header .gnb .list > li > ul > li { float:left; padding:0 12px; line-height:29px;}
+.header .gnb .list > li > ul > li > a { color:#c3d9ff;}
+.header .gnb .list > li > ul > li > a:hover { color:#fff;}
+.header .rightArea { position:absolute; right:0; top:0; padding:8px 15px 8px 0; text-align:right;background-color:#2f313a;}
+.header .rightArea:after {display:block; content:""; clear:both;}
+.header .util {float:left;}
+.header .util .user,
+.header .util .logOut,
+.header .util .setting { display:inline-block; height:20px; padding-left:17px; margin-left:10px; background-position:left center; background-repeat:no-repeat; line-height:22px; font-size:11px; color:#a6abbc;}
+.header .util .user { background-image:url("/common/images/ico_user.png");}
+.header .util .logOut { background-image:url("/common/images/ico_logout.png");}
+.header .util .setting { background-image:url("/common/images/ico_setting.png");}
+.header .selection {float:left; padding:2px 8px 0 0}
+.header select { font-size:13px; min-width:120px; background-color:#4d526a; color:#a6abbc;}

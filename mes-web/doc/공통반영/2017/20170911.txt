@@ -1,0 +1,7 @@
+3단 템플릿에 크기 직접 적용방법 추가
+ - 1단 (지정 않하는 경우 185px): <div class="bottomSect top" style="height:250px">
+ - 2단 (지정 안하는 경우 300px): midAreaHeightSet = "500px";
+ 	<script  type="text/javascript" src="/common/js/head-w.js"></script>
+	<script type="text/javascript">
+		midAreaHeightSet = "500px"; 
+		$(document).ready(function(){

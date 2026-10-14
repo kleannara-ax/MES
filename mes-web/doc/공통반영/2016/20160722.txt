@@ -1,0 +1,5 @@
+range에서 sql에 적용된 name을 별도로 지정하는 기능 추가
+ - input.js : inputList.setRangeSqlName(rangeName, sqlName);
+ 
+페이징 기능에서 페이징 끝에 도달한 경우 콜백 이멘트 추가
+ - grid.js : gridEventPageEnd(gridId, dataCount)

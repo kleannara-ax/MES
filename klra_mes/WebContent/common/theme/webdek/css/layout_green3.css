@@ -1,0 +1,106 @@
+@charset "utf-8";
+@import "layout.css";
+
+/* .content_wrap{background:#f5f3bb url(/common/theme/webdek/images/bg_full.png) no-repeat -280px -120px fixed; background-size:calc(100% + 280px) calc(100% + 120px);} */
+.content_wrap {
+	background-color: #e9ecf6;
+}
+.content_inner {
+	background-color: #e9ecf6;
+	padding: 5px 10px 15px;
+}
+.content_inner_pop {
+	background-color: #e9ecf6;
+	padding: 10px 10px 10px;
+}
+/*tab border content ui color css*/
+.ui-datepicker-calendar tr td a:hover {background-color:#004f21; color: white; font-weight: bold;}
+.ui-timepicker .ui-timepicker-hour-cell a:hover, .ui-timepicker .ui-timepicker-minute-cell a:hover {background-color: #004f21; color: white; font-weight: bold; border-radius: 4px;}
+
+.btn_search{background: url(/common/theme/webdek/green/search_blue.png) no-repeat center; background-size: contain; background-size: 15px auto;}/* btn search */
+.btn_color{/* color:#fff; */border:1px solid #3a80ad; background:url(/common/theme/webdek/images/icon_save.png) no-repeat 8px center; background-size: 12px auto; background-color:#3a80ad;}
+.btn_add_arrow{color:#fff;border:1px solid #004f21; background:url(/common/theme/webdek/images/icon_add_arrow.png) no-repeat 8px center; background-size: 12px auto; background-color:#004f21;}
+.btn_del_arrow{margin-left: 5px; color:#fff;border:1px solid #004f21; background:url(/common/theme/webdek/images/icon_del_arrow.png) no-repeat 8px center; background-size: 12px auto; background-color:#004f21;}
+.btn_color, .basic_search, .basic_add_new, .basic_del, .basic_reset, .btn_add_arrow, .btn_del_arrow, .basic_copy, .btn_popup{padding: 2px 10px 2px 25px;}
+.btn_lit .txt_total span{color:#3a80ad}
+/* 김호영 2020.04.03 */
+.btn_delete{background: url(/common/theme/webdek/images/delete.png) no-repeat center; background-size: contain; background-size: 15px auto;}/* btn delete */
+
+.sub_title{color:#143960; padding:5px 0 5px 30px; position: relative; text-align: left !important;}
+.sub_title:before{
+	display: block;
+	content: "";
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	top: 50%;
+	transform:translateY(-50%);
+	background: url(/common/theme/webdek/images/title_bg.png) no-repeat center center/100% auto;
+	left: 0;
+	}
+
+/* tab 색상  수정*/
+.tab_style02 {
+	border-bottom: 1px solid #f1f2f6 !important;
+}
+.tab_style02 li[role="tab"] {
+    background-color: #fff;
+    border-bottom: 1px solid #f1f2f6;
+}
+.tab_style02 li.ui-tabs-active[role="tab"] {
+    background-color: #fff;
+    border-bottom: 2px solid #4c78ea;
+}
+.tab_style02 li[role="tab"]{
+	background-color: #fff;
+}
+.tab_style02 li[role="tab"] a{
+	color:#555; font-weight: bold;
+}
+.tab_style02 li.ui-tabs-active[role="tab"]{
+	background-color: #fff;
+}
+
+/* 2022 02 14 정다운*/
+.table_list01 tr th.text_filter {
+	background-color: #fff;
+}
+.grid_left,
+.grid_right {
+	float:left;
+	box-sizing: border-box;
+	height:100%;
+}
+.grid_left {
+	width:240px;
+}
+.grid_right {
+	width: calc(100% - 240px);
+}
+.grid_left .scroll {
+	overflow: inherit;
+	}
+.table_list_inner .table_thead {
+	overflow: revert;
+}
+.blank_filter {
+	background-color: #f7f8f9 !important;
+	/* color: #fff !important; */
+	text-align: center !important;
+}
+.text_filter input {
+	width:100%;
+	box-sizing: border-box;
+}
+.table_list01 .scroll {
+    height: calc(100% - 32px);
+}
+/* 2022.02.23 주석처리
+.content_wrap .search_next_wrap.searchRow1 {
+    height: calc(100% - 115px) !important;
+} */
+
+/* 2022.04.15 검색 캘린더 높이 맞추기 */
+.ui-datepicker-trigger {
+vertical-align: top;
+}

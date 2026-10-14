@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Report">
+	<insert id="PRTLOG_INSERT" parameterType="hashmap">
+		INSERT INTO PRTLOG
+		(
+			PRTSEQ
+		,	VALUE01
+		, 	VALUE02
+		, 	VALUE03
+		, 	VALUE04
+		, 	VALUE05
+		, 	VALUE06
+		, 	VALUE07
+		, 	VALUE08
+		, 	VALUE09
+		, 	VALUE10
+		, 	LABEL01
+		, 	LABEL02
+		, 	LABEL03
+		, 	LABEL04
+		, 	LABEL05
+		, 	LABEL06
+		, 	LABEL07
+		, 	LABEL08
+		, 	LABEL09
+		, 	LABEL10
+		, 	LABEL11
+		, 	LABEL12
+		, 	LABEL13
+		, 	LABEL14
+		, 	LABEL15
+		, 	LABEL16
+		, 	LABEL17
+		, 	LABEL18
+		, 	LABEL19
+		, 	LABEL20
+		, 	LABEL21
+		, 	LABEL22
+		, 	LABEL23
+		, 	LABEL24
+		, 	LABEL25
+		, 	LABEL26
+		, 	LABEL27
+		, 	LABEL28
+		, 	LABEL29
+		, 	LABEL30
+		)
+		VALUES
+		(
+			#{PRTSEQ}
+		, 	#{VALUE01}
+		, 	#{VALUE02}
+		, 	#{VALUE03}
+		, 	#{VALUE04}
+		, 	#{VALUE05}
+		, 	#{VALUE06}
+		, 	#{VALUE07}
+		, 	#{VALUE08}
+		, 	#{VALUE09}
+		, 	#{VALUE10}
+		, 	#{LABEL01}
+		, 	#{LABEL02}
+		, 	#{LABEL03}
+		, 	#{LABEL04}
+		, 	#{LABEL05}
+		, 	#{LABEL06}
+		, 	#{LABEL07}
+		, 	#{LABEL08}
+		, 	#{LABEL09}
+		, 	#{LABEL10}
+		, 	#{LABEL11}
+		, 	#{LABEL12}
+		, 	#{LABEL13}
+		, 	#{LABEL14}
+		, 	#{LABEL15}
+		, 	#{LABEL16}
+		, 	#{LABEL17}
+		, 	#{LABEL18}
+		, 	#{LABEL19}
+		, 	#{LABEL20}
+		, 	#{LABEL21}
+		, 	#{LABEL22}
+		, 	#{LABEL23}
+		, 	#{LABEL24}
+		, 	#{LABEL25}
+		, 	#{LABEL26}
+		, 	#{LABEL27}
+		, 	#{LABEL28}
+		, 	#{LABEL29}
+		, 	#{LABEL30}
+		)
+	</insert>
+</mapper>

@@ -1,0 +1,127 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>drawWatermarkText</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">ImageTool</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>drawWatermarkText</h2>
+            <p class="dscrpt">현재 이미지 파일에 텍스트를 삽입합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">drawWatermarkText</span> ( String <span class="paraname">watermarkText, </span>Font<span class="paraname">font, </span>Color<span class="paraname">color, </span>int <span class="paraname">x,</span> int<span class="paraname"> y, </span>float<span class="paraname"> transparency</span> )</pre>
+            </ul>
+            <h4>Parameters</h4>
+ 			<p class="para"><span class="paraname">watermarkText</span></p>
+            <p class="paradsc">[in] 삽입할 텍스트를  입력합니다.</p>
+            <p class="para"><span class="paraname">font</span></p>
+            <p class="paradsc">[in] 삽입할 텍스트의 Font 속성 객체를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">color</span></p>
+            <p class="paradsc">[in] 삽입할 텍스트의 Color 속성 객체를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">x</span></p>
+            <p class="paradsc">[in] 삽입할 이미지 파일의 x 좌표를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">y</span></p>
+            <p class="paradsc">[in] 삽입할 이미지 파일의 y 좌표를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">transparency</span></p>
+            <p class="paradsc">[in] 삽입할 이미지 파일의 투명도를 입력합니다. 투명도의 값은 0.0f ~ 1.0f 입니다.</p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileUpload fileUpload = new FileUpload(request, response); 
+try { 
+	fileUpload.setAutoMakeDirs(true);
+
+	String saveDirPath = request.getRealPath("/");
+	saveDirPath += ("UploadDir" + File.separator);
+	fileUpload.startUpload(saveDirPath); 	
+
+	FileItem fileItem = fileUpload.getFileItem("files");
+	FileItem inFileItem = fileUpload.getFileItem("inFiles");
+
+	if(fileItem != null && inFileItem != null) { 
+		fileItem.save(saveDirPath); 	
+		inFileItem.save(saveDirPath); 		
+					
+		// 이미지 객체 생성
+		ImageTool image = ImageTool.getImage(fileItem);
+		// 다른 유형의 Image 객체를 가져오는 함수들
+		// getImage(File sourceFile);
+		// getImage(String sourceFilePath);
+		
+		// image가 null이면, 지원되지 않는 이미지 포맷이거나 파일을 찾을 수 없는 경우입니다. 
+		if(image != null) { 
+			// autoMakeDirs를 true로 설정하면 파일 저장시 파일생성에 필요한 상위 디렉토리를 모두 생성합니다.
+			image.setAutoMakeDirs(true); 
+			
+			// 저장할 이미지 파일 경로 및 이름 설정
+			String imageSaveDirPath = saveDirPath + "image" + File.separator; 
+			
+			// 이미지 워터마킹을 합니다. 
+			if(ImageTool.isSupportedImageFormat(inFileItem)) {
+				// 다른 유형의 이미지 포맷 검사 함수들
+				// isSupportedImageFormat(String imageFilePath); 
+				// isSupportedImageFormat(File imageFile); 
+				
+				int x = 10; // x 좌표 
+				int y = 10; // y 좌표 
+				float transparency = 0.5f; // 투명도 (0.0f ~ 1.0f) 
+				<b>image.drawWatermarkImage(inFileItem, x, y, transparency);</b> 
+			}
+			
+			// JPG 포맷으로 이미지 변경 
+			ImageProp imageProp = new ImageProp(); 
+			imageProp.setFormatName("JPG");
+			// 저장할 이미지 포맷에 맞는 이름으로 설정
+			String imageFileName = "Converted_" + fileItem.getFileNameWithoutFileExt() + ".jpg";
+			String watermarkFilePath = image.convertAs(imageProp, imageSaveDirPath, imageFileName);  
+		}
+	}
+}
+catch(CrossUploaderException ex) { 
+}
+catch(Exception ex) { 
+	fileUpload.deleteUploadedFiles(); 
+}
+finally { 
+	fileUpload.clear(); 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

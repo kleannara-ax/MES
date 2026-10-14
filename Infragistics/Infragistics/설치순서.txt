@@ -1,0 +1,3 @@
+01 폴더의 NetAdvantage_WinForms_20111먼저 설치
+02 폴더의 NetAdvantage_WinForms_20111.2071_SR 설치
+03 Enterprise Library 5.0 설치

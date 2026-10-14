@@ -1,0 +1,26 @@
+﻿<!--The default template for installing the ASP.NET CLR 4.0 controls-->
+<Toolbox>
+  <Tab Name="NetAdvantage $(var.Major).$(var.Minor) ASP.NET CLR4x">
+    <Control Exclude="^UltraWebGrid$" />
+    <Control Exclude="^UltraWebToolbar$" />
+    <Control Exclude="^UltraWebTab$" />
+    <Control Exclude="^UltraWebListbar$" />
+    <Control Exclude="^UltraWebMenu$" />
+    <Control Exclude="^UltraWebTree$" />
+    <Control Exclude="^UltraWebGridExcelExporter$" />
+    <Control Exclude="^UltraWebGridDocumentExporter$" />
+    <Control Exclude="^WebCombo$" />
+    <Control Exclude="^WebDateChooser$" />
+    <Control Exclude="^WebPanel$" />
+    <Control Exclude="^WebCalendar$" />
+    <Control Exclude="^WebNavBar$" />
+    <Control Exclude="^WebTextEdit$" />
+    <Control Exclude="^WebMaskEdit$" />
+    <Control Exclude="^WebNumericEdit$" />
+    <Control Exclude="^WebDateTimeEdit$" />
+    <Control Exclude="^WebPercentEdit$" />
+    <Control Exclude="^WebCurrencyEdit$" />
+    <Control Exclude="^WebAsyncRefreshPanel$" />
+    <Control Exclude="^WebWeekView$" />
+  </Tab>
+</Toolbox>

@@ -1,0 +1,10 @@
+조회 영역의 닫기 버튼도 alt+W 단축키로 동작하도록 추가
+ - head.js
+ 
+grid layout save 초기화 기능 추가
+ - bottom.jsp
+ - layoutSave.js
+ - 초기화 버튼을 누르면 초기 상태로 layout data가 보여짐. 초기화 이후 save를 눌러야 적용.
+ 
+조회 항목중 단돈 입력 date인 경우 validation 오류 수정
+ - grid.js, validateUtil.js, ui.js

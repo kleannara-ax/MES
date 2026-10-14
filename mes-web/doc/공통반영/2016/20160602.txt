@@ -1,0 +1,9 @@
+공통 include위치 변경 및 wms.js의 공통 함수를 page.js로 이관.
+
+레인지와 일반 입혁 필드의 validateion을 추가 삭제 하는 기능 추가
+ - input.js :  inputList.removeValidation("NAME01", "required");
+		       inputList.addValidation("CREDAT1", "required,MASTER_M0434");
+		       
+레인지에 입력된 데이처 개수를 확인하는 함수 추가
+ - input.js : inputList.getDataCount(rangeName, [dataType]) 
+              dataType(configData.INPUT_RANGE_TYPE_SINGLE, configData.INPUT_RANGE_TYPE_RANGE)

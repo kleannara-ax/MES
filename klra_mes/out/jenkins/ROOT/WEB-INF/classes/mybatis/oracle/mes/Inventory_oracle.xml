@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Inv">
+
+	<!-- 일자별 베일 중량 -->
+	<select id="INPDT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DT,
+			   WEIGHT_V
+		  FROM TB_MAS022
+		 WHERE WERKS = #{WERKS}
+		   AND DT = #{INP_DT}
+	</select>
+
+	<!-- 거래처코드 -->
+	<select id="SUPY_CD_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1)
+		  FROM TB_MAS009
+		WHERE CUST_CD = #{SUPY_CD}
+	</select>
+
+	<!-- 자재별 단위 환산 -->
+	<select id="UNITCONVERSION_LIST" parameterType="hashmap" resultType="DataMap">
+		<if test='PROC_DIV == "HL"'>
+			SELECT UNIT,
+				   UMREZ,
+				   UMREN
+			  FROM TB_MAS005
+			 WHERE MATNR = #{MATNR}
+		</if>
+		<if test='PROC_DIV == "PS"'>
+			SELECT BS_WGT,	<!-- 평량 -->
+				   WLEN,	<!-- 가로 -->
+				   VLEN		<!-- 세로 -->
+			  FROM TB_MAS001
+			 WHERE MATNR = #{MATNR}
+		</if>
+	</select>
+
+	<select id="INV01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+
+	<select id="INV02_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV02_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV03_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV03_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV04_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV04_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV05_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV05_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV06_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV06_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV07_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV07_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV08_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV08_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="INV09_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV09_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	<!-- 20221118 여한진 자재사용이력  -->
+	<select id="INV10_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV10_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	<!-- 20230111 여한진 완제품 불출요청(PS) -->
+	<select id="INV11_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV11_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+
+	<!-- 2023-02-21(수요일) 안상현, 완제품 불출요청(PS) Roll-Back을 위한 프로시저 -->
+	<select id="INV11_RB_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV11_RB_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+
+	<!-- 20230116 여한진 즉시입고취소 -->
+	<select id="INV12_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_INV12_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<!-- 2022-07-21(목요일) 안상현, 설비코드 별로 작업조 선택 -->
+	<select id="WRK_SHIFT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			WRK_METH AS VALUE_COL
+		,	FN_CD_VAL('WRKMETH',WRK_METH)	|| ' '
+			|| TO_CHAR(TO_DATE(STR_TM, 'HH24:MI'), 'HH24:MI') || ' ~ ' || TO_CHAR(TO_DATE(END_TM, 'HH24:MI'), 'HH24:MI') AS TEXT_COL
+		FROM
+			TB_MAS027
+		WHERE 1=1
+		AND MACH_CD = TRIM(#{MACH_CD})
+		ORDER BY WRK_METH
+	</select>
+
+	<!-- 2025.06.12 WMS 재고실사지시 관련메뉴 등록 -->
+	<select id="IP01_LIST" parameterType="Map" resultType="DataMap">
+		SELECT
+			<![CDATA[
+			      CASE
+			        WHEN #{PHYIKY} IS NOT NULL AND TRIM(#{PHYIKY}) <> '' THEN #{KYH}
+			        ELSE (SELECT SZF_GETDOCNUMBER@KNRAWMSLINK(#{PHSCTY}) FROM DUAL)
+			      END
+			    ]]> AS PHYIKY
+			 , ' ' AS INDDCL
+			 , ' ' AS DOCTXT
+			 , ' ' AS BLIND
+			 , F_SET_DATE@KNRAWMSLINK(SYSDATE) AS DOCDAT
+			 , '500'     AS DOCCAT, NVL((SELECT SHORTX FROM DOCCM@KNRAWMSLINK WHERE DOCCAT = '500'    ), ' ') AS DOCCATNM
+			 , #{PHSCTY} AS DOCUTY, NVL((SELECT SHORTX FROM DOCTM@KNRAWMSLINK WHERE DOCUTY = #{PHSCTY}), ' ') AS DOCUTYNM
+			 , #{WAREKY} AS WAREKY, NVL((SELECT NAME01 FROM WAHMA WHERE WAREKY = #{WAREKY}), ' ') AS WARENM
+			 , #{PHSCTY} AS PHSCTY
+			 , #{PHYCOP} AS PHYCOP
+		FROM DUAL
+	</select>
+
+	<select id="IP01Sub_LIST" parameterType="Map" resultType="DataMap">
+		WITH INV001 AS (SELECT WERKS
+                     , STOR_LOC_CD
+                     , LOT_NO
+                     , MATNR
+                     , IND_BCD
+                     , UNIT
+                     , SUM(STCK_QTY) AS STCK_QTY
+                     , LOC_CD
+                     , MACH_CD
+                     , MACHINE
+                     , STCK_STA
+                FROM TB_INV001
+                WHERE 1 = 1
+                  AND WERKS = #{WERKS}
+                  AND SUBSTR(IND_BCD, 6, 1) != 'T'
+                  AND NVL(DLFL, 'N') in ('N', 'A')
+                  AND STCK_STA != '80' -- 2025.08.20 상태값 제거 (WMS입고 요청)
+                  <if test="RANGE_SQL != null and RANGE_SQL != ''">${RANGE_SQL}</if>
+--                     AND LOT_NO = V_LOT_NO
+--                     AND MATNR = MATNR
+                GROUP BY WERKS, STOR_LOC_CD, LOT_NO, MATNR, IND_BCD, UNIT, LOC_CD, MACH_CD, MACHINE, STCK_STA)
+   	 , TB_STOCK AS (SELECT I001.WERKS
+                       , I001.STOR_LOC_CD
+                       , REPLACE(I001.LOT_NO, ' ', '') AS LOT_NO
+                       , I001.MATNR
+                       , I001.IND_BCD
+                       , I001.UNIT
+                       , (NVL(I001.STCK_QTY, 0) +
+                          SUM(NVL(CASE
+                                      WHEN I001.UNIT = I003.UNIT THEN NVL(I003.STCK_QTY, 0)
+                                      ELSE CASE
+                                               WHEN I003.UNIT = 'EA' THEN I003.STCK_QTY /
+                                                                          ((SUBSTR(I001.MATNR, 10, 4) / 1000) *
+                                                                           (SUBSTR(I001.MATNR, 14, 4) / 1000) *
+                                                                           (SUBSTR(I001.MATNR, 6, 3) / 1000))
+                                               WHEN I003.UNIT = 'R' THEN NVL(I003.STCK_QTY, 0) * 500
+                                               WHEN I003.UNIT = 'KG' AND SUBSTR(I003.LOT_NO, 5, 1) = 'P'
+                                                   THEN ROUND(I003.STCK_QTY / (I003.WGT / I003.PRE_IN_QTY), 3)
+                                               ELSE 0 END
+                                      END, 0))
+    					) AS STCK_QTY
+    					, LOC_CD
+    					, MACH_CD
+    					, MACHINE
+    					, STCK_STA
+                  FROM INV001 I001
+                  LEFT OUTER JOIN (
+                  	SELECT WERKS
+	                     , LOT_NO
+	                     , IND_BCD
+	                     , UNIT
+	                     , SUM(STCK_QTY)   AS STCK_QTY
+	                     , SUM(WGT)        AS WGT
+	                     , SUM(PRE_IN_QTY) AS PRE_IN_QTY
+	                FROM TB_INV003
+	                WHERE 1 = 1
+	                  AND WERKS = #{WERKS}
+	                  AND STCK_QTY > 0
+	                GROUP BY WERKS, LOT_NO, MATNR, IND_BCD, UNIT
+                  ) I003 ON I001.WERKS = I003.WERKS AND I001.LOT_NO = I003.LOT_NO AND I001.IND_BCD = I003.IND_BCD
+                  WHERE 1 = 1
+                  GROUP BY I001.WERKS, I001.STOR_LOC_CD, I001.LOT_NO, I001.MATNR, I001.IND_BCD, I001.UNIT, I001.STCK_QTY, I001.LOC_CD, I001.MACH_CD, I001.MACHINE, I001.STCK_STA)
+		SELECT *
+		FROM TB_STOCK
+		WHERE 1 = 1
+		  AND NVL(STCK_QTY, 0) > 0
+		  <if test="RANGE_SQL != null and RANGE_SQL != ''">${RANGE_SQL}</if>
+		ORDER BY STOR_LOC_CD, LOT_NO, IND_BCD
+	</select>
+
+	<insert id="PHYDH_INSERT" parameterType="Map">
+		INSERT INTO PHYDH (
+			  PHYIKY, WAREKY, INDDCL
+			, PHSCTY, DOCDAT, DOCCAT
+			, TRNDAT, TRNTIM, TRNUSR
+			, USRID1, UNAME1, DEPTID1, DNAME1
+			, USRID2, UNAME2, DEPTID2, DNAME2
+			, USRID3, UNAME3, DEPTID3, DNAME3
+			, USRID4, UNAME4, DEPTID4, DNAME4
+			, DOCTXT
+			, CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+			, INDBZL, INDARC, UPDCHK
+		) VALUES (
+			  #{PHYIKY}, #{WAREKY}, NVL(#{INDDCL}, ' ')
+			, #{PHSCTY}, #{DOCDAT}, #{DOCCAT}
+			, NVL(#{TRNDAT}, ' '), NVL(#{TRNTIM}, ' '), NVL(#{TRNUSR}, ' ')
+			, ' ', ' ', ' '     , ' '
+			, ' ', ' ', ' '     , ' '
+			, ' ', ' ', ' '     , ' '
+			, ' ', ' ', #{BLIND}, ' '
+			, #{DOCTXT}
+			, TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #{SES_USER_ID}
+			, TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #{SES_USER_ID}
+			, ' ', ' ', 0
+		)
+	</insert>
+
+	<insert id="PHYDI_MULTI_INSERT" parameterType="Map">
+		INSERT INTO PHYDI (
+			   PHYIKY, PHYIIT, AREAKY, LOCAKY, TRNUID
+			 , QTADJU, QTSPHY, QTYPDA, QTSIWH, QTSALO
+			 , QTSPMO, QTSPMI, QTBLKD
+			 , QTSIQT, QTSHQT, QTSCNU, QTSWQT
+			 , UOMKEY
+			 , OWNRKY, SKUKEY, DESC01, DESC02
+			 , LOTA01, LOTA02, LOTA03, LOTA04, LOTA05
+			 , LOTA06, LOTA07, LOTA08, LOTA09, LOTA10
+			 , LOTA11, LOTA12, LOTA13, LOTA14, LOTA15
+			 , LOTA16, LOTA17, LOTA18, LOTA19, LOTA20
+			 , ASKU01, ASKU02, ASKU03, ASKU04, ASKU05
+			 , EANCOD, GTINCD
+			 , SKUG01, SKUG02, SKUG03, SKUG04, SKUG05
+			 , GRSWGT, NETWGT, WGTUNT, LENGTH, WIDTHW
+			 , HEIGHT, CUBICM, CAPACT, RSNADJ, ADJRSN
+			 , CREDAT, CRETIM, CREUSR
+			 , LMODAT, LMOTIM, LMOUSR
+			 , INDBZL, INDARC, UPDCHK
+		)
+		<foreach collection="list" item="item" separator=" UNION ALL " open="" close="" index="i">
+			SELECT #{item.PHYIKY}           AS PHYIKY
+				 , #{item.PHYIIT}           AS PHYIIT
+				 , NVL(#{item.AREAKY}, ' ') AS AREAKY
+				 , NVL(#{item.LOC_CD}, ' ') AS LOCAKY
+				 , NVL(#{item.TRNUID}, ' ') AS TRNUID
+				 , 0                        AS QTADJU
+				 , 0                        AS QTSPHY
+				 , 0                        AS QTYPDA
+				 , #{item.STCK_QTY}         AS QTSIWH
+				 , 0                        AS QTSALO
+				 , 0                        AS QTSPMO
+				 , 0                        AS QTSPMI
+				 , 0                        AS QTBLKD
+				 , 0                        AS QTSIQT
+				 , 0                        AS QTSHQT
+				 , 0                        AS QTSCNU
+				 , 0                        AS QTSWQT
+				 , SM.DUOMKY                AS UOMKEY
+				 , SM.OWNRKY                AS OWNRKY
+				 , SM.SKUKEY                AS SKUKEY
+				 , ' '					    AS DESC01, SM.DESC02
+				 , NVL(#{item.STOR_LOC_CD}, ' ') AS LOTA01
+				 , NVL(#{item.WERKS}, ' ') AS LOTA02
+				 , ' '					    AS LOTA03
+				 , NVL(#{item.MACHINE}, ' ') AS LOTA04
+				 , ' '					    AS LOTA05
+				 , NVL(#{item.STCK_STA}, ' ') AS LOTA06
+				 , ' '					    AS LOTA07
+				 , ' '					    AS LOTA08
+				 , ' '					    AS LOTA09
+				 , ' '					    AS LOTA10
+				 , ' '					    AS LOTA11
+				 , ' '					    AS LOTA12
+				 , ' '					    AS LOTA13
+				 , NVL(#{item.IND_BCD}, ' ') AS LOTA14
+				 , NVL(#{item.LOT_NO}, ' ') AS LOTA15
+				 , 0					    AS LOTA16
+				 , ' '					    AS LOTA17
+				 , 0					    AS LOTA18
+				 , 0					    AS LOTA19
+				 , 0					    AS LOTA20
+				 , SM.ASKU01, SM.ASKU02, SM.ASKU03, SM.ASKU04, SM.ASKU05
+				 , SM.EANCOD, SM.GTINCD
+				 , SM.SKUG01, SM.SKUG02, SM.SKUG03, SM.SKUG04, SM.SKUG05
+				 , SM.GRSWGT, SM.NETWGT, SM.WGTUNT, SM.LENGTH, SM.WIDTHW
+				 , SM.HEIGHT, SM.CUBICM, SM.CAPACT, ' ' AS RSNADJ, ' ' AS ADJRSN
+				 , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #{item.SES_USER_ID}
+				 , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #{item.SES_USER_ID}
+				 , ' ', ' ', 0
+			  FROM SKUMA@KNRAWMSLINK SM
+			  INNER JOIN SKUWC@KNRAWMSLINK SW ON SW.WAREKY = '1100'
+								 AND SW.OWNRKY = SM.OWNRKY
+								 AND SW.SKUKEY = SM.SKUKEY
+			 WHERE SM.OWNRKY = 'KN'
+			   AND SM.SKUKEY = #{item.MATNR}
+		</foreach>
+	</insert>
+
+	<select id="PHYDH_LIST" parameterType="Map" resultType="DataMap">
+		SELECT PH.PHYIKY
+			 , PH.DOCDAT
+			 , PH.INDDCL
+			 , PH.DOCTXT
+			 , PH.DEPTID4 AS BLIND
+			 , PH.PHSCTY AS DOCUTY, SZF_GET_DOCUTY_TEXT@KNRAWMSLINK('KR', PH.PHSCTY) AS DOCUTYNM
+			 , PH.DOCCAT AS DOCCAT, SZF_GET_DOCCAT_TEXT@KNRAWMSLINK('KR', PH.DOCCAT) AS DOCCATNM
+			 , PH.WAREKY, (SELECT NAME01 FROM WAHMA WHERE WAREKY = PH.WAREKY) AS WARENM
+			 , PH.CREDAT, PH.CRETIM, PH.CREUSR, NVL((SELECT NMLAST FROM USRMA WHERE USERID = PH.CREUSR),' ') AS CUSRNM
+			 , PH.LMODAT, PH.LMOTIM, PH.LMOUSR, NVL((SELECT NMLAST FROM USRMA WHERE USERID = PH.LMOUSR),' ') AS LUSRNM
+			 , SUM(QTSIWH) - SUM(QTSPHY) AS ISDIFF
+		  FROM PHYDH PH
+		 INNER JOIN PHYDI PI ON PH.PHYIKY = PI.PHYIKY
+		 WHERE 1=1
+		 <if test="PHYIKY != null and PHYIKY != ''">AND PH.PHYIKY = #{PHYIKY}</if>
+		 <if test="WAREKY != null and WAREKY != ''">AND PH.WAREKY = #{WAREKY}</if>
+		 <if test="PHDTFR != null and PHDTFR != ''">AND PH.DOCDAT >= #{PHDTFR}</if>
+		 <if test="PHDTTO != null and PHDTTO != ''">AND #{PHDTTO} >= PH.DOCDAT</if>
+		 <if test="INDDCL != null and INDDCL != ''">AND PH.INDDCL = #{INDDCL}</if>
+		 <if test="SKUL01 != null and SKUL01 != ''">AND EXISTS(SELECT 1 FROM SKUMA WHERE SKUKEY = PI.SKUKEY AND SKUL01 = #{SKUL01})</if>
+		 <if test="SKUG01 != null and SKUG01 != ''">AND EXISTS(SELECT 1 FROM SKUMA WHERE SKUKEY = PI.SKUKEY AND SKUG01 = #{SKUG01})</if>
+		 <if test="DESC01 != null and DESC01 != ''">AND UPPER(PI.DESC01) LIKE '%' || UPPER(#{DESC01}) || '%'</if>
+
+		 <if test="RANGE_SQL != null and RANGE_SQL != ''">${RANGE_SQL}</if>
+		 GROUP BY PH.PHYIKY
+				, PH.PHSCTY
+				, PH.DOCDAT
+				, PH.INDDCL
+				, PH.DOCTXT
+				, PH.DEPTID4
+				, PH.DOCCAT
+				, PH.WAREKY
+				, PH.CREDAT, PH.CRETIM, PH.CREUSR
+				, PH.LMODAT, PH.LMOTIM, PH.LMOUSR
+		 ORDER BY 1 DESC
+	</select>
+
+	<select id="PHYDI_LIST" parameterType="Map" resultType="DataMap">
+		WITH WRK43 AS (
+		  SELECT
+			I009.WRK_ORDR_NO AS WRK_ORDR_NO
+			, I009.WERKS AS WERKS
+			, I009.STOR_LOC_CD AS STOR_LOC_CD
+			, I009.LOC_CD AS LOC_CD
+			, I009.MATNR AS MATNR
+			, I009.LOT_NO AS LOT_NO
+			, NVL(TRIM(I009.IND_BCD), '*') AS IND_BCD
+			, I009.REAL_QTY AS REAL_INSP_QTY
+			--, 'R' AS UOMKEY
+			, CASE WHEN I001.UNIT = 'EA' THEN 'R' ELSE I001.UNIT END AS UOMKEY
+			, I009.REGID AS REGID
+			, TO_CHAR(I009.REGDATE, 'YYYYMMDD') AS CREDAT
+  			, TO_CHAR(I009.REGDATE, 'HH24MISS') AS CRETIM
+			FROM TB_INV009 I009
+			INNER JOIN TB_INV001 I001 ON I009.WERKS = I001.WERKS AND I009.IND_BCD = I001.IND_BCD
+			INNER JOIN TB_MAS003 M003 ON I009.WERKS = M003.WERKS AND I009.STOR_LOC_CD = M003.STOR_LOC_CD
+			LEFT JOIN TB_MAS028 M028 ON I009.WERKS = M028.WERKS AND I009.STOR_LOC_CD = M028.STOR_LOC_CD AND I009.LOC_CD = M028.LOC_CD
+			INNER JOIN TB_MAS001 M001 ON I009.WERKS = M001.WERKS AND I009.MATNR = M001.MATNR
+			WHERE 1=1
+			AND I009.WRK_ORDR_NO = #{PHYIKY}
+			AND SUBSTR(I009.IND_BCD, 6, 1) != 'T' -- 수제단 바코드 제외처리
+			--AND I001.STCK_STA != '80' -- 2025.08.20 상태값 제거 (WMS입고 요청)
+			--AND I009.WERKS = 'P200'
+		)
+
+		SELECT
+			R1.*
+			, DECODE(QTSIWH, REAL_INSP_QTY, 'N', 'Y') AS PI_GAP_YN
+			, (SELECT SUM(PRE_IN_QTY) FROM TB_INV003 WHERE IND_BCD = R1.LOTA14) AS PRE_IN_QTY -- 투입
+			, (SELECT SUM(USE_QTY) FROM TB_INV010 WHERE IND_BCD_M = R1.LOTA14 AND SUBSTR(IND_BCD, 6, 1) != 'T' AND NVL(CNL_YN, 'N') != 'Y') AS USE_QTY -- 사용
+			, (SELECT SUM(DECODE(UNIT, 'R', DISPO_QTY, WGT)) FROM TB_WRK004 WHERE IND_BCD_M = R1.LOTA14 AND NVL(CNL_YN, 'N') = 'N') AS WASTE04_QTY -- 폐품(가공)
+			, (SELECT SUM(DECODE(UNIT, 'R', DISPO_QTY, WGT)) FROM TB_WRK022 WHERE IND_BCD_M = R1.LOTA14 AND SUBSTR(IND_BCD, 6, 1) != 'T' AND NVL(CNL_YN, 'N') = 'N') AS WASTE22_QTY -- 폐품(영업, 잔량)
+
+		FROM (
+
+
+			SELECT
+			  NVL(PI.PHYIIT, 'NEW') PHYIIT,
+			  NVL(PI.LOTA02, WRK43.WERKS) LOTA02,
+			  NVL(PI.LOTA01, WRK43.STOR_LOC_CD) LOTA01,
+			  NVL(PI.LOCAKY, WRK43.LOC_CD) LOCAKY,
+			  NVL(PI.LOTA15, WRK43.LOT_NO) LOTA15,
+			  NVL(PI.LOTA14, WRK43.IND_BCD) LOTA14,
+			  NVL(PI.SKUKEY, WRK43.MATNR) SKUKEY,
+			  NVL(PI.DESC01, ' ') DESC01,
+			  CASE
+			    WHEN PI.UOMKEY = 'EA' THEN NVL(PI.QTSIWH, 0)/500
+			    ELSE TO_NUMBER(PI.QTSIWH)
+			  END AS QTSIWH,
+			  WRK43.REAL_INSP_QTY,
+			  --(SELECT SUM(PRE_IN_QTY) FROM TB_INV003 WHERE IND_BCD = PI.LOTA14 AND WERKS = PI.LOTA02 AND GREATEST(REGDATE, UPDDATE) > TO_DATE(PI.CREDAT || PI.CRETIM, 'YYYYMMDDHH24MISS')) AS PRE_IN_QTY,
+			  --(SELECT SUM(USE_QTY) FROM TB_INV010 WHERE IND_BCD_M = WRK43.IND_BCD AND WERKS = WRK43.WERKS) AS USE_QTY,
+			  CASE
+			    WHEN PI.UOMKEY = 'EA' THEN 'R'
+			    ELSE NVL(PI.UOMKEY, WRK43.UOMKEY)
+			  END AS UOMKEY,
+			  PI.QTSIWH * TRUNC(NVL(DECODE(MV.PEINH, 0, 0, MV.STPRS / MV.PEINH), 0)) AS STKAMT,
+			  PI.LOTA06,
+			  PI.LOTA04,
+			  NVL(PI.CREDAT, WRK43.CREDAT) CREDAT,
+			  NVL(PI.CRETIM, WRK43.CRETIM) CRETIM,
+			  NVL(PI.CREUSR, WRK43.REGID) CREUSR,
+			  PI.LMODAT,
+			  PI.LMOTIM,
+			  PI.LMOUSR
+			FROM PHYDI PI
+			INNER JOIN SKUMA@KNRAWMSLINK SM ON PI.OWNRKY= SM.OWNRKY AND  PI.SKUKEY = SM.SKUKEY
+			LEFT JOIN MATVAL@KNRAWMSLINK MV ON MV.MATNR = PI.SKUKEY AND MV.BWKEY = PI.LOTA02 AND MV.MEINS = PI.UOMKEY
+			FULL OUTER JOIN WRK43 ON PI.LOTA14 = WRK43.IND_BCD AND WRK43.WRK_ORDR_NO = PI.PHYIKY
+			WHERE NVL(PI.PHYIKY, WRK43.WRK_ORDR_NO) = #{PHYIKY}
+		) R1
+
+	</select>
+
+
+	<select id="INV13_LIST" parameterType="hashmap" resultType="map">
+		SELECT T1.PRFM_DT, T1.USE_QTY, T2.USE_QTY AS CLOSE, T1.USE_QTY - T2.USE_QTY AS USE_DIFF
+		FROM (SELECT WERKS, PRFM_DT, SUM(USE_QTY) AS USE_QTY
+			  FROM TB_INV010
+			  WHERE WERKS = #{WERKS}
+				AND PRFM_DT BETWEEN #{SDATE} AND #{EDATE}
+				AND NVL(CNL_YN, 'N') = 'N'
+				AND USE_DIV IN ('1', '2')
+			  GROUP BY WERKS, PRFM_DT) T1
+				 FULL OUTER JOIN
+			 (SELECT WERKS, PRFM_DT, SUM(USE_QTY) AS USE_QTY
+			  FROM TB_INV013
+			  WHERE WERKS = #{WERKS}
+				AND PRFM_DT BETWEEN #{SDATE} AND #{EDATE}
+				AND NVL(SDOC_NO, ' ') != ' '
+			  GROUP BY WERKS, PRFM_DT) T2
+			 ON T1.WERKS = T2.WERKS
+				 AND T1.PRFM_DT = T2.PRFM_DT
+		ORDER BY 1, 2
+	</select>
+
+	<select id="INV13_DETAIL_LIST" parameterType="hashmap" resultType="map">
+		SELECT NVL(T1.WERKS, T2.WERKS)                   AS WERKS
+			 , NVL(T1.MACH_CD, T2.MACH_CD)               AS MACH_CD
+			 , NVL(T1.ORDER_NO, T2.ORDER_NO)             AS ORDER_NO
+			 , NVL(T1.MATNR_M, T2.MATNR)                 AS MATNR
+			 , (SELECT MATNR_NM
+				FROM TB_MAS001
+				WHERE WERKS = NVL(T1.WERKS, T2.WERKS)
+				  AND MATNR = NVL(T1.MATNR_M, T2.MATNR)) AS MATNR_NM
+			 , NVL(T1.LOT_NO_M, T2.LOT_NO)               AS LOT_NO
+			 , NVL(T1.USE_QTY, 0)                        AS USE_QTY
+			 , NVL(T2.USE_QTY, 0)                        AS CLOSE
+			 , NVL(T1.USE_QTY, 0) - NVL(T2.USE_QTY, 0)   AS USE_DIFF
+		FROM (SELECT WERKS
+				   , MACH_CD
+				   , MATNR_M
+				   , LOT_NO_M
+				   , WRK_ORDR_NO
+				   , WRK_ORDR_SEQNO
+				   , (SELECT ORDER_NO
+					  FROM TB_WRK001
+					  WHERE PRFM_DT = TB_INV010.PRFM_DT
+						AND WRK_ORDR_NO = TB_INV010.WRK_ORDR_NO
+						AND WRK_ORDR_SEQNO = TB_INV010.WRK_ORDR_SEQNO
+						AND ROWNUM = 1) AS ORDER_NO
+				   , PRFM_DT
+				   , SUM(USE_QTY)       AS USE_QTY
+			  FROM TB_INV010
+			  WHERE WERKS = #{WERKS}
+				AND PRFM_DT = #{SDATE}
+				AND NVL(CNL_YN, 'N') = 'N'
+				AND USE_DIV IN ('1', '2')
+			  GROUP BY WERKS, MACH_CD, MATNR_M, LOT_NO_M, WRK_ORDR_NO, WRK_ORDR_SEQNO, PRFM_DT) T1
+				 FULL OUTER JOIN
+			 (SELECT WERKS, MACH_CD, ORDER_NO, MATNR, LOT_NO, USE_QTY
+			  FROM TB_INV013
+			  WHERE WERKS = #{WERKS}
+				AND PRFM_DT = #{SDATE}
+<![CDATA[	    AND NVL(SDOC_NO, ' ') <> ' ') T2	]]>
+		        ON T1.WERKS = T2.WERKS
+				 AND T1.MACH_CD = T2.MACH_CD
+				 AND T1.MATNR_M = T2.MATNR
+				 AND T1.LOT_NO_M = T2.LOT_NO
+				 AND T1.ORDER_NO = T2.ORDER_NO
+	</select>
+
+	<select id="INV14_LIST" parameterType="hashmap" resultType="map">
+		SELECT  INV001.RCV_DT AS RCVCDS_DT, INV001.STOR_LOC_CD, INV001.MATNR, MAS001.MATNR_NM, INV001.LOT_NO, INV001.IND_BCD, INV001.RCV_WGT AS RCVGDS_QTY, INV001.STCK_STA, CDV.CDESC1, INV001.STCK_QTY
+		FROM    TB_INV001 INV001    INNER JOIN  TB_MAS001 MAS001
+												ON  INV001.WERKS = MAS001.WERKS
+													AND INV001.MATNR = MAS001.MATNR
+									INNER JOIN  CMCDV CDV
+												ON  INV001.STCK_STA = CDV.CMCDVL
+													AND CDV.CMCDKY = 'STCK_STA'
+		WHERE   INV001.WERKS = #{WERKS}
+		  AND     INV001.MATNR LIKE 'H0000%'
+		  AND     INV001.RCV_DT BETWEEN #{SDATE} AND #{EDATE}
+		ORDER BY INV001.RCV_DT, INV001.LOT_NO, INV001.IND_BCD
+	</select>
+
+</mapper>

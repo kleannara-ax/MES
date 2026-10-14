@@ -1,0 +1,66 @@
+pipeline {
+    agent { label 'windows' }
+
+    parameters {
+        booleanParam(name: 'DEPLOY_DEV', defaultValue: false, description: 'Build 후 개발 서버 10.2.14.190에 배포')
+        string(name: 'JDK_HOME', defaultValue: 'C:\\Program Files\\Java\\jdk1.8.0_202', description: 'Jenkins Windows agent의 JDK 8 경로')
+        string(name: 'TOMCAT_HOME', defaultValue: 'D:\\Tomcat 9.0', description: '컴파일용 servlet-api.jar가 있는 Tomcat 경로')
+        string(name: 'DEV_SERVICE', defaultValue: 'mes12', description: '10.2.14.190의 Windows Tomcat 서비스명')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build ROOT.war') {
+            steps {
+                withEnv(["BUILD_JDK_HOME=${params.JDK_HOME}", "BUILD_TOMCAT_HOME=${params.TOMCAT_HOME}"]) {
+                    powershell '''
+                        & .\\jenkins\\build-war.ps1 `
+                            -JdkHome $env:BUILD_JDK_HOME `
+                            -TomcatHome $env:BUILD_TOMCAT_HOME
+                    '''
+                }
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'out/jenkins/ROOT.war', fingerprint: true
+            }
+        }
+
+        stage('Deploy DEV 190') {
+            when { expression { return params.DEPLOY_DEV } }
+            steps {
+                script {
+                    if (!params.DEV_SERVICE?.trim()) {
+                        error('DEV_SERVICE 파라미터가 필요합니다.')
+                    }
+                }
+                withCredentials([usernamePassword(credentialsId: 'mes-dev-windows', usernameVariable: 'DEPLOY_USER', passwordVariable: 'DEPLOY_PASSWORD')]) {
+                    withEnv(["TARGET_SERVICE=${params.DEV_SERVICE}"]) {
+                        powershell '''
+                            $secure = ConvertTo-SecureString $env:DEPLOY_PASSWORD -AsPlainText -Force
+                            $credential = [PSCredential]::new($env:DEPLOY_USER, $secure)
+                            & .\\jenkins\\deploy-war.ps1 -Server '10.2.14.190' `
+                                -ServiceName $env:TARGET_SERVICE `
+                                -WarPath '.\\out\\jenkins\\ROOT.war' `
+                                -Credential $credential `
+                                -RemoteWarPath 'C:\\app\\application\\tomcat\\mes\\webapps\\ROOT.war'
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            deleteDir()
+        }
+    }
+}

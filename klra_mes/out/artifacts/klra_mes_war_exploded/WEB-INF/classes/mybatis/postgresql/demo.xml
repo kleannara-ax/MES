@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Demo">
+
+	<select id="COMCODE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_PARAM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_EVENT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="SYSFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			F.UUID,
+			F.UUID AS ATTACH,
+			F.GUUID,
+			F.RPATH,
+			F.PATH,
+			F.FNAME,
+			F.NAME AS UUID_FILEVIEW,
+			F.NAME AS ATTACH_FILEVIEW,
+			F.MIME,
+			F.STYPE,
+			F.BYTE,
+			F.CREATEUSER,
+			F.CREATEDATE,
+			F.UPDATEUSER,
+			F.UPDATEDATE,
+			F.DELETEYN,
+			CASE WHEN F.BYTE <![CDATA[<]]> 1024 THEN F.BYTE || ' BYTE'
+		         WHEN F.BYTE > 1024 AND F.BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(F.BYTE/1024,2) || ' KB'
+		         ELSE ROUND(F.BYTE/(1024*1024),2) || ' MB'
+		    END  AS BYTE_FILESIZEVIEW,
+		    'Y' AS UPTBYN
+		FROM SYSFILE F
+		WHERE 1=1
+		<if test="GUUID != null and GUUID != ''">
+			AND F.GUUID = #{GUUID}
+		</if>
+		<if test="DELETEYN != null and DELETEYN != ''">
+			AND F.DELETEYN = #{DELETEYN}
+		</if>
+	</select>
+	
+	<select id="GRIDTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUID, MGL.PMENUID, CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS MENULABEL,
+		    MM.MENUNAME, MM.URI, MM.PARAM, MGL.MENUGID, MGL.SORTORDER
+		FROM
+		(SELECT 
+			COMPID,
+             MENUGID,
+             MENUID,
+             SORTORDER,
+             PMENUID
+         FROM MSTMENUGL 
+         WHERE MENUGID = #{MENUGID} AND COMPID = #{SES_USER_COMPANY}) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="MENUTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUID AS "id", MGL.PMENUID AS "pId", CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS "name",
+		    MM.MENUNAME, MM.URI, MM.PARAM
+		FROM
+		(SELECT 
+			COMPID,
+             MENUGID,
+             MENUID,
+             SORTORDER,
+             PMENUID
+         FROM MSTMENUGL 
+         WHERE MENUGID = #{MENUGID} AND COMPID = #{SES_USER_COMPANY}) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="SYSLABEL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			L.LABELGID,
+			L.LABELID,
+			L.LANGCODE,
+			L.LABEL,
+			L.LABELTYPE,
+			L.CREATEUSER,
+			L.CREATEDATE,
+			L.UPDATEUSER,
+			L.UPDATEDATE,
+			L.DELETEYN
+		FROM SYSLABEL L
+		WHERE 1=1 
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+		<if test="RANGE_SQL_G1 != null and RANGE_SQL_G1 != ''">
+			${RANGE_SQL_G1}
+		</if>
+	</select>
+
+	<select id="DEMOHEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT  WAREKY
+				   ,' ' AS "CHECKDATA"
+				   ,ROWNUM AS "TMPNUM" 
+			       ,ZONEKY AS "ZONEKY"
+			       ,ZONETY AS "ZONETY"
+			       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'ZONETY' AND C.CMCDVL = Z.ZONETY) AS "ZONETYT"
+			       ,SHORTX AS "SHORTX"
+			       ,AREAKY AS "AREAKY"
+			       ,(SELECT SHORTX FROM AREMA A WHERE A.WAREKY = Z.WAREKY AND A.AREAKY = Z.AREAKY) AS "AREAKYT"
+			       ,TO_CHAR(TO_DATE(CREDAT,'YYYYMMDD'),'$FORMAT_DATE$') AS "CREDAT"
+			       ,TO_CHAR(TO_DATE(CRETIM,'HH24MISS'),'$FORMAT_TIME$') AS "CRETIM"
+			       ,CREUSR AS "CREUSR"
+			       ,TO_CHAR(TO_DATE(LMODAT,'YYYYMMDD'),'$FORMAT_DATE$') AS "LMODAT"
+			       ,TO_CHAR(TO_DATE(LMOTIM,'HH24MISS'),'$FORMAT_TIME$') AS "LMOTIM"
+			       ,LMOUSR AS "LMOUSR"
+			       ,INDBZL AS "INDBZL"
+			       ,INDARC AS "INDARC"
+			       ,UPDCHK AS "UPDCHK"
+			FROM ZONMA Z
+			WHERE 1=1 
+		<if test="WAREKY != null and WAREKY != ''">
+			AND WAREKY = #{WAREKY} 
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="DEMOITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		<![CDATA[
+		SELECT WAREKY AS "WAREKY"
+			,LOCAKY AS "LOCAKY"
+			,LOCATY AS "LOCATY"
+			,SHORTX AS "SHORTX"
+			,TASKTY AS "TASKTY"
+			,ZONEKY AS "ZONEKY"
+			,AREAKY AS "AREAKY"
+			,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'LOCATY' AND C.CMCDVL = A.LOCATY) AS "LOCATYT"
+			,TKZONE AS "TKZONE"
+			,FACLTY AS "FACLTY"
+			,ARLVLL AS "ARLVLL"
+			,INDCPC AS "INDCPC"
+			,INDTUT AS "INDTUT"
+			,IBROUT AS "IBROUT"
+			,OBROUT AS "OBROUT"
+			,RPROUT AS "RPROUT"
+			,STATUS AS "STATUS"
+			,(SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'STATUS' AND C.CMCDVL = A.STATUS) AS "STATUST"
+			,ABCANV AS "ABCANV"
+			,LENGTH AS "LENGTH"
+			,WIDTHW AS "WIDTHW"
+			,HEIGHT AS "HEIGHT"
+			,CUBICM AS "CUBICM"
+			,MAXCPC AS "MAXCPC"
+			,MAXQTY AS "MAXQTY"
+			,MAXWGT AS "MAXWGT"
+			,MAXLDR AS "MAXLDR"
+			,MAXSEC AS "MAXSEC"
+			,MIXSKU AS "MIXSKU"
+			,MIXLOT AS "MIXLOT"
+			,RPNCAT AS "RPNCAT"
+			,INDQTC AS "INDQTC"
+			,QTYCHK AS "QTYCHK"
+			,NEDSID AS "NEDSID"
+			,INDUPA AS INDUPA"
+			,INDUPK AS "INDUPK"
+			,AUTLOC AS "AUTLOC"
+			,CREDAT AS "CREDAT"
+			,CRETIM AS "CRETIM"
+			,CREUSR AS "CREUSR"
+			,' ' AS "CUSRNM"
+			,'0' AS "CUSRNM_FILEVIEW"
+			,LMODAT AS "LMODAT"
+			,LMOTIM AS "LMOTIM"
+			,LMOUSR AS "LMOUSR"
+			,' ' AS "LUSRNM"
+			,INDBZL AS "INDBZL"
+			,INDARC AS "INDARC"
+			,UPDCHK AS "UPDCHK"
+		FROM LOCMA A 
+		WHERE 1=1 
+		AND ROWNUM < 1000
+		]]>
+		<if test="WAREKY != null and WAREKY != ''">
+			AND WAREKY = #{WAREKY} 
+		</if>
+		<if test="ZONEKY != null and ZONEKY != ''">
+			AND ZONEKY = #{ZONEKY} 
+		</if>
+		<if test="RANGE_PRE_SQL != null and RANGE_PRE_SQL != ''">
+			#{RANGE_PRE_SQL}
+		</if>
+	</select>
+</mapper>

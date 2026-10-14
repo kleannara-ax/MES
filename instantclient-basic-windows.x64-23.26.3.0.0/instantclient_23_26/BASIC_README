@@ -1,0 +1,18 @@
+Basic Package Information 
+========================= 
+Wed Jul  8 11:02:14 PDT 2026
+Client Shared Library 64-bit - 23.26.3.0.0
+
+Microsoft Windows Server 2022 Standard Version V10.0  OS Build 20348
+CPU                 : 48 - type 866424 physical cores
+Process Affinity    : 0x0000000000000000
+Memory (Avail/Total): Ph:312276M/327679M, Ph+PgF:350810M/366591M 
+
+
+TIMEZONE INFORMATION
+--------------------
+Operating in ORACLE_HOME environment.
+
+Small timezone file = timezone_45.dat
+Large timezone file = timezlrg_45.dat
+

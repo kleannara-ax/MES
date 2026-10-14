@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="AHCS">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="AHCSUser" type="com.ahcs.bean.User" />
+
+	<resultMap class="AHCSUser" id="AHCSUserMap">
+		<result property="userId" column="USER_ID"></result>
+		<result property="pwNo" column="PW_NO"></result>
+		<result property="userNm" column="USER_NM"></result>
+		<result property="cpId" column="CP_ID"></result>
+		<result property="cpNm" column="CP_NM"></result>
+		<result property="deptId" column="DEPT_ID"></result>
+		<result property="deptNm" column="DEPT_NM"></result>
+		<result property="jposId" column="JPOS_ID"></result>
+		<result property="jposNm" column="JPOS_NM"></result>
+		<result property="dutyId" column="DUTY_ID"></result>
+		<result property="dutyNm" column="DUTY_NM"></result>
+	</resultMap>
+	
+	<select id="LOGIN_OBJECT" parameterClass="Map" resultMap="AHCSUserMap">
+			SELECT 
+				U.USER_ID,
+				U.PW_NO,
+			    U.USER_NM,
+			    D.CP_ID,
+			    C.CP_NM,
+				D.DEPT_ID,
+			    E.DEPT_NM,
+			    D.JPOS_ID,
+			    J.JPOS_NM,
+			    D.DUTY_ID,
+			    T.DUTY_NM,
+				U.DEL_YN
+			FROM MCUM01H U 
+			JOIN MCOM05H D ON U.USER_ID = D.USER_ID AND D.BSC_VAL_YN = 'Y'
+			JOIN MCOM01H C ON D.CP_ID = C.CP_ID AND D.CP_ID = C.CP_ID 
+			JOIN MCOM02H E ON D.CP_ID = E.CP_ID AND D.DEPT_ID = E.DEPT_ID
+			JOIN MCOM03H J ON D.CP_ID = J.CP_ID AND D.JPOS_ID = J.JPOS_ID
+			LEFT OUTER JOIN MCOM04H T ON D.CP_ID = T.CP_ID AND D.DUTY_ID = T.DUTY_ID 
+			WHERE U.DEL_YN  = 'N'
+			AND U.USER_ID = #USERID#
+			AND U.PW_NO = #PASSWD#
+	</select>
+	
+	<select id="MENUTREE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    LEVEL, M.MU_ID, M.HRK_MU_ID, M.MU_NM, M.MU_ATT_CN, M.PROG_ID, P.URI_CN, P.PARM_CN 
+		FROM MCPM01H M 
+		LEFT OUTER JOIN MCPM02H P ON M.PROG_ID = P.PROG_ID
+		START WITH M.HRK_MU_ID = 'ROOT'
+		CONNECT BY PRIOR  M.MU_ID = M.HRK_MU_ID 
+		--ORDER BY M.ABA_RNK_NM
+	</select>
+	
+	<select id="MCOM05H_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			U.CP_ID,
+		    C.CP_NM,
+			U.DEPT_ID,
+		    E.DEPT_NM,
+		    U.JPOS_ID,
+		    J.JPOS_NM,
+		    U.DUTY_ID,
+		    T.DUTY_NM 
+		FROM MCOM05H U 
+		JOIN MCOM01H C ON U.CP_ID = C.CP_ID 
+		JOIN MCOM02H E ON U.CP_ID = E.CP_ID AND U.DEPT_ID = E.DEPT_ID
+		JOIN MCOM03H J ON U.CP_ID = J.CP_ID AND U.JPOS_ID = J.JPOS_ID
+		JOIN MCOM04H T ON U.CP_ID = T.CP_ID AND U.DUTY_ID = T.DUTY_ID
+		WHERE U.USER_ID = #USERID#
+	</select>
+	
+	<select id="USRLO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			PROG_ID AS PROGID,
+			GRID_ID AS COMPID,
+			LAYOUT_ID AS LYOTID,
+			LAYOUT_DATA_CN AS LAYDAT
+		FROM MCVM05H 
+		WHERE USER_ID = #SES_USER_ID# 
+		<isNotEmpty property="PROGID"> 
+			AND PROG_ID = #PROGID# 
+		</isNotEmpty> 
+		<isNotEmpty property="COMPID"> 
+			AND GRID_ID = #COMPID# 
+		</isNotEmpty> 
+		<isNotEmpty property="LYOTID"> 
+			AND LAYOUT_ID = #LYOTID# 
+		</isNotEmpty> 
+	</select>
+	
+	<insert id="USRLO_INSERT" parameterClass="Map">
+		INSERT INTO MCVM05H (USER_ID,PROG_ID,GRID_ID,LAYOUT_ID,LAYOUT_DATA_CN) 
+ 		VALUES (#SES_USER_ID#,#PROGID#,#COMPID#,#LYOTID#,#LAYDAT#)
+	</insert>
+	
+	<update id="USRLO_UPDATE" parameterClass="Map">
+		UPDATE MCVM05H SET 
+			LAYOUT_ID = #LYOTID#,		
+			LAYOUT_DATA_CN = #LAYDAT#
+		 WHERE 
+			USER_ID = #SES_USER_ID# 
+			AND PROG_ID = #PROGID# 
+			AND GRID_ID = #COMPID# 
+	</update>
+	
+	<delete id="USRLO_DELETE" parameterClass="Map">
+		DELETE FROM MCVM05H
+		WHERE 
+			USER_ID = #SES_USER_ID# 
+			AND PROG_ID = #PROGID# 
+			AND GRID_ID = #COMPID# 
+			AND LAYOUT_ID = #LYOTID# 
+	</delete>
+	
+	<select id="COLDIC_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		     C.DIC_ID,
+		     C.DIC_NM,
+		     NVL(C.LBL_ID, C.DIC_ID) AS LBL_ID,
+		     NVL(L.LBL_CN, C.DIC_NM) AS LBL_CN,
+		     C.DATA_TP_CD,
+		     C.DATA_SIZE,
+		     C.DCPT_SIZE,
+		     C.ALIGN_CD,
+		     C.OUTP_SIZE,
+		     C.REG_PS_ID,
+		     L.REG_PS_ID AS LREG_PS_ID
+		FROM MCCM03H C 
+		LEFT OUTER JOIN MCVM01H L ON L.LANG_CD = 'KO' AND L.LBL_GRP_ID = 'STD' AND C.LBL_ID = L.LBL_ID
+		WHERE C.DIC_ID = #name#
+	</select>
+	
+	<insert id="MCVM03H_INSERT" parameterClass="Map">
+		INSERT INTO MCVM05H (USER_ID,PROG_ID,GRID_ID,LAYOUT_ID,LAYOUT_DATA_CN) 
+ 		VALUES (#SES_USER_ID#,#PROGID#,#COMPID#,#LYOTID#,#LAYDAT#)
+	</insert>
+	
+	<select id="DIC_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT 
+		     COUNT(*) AS CNT
+		FROM MCCM03H C 
+		WHERE C.DIC_ID = #DIC_ID#
+	</select>
+	
+	<select id="DIC_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		     C.DIC_ID,
+		     C.DIC_NM,
+		     C.LBL_ID,
+		     L.LBL_CN,
+		     C.DATA_TP_CD,
+		     C.DATA_SIZE,
+		     C.DCPT_SIZE,
+		     C.ALIGN_CD,
+		     C.OUTP_SIZE,
+		     C.REG_PS_ID,
+		     C.REG_DTTM,
+		     C.UPD_PS_ID,
+		     C.UPD_DTTM,
+		     C.DEL_YN
+		FROM MCCM03H C 
+		LEFT OUTER JOIN MCVM01H L ON L.LANG_CD = 'KO' AND L.LBL_GRP_ID = 'STD' AND C.LBL_ID = L.LBL_ID
+		WHERE 1=1 
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="DIC_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		     C.DIC_ID,
+		     C.DIC_NM,
+		     C.LBL_ID,
+		     L.LBL_CN,
+		     C.DATA_TP_CD,
+		     C.DATA_SIZE,
+		     C.DCPT_SIZE,
+		     C.ALIGN_CD,
+		     C.OUTP_SIZE,
+		     C.REG_PS_ID,
+		     C.REG_DTTM,
+		     C.UPD_PS_ID,
+		     C.UPD_DTTM,
+		     C.DEL_YN
+		FROM MCCM03H C 
+		LEFT OUTER JOIN MCVM01H L ON L.LANG_CD = 'KO' AND L.LBL_GRP_ID = 'STD' AND C.LBL_ID = L.LBL_ID
+		WHERE C.DIC_ID = #DIC_ID#
+	</select>
+	
+	<insert id="DIC_INSERT" parameterClass="Map">
+		INSERT INTO MCCM03H (DIC_ID,DIC_NM,LBL_ID,DATA_TP_CD,DATA_SIZE
+		,DCPT_SIZE,ALIGN_CD,OUTP_SIZE,REG_PS_ID,REG_DTTM
+		,UPD_PS_ID,UPD_DTTM,DEL_YN) 
+		 VALUES (#DIC_ID#,#DIC_NM#,#LBL_ID#,#DATA_TP_CD#,#DATA_SIZE#
+		,#DCPT_SIZE#,#ALIGN_CD#,#OUTP_SIZE#,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),'N')
+	</insert>
+	
+	<select id="LABEL_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 L.LANG_CD,
+			 L.LBL_GRP_ID,
+			 L.LBL_ID,
+			 L.LBL_CN,
+			 L.REG_PS_ID,
+			 L.REG_DTTM,
+			 L.UPD_PS_ID,
+			 L.UPD_DTTM,
+			 L.DEL_YN
+		 FROM MCVM01H L
+		WHERE L.LANG_CD = #SES_LANGUAGE# 
+		 AND L.LBL_GRP_ID = #LBL_GRP_ID# 
+		 AND L.LBL_ID = #LBL_ID# 
+	</select>
+	
+	<select id="LABEL_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 L.LANG_CD,
+			 L.LBL_GRP_ID,
+			 L.LBL_ID,
+			 L.LBL_CN,
+			 L.REG_PS_ID,
+			 SUBSTR(L.REG_DTTM,0,8) AS REG_DTTM,
+			 SUBSTR(L.REG_DTTM,9) AS REG_DTTM_T,
+			 L.UPD_PS_ID,
+			 SUBSTR(L.UPD_DTTM,0,8) AS UPD_DTTM,
+			 SUBSTR(L.UPD_DTTM,9) AS UPD_DTTM_T,
+			 L.DEL_YN
+		 FROM MCVM01H L
+		WHERE 1=1
+	</select>
+	
+	<insert id="LABEL_INSERT" parameterClass="Map">
+		INSERT INTO MCVM01H (LANG_CD,LBL_GRP_ID,LBL_ID,LBL_CN,REG_PS_ID
+		,REG_DTTM,UPD_PS_ID,UPD_DTTM,DEL_YN) 
+		 VALUES (#LANG_CD#,#LBL_GRP_ID#,#LBL_ID#,#LBL_CN#,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),'N')
+	</insert>
+	
+	<select id="LABEL_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT 
+			 COUNT(*) AS CNT
+		 FROM MCVM01H L
+		WHERE L.LANG_CD = 'KO'
+		 AND L.LBL_GRP_ID = 'STD' 
+		 AND L.LBL_ID = #LBL_ID# 
+	</select>
+	
+	<select id="MCVM03H_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 L.LANG_CD,
+			 L.LBL_GRP_ID,
+			 L.LBL_ID,
+			 L.LBL_CN,
+			 L.REG_PS_ID,
+			 SUBSTR(L.REG_DTTM,0,8) AS REG_DTTM,
+			 SUBSTR(L.REG_DTTM,9) AS REG_DTTM_T,
+			 L.UPD_PS_ID,
+			 SUBSTR(L.UPD_DTTM,0,8) AS UPD_DTTM,
+			 SUBSTR(L.UPD_DTTM,9) AS UPD_DTTM_T,
+			 L.DEL_YN
+		 FROM MCVM01H L
+		WHERE 1=1
+	</select>
+	
+	<insert id="MCVM03H_INSERT" parameterClass="Map">
+		INSERT INTO MCVM01H (LANG_CD,LBL_GRP_ID,LBL_ID,LBL_CN,REG_PS_ID
+		,REG_DTTM,UPD_PS_ID,UPD_DTTM,DEL_YN) 
+		 VALUES (#LANG_CD#,#LBL_GRP_ID#,#LBL_ID#,#LBL_CN#,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+		,#SES_USER_ID#,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),'N')
+	</insert>
+</sqlMap>

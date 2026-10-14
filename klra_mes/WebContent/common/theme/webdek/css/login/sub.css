@@ -1,0 +1,83 @@
+.login_form {padding: 150px 0}
+.login_form .logo{font-size: 0;display: block;margin-bottom: 20px;cursor: pointer;}
+.login_form .inner{max-width: 1310px; margin: 0 auto; width: 95%}
+.login_form .logint_layout{display: flex;}
+.login_form .logint_layout .left{width: 420px;position: relative;overflow: hidden;}
+.login_form .logint_layout .left img{max-width: 100%;}
+.login_form .logint_layout .center{width: calc(100% - 945px);padding: 30px;}
+.login_form .logint_layout .center .title{font-weight: 600; color: #000;font-size:22px; margin-bottom: 20px}
+.login_list select{border: none;background: url('/common/theme/webdek/images/login/select.png')no-repeat 97% center; border-bottom: 1px solid #979797;padding: 10px;color: #333; font-size: 14px;width: 100%;transition: all 0.5s;}
+.login_list select:hover{color:  #8f8f8f }
+
+.login_list li{margin-bottom: 10px;}
+.login_list input{border: none; border-bottom: 1px solid #979797; padding: 10px;padding-left: 40px;width: 100%;font-size: 14px}
+.login_list input:focus{border-bottom: 1px solid #186754; }
+.login_list .user input{background: url('/common/theme/webdek/images/login/user.png')no-repeat 10px center}
+.login_list .pass input{background: url('/common/theme/webdek/images/login/password.png')no-repeat 10px center}
+.login_btn{border-radius: 8px; color: #fff; font-size: 16px; background: #209c3b;width: 100%;height: 53px;margin: 20px auto;transition: all 0.5s;}
+.login_btn:hover{background:#006a36  }
+
+.searchList {display: flex;justify-content: center;margin-bottom: 30px;}
+.searchList li a{color: #000; font-size: 14px;font-weight: 400;transition: all 0.5s}
+.searchList li a:hover{color:#209c3b }
+.searchList li{margin: 0 20px;position: relative;}
+.searchList li:nth-child(1)::before{position: absolute;content: '';background: #666;top: 5px;height: 17px;right: -20px;width: 1px;}
+.login_form .customer{text-align: center;font-size: 14px; color: #696969;font-weight: 400}
+.login_form .customer strong{display: inline-block;font-weight: 600; color: #000;font-size: 18px;}
+.login_form .logint_layout .right{width: 525px;}
+.logint_layout .right ul::after{clear: both;content: ''; display: block;}
+.logint_layout .right ul li{float: left;margin-bottom: 9px;width: calc((100% - 3px)/2);}
+.logint_layout .right ul li:nth-child(1){margin-right: 3px;}
+.logint_layout .right ul li:last-child{width: 100%;margin-bottom: 0}
+.logint_layout .right ul li .img_box{position: relative;width: 100%;overflow: hidden;}
+.logint_layout .right ul li img{max-width: 100%; vertical-align: bottom;}
+.login_form .copy{display:block;margin-top: 10px;color: #7f7f7f; font-size: 14px;font-weight: 400;margin-left: auto;text-align: right}
+.chk_box {margin-top: 20px}
+.chk_box input{display:none}
+.chk_box input+label{display:block;overflow:visible;cursor:pointer;width:auto; float: left;margin-bottom:0}
+.chk_box input+label span{position:relative; display: inline-block;box-sizing:border-box;border:1px solid #666;margin-right:0;margin-top:0; ;width: 20px;height: 20px; transform: translateY(-1px);border-radius: 4px;vertical-align: middle;}
+.chk_box input+label span:before{visibility:hidden;opacity:0;position:absolute;top:50%;transform:translateY(-50%);left:0;right:0;margin:0 auto;background-color:#666;transition:all .1s ease-in-out;content:'';border-radius: 2px;}
+/* .chk_box input:checked+label span:before{visibility:visible;opacity:1} */
+.chk_box input:checked+label span{background: #209c3b url('/common/theme/webdek/images/login/id_save.png')no-repeat center center; border: none;background-size: 12px;}
+.chk_box label p{color:#191515;font-size:14px;margin-bottom:0;padding-left: 5px; display: inline-block;}
+
+
+
+
+@media screen and (max-width: 1440px) {
+.login_form .logint_layout .left{width: 30%}
+.login_form .logint_layout .left img{max-width: unset;height: 100%; display: block;margin: 0 auto;}
+
+.login_form .logint_layout .center{width: 35%;padding: 25px;}
+.login_form .logint_layout .right{width: 35%}
+.logint_layout .right ul li img {max-width: unset}
+.logint_layout .right ul li{margin-bottom: 3px}
+.login_form .customer {font-size: 13px}
+.login_form .customer strong{font-size: 16px}
+}
+
+@media screen and (max-width: 1023px) {
+.login_form .logo img{width: 180px}
+
+}
+
+@media screen and (max-width: 768px) {
+.login_form .inner{max-width: 416px;}
+.login_form{padding: 60px 0}
+.login_form .logint_layout{display: block}
+.login_form .logint_layout .left{width: 100%}
+.login_form .logint_layout .center{width: 100%;}
+.login_form .logint_layout .right{width: 100%;margin-top:20px}
+.login_form .logo {margin-bottom: 30px}
+.login_form .logint_layout .left img{max-width: 100%; height: auto;}
+.logint_layout .right ul li img{max-width: 100%}
+
+
+
+
+}
+
+@media screen and (max-width: 480px) {
+.login_form .copy{font-size: 11px}
+
+}

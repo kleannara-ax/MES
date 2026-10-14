@@ -1,0 +1,119 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>save</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">FileItem</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>save</h2>
+            <p class="dscrpt">업로드 한 임시 파일을 저장(이동)합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">save</span> ()</pre>
+                <pre>void <span class="fname">save</span> ( String <span class="paraname">saveDirPath</span> )</pre>
+                <pre>void <span class="fname">save</span> ( String <span class="paraname">saveDirPath, </span>boolean <span class="paraname">overwrite</span> )</pre>
+
+            </ul>
+            <h4>Parameters</h4>
+ 			<p class="para"><span class="paraname">saveDirPath</span></p>
+            <p class="paradsc">[in] 저장(이동)할 파일의 경로를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">overwrite</span></p>
+            <p class="paradsc">[in] 파일 복사 시 겹쳐쓰기 모드를 설정합니다. 기본 값은 false입니다.</p>
+			<table class="paradsc2" border="1" cellspacing="0" width="300" bordercolordark="white" bordercolorlight="#999999">
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">true</p>
+                    </td>
+                    <td width="215">
+                        <p>파일 저장(이동) 시 동일한 이름의 파일이 있을 경우 현재 파일로 겹쳐씁니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">false</p>
+                    </td>
+                    <td width="215">
+                        <p>파일 저장(이동) 시 동일한 이름의 파일이 있을 경우 다른 이름으로 저장됩니다.</p>
+                    </td>
+                </tr>
+          	</table> 
+           
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt">save() 또는 saveAs() Method를 호출하지 않으면, 업로드 한 파일이 임시파일 형태로 남아 있습니다. <br />
+            파일 저장을 하지 않고 임시파일을 대상으로 작업할 경우, FileItem.deleteFile() Method 등을 통해서 임시파일을 직접 삭제해 주셔야 합니다.<br />
+            임시 파일 여부는 FileItem.isSaved() Method를 통해서 확인하실 수 있습니다.</P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileUpload fileUpload = new FileUpload(request, response);
+try {	
+	fileUpload.setAutoMakeDirs(true);
+	String saveDirPath = request.getRealPath("/");
+	saveDirPath += ("UploadDir" + File.separator);
+	
+	fileUpload.startUpload(saveDirPath); 	
+	
+	FileItem fileItem = fileUpload.getFileItem("files");
+	if(fileItem != null) { 
+		// 업로드 한 임시 파일을 저장(이동)합니다.
+		<b>fileItem.save(saveDirPath);</b> 
+		
+		// FileItem 객체로 아래와 같은 정보를 가져올 수 있습니다. 
+		String name = fileItem.getName();
+		String fileName = fileItem.getFileName(); 
+		String lastSavedDirPath = fileItem.getLastSavedDirPath(); 
+		String lastSavedFilePath = fileItem.getLastSavedFilePath(); 
+		String lastSavedFileName = fileItem.getLastSavedFileName(); 
+		long fileSize = fileItem.getFileSize();
+		String fileNameWithoutFileExt = fileItem.getFileNameWithoutFileExt(); 
+		String fileExtension = fileItem.getFileExtension(); 
+		String contentType = fileItem.getContentType(); 
+		boolean saved = fileItem.isSaved();
+		boolean emptyFile = fileItem.isEmptyFile();
+	}
+}
+catch(CrossUploaderException ex) { 
+}
+catch(Exception ex) { 
+	fileUpload.deleteUploadedFiles(); 
+} 
+finally { 
+	fileUpload.clear(); 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

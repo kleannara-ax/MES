@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="klra_mes:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/klra_mes_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="klra_mes/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="klra_mes" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="WEB-INF-lib" />
+          <element id="library" level="project" name="JavaFX Runtime" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

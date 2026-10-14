@@ -1,0 +1,85 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>getInputStream</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">FileItem</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>getInputStream</h2>
+            <p class="dscrpt">업로드 된 파일에서 InputStream 객체를 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>InputStream <span class="fname">getInputStream</span> ()</pre>
+            </ul>
+            <h4>Parameters</h4>
+           
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt">업로드 된 파일에서 InputStream 객체를 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileUpload fileUpload = new FileUpload(request, response);
+try {	
+	fileUpload.setAutoMakeDirs(true);
+	String saveDirPath = request.getRealPath("/");
+	saveDirPath += ("UploadDir" + File.separator);
+	
+	fileUpload.startUpload(saveDirPath); 	
+	
+	FileItem fileItem = fileUpload.getFileItem("files");
+	if(fileItem != null) { 
+		fileItem.save(saveDirPath); 
+		
+		// 업로드 된 파일에서 InputStream 객체를 반환합니다.
+		// 업로드 된 파일을 BLOB 타입으로 저장할 때 활용됩니다. 자세한 내용은 샘플의 "BLOB Upload &amp; Download" 항목을 참고해 주십시오.
+		<b>InputStream fis = fileItem.getInputStream();</b> 	
+		if(fis != null) {
+			fis.close(); 
+		}
+	}
+}
+catch(CrossUploaderException ex) { 
+}
+catch(Exception ex) { 
+	fileUpload.deleteUploadedFiles(); 
+} 
+finally { 
+	fileUpload.clear(); 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,415 @@
+
+/* 전체 폼 스타일 */
+
+.ac-form input,
+.ac-form textarea,
+.ac-form input[type=text],
+.ac-form input[type=password]{
+	font-size: 12px;
+	outline: none;
+    display: inline-block;
+  	width: 100%;
+  	border: 1px solid #d9d9d9;
+  	height: 30px;
+	line-height: 30px; 
+	padding: 0 0.2em 0 0.2em;
+	border-radius: 0;
+	background: #FFF;
+  	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+} 
+
+
+.ac-form input[type=text]:focus, 
+.ac-form input[type=text]:active, 
+.ac-form input[type=password]:active, 
+.ac-form input[type=password]:focus, 
+.ac-form input[type=email]:active, 
+.ac-form input[type=email]:focus, 
+.ac-form input[type=search]:active, 
+.ac-form input[type=search]:focus, 
+.ac-form textarea:active, 
+.ac-form textarea:focus {
+    border: 1px solid #ccc;
+	color: #333333;
+	outline: none;
+ 
+}
+.ac-form textarea{ 
+    min-height: 50px;
+	padding: 5px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 0;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	cursor: pointer;
+	outline: none;
+	font-size: 12px;
+	text-indent: 3px;
+}
+.ac-form select{
+	width: 100%;
+	height: 30px;
+	line-height: 30px; 
+	font-size: 12px;
+	padding: 0 0.2em 0 0.2em;
+	color: #444;
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	cursor: pointer;
+	outline: none;
+}
+
+
+/* 라디오/체크박스 */
+
+
+.checkbox-custom, .radio-custom {
+    opacity: 0;
+    position: absolute;   
+}
+
+.checkbox-custom, .checkbox-custom-label, .radio-custom, .radio-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+	font-size: 12px;
+}
+
+.checkbox-custom-label, .radio-custom-label {
+    position: relative;
+}
+
+.checkbox-custom + .checkbox-custom-label:before, .radio-custom + .radio-custom-label:before {
+    content: '';
+    background: #fff;
+    border: 1px solid #999;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 12px;
+    height: 12px;
+    padding: 2px;
+    margin-right: 2px;
+    text-align: center;
+}
+
+.checkbox-custom:checked + .checkbox-custom-label:before {
+    background: rebeccapurple;
+    box-shadow: inset 0px 0px 0px 4px #fff;
+}
+
+.radio-custom + .radio-custom-label:before {
+    border-radius: 50%;
+}
+
+.radio-custom:checked + .radio-custom-label:before {
+    background: #999;
+    box-shadow: inset 0px 0px 0px 4px #fff;
+}
+
+
+
+/* 모든 disabled 스타일 */
+
+.ac-form input[type=text]:disabled ,
+.ac-form input[type=text]:disabled ,
+.ac-form input[type=password]:disabled ,
+.ac-form input[type=password]:disabled ,
+.ac-form input[type=email]:disabled ,
+.ac-form input[type=email]:disabled ,
+.ac-form input[type=search]:disabled ,
+.ac-form input[type=search]:disabled,
+.ac-form textarea:disabled {
+	resize: none;
+  	background-color: #f3f3f3;
+	border: 1px solid #e6e6e6;
+	color: #999;
+	font-weight: bold;
+	cursor: not-allowed;
+	
+}
+
+.ac_form select:disabled {
+	margin: 0;
+	outline: none; /* remove focus ring from Webkit */
+	background: #CCC;
+	color: gray;
+	cursor: not-allowed;
+}
+
+.ac_form input:-moz-read-only { background: none; border:none; }
+.ac_form input:read-only { background: #none; border:none; }
+.ac_form input:-moz-read-write { background: #eee; }
+.ac_form input:read-write { background: #eee; }
+
+
+
+
+/* new 체크박스 회색라인에 빨간색체크 */
+.tasks-list-item {
+  display: block;
+  line-height: 24px;
+  padding: 12px 15px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.tasks-list-item + .tasks-list-item {
+  border-top: 1px solid #999;
+}
+
+.tasks-list-cb {
+  display: none;
+}
+
+.tasks-list-mark {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #C00;
+  border-radius: 0;
+}
+.tasks-list-mark:before {
+  content: '';
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -5px 0 0 -6px;
+  height: 4px;
+  width: 8px;
+  border: solid #C00;
+  border-width: 0 0 4px 4px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.tasks-list-cb:checked ~ .tasks-list-mark {
+  border-color: #999;
+}
+.tasks-list-cb:checked ~ .tasks-list-mark:before {
+  display: block;
+}
+
+
+/* checkbox and radio */
+
+
+.Form-label, .Form-label--tick {
+	display: block
+}
+.Form-label--tick {
+	position: relative;
+	display: inline-block;
+}
+.Form-label-radio, .Form-label-checkbox {
+	position: absolute;
+	z-index: -1;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	overflow: hidden;
+}
+.Form-label-radio+.Form-label-text, .Form-label-checkbox+.Form-label-text {
+	cursor: pointer;
+	margin-right: 1.5em;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis; 
+}
+.Form-label-radio+.Form-label-text::before, .Form-label-checkbox+.Form-label-text::before {
+	font-size: 12px;
+	display: inline-block;
+    width: 20px;
+	height: 20px;
+	line-height: 20px;
+	border: 1px solid #999;
+	margin-right: 0.25em;
+	content: "\00a0";
+	color: white;
+	background-clip: padding-box;
+	background-color: white;
+	text-align: center
+}
+.Form-label-radio+.Form-label-text:hover::before, .Form-label-checkbox+.Form-label-text:hover::before {
+	border-color: #999 !important;
+	box-shadow: 0 0 2px 0 rgba(0,135,212,0.2);
+}
+.Form-label-radio:checked+.Form-label-text::before, .Form-label-checkbox:checked+.Form-label-text::before {
+	background-color: #fff;
+	border-color: #999;
+	box-shadow: 0 0 0 0 #999;
+	font-family: FontAwesome;
+	content: "\f00c";
+	color: #C00;
+}
+.Form-label-radio:focus+.Form-label-text::before, .Form-label-checkbox:focus+.Form-label-text::before, .Form-label-radio:active+.Form-label-text::before, .Form-label-checkbox:active+.Form-label-text::before {
+	border-color: #999;
+	box-shadow: 0 0 2px 0 rgba(0,135,212,0.2);
+	color: #C00;
+}
+.Form-label-radio+.Form-label-text::before {
+	border-radius: 100%
+}
+
+
+/* 두배사이즈 회색라인 빨간체크박스 스타일 */
+
+
+.Form-labelt, .Form-label--tickt {
+	display: block
+}
+.Form-label--tickt {
+	position: relative;
+	display: inline-block;
+}
+.Form-labelt-radio, .Form-labelt-checkbox {
+	position: absolute;
+	z-index: -1;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	overflow: hidden;
+}
+.Form-labelt-radio+.Form-labelt-text, .Form-labelt-checkbox+.Form-labelt-text {
+	cursor: pointer;
+	margin-right: 1.5em;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis; 
+}
+.Form-labelt-radio+.Form-labelt-text::before, .Form-labelt-checkbox+.Form-labelt-text::before {
+	font-size: 12px;
+	display: inline-block;
+	width: 2.3em;
+	height: 2.3em;
+	line-height: 2.3em;
+	border: 1px solid #999;
+	margin-right: 0.1em;
+	content: "\00a0";
+	color: white;
+	background-clip: padding-box;
+	background-color: white;
+	text-align: center
+}
+.Form-labelt-radio+.Form-labelt-text:hover::before, .Form-labelt-checkbox+.Form-labelt-text:hover::before {
+	border-color: #999 !important;
+	box-shadow: 0 0 2px 0 rgba(0,135,212,0.2);
+}
+.Form-labelt-radio:checked+.Form-labelt-text::before, .Form-labelt-checkbox:checked+.Form-labelt-text::before {
+	background-color: #fff;
+	border-color: #999;
+	box-shadow: 0 0 0 0 #999;
+	font-family: FontAwesome;
+	content: "\f00c";
+	color: #C00;
+}
+.Form-labelt-radio:focus+.Form-labelt-text::before, .Form-labelt-checkbox:focus+.Form-labelt-text::before, .Form-labelt-radio:active+.Form-labelt-text::before, .Form-labelt-checkbox:active+.Form-labelt-text::before {
+	border-color: #999;
+	box-shadow: 0 0 2px 0 rgba(0,135,212,0.2);
+	color: #C00;
+}
+.Form-labelt-radio+.Form-labelt-text::before {
+	border-radius: 100%
+}
+
+
+
+
+
+
+/* mem-form 잠재회원등록에 사용된 폼들 */
+
+.mem-form input,
+.mem-form textarea,
+.mem-form input[type=text],
+.mem-form input[type=password]{
+	font-size: 12px;
+	outline: none;
+    display: inline-block;
+  	width: 100%;
+  	border: 1px solid #d9d9d9;
+    height: 30px;
+	line-height: 30px; 
+	text-indent: 3px;
+	border-radius: 0;
+  	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+} 
+
+
+.mem-form input[type=text]:focus, 
+.mem-form input[type=text]:active, 
+.mem-form input[type=password]:active, 
+.mem-form input[type=password]:focus, 
+.mem-form input[type=email]:active, 
+.mem-form input[type=email]:focus, 
+.mem-form input[type=search]:active, 
+.mem-form input[type=search]:focus, 
+.mem-form textarea:active, 
+.mem-form textarea:focus {
+    border: 1px solid #ccc;
+	color: #333333;
+	outline: none;
+ 
+}
+.mem-form textarea{ 
+    width: 100%; 
+    min-height: 60px;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 0;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	cursor: pointer;
+	outline: none;
+	font-size: 12px;
+	text-indent: 3px;}
+
+
+.mem-form select {
+	width: 100%;
+	background: #fff;
+	height: 30px;
+	line-height: 30px; 
+	font-size: 12px;
+	color: #444;
+	border: 1px solid #ccc;
+	border-radius: 0;
+	display: inline-block;
+	text-indent: 3px;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+    box-sizing: border-box;
+	cursor: pointer;
+	outline: none;
+}

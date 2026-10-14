@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>VOC 요청 문의 관리</title>
+<link type="text/css" rel="stylesheet" href="../css/sub.css" />
+<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../js/jquery-syaku.rolling.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+</head>
+
+<body>
+<!-- 레이어팝업 grid_pop_layout 시작 -->
+<div id="grid_layer_pop" class="grid_pop_layout">
+    <div class="pop_wrap">
+    	<div class="pop_body">
+            <div class="divide_wrpa n3 n1_5_n2_70px_n3_5">
+                <div class="n1">
+                    <dl class="dl_col2">
+                        <dt>INVISIBLE</dt>
+                        <dd class="list">
+                            <ul>
+                                <li><a href="#">생성시간</a></li>
+                            </ul>
+                        </dd>
+                        <dd class="btn_mov">
+                            <ul>
+                                <li><a class="btn_first" href="#">처음</a></li>
+                                <li><a class="btn_prev" href="#">이전</a></li>
+                                <li><a class="btn_next" href="#">다음</a></li>
+                                <li><a class="btn_end" href="#">마지막</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="n2">
+                	<ul class="mov_btn_wrap">
+                    	<li><a class="btn_all_left" href="#">전체왼쪽이동</a></li>
+                    	<li><a class="btn_left" href="#">왼쪽이동</a></li>
+                    	<li><a class="btn_right" href="#">오른쪽이동</a></li>
+                    	<li><a class="btn_all_right" href="#">전체오른쪽이동</a></li>
+                    </ul>
+                </div>
+                <div class="n3">
+                    <dl class="dl_col2">
+                        <dt>VISIBLE</dt>
+                        <dd class="list">
+                            <ul>
+                                <li><a href="#">생성시간</a></li>
+                                <li><a href="#">거점</a></li>
+                                <li><a href="#">창고</a></li>
+                                <li><a href="#">구역</a></li>
+                                <li><a href="#">지번</a></li>
+                                <li><a href="#">작업구역</a></li>
+                                <li><a href="#">로케이션유형</a></li>
+                                <li><a href="#">상태</a></li>
+                                <li><a href="#">피킹가능</a></li>
+                                <li><a href="#">Capa체크</a></li>
+                                <li><a href="#">가로</a></li>
+                                <li><a href="#">생성시간</a></li>
+                                <li><a href="#">거점</a></li>
+                                <li><a href="#">창고</a></li>
+                                <li><a href="#">구역</a></li>
+                                <li><a href="#">지번</a></li>
+                                <li><a href="#">작업구역</a></li>
+                                <li><a href="#">로케이션유형</a></li>
+                                <li><a href="#">상태</a></li>
+                                <li><a href="#">피킹가능</a></li>
+                                <li><a href="#">Capa체크</a></li>
+                                <li><a href="#">가로</a></li>
+                            </ul>
+                        </dd>
+                        <dd class="btn_mov">
+                            <ul>
+                                <li><a class="btn_first" href="#">처음</a></li>
+                                <li><a class="btn_prev" href="#">이전</a></li>
+                                <li><a class="btn_next" href="#">다음</a></li>
+                                <li><a class="btn_end" href="#">마지막</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <p class="btn_b">
+                <a class="on" href="#">적용</a>
+                <a href="#">취소</a>
+            </p>
+        </div>
+        <p class="close_btn">
+            <a class="colse_pop" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업 grid_pop_layout 끝 -->
+<!-- 레이어팝업 search_pop_option 시작 -->
+<div id="grid_layer_pop" class="search_pop_option">
+    <div class="pop_wrap">
+    	<div class="pop_body">
+            <!-- 탭 시작 -->
+            <div class="tab_box v2">
+                <!-- 탭1 시작 -->
+                <div class="tab_wrap t1 on">
+                    <div class="tab_btn"><a href="#">SINDLEVAL</a></div>
+                    <div class="tab_con">
+                        <div class="grid_scroll last">
+                        	<p class="btn_m">
+                            	<a href="#">초기화</a>
+                            </p>
+                             <div class="grid_head">
+                                 <table>
+                                     <colgroup>
+                                         <col style="width:50px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:auto;" />
+                                     </colgroup>
+                                     <thead>
+                                         <tr>
+                                             <th scope="col">NO</th>
+                                             <th scope="col">LOGICAL</th>
+                                             <th scope="col">OPERATOR</th>
+                                             <th scope="col">SINGLE</th>
+                                         </tr>
+                                      </thead>
+                                 </table>
+                             </div>
+                             <div class="grid_body list_10">
+                                 <table>
+                                     <colgroup>
+                                         <col style="width:50px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:auto;" />
+                                     </colgroup>
+                                     <tbody>
+                                         <tr>
+                                             <td>1</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>2</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>3</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>4</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>5</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>6</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>7</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>8</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>9</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>10</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>OR</option>
+                                                 </select>
+                                             </td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                             </div>
+                         </div>
+                    </div>
+                </div>                  
+                <!-- 탭1 끝 -->
+                <!-- 탭2 시작 -->
+                <div class="tab_wrap t2">
+                    <div class="tab_btn"><a href="#">RANGES</a></div>
+                    <div class="tab_con">
+                        <div class="grid_scroll last">
+                        	<p class="btn_m">
+                            	<a href="#">초기화</a>
+                            </p>
+                             <div class="grid_head">
+                                 <table>
+                                     <colgroup>
+                                         <col style="width:50px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:auto;" />
+                                     </colgroup>
+                                     <thead>
+                                         <tr>
+                                             <th scope="col">NO</th>
+                                             <th scope="col">OPER</th>
+                                             <th scope="col">FROM</th>
+                                             <th scope="col">TO</th>
+                                         </tr>
+                                      </thead>
+                                 </table>
+                             </div>
+                             <div class="grid_body list_10">
+                                 <table>
+                                     <colgroup>
+                                         <col style="width:50px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:100px;" />
+                                         <col style="width:auto;" />
+                                     </colgroup>
+                                     <tbody>
+                                         <tr>
+                                             <td>1</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td></td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>2</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>3</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>4</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>5</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>6</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>7</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>8</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>9</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                         <tr>
+                                             <td>10</td>
+                                             <td>
+                                                 <label for="" class="skip"></label>
+                                                 <select id="select_1" name="">
+                                                 	<option>=</option>
+                                                 </select>
+                                             </td>
+                                             <td> </td>
+                                             <td> </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                             </div>
+                         </div>
+                    </div>
+                </div> 
+                <!-- 탭2 끝 -->
+            </div>
+            <!-- 탭 끝 -->
+            <p class="btn_b">
+                <a class="on" href="#">적용</a>
+                <a href="#">취소</a>
+            </p>
+        </div>
+        <p class="close_btn">
+            <a class="colse_pop" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업 search_pop_option 끝 -->
+<!-- 레이어팝업1 시작 -->
+<div id="layer_pop1">            
+    <div class="pop_wrap">
+        <dl class="dl_row2">
+            <dt>영업</dt>
+            <dd>홍길동</dd>
+        </dl>
+        <p class="btn_s m_b_0">
+            <a href="#">SMS 보내기</a>
+            <a href="#">EMAIL 보내기</a>
+        </p>
+        <p class="close_btn">
+            <a class="pop_close1" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업1 끝 -->
+<!-- 레이어팝업2 시작 -->
+<div id="layer_pop2">            
+    <div class="pop_wrap">
+        <div class="pop_head">
+			<div class="title">VOC 요청 상세</div>        
+        </div>
+    	<div class="pop_body">
+            <dl class="dl_row n4">
+                <dt><span>접수번호</span></dt>
+                <dd>16051232</dd>
+                <dt><span><label for="a54">접수일시</label><em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <input id="a54" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a28">문의요청사구분</label><em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <input id="a28" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a29">문의요청사</label><em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <input id="a29" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a30">문의요청자부서</label></span></dt>
+                <dd>
+                    <select id="a30" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a31">문의요청자</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a31" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n2"><span><label for="a32">접수채널</label><em>*</em></span></dt>
+                <dd class="n2">
+                    <select id="a32" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a33">문의유형1</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a33" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a34">문의유형2</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a34" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n2"><span><label for="a35">문의유형3</label><em>*</em></span></dt>
+                <dd class="n2">
+                    <select id="a35" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a36">담당직원</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a36" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a37">진행상태</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a37" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a38">완료일시</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a38" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a39">첨부파일</label><em>*</em></span></dt>
+                <dd>
+                    <select id="a39" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n4"><span><label for="a40">문의요청 내용</label><em>*</em></span></dt>
+                <dd class="n4"><input id="a40" name="" type="text"></dd>
+                <dt class="n2 line2"><span><label for="a41">문의처리 내용</label><em>*</em></span></dt>
+                <dd class="n2 line2"><textarea id="a41" name="" cols="" rows=""></textarea></dd>
+                <dt class="n2 line2"><span><label for="a42">고객통보내용</label><em>*</em></span></dt>
+                <dd class="n2 line2"><textarea id="a42" name="" cols="" rows=""></textarea></dd>
+                <dt class="n4"><span><label for="a43">비고</label><em>*</em></span></dt>
+                <dd class="n4"><input id="a43" name="" type="text"></dd>
+            </dl>
+            <div class="h4_wrap">
+            	<div class="title">
+                	<h4>요청 문의 목록</h4>
+                    <p class="btn_b">
+                        <span class="txt">접수일</span>
+                        <span class="calendar_box start">
+                            <label for="a44" class="skip">시작 날짜</label>
+                            <input id="a44" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="calendar_bar">~</span>
+                        <span class="calendar_box end">
+                            <label for="a45" class="skip">종료 날짜</label>
+                            <input id="a45" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="txt">주문일</span>
+                        <span class="calendar_box start">
+                            <label for="a46" class="skip">시작 날짜</label>
+                            <input id="a46" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="calendar_bar">~</span>
+                        <span class="calendar_box end">
+                            <label for="a47" class="skip">종료 날짜</label>
+                            <input id="a47" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <a href="#">검색</a>
+                    </p>
+                </div>
+                <div class="grid_scroll">
+                     <div class="grid_head">
+                         <table>
+                             <colgroup>
+                                 <col width="50" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                             </colgroup>
+                             <thead>
+                                 <tr>
+                                     <th scope="col">
+                                         <span class="check_box">
+                                             <input id="a48" name="" type="checkbox" value="">
+                                             <label for="a48" class="skip">전체선택</label>
+                                         </span>
+                                     </th>
+                                     <th scope="col">이름</th>
+                                     <th scope="col">전화번호</th>
+                                     <th scope="col">주소</th>
+                                     <th scope="col">기타</th>
+                                     <th scope="col">선택</th>
+                                 </tr>
+                              </thead>
+                         </table>
+                     </div>
+                     <div class="grid_body list_5">
+                         <table>
+                             <colgroup>
+                                 <col width="50" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                             </colgroup>
+                             <tbody>
+                                 <tr>
+                                     <td>
+                                         <span class="check_box">
+                                             <input id="a49" name="" type="checkbox" value="">
+                                             <label for="a49" class="skip">선택</label>
+                                         </span>
+                                     </td>
+                                     <td>
+                                         <span class="calendar_box start">
+                                             <label for="a50" class="skip">시작 날짜</label>
+                                             <input id="a50" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                         <span class="calendar_bar">~</span>
+                                         <span class="calendar_box end">
+                                             <label for="a51" class="skip">종료 날짜</label>
+                                             <input id="a51" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                     </td>
+                                     <td>
+                                     	<label for="a52" class="skip">선택</label>
+                                         <select id="a52" name="">
+                                             <option>전체</option>
+                                         </select>
+                                     </td>
+                                     <td>
+                                         <span class="search_box">
+                                         	<label for="a53" class="skip">날짜검색</label>
+                                             <input id="a53" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                     </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td>160511</td>
+                                     <td>2016-05-20</td>
+                                     <td>고객사</td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+
+            </div>
+            <p class="btn_b">
+                <a class="on" href="#">확인</a>
+                <a href="#">취소</a>
+            </p>
+        </div>
+        <p class="close_btn">
+            <a class="pop_close2" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업2 끝 -->
+<!-- 탑 시작 -->
+<div id="top_layout">
+	<div class="top_wrap">
+    	<div class="logo_wrap">
+        	<h1><a href="#"><img src="../images/inc/logo.gif" alt="Allen Care" /></a></h1>
+            <p>Healthcare Integrated System</p>
+        </div>
+        <div class="util_wrap">
+        	<ul class="info_wrap">
+            	<li class="company">
+                    <div class="drop_company drop_select">
+                        <div><a href="#">안연케어</a></div>
+                        <ul>
+                            <li><a href="#">안연케어</a></li>
+                            <li><a href="#">test</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="name">물류관리팀</li>
+            	<li class="company">
+                    <div class="drop_company drop_select">
+                        <div><a href="#">창고</a></div>
+                        <ul>
+                            <li><a href="#">창고1</a></li>
+                            <li><a href="#">창고2</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="name"><span>홍길동</span> 님</li>
+                <li class="logout"><a href="#">로그아웃</a></li>
+            </ul>
+            <div class="drop_lang drop_select">
+                <div><a href="#">Korean</a></div>
+                <ul>
+                    <li><a href="#">Korean1</a></li>
+                    <li><a href="#">Korean2</a></li>
+                    <li><a href="#">Korean3</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 탑 끝 -->
+
+<!-- 왼쪽메뉴 시작 -->
+<div id="left_layout">
+	<!-- 네비 시작 -->
+	<div class="left_navi">
+    	<ul class="count_wrap">
+        	<li class="count_box1"><span>메시지</span><a href="#">6</a></li>
+            <li class="count_box2"><span>결제함</span><a href="#">23</a></li>
+        </ul>
+        <ul class="navi_wrap depth1_ul">
+        	<li class="n1"><h2><a href="#">고객영업관리</a></h2></li>
+        	<li class="n2"><h2><a href="#">MySite판가관리</a></h2></li>
+        	<li class="n3"><h2><a href="#">MySite</a></h2></li>
+        	<li class="n4 on"><h2><a href="#">제안견적관리제안견적관리</a></h2>
+            	<ul class="depth2_ul">
+                	<li class="n1"><a href="#">잠재고객 견적진행현황</a></li>
+                	<li class="n2"><a href="#">잠재고객 견적</a></li>
+                	<li class="n3"><a href="#">신규품목 견적요청서등록견적요청서등록</a></li>
+                	<li class="n4 on"><a href="#">계약조건변경품의서</a>
+                    	<ul class="depth3_ul">
+                        	<li class="n1 on"><a href="#">잠재고객 견적</a></li>
+                        	<li class="n2"><a href="#">잠재고객</a></li>
+                        	<li class="n3"><a href="#">신규품목견적요청서</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        	<li class="n5"><h2><a href="#">정수보충</a></h2></li>
+        	<li class="n6"><h2><a href="#">주문관리</a></h2></li>
+        	<li class="n7"><h2><a href="#">반품관</a></h2></li>
+        	<li class="n8"><h2><a href="#">교환관리</a></h2></li>
+        	<li class="n9"><h2><a href="#">사후정산</a></h2></li>
+        </ul>
+        <div class="top_btn">
+        	<a href="#">TOP</a>
+        </div>
+    </div>
+	<!-- 네비 끝 -->
+    <!-- 메뉴컨트롤 시작 -->
+    <div class="left_control">
+    	<ul>
+        	<li class="btn_2depth left"><a href="#">작은메뉴</a></li>
+        	<li class="btn_1depth"><a href="#">메뉴숨기기</a></li>
+        	<li class="btn_2depth right" style="display:none;"><a href="#">작은메뉴</a></li>
+        	<li class="btn_3depth" style="display:none;"><a href="#">큰메뉴</a></li>
+        	<li class="btn_mymenu"><a href="#">나의메뉴</a></li>
+        </ul>
+    </div>
+    <!-- 메뉴컨트롤 끝 -->
+</div>
+<!-- 왼쪽메뉴 끝 -->
+
+<!-- 컨텐츠 시작 -->
+<div id="contents_layout">
+    <div class="left_bg">
+    </div>
+	<!-- 롤링 공지사항 시작 -->
+	<div class="notice_wrap">
+        <div id="srolling" class="rolling_wrap"></div>
+        <div id="txt_wrap" style="display:none;">
+            <div><a href="#"><strong>[1긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[2긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[3긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[4긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[5긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+        </div>﻿
+        <span id="p_click" class="btn prev"><a href="#">이전</a></span>
+        <span id="n_click" class="btn next"><a href="#">다음</a></span>
+    </div> 
+	<!-- 롤링 공지사항 끝 -->
+    <div class="contents_wrap">
+    <!-- 타이틀 시작 -->
+		<div class="title_wrap">
+        	<ul id="lcation_menu" class="location">
+            	<li class="home"><a href="#">홈</a></li>
+            	<li><a href="#">공급업체관리</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            	<li><a href="#">등록평가현황</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            	<li class="last"><a href="#">평가결과등록</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <h3>VOC 요청 문의 관리<span class="icon"><a href="#" class="pageInfo">설명</a> <a href="#" class="myPage">마이페이지추가</a></span></h3>
+        </div>
+    <!-- 타이틀 끝 -->
+    <!-- 본문 시작 -->
+        <p class="btn_b">
+            <a href="#" class="search">조회</a>
+            <a href="#" class="reset">초기화</a>
+        </p>
+        <div class="search_wrap">
+            <!-- 일반검색 시작 -->
+            <dl class="search_basics">
+                <dt><span>접수일</span></dt>
+                <dd>
+                    <span class="calendar_box start">
+                    <label for="a1" class="skip">시작 날짜</label>
+                    <input id="a1" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box end">
+                    <label for="a2" class="skip">종료 날짜</label>
+                    <input id="a2" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a3">문의유형</label></span></dt>
+                <dd>
+                    <select id="a3" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a4">고객사</label></span></dt>
+                <dd>
+                    <span class="search_box">
+                    	<input id="a4" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a5">회원</label></span></dt>
+                <dd>
+                    <span class="search_box">
+                    	<input id="a5" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a6">접수채널</label></span></dt>
+                <dd>
+                    <select id="a6" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a7">통보채널</label></span></dt>
+                <dd>
+                    <select id="a7" class="w_auto" name="">
+                    	<option>전체</option>
+                    </select>
+                    <span class="txt red">(다채널 선택)</span>
+                </dd>
+                <dt><span><label for="a8">지연여부</label></span></dt>
+                <dd>
+                    <select id="a8" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span>처리예정일기준</span></dt>
+                <dd>
+                    <span class="calendar_box start">
+                        <label for="a9" class="skip">시작 날짜</label>
+                        <input id="a9" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box end">
+                        <label for="a10" class="skip">종료 날짜</label>
+                        <input id="a10" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+            </dl>
+            <div class="btn more">
+            	<a href="#">more</a>
+            </div>
+            <!-- 일반검색 끝 -->
+            <!-- 상세검색 시작 -->
+            <dl class="search_skip">
+                <dt><span>접수일</span></dt>
+                <dd>
+                    <span class="calendar_box start">
+                    <label for="a11" class="skip">시작 날짜</label>
+                    <input id="a11" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box end">
+                    <label for="a12" class="skip">종료 날짜</label>
+                    <input id="a12" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a13">문의유형</label></span></dt>
+                <dd>
+                    <select id="a13" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a14">고객사</label></span></dt>
+                <dd>
+                    <span class="search_box">
+                    	<input id="a14" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a15">회원</label></span></dt>
+                <dd>
+                    <span class="search_box">
+                    	<input id="a15" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                </dd>
+                <dt><span><label for="a16">접수채널</label></span></dt>
+                <dd>
+                    <select id="a16" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="a17">통보채널</label></span></dt>
+                <dd>
+                    <select id="a17" class="w_auto" name="">
+                    	<option>전체</option>
+                    </select>
+                    <span class="txt red">(다채널 선택)</span>
+                </dd>
+                <dt><span><label for="a18">지연여부</label></span></dt>
+                <dd>
+                    <select id="a18" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span>처리예정일기준</span></dt>
+                <dd>
+                    <span class="calendar_box start">
+                        <label for="a19" class="skip">시작 날짜</label>
+                        <input id="a19" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box end">
+                        <label for="a20" class="skip">종료 날짜</label>
+                        <input id="a20" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+            </dl>
+            <div class="btn hide">
+            	<a href="#">hide</a>
+            </div>
+            <!-- 상세검색 끝 -->
+        </div>
+        <div class="h4_wrap last">
+            <div class="title">
+                <h4>요청 문의 목록</h4>
+            </div>
+            <div class="grid_scroll">
+                <p class="btn_m">
+                    <span class="row_control">
+                        <a href="#" class="add">추가</a>
+                        <a href="#" class="del">삭제</a>
+                        <a href="#" class="copy">복사</a>
+                    </span>
+                    <a href="#" class="on">저장</a>
+                    <a href="#">승인품의</a>
+                    <a href="#">결과통보</a>
+                    <a href="#">비용결제</a>
+                    <a href="#" class="excel">업로드</a>
+                </p>
+                <div class="grid_head">
+                    <table>
+                        <colgroup>
+                            <col width="50" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <span class="check_box">
+                                        <input id="a21" name="" type="checkbox" value="">
+                                        <label for="a21" class="skip">전체선택</label>
+                                    </span>
+                                </th>
+                                <th scope="col">이름</th>
+                                <th scope="col">전화번호</th>
+                                <th scope="col">주소</th>
+                                <th scope="col">기타</th>
+                                <th scope="col">선택</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="grid_body list_5">
+                    <table>
+                        <colgroup>
+                            <col width="50" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                            <col width="500" />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="check_box">
+                                        <input id="a22" name="" type="checkbox" value="">
+                                        <label for="a22" class="skip">선택</label>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="calendar_box start">
+                                        <label for="a23" class="skip">시작 날짜</label>
+                                        <input id="a23" name="" type="text"><a href="#" class="btn">달력</a>
+                                    </span>
+                                    <span class="calendar_bar">~</span>
+                                    <span class="calendar_box end">
+                                        <label for="a24" class="skip">종료 날짜</label>
+                                        <input id="a24" name="" type="text"><a href="#" class="btn">달력</a>
+                                    </span>
+                                </td>
+                                <td>
+                                	<label for="a25" class="skip">선택</label>
+                                    <select id="a25" name="">
+                                    	<option>전체</option>
+                                    </select>
+                                </td>
+                                <td>
+                                	<label for="a26" class="skip">검색</label>
+                                    <span class="search_box">
+                                    	<input id="a26" name="" type="text"><a href="#" class="btn">검색</a>
+                                    </span>
+                                </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td><a class="pop_open1" href="#">레이어팝업1</a></td>
+                                <td class="grin bold">2016-05-20</td>
+                                <td>고객사</td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td><a class="pop_open2" href="#">레이어팝업2</a></td>
+                                <td>
+                                    <span class="calendar_box">
+                                        <label for="a27" class="skip">날짜</label>
+                                        <input id="a27" name="" type="text"><a href="#" class="btn">달력</a>
+                                    </span>
+                                </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid_control">
+                    <div class="left_wrap">총 조회건수<span>9,999,999</span></div>
+                    <div class="right_wrap">
+                        <div class="page_num"><span>9,999,999</span> / 9,999,999</div>
+                        <div class="search_wrap">
+                            <span class="search_box input_skipTitle">
+                                <label for="grid_search">검색어 입력</label>
+                                <input id="grid_search" name="" type="text"><a href="#" class="btn">검색</a>
+                            </span>
+                            <a class="prev" href="#">이전</a>
+                            <a class="next" href="#">다음</a>
+                        </div>
+                        <div class="util">
+                            <a class="btn1" href="#">새로고침</a>
+                            <a class="btn2 open_grid_pop_layout" href="#">정렬</a>
+                            <a class="btn3" href="#">합계</a>
+                            <a class="btn4" href="#">다운로드</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- 본문 끝 -->
+    </div>
+    <div class="foot_wrap">
+    	Copyright © 2016 Allen Care Co., Ltd All rights reserved. webmaster@allencare.co.kr
+    </div>
+</div>
+<!-- 컨텐츠 끝 -->
+</body>
+</html>

@@ -1,0 +1,15 @@
+ui.js
+ - uri path를 site별로 지정 가능하게 변경 site.commonUrl
+ 
+파일 그룹기능 추가
+ - FWCMFL0010 / GUUID VARCHAR2(36), --파일그룹키
+ - FileIntercepter.java
+ - CommonController.java
+ - grid.js
+ - configData.js
+ - commonUtil.js
+ 
+grid file upload 기능 추가
+ - GCol="file,
+ - 해당 컬럼 파일 UUID 저장
+ - file name 표시 컬럼 추가. _FILEVIEW

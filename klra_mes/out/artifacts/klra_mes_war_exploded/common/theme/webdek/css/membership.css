@@ -1,0 +1,105 @@
+@charset "utf-8";
+@import "reset.css";
+
+* {box-sizing:border-box; font-size: 22px; }
+
+body { width:100%; background:url("/common/theme/webdek/images/login/web_bg.jpg") no-repeat; background-size: cover; }/* height:100vh; */
+.membership_container {height:100%; min-width:1080px;padding:8px;width:1080px; margin:0 auto;}
+.membership_container .logo {height:120px; width:100%; background: url("/common/theme/webdek/images/login/WEBDekWMS-c.png") no-repeat 50% 50%;background-size: 260px; }
+
+header.membership_header {}
+header.membership_header ul {height:60px; line-height: 55px;text-align: center;width:100%;}
+header.membership_header ul li {display:inline-block;width: 19%; height:100%;text-align: center;margin-right:0.5%; border-radius: 3px 3px 0 0; overflow:hidden; border-bottom:2px solid #ffb690;/* background-color: rgb(255,255,255,0.2); */ }
+header.membership_header ul li.on {border:2px solid #e86b29;}
+header.membership_header ul li.on a {background-color: #e86b29; color:#fff;}
+header.membership_header ul li:last-child {margin: 0;}
+header.membership_header ul li a{color:#7e7e7e; display: block; height:100%; width:100%; }
+
+.membership_info,
+.code_inner,
+.membership_option,
+label.membership_charge {margin-bottom: 10px;background-color: #fafafa; position: relative;padding: 22px;box-shadow: 0px 0px 10px #cb982d;}
+
+.menu_name {border-bottom:2px solid #e86b29;padding:0 0 3px 0;display:inline-block; margin-bottom:15px;font-weight:bold; font-size:24px;}
+
+.membership_tab { width:100%;height:100%; clear: both;display: none;margin: 10px 0 0 0; }
+.membership_tab.on {display:block;}
+
+.code {height:50px;line-height:50px;}
+.code span,
+.code input,
+.code button,
+.consult span {height:100%; color:#555;}
+.code span {display:inline-block; width: 18%;}
+.code input {border:1px solid #000; padding-left:15px;width:52%;}
+.code button {border: 2px solid #4ba1d9; color: #fff; background-color: #4ba1d9;width: 10%;margin-left:1%;border-radius: 3px;font-size: 15px;vertical-align: bottom; }
+.code_inner p {font-size: 14px; color: #da0000;margin:5px 0 0 19.6%;height:30px;}
+.code_inner .consult {margin-top:100px;}
+.code_inner .consult span {display: block;width:100%; height: 45px; line-height:45px;color:#000;}
+
+.code_inner .code {}
+.code_inner .code input {border-radius:3px;}
+.code_inner .code input::placeholder {font-size: 18px;color:#bbb;}
+.code_inner .code input:hover ,
+.code_inner .code input:focus {border:1px solid #4b7dd9;}
+.membership_info {}
+.membership_info p {height:45px; line-height:45px;color:#555;}
+.membership_info p span:first-child {display: inline-block;/* width:170px; */}
+.code_save {text-align: center;margin:20px 0;height:50px;}
+.code_save button {border: 2px solid #4ba1d9; color: #fff; background-color: #4ba1d9;width: 120px;height:100%;border-radius: 3px;font-size: 16px;}
+
+.membership_option p {height:45px; line-height: 45px;color:#999999;}
+input[name*="option"] {display: none;}
+.membership_option p label {display: inline-block; margin: 0 8px;padding-left: 30px;background-repeat: no-repeat; background-position: 0% 54%; background-size: 20px;}
+.membership_option p label[for*="option1"],
+.membership_option p label[for*="option3"] {background-image: url("/common/theme/webdek/images/m-check03.png");}
+.membership_option p label[for*="option2"] {background-image: url("/common/theme/webdek/images/m-check07.png");}
+.membership_option p span {}
+input[name*="option"]:checked + label[for*="option"] {background-size: 20px;color: #000}
+input[id*="option1"]:checked + label[for*="option1"],
+input[id*="option3"]:checked + label[for*="option3"] {background-image: url("/common/theme/webdek/images/m-check06.png");}
+input[id*="option2"]:checked + label[for*="option2"] {background-image: url("/common/theme/webdek/images/m-check08.png");}
+
+input[id*="option1"]:checked ~ span {color: #000;}
+input[id*="option2"]:checked ~ span {color: #000;}
+input[id*="option3"]:checked ~ span {color: #000;}
+
+/* ++2020-11-28 lbj 수정 */
+.membership_option p input[type=checkbox],input[type=radio]{display: none;}
+.membership_option p label.checkbox {background-size: 20px;background-image: url("/common/theme/webdek/images/m-check07.png");background-position: 0 13px;}
+.membership_option p input[type=checkbox]:checked + label.checkbox{background-size: 20px;background-image: url("/common/theme/webdek/images/m-check08.png");color: #000;}
+.membership_option p input[type=checkbox]:checked ~ span{color: #000;}
+.membership_option p label.radio {background-size: 20px;background-image: url("/common/theme/webdek/images/m-check03.png");background-position: 0 13px;}
+.membership_option p input[type=radio]:checked + label.radio{background-size: 20px;background-image: url("/common/theme/webdek/images/m-check06.png");color: #000;}
+.membership_option p input[type=radio]:checked ~ span{color: #000;}
+/* 2020-11-28 lbj 수정++ */
+
+input[name*="charge"] {display: none;}
+label.membership_charge {display: block; border:2px solid #999999;padding:13px 22px 22px 22px;margin-bottom: 10px;}
+label.membership_charge span {display: block;height:45px; line-height:45px; color:#999999;}
+label.membership_charge span:first-child {font-size:24px; font-weight: bold; padding-left:35px;background: url("/common/theme/webdek/images/m-check03.png") no-repeat 0% 54%; background-size: 25px;}
+input[id="charge1_1"]:checked ~ label[for="charge1_1"],
+input[id="charge1_2"]:checked ~ label[for="charge1_2"],
+input[id="charge1_3"]:checked ~ label[for="charge1_3"] {border:2px solid #e86b29;}
+
+input[id="charge1_1"]:checked ~ label[for="charge1_1"] span,
+input[id="charge1_2"]:checked ~ label[for="charge1_2"] span,
+input[id="charge1_3"]:checked ~ label[for="charge1_3"] span {color: #000;}
+
+input[id="charge1_1"]:checked ~ label[for="charge1_1"] span:first-child,
+input[id="charge1_2"]:checked ~ label[for="charge1_2"] span:first-child,
+input[id="charge1_3"]:checked ~ label[for="charge1_3"] span:first-child {color:#e86b29; background: url("/common/theme/webdek/images/m-check06.png") no-repeat 0% 54%; background-size: 25px;}
+
+/* ++2020-11-28 lbj 수정 */
+input.membership_charge_radio[type=radio]{display: none;}
+input.membership_charge_radio[type=radio]:checked + label.membership_charge span:first-child{color:#e86b29; background: url("/common/theme/webdek/images/m-check06.png") no-repeat 0% 54%; background-size: 25px;}
+input.membership_charge_radio[type=radio]:checked + label.membership_charge{border:2px solid #e86b29;}
+input.membership_charge_radio[type=radio]:checked + label.membership_charge span{color: #000;}
+/* 2020-11-28 lbj 수정++ */
+
+.save_text {text-align: center;height: 50px;line-height: 50px;margin-top: 20px;color:#ff5656;font-weight:bold;}
+
+.membership_tab_05 .membership_info {padding: 15px 20px;}
+.membership_tab_05 .membership_info p {height:25px; line-height:25px;}
+.membership_tab_05 .membership_info p span{font-size: 16px;}
+.membership_tab_05 .membership_info .menu_name { font-size: 20px;margin-bottom:8px;}

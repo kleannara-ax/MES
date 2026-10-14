@@ -1,0 +1,7 @@
+grid.js
+ - 대량 데이터를 setColValue하는 경우 view 되는 grid row 부분의 데이터가 변경되어 보이지 않는 문제 해결
+ - 대량 데이터를 순환문으로 변경하는 경우 
+   gridList.setColValue(gridId, rowNum, colName, colValue, viewType) 의
+      추가된 viewType을 false로 처리하고
+     순환문에 의한 데이터 셋팅이 완료된 후 gridList.reloadView(gridId, focusType) 함수를 호출하여 grid의 보이는 부분을 수정된 데이터로 다시 표시
+ 

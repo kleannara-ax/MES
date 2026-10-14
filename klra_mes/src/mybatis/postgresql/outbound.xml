@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Outbound">
+	<!-- **[SO01] 출고예정정보 -->
+	<select id="SO01_ISHPKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT NEXTVAL('seq_ifshp') AS "ISHPKY"
+	</select>
+	
+	<insert id="SO01_INSERT"  parameterType="hashmap">
+		INSERT INTO IFSHP(
+			  ISHPKY
+			, SVBELN
+			, SPOSNR  
+			, SHPMTY
+			, COMPKY
+			, WAREKY
+			, OWNRKY
+			, SEBELN
+			, SEBELP
+			, DOCDAT
+			, RQSHPD
+			, PTNRKY
+			, PTNRNM
+			, PTRCVR
+			, PTRCNM
+			, SKUKEY
+			, DESC01
+			, QTYORD
+			, UOMKEY
+			, DOCTXT
+			, ORDCLS
+			, CRESHP
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{ISHPKY}
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')  
+			, COALESCE(#{SHPMTY}, ' ')
+			, COALESCE(#{SES_USER_COMPANY}, ' ')
+			, COALESCE(#{SES_WAREKY}, ' ')
+			, COALESCE(#{OWNRKY}, ' ')
+			, COALESCE(#{SEBELN}, ' ')
+			, COALESCE(#{SEBELP}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, COALESCE(#{RQSHPD}, ' ')
+			, COALESCE(#{PTNRKY}, ' ')
+			, COALESCE(#{PTNRNM}, ' ')
+			, COALESCE(#{PTRCVR}, ' ')
+			, COALESCE(#{PTRCNM}, ' ')
+			, COALESCE(#{SKUKEY}, ' ')
+			, COALESCE(#{DESC01}, ' ')
+			, #{QTYORD}::NUMERIC
+			, COALESCE(#{UOMKEY}, ' ')
+			, COALESCE(#{DOCTXT}, ' ')
+			, COALESCE(#{ORDCLS}, ' ')
+			, COALESCE(#{CRESHP}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	<!-- [SO01] 출고예정정보**-->
+	
+	<!-- **[SO10] 출고작업지시(WAVE) -->
+	<select id="SO10_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+	SELECT DISTINCT
+	       I.COMPKY AS "COMPKY"
+		 , I.WAREKY AS "WAREKY"
+		 , I.SVBELN AS "SVBELN"
+		 , I.RQSHPD AS "RQSHPD"
+		 , I.SHPMTY AS "DOCTYP"
+		 , D.DOCGRP AS "DOCCAT"
+		 , D.CDOCTY AS "SHPMTY"
+		 , T.SHORTX AS "SHPMNM"
+		 , I.PTNRKY AS "DPTNKY"
+		 , I.PTNRNM AS "DNAME1"
+		 , I.PTRCVR AS "PTRCVR"
+		 , I.PTRCNM AS "DNAME2"
+	FROM   IFSHP I
+	       INNER JOIN DOCTM D ON  I.SHPMTY = D.DOCUTY
+	       INNER JOIN DOCTM T ON  D.CDOCTY = T.DOCUTY
+							  AND D.DOCGRP = T.DOCCAT
+	WHERE  I.COMPKY  = #{SES_USER_COMPANY}
+	AND    I.WAREKY  = #{WAREKY}
+	<if test="SHPMTY != null and SHPMTY != ''">
+	AND    D.CDOCTY  = #{SHPMTY}
+	</if>    
+	<if test="RQSHPD != null and RQSHPD != ''">
+	AND    I.RQSHPD  = #{RQSHPD}
+	</if>    
+	<if test="RANGE_SQL != null and RANGE_SQL != ''">
+	${RANGE_SQL}
+	</if>
+	AND    I.CRESHP != 'V'
+	AND    I.ORDCLS != 'V'
+	</select>
+	
+	<select id="SO10_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.SVBELN AS "SVBELN"
+		   ,   I.SPOSNR AS "SPOSNR"
+		   ,   I.OWNRKY AS "OWNRKY"
+		   ,   O.NAME01 AS "OWNRNM"
+		   ,   I.SEBELN AS "SEBELN"
+		   ,   I.SEBELP AS "SEBELP"
+		   ,   I.PTNRKY AS "PTNRKY"
+		   ,   I.PTNRNM AS "PTNRNM"
+		   ,   I.PTRCVR AS "PTRCVR"
+		   ,   I.PTRCNM AS "PTRCNM"
+		   ,   I.OWNRKY AS "OWNRKY"
+		   ,   I.SKUKEY AS "SKUKEY"
+		   ,   I.DESC01 AS "DESC01"
+		   ,   I.QTYORD AS "QTYORG"
+		   ,   I.QTYORD AS "QTSHPO"
+		   ,   0        AS "QTALOC"
+		   ,   0        AS "QTJCMP"
+		   ,   0        AS "QTSHPD"
+		   ,   S.QTDUOM AS "QTYUOM"
+		   ,   C.MEASKY AS "MEASKY"
+		   ,   M.QTPUOM AS "QTPUOM"
+		   ,   I.UOMKEY AS "UOMKEY"
+		   ,   S.DUOMKY AS "DUOMKY"
+		   ,   S.QTDUOM AS "QTDUOM"
+		   ,   S.EANCOD AS "EANCOD"
+		   ,   S.GTINCD AS "GTINCD"
+		FROM   IFSHP I
+			   INNER JOIN OWNER O ON  I.COMPKY = I.COMPKY
+								  AND I.OWNRKY = O.OWNRKY
+			   INNER JOIN SKUMA S ON  I.COMPKY = S.COMPKY
+			                      AND I.OWNRKY = S.OWNRKY
+								  AND I.SKUKEY = S.SKUKEY
+		       INNER JOIN SKUWC C ON  I.WAREKY = C.WAREKY
+								  AND S.OWNRKY = C.OWNRKY
+								  AND S.SKUKEY = C.SKUKEY
+			   INNER JOIN MEASI M ON  C.WAREKY = M.WAREKY
+								  AND C.MEASKY = M.MEASKY
+								  AND S.DUOMKY = M.UOMKEY
+		WHERE  I.COMPKY = #{SES_USER_COMPANY}
+		AND    I.SVBELN = #{SVBELN}
+		AND    I.CRESHP != 'V'
+		AND    I.ORDCLS != 'V'
+	</select>
+	
+	<insert id="SHPDH_INSERT"  parameterType="hashmap">
+		INSERT INTO SHPDH(
+			  COMPKY
+			, SHPOKY
+			, WAREKY
+			, SHPMTY
+			, STATDO
+			, DOCDAT
+			, DOCCAT
+			, OWNRKY
+			, RQSHPD
+			, DPTNKY
+			, PTRCVR
+			, DNAME1
+			, DNAME2
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{SHPOKY}
+			, #{WAREKY}
+			, #{SHPMTY}
+			, COALESCE(#{STATDO}, 'NEW')
+			, COALESCE(#{DOCDAT}, ' ')
+			, COALESCE(#{DOCCAT}, ' ')
+			, COALESCE(#{OWNRKY}, ' ')
+			, COALESCE(#{RQSHPD}, ' ')
+			, COALESCE(#{DPTNKY}, ' ')
+			, COALESCE(#{PTRCVR}, ' ')
+			, COALESCE(#{DNAME1}, ' ')
+			, COALESCE(#{DNAME2}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<insert id="SHPDI_INSERT"  parameterType="hashmap">
+		INSERT INTO SHPDI(
+			  COMPKY
+			, SHPOKY
+			, SHPOIT
+			, STATIT
+			, SKUKEY
+			, DESC01
+			, QTYORG
+			, QTSHPO
+			, QTALOC
+			, QTJCMP
+			, QTSHPD
+			, QTYUOM
+			, MEASKY
+			, UOMKEY
+			, QTPUOM
+			, DUOMKY
+			, QTDUOM
+			, ALSTKY
+			, EANCOD
+			, GTINCD
+			, SEBELN
+			, SEBELP
+			, SVBELN
+			, SPOSNR
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{SHPOKY}
+			, #{SHPOIT}
+			, COALESCE(#{STATIT}, 'NEW')
+			, #{SKUKEY}
+			, #{DESC01}
+			, #{QTYORG}::NUMERIC
+			, #{QTSHPO}::NUMERIC
+			, #{QTALOC}::NUMERIC
+			, #{QTJCMP}::NUMERIC
+			, #{QTSHPD}::NUMERIC
+			, #{QTYUOM}::NUMERIC
+			, COALESCE(#{MEASKY}, ' ')
+			, COALESCE(#{UOMKEY}, ' ')
+			, #{QTPUOM}::NUMERIC
+			, COALESCE(#{DUOMKY}, ' ')
+			, #{QTDUOM}::NUMERIC
+			, COALESCE(#{ALSTKY}, ' ')
+			, COALESCE(#{EANCOD}, ' ')
+			, COALESCE(#{GTINCD}, ' ')
+			, COALESCE(#{SEBELN}, ' ')
+			, COALESCE(#{SEBELP}, ' ')
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="IFSHP_COMPLATE_UPDATE"  parameterType="hashmap">
+		UPDATE IFSHP 
+		SET    CRESHP = 'V'
+		WHERE  COMPKY = #{SES_USER_COMPANY} 
+		AND    SVBELN = #{SVBELN}
+	</update>
+	<!-- [SO10] 출고작업지시(WAVE)**-->
+	
+	<!-- **[SH01] 할당-->
+	<select id="SH01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.*, V.CDESC1 AS "STATNM" 
+		FROM(
+			SELECT H.COMPKY AS "COMPKY"
+			   ,   H.SHPOKY AS "SHPOKY"
+			   ,   H.WAREKY AS "WAREKY"
+			   ,   H.SHPMTY AS "SHPMTY"
+			   ,   CASE WHEN SUM(I.QTSHPO) - SUM(I.QTALOC) = 0 THEN 'FPC'
+			            WHEN SUM(I.QTSHPO) - SUM(I.QTALOC) = SUM(I.QTSHPO) THEN 'NEW'
+			            ELSE 'PPC'
+			       END  "STATDO"     
+			   ,   H.RQSHPD AS "RQSHPD"
+			   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS "DOCDAT"
+			   ,   D.SHORTX AS "SHPMNM"
+			   ,   H.DPTNKY AS "DPTNKY"
+			   ,   H.DNAME1 AS "DPTNNM"
+			   ,   H.PTRCVR AS "PTRCVR"
+			   ,   H.DNAME2 AS "PTRCNM"
+			   ,   D.DOCGRP AS "DOCCAT"
+			   ,   D.CDOCTY AS "TASOTY"
+			   ,   T.IFTBLN AS "TASKTY"
+			   ,   T.SYSLOC AS "SYSLOC"
+			FROM   SHPDH H
+			       INNER JOIN SHPDI I ON  H.COMPKY = I.COMPKY 
+			                          AND H.SHPOKY = I.SHPOKY
+			       INNER JOIN DOCTM D ON  H.DOCCAT = D.DOCCAT
+									  AND H.SHPMTY = D.DOCUTY
+				   INNER JOIN DOCTM T ON  D.DOCGRP = T.DOCCAT
+									  AND D.CDOCTY = T.DOCUTY
+			WHERE  H.COMPKY = #{SES_USER_COMPANY}
+			AND    H.WAREKY = #{WAREKY}
+			<if test="SHPMTY != null and SHPMTY != ''">
+			AND    H.SHPMTY  = #{SHPMTY}
+			</if>    
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>
+			AND    H.STATDO NOT IN('FSH', 'PSH')
+			GROUP BY 
+			       H.COMPKY
+			   ,   H.SHPOKY
+			   ,   H.WAREKY
+			   ,   H.SHPMTY
+			   ,   H.STATDO
+			   ,   H.RQSHPD
+			   ,   D.SHORTX
+			   ,   H.DPTNKY
+			   ,   H.DNAME1
+			   ,   H.PTRCVR
+			   ,   H.DNAME2
+			   ,   D.DOCGRP
+			   ,   D.CDOCTY
+			   ,   T.IFTBLN
+			   ,   T.SYSLOC
+		) A  INNER JOIN CMCDV V ON  A."STATDO" = V.CMCDVL
+			                    AND V.CMCDKY = 'STATDO' 
+		ORDER BY 
+		       A."SHPOKY" DESC
+	</select>
+	
+	<select id="SH01_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.*, V.CDESC1 AS "STATNM"
+		FROM(
+			SELECT I.SHPOKY AS "SHPOKY"
+			   ,   I.SHPOIT AS "SHPOIT"
+			   ,   CASE WHEN I.QTSHPO - I.QTALOC = 0 THEN 'FPC'
+			            WHEN I.QTSHPO - I.QTALOC = I.QTSHPO THEN 'NEW'
+			            ELSE 'PPC'
+			       END  "STATIT"
+			   ,   I.SKUKEY AS "SKUKEY"
+			   ,   I.DESC01 AS "DESC01"
+			   ,   FN_GET_QTSIWH(H.COMPKY,H.WAREKY,I.SKUKEY) AS "QTSIWH"
+			   ,   I.QTSHPO AS "QTSHPO" 
+			   ,   (I.QTSHPO - I.QTALOC) AS "QTTAOR"
+			   ,   I.QTALOC AS "QTALOC"
+			   ,   I.QTJCMP AS "QTJCMP"
+			   ,   I.QTSHPD AS "QTSHPD"
+			   ,   I.UOMKEY AS "UOMKEY"
+			   ,   I.SVBELN AS "SVBELN"
+			   ,   I.SPOSNR AS "SPOSNR"
+			FROM   SHPDH H
+			       INNER JOIN SHPDI I ON  H.COMPKY = I.COMPKY
+				                      AND H.SHPOKY = I.SHPOKY
+			WHERE  I.COMPKY = #{SES_USER_COMPANY}
+			AND    I.SHPOKY = #{SHPOKY}
+			AND    I.STATIT NOT IN('FSH', 'PSH')
+		) A INNER JOIN CMCDV V ON  A."STATIT" = V.CMCDVL
+		                       AND V.CMCDKY = 'STATIT'
+	</select>
+	
+	<select id="SH01_STATDO_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COALESCE(SUM(QTALOC), 0) = 0                              THEN 'NEW'
+                    WHEN (COALESCE(SUM(QTSHPO), 0) - COALESCE(SUM(QTALOC), 0)) = 0 THEN 'FPC'
+                    ELSE 'PPC'
+               END  "STATDO"
+		FROM   SHPDI	              	 	
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+	</select>
+	
+	<update id="SH01_STATDO_UPDATE" parameterType="hashmap">
+		UPDATE SHPDH
+		SET    STATDO = #{STATDO}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+	</update>
+	
+	<update id="SH01_STATIT_UPDATE" parameterType="hashmap">
+		UPDATE SHPDI
+		SET    STATIT = #{STATIT} 	
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+		AND    SHPOIT = #{SHPOIT}
+	</update>
+	
+	<select id="SH01_STATIT_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COALESCE(S.QTALOC, 0) = 0                           THEN 'NEW'
+		            WHEN (COALESCE(S.QTSHPO, 0) - COALESCE(S.QTALOC, 0)) = 0 THEN 'FPC'
+					ELSE 'PPC'
+			   END  "STATIT"		 	
+		FROM   SHPDI S   
+		WHERE  S.COMPKY  = #{SES_USER_COMPANY}
+		AND    S.SHPOKY  = #{SHPOKY}
+		AND    S.SHPOIT  = #{SHPOIT}
+	</select>
+	
+	<select id="SH01_STOCKYN_OBJECT" parameterType="hashmap" resultType="String">
+	SELECT CASE WHEN FN_GET_QTSIWH(#{SES_USER_COMPANY}, #{WAREKY}, #{SKUKEY}) > 0 THEN 'Y'
+	            ELSE 'N'
+	       END  "STOKYN"     
+	</select>
+	
+	<update id="SH01_QTY_UPDATE" parameterType="hashmap">
+		UPDATE SHPDI
+		SET    QTALOC = QTALOC + #{QTTAOR}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+		AND    SHPOIT = #{SHPOIT}
+	</update>
+	
+	<select id="SH01_TASK_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.COMPKY AS "COMPKY"
+		   ,   I.TASKKY AS "TASKKY"
+		   ,   I.TASKIT AS "TASKIT"
+		   ,   I.TASKTY AS "TASKTY"
+		   ,   I.STATIT AS "STATIT"
+		   ,   I.SHPOKY AS "SHPOKY"
+		   ,   I.SHPOIT AS "SHPOIT"
+		   ,   I.QTTAOR AS "QTTAOR"
+		   ,   I.QTCOMP AS "QTCOMP"
+		   ,   I.STKNUM AS "STKNUM"
+		FROM   TASDI I
+		       INNER JOIN TASDH H ON  I.COMPKY = H.COMPKY
+			                      AND I.TASKKY = H.TASKKY
+		WHERE  I.COMPKY  = #{SES_USER_COMPANY}
+		AND    H.WAREKY  = #{WAREKY}
+		AND    I.SHPOKY  = #{SHPOKY}
+		AND    I.SHPOIT  = #{SHPOIT}
+		AND    I.TASKTY  = #{TASKTY}
+		AND    I.STATIT != 'CLS'
+	</select>
+	
+	<update id="SH01_TASDH_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE TASDH
+		SET    STATDO = #{STATDO}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+	</update>
+	
+	<update id="SH01_TASDI_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE TASDI
+		SET    STATIT = #{STATIT}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</update>
+	
+	<update id="SH01_STKKY_QTSIWH_UPDATE" parameterType="hashmap">
+		UPDATE STKKY
+		SET    QTSIWH = QTSIWH + #{QTTAOR}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    STOKKY = #{STKNUM}   
+	</update>
+	
+	<delete id="SH01_STKKY_ALOC_DELETE" parameterType="hashmap">
+		DELETE
+		FROM   STKKY
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    STKNUM = #{STKNUM} 
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</delete>
+	
+	<select id="SH01_TASK_CLS_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COUNT(1) = SUM(CASE WHEN STATIT = 'CLS' THEN 1 ELSE 0 END) THEN 'Y'
+		            ELSE 'N'
+			   END  "STATDO"		
+		FROM   TASDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+	</select>
+	<!-- [SH01] 할당**-->
+	
+	<!-- **[PK01] 피킹처리-->
+	<select id="PK01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+			   S.SHPOKY AS "SHPOKY"
+		   ,   H.WAREKY AS "WAREKY"	   
+		   ,   I.TASKTY AS "TASKTY"	   
+		   ,   S.SHPMTY AS "SHPMTY"
+		   ,   T.SHORTX AS "SHPMNM"
+		   ,   S.RQSHPD AS "RQSHPD"
+		   ,   H.STATDO AS "STATDO"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   S.DPTNKY AS "PTNRKY"
+		   ,   S.DNAME1 AS "PTNRNM"
+		   ,   S.PTRCVR AS "PTRCVR"
+		   ,   S.DNAME2 AS "PTRCNM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+			   INNER JOIN DOCTM T ON  S.DOCCAT = T.DOCCAT
+			                      AND S.SHPMTY = T.DOCUTY
+			   INNER JOIN CMCDV V ON  H.STATDO = V.CMCDVL
+								  AND V.CMCDKY = 'STATDO'
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    S.SHPMTY = #{SHPMTY}
+		<if test="RQSHPD != null and RQSHPD != ''">
+		AND    S.RQSHPD  = #{RQSHPD}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		AND    I.TASKTY = 'PK'
+		AND    S.STATDO NOT IN('FSH', 'PSH')
+		AND    I.STATIT != 'CLS'
+		ORDER BY 
+		       S.SHPOKY ASC
+	</select>
+	
+	<select id="PK01_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.SHPOKY AS "SHPOKY" 
+		   ,   I.SHPOIT AS "SHPOIT"
+		   ,   H.TASKKY AS "TASKKY"
+		   ,   I.TASKIT AS "TASKIT"
+		   ,   I.STATIT AS "STATIT"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   I.LOTNUM AS "LOTNUM"
+		   ,   I.SKUKEY AS "SKUKEY"
+		   ,   I.DESC01 AS "DESC01"
+		   ,   I.QTTAOR AS "QTTAOR"
+		   ,   I.QTCOMP AS "QTCOMP"
+		   ,   (I.QTTAOR - I.QTCOMP) AS "QTYDIF"
+		   ,   I.SUOMKY AS "UOMKEY"
+		   ,   I.LOCASR AS "LOCASR"
+		   ,   I.LOCASR AS "LOCAKY"
+		   ,   I.LOCATG AS "LOCATG"
+		   ,   I.LOTA01 AS "LOTA01"
+		   ,   C.CDESC1 AS "LT01NM"
+		   ,   I.LOTA02 AS "LOTA02"
+		   ,   I.LOTA03 AS "LOTA03"
+		   ,   I.STKNUM AS "STKNUM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+			   INNER JOIN CMCDV V ON  I.STATIT = V.CMCDVL
+								  AND V.CMCDKY = 'STATIT'
+			   INNER JOIN CMCDV C ON  I.LOTA01 = C.CMCDVL
+								  AND C.CMCDKY = 'LOTA01'					  
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    I.SHPOKY = #{SHPOKY}
+		AND    I.TASKTY = 'PK'
+		AND    S.STATDO NOT IN('FSH', 'PSH')
+		AND    I.STATIT != 'CLS'
+	</select>
+	
+	<select id="PK01_STK_CHECK_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT CAST(COALESCE(SUM(S.QTSIWH),0) AS NUMERIC) AS "QTSIWH"
+		FROM   STKKY S 
+			   INNER JOIN LOCMA L ON  S.COMPKY = L.COMPKY
+								  AND S.LOCAKY = L.LOCAKY
+								  AND L.INDUPK = 'V'
+		WHERE  S.COMPKY = #{SES_USER_COMPANY}
+		AND    S.WAREKY = #{WAREKY}
+		AND    S.SKUKEY = #{SKUKEY}
+		AND    S.LOCAKY = #{LOCAKY}
+		AND    (S.QTSIWH > 0 AND S.QTSALO = 0 AND S.QTSPMO = 0 AND QTSPMI = 0 AND QTSBLK = 0)
+	</select>
+	
+	<update id="PK01_TASK_UPDATE" parameterType="hashmap">
+		UPDATE TASDI
+		SET    QTCOMP = QTCOMP + #{QTYDIF}::NUMERIC
+		,      STATIT = #{STATIT}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</update>
+	
+	<update id="PK01_TASK_QTTAOR_UPDATE" parameterType="hashmap">
+		UPDATE TASDI
+		SET    QTTAOR = QTTAOR - #{QTCOMP}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</update>
+	
+	<update id="PK01_SHPDI_UPDATE" parameterType="hashmap">
+		UPDATE SHPDI
+		SET    QTJCMP = QTJCMP + #{QTYDIF}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+		AND    SHPOIT = #{SHPOIT}
+	</update>
+	
+	<select id="PK01_STATDO_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN (COALESCE(SUM(QTALOC), 0) -  COALESCE(SUM(QTJCMP), 0)) = 0 THEN 'FPC'
+                    WHEN (COALESCE(SUM(QTALOC), 0) -  COALESCE(SUM(QTJCMP), 0)) = COALESCE(SUM(QTALOC), 0) THEN 'NEW'
+                    ELSE 'PPC'
+               END  "STATDO"
+		FROM   SHPDI	              	 	
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+	</select>
+	
+	<update id="PK01_SHPDI_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE SHPDI
+		SET    STATIT = (CASE WHEN (QTALOC - QTJCMP) = 0 THEN 'FPC'
+		                      WHEN (QTALOC - QTJCMP) = QTALOC THEN 'NEW'
+		                      ELSE 'PPC'
+		                 END)     
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+		AND    SHPOIT = #{SHPOIT}
+	</update>
+	
+	<update id="PK01_STKKY_UPDATE" parameterType="hashmap">
+		UPDATE STKKY
+		SET    QTJCMP = QTJCMP + #{QTYDIF}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    STKNUM = #{STKNUM}
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</update>
+	
+	<select id="PK01_TASDH_STATUS_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT 
+		       H.TASKKY AS "TASKKY"
+		   ,   I.TASKTY AS "TASKTY"		
+		FROM   TASDH H
+			   INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+								  AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+								  AND I.SHPOKY = S.SHPOKY				  
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    I.SHPOKY = #{SHPOKY}
+		AND    I.TASKTY = #{TASKTY}
+	</select>
+	
+	<select id="PK01_TASDH_STATUS_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COALESCE(SUM(I.QTCOMP), 0) = 0 THEN 'NEW'
+		            WHEN COALESCE(SUM(I.QTTAOR), 0) - COALESCE(SUM(I.QTCOMP), 0) = 0 THEN 'FPC' 
+		            ELSE 'PPC'
+			   END  "STATDO"		
+		FROM   TASDH H
+			   INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+								  AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+								  AND I.SHPOKY = S.SHPOKY				  
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    I.TASKKY = #{TASKKY}
+		AND    I.TASKTY = #{TASKTY}
+	</select>
+	
+	<update id="PK01_TASDH_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE TASDH
+		SET    STATDO = #{STATDO}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+	</update>
+	
+	<select id="PK01_TASK_TO_STK_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT S.STOKKY AS "STOKKY"
+		   ,   S.WAREKY AS "WAREKY"
+		   ,   S.OWNRKY AS "OWNRKY"
+		   ,   S.LOTNUM AS "LOTNUM"
+		   ,   S.SKUKEY AS "SKUKEY"
+		   ,   S.DESC01 AS "DESC01"
+		   ,   S.AREAKY AS "AREAKY"
+		   ,   S.ZONEKY AS "ZONEKY"
+		   ,   S.LOCAKY AS "LOCAKY"
+		   ,   S.QTSIWH AS "QTSIWH"
+		   ,   S.QTSALO AS "QTSALO"
+		   ,   S.QTSPMO AS "QTSPMO"
+		   ,   S.QTSPMI AS "QTSPMI"
+		   ,   S.QTSBLK AS "QTSBLK"
+		   ,   S.QTYUOM AS "QTYUOM"
+		   ,   S.MEASKY AS "MEASKY"
+		   ,   S.UOMKEY AS "UOMKEY"
+		   ,   S.QTPUOM AS "QTPUOM"
+		   ,   S.DUOMKY AS "DUOMKY"
+		   ,   S.QTDUOM AS "QTDUOM"
+		   ,   S.LOTA01 AS "LOTA01"
+		   ,   S.LOTA02 AS "LOTA02"
+		   ,   S.LOTA03 AS "LOTA03"
+		   ,   S.LOTA04 AS "LOTA04"
+		   ,   S.LOTA05 AS "LOTA05"
+		   ,   S.SEBELN AS "SEBELN"
+		   ,   S.SEBELP AS "SEBELP"
+		   ,   S.SVBELN AS "SVBELN"
+		   ,   S.SPOSNR AS "SPOSNR"
+		   ,   S.SHPOKY AS "SHPOKY"
+		   ,   S.SHPOIT AS "SHPOIT"
+		   ,   S.TASKKY AS "TASKKY"
+		   ,   S.TASKIT AS "TASKIT"
+		   ,   S.EANCOD AS "EANCOD"
+		   ,   S.GTINCD AS "GTINCD"
+		FROM   STKKY S
+		       INNER JOIN LOCMA L ON  S.COMPKY  = L.COMPKY
+			                      AND S.LOCAKY  = L.LOCAKY
+								  AND L.INDUPK  = 'V'
+		WHERE  S.COMPKY = #{SES_USER_COMPANY}
+		AND    S.WAREKY = #{WAREKY}
+		AND    S.SKUKEY = #{SKUKEY}
+		AND    S.LOCAKY = #{LOCAKY}
+		AND    (S.QTSIWH > 0 AND S.QTSALO = 0 AND S.QTSPMO = 0 AND S.QTSPMI = 0 AND S.QTSBLK = 0)
+		ORDER BY
+		       S.LOTNUM ASC
+			 , S.QTSIWH ASC 
+	</select>
+	
+	<select id="TASDI_MAXRIT_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT CAST(COALESCE(MAX(TASKIT), '0') AS NUMERIC) AS "MAXRIT"
+		FROM   TASDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+	    AND    TASKKY = #{TASKKY}
+	</select>
+	<!-- [PK01] 피킹처리**-->
+	
+	<!-- **[PK02] 피킹이력-->
+	<select id="PK02_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+			   S.SHPOKY AS "SHPOKY"
+		   ,   H.WAREKY AS "WAREKY"	   
+		   ,   I.TASKTY AS "TASKTY"	   
+		   ,   S.SHPMTY AS "SHPMTY"
+		   ,   T.SHORTX AS "SHPMNM"
+		   ,   S.RQSHPD AS "RQSHPD"
+		   ,   H.STATDO AS "STATDO"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   S.DPTNKY AS "PTNRKY"
+		   ,   S.DNAME1 AS "PTNRNM"
+		   ,   S.PTRCVR AS "PTRCVR"
+		   ,   S.DNAME2 AS "PTRCNM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+			   INNER JOIN DOCTM T ON  S.DOCCAT = T.DOCCAT
+			                      AND S.SHPMTY = T.DOCUTY
+			   INNER JOIN CMCDV V ON  H.STATDO = V.CMCDVL
+								  AND V.CMCDKY = 'STATDO'
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    S.SHPMTY = #{SHPMTY}
+		AND    S.STATDO IN('PPC', 'FPC')
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		AND    I.TASKTY = 'PK'
+	</select>
+	
+	<select id="PK02_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.SHPOKY AS "SHPOKY" 
+		   ,   I.SHPOIT AS "SHPOIT"
+		   ,   H.TASKKY AS "TASKKY"
+		   ,   I.TASKIT AS "TASKIT"
+		   ,   I.STATIT AS "STATIT"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   I.LOTNUM AS "LOTNUM"
+		   ,   I.SKUKEY AS "SKUKEY"
+		   ,   I.DESC01 AS "DESC01"
+		   ,   I.QTTAOR AS "QTTAOR"
+		   ,   I.QTCOMP AS "QTCOMP"
+		   ,   (I.QTTAOR - I.QTCOMP) AS "QTYDIF"
+		   ,   I.SUOMKY AS "UOMKEY"
+		   ,   I.LOCASR AS "LOCASR"
+		   ,   I.LOCASR AS "LOCAKY"
+		   ,   I.LOCATG AS "LOCATG"
+		   ,   I.LOTA01 AS "LOTA01"
+		   ,   C.CDESC1 AS "LT01NM"
+		   ,   I.LOTA02 AS "LOTA02"
+		   ,   I.LOTA03 AS "LOTA03"
+		   ,   I.STKNUM AS "STKNUM"
+		FROM   TASDH H
+		       INNER JOIN TASDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.TASKKY = I.TASKKY
+								  AND I.STATIT != 'CLS'
+			   INNER JOIN SHPDH S ON  I.COMPKY = S.COMPKY
+			                      AND I.SHPOKY = S.SHPOKY
+			   INNER JOIN CMCDV V ON  I.STATIT = V.CMCDVL
+								  AND V.CMCDKY = 'STATIT'
+			   INNER JOIN CMCDV C ON  I.LOTA01 = C.CMCDVL
+								  AND C.CMCDKY = 'LOTA01'					  
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    I.SHPOKY = #{SHPOKY}
+		AND    I.TASKTY = 'PK'
+	</select>
+	<!-- [PK02] 피킹이력**-->
+	
+	<!-- **[SH30] 출고완료-->
+	<select id="SH30_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT H.SHPOKY      AS "SHPOKY"
+		   ,   H.WAREKY      AS "WAREKY"
+		   ,   H.SHPMTY      AS "SHPMTY"
+		   ,   D.SHORTX      AS "SHPMNM"
+		   ,   H.RQSHPD      AS "RQSHPD"
+		   ,   H.DPTNKY      AS "PTNRKY"
+		   ,   H.DNAME1      AS "PTNRNM"
+		   ,   H.PTRCVR      AS "PTRCVR"
+		   ,   H.DNAME2      AS "PTRCNM"
+		   ,   SUM(I.QTSHPO) AS "QTSHPO"
+		   ,   SUM(I.QTALOC) AS "QTALOC"
+		   ,   SUM(I.QTJCMP) AS "QTJCMP"
+		   ,   SUM(I.QTSHPD) AS "QTSHPD"
+		   ,   H.STATDO      AS "STATDO"
+		   ,   V.CDESC1      AS "STATNM"
+		FROM   SHPDH H
+		       INNER JOIN SHPDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.SHPOKY = I.SHPOKY
+		       INNER JOIN DOCTM D ON  H.DOCCAT = D.DOCCAT
+								  AND H.SHPMTY = D.DOCUTY
+			   INNER JOIN CMCDV V ON  H.STATDO = V.CMCDVL
+			                      AND V.CMCDKY = 'STATSH'					  
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    H.WAREKY = #{WAREKY}
+		AND    H.SHPMTY = #{SHPMTY}
+		<if test="TYPE != null and TYPE == '01'">
+		AND    H.STATDO IN('PPC', 'FPC')
+		</if>
+		<if test="TYPE != null and TYPE == '02'">
+		AND    H.STATDO IN('PSH', 'FSH')
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		<if test='SHPOKY != null and SHPOKY != ""'>
+		AND    H.SHPOKY = #{SHPOKY}
+		</if>
+		GROUP BY 
+			   H.SHPOKY
+		   ,   H.WAREKY
+		   ,   H.SHPMTY
+		   ,   D.SHORTX
+		   ,   H.RQSHPD
+		   ,   H.DPTNKY
+		   ,   H.DNAME1
+		   ,   H.PTRCVR
+		   ,   H.DNAME2
+		   ,   H.STATDO
+		   ,   V.CDESC1
+	</select>
+	
+	<select id="SH30_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.SHPOKY AS "SHPOKY"
+		   ,   I.SHPOIT AS "SHPOIT"
+		   ,   T.LOTNUM AS "LOTNUM"
+		   ,   I.SKUKEY AS "SKUKEY"
+		   ,   I.DESC01 AS "DESC01"
+		   ,   T.LOCASR AS "LOCASR"
+		   ,   T.QTTAOR AS "QTTAOR"
+		   ,   T.QTCOMP AS "QTCOMP"
+		   ,   T.SUOMKY AS "UOMKEY"
+		   ,   I.LOTA02 AS "LOTA02"
+		   ,   I.LOTA03 AS "LOTA03"
+		   ,   T.LOTA04 AS "LOTA04"
+		   ,   T.LOTA05 AS "LOTA05"
+		   ,   I.SVBELN AS "SVBELN"
+		   ,   I.SPOSNR AS "SPOSNR"
+		FROM   SHPDH H
+		       INNER JOIN SHPDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.SHPOKY = I.SHPOKY
+			   INNER JOIN TASDI T ON  T.COMPKY = I.COMPKY
+			                      AND T.SHPOKY = I.SHPOKY
+								  AND T.SHPOIT = I.SHPOIT
+								  AND T.STATIT != 'CLS'
+		WHERE H.COMPKY = #{SES_USER_COMPANY}
+		AND   H.SHPOKY = #{SHPOKY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="SH30_TASK_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT H.SHPOKY AS "SHPOKY"
+		   ,   I.SHPOIT AS "SHPOIT"
+		   ,   I.LOTNUM AS "LOTNUM"
+		   ,   I.SKUKEY AS "SKUKEY"
+		   ,   I.LOCASR AS "LOCASR"
+		   ,   I.LOCATG AS "LOCATG"
+		   ,   I.QTTAOR AS "QTTAOR"
+		   ,   I.QTCOMP AS "QTCOMP"
+		   ,   (I.QTCOMP - S.QTSALO) AS "QTSIWH"
+		   ,   S.STOKKY AS "STOKKY"
+		FROM   TASDI I   
+		       INNER JOIN STKKY S ON   I.COMPKY = S.COMPKY
+			                      AND  I.TASKKY = S.TASKKY
+								  AND  I.TASKIT = S.TASKIT
+			   INNER JOIN SHPDH H ON   H.COMPKY = I.COMPKY
+			                      AND  H.SHPOKY = I.SHPOKY
+		WHERE  I.COMPKY  = #{SES_USER_COMPANY}
+		AND    I.SHPOKY  = #{SHPOKY}
+		AND    I.STATIT != 'CLS'
+	</select>
+	
+	<update id="SH30_STKKY_UPDATE" parameterType="hashmap">
+		UPDATE STKKY
+		SET    QTSIWH = #{QTSIWH}::NUMERIC
+		  ,    LOCAKY = #{LOCATG}
+		  ,    TRNUID = #{LOCASR}
+		  ,    QTSALO = 0
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    STOKKY = #{STOKKY}
+	</update>
+	
+	<update id="SH30_SHPDI_UPDATE" parameterType="hashmap">
+		UPDATE SHPDI
+		SET    QTSHPD = QTSHPD + #{QTCOMP}::NUMERIC
+		  ,    STATIT = (CASE WHEN (QTALOC - QTJCMP) = 0 THEN 'FSH'
+		                      WHEN (QTALOC - QTJCMP) = QTALOC THEN STATIT
+		                      ELSE 'PSH'
+		                 END)
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+		AND    SHPOIT = #{SHPOIT}
+	</update>
+	
+	<update id="SH30_SHPDH_UPDATE" parameterType="hashmap">
+		UPDATE SHPDH
+		SET    STATDO = #{STATDO}
+		  ,    INDDCL = 'V'
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+	</update>
+	
+	<select id="SH30_SHPDH_STATDO_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COALESCE(SUM(QTSHPO), 0) - COALESCE(SUM(QTJCMP), 0) = 0 THEN 'FSH' 
+		            ELSE 'PSH'
+			   END  "STATDO"		
+		FROM   SHPDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    SHPOKY = #{SHPOKY}
+	</select>
+	<!-- [SH30] 출고완료**-->
+	
+	<select id="SHPDR_GRPKEY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT NEXTVAL('seq_grpkey') AS "GRPKEY"
+	</select>
+	
+	<insert id="SHPDR_INSERT" parameterType="hashmap">
+		INSERT INTO SHPDR(
+			  COMPKY
+			, WAREKY
+			, GRPKEY
+			, SHPMTY
+			, DOCDAT
+			, DOCCAT
+			, DOCUTY
+			, OWNRKY
+			, RQSHPD
+			, DPTNKY
+			, PTRCVR
+			, DNAME1
+			, DNAME2
+			, LOCAKY
+			, TASOTY
+			, SHPOKY
+			, SHPOIT
+			, STATIT
+			, SKUKEY
+			, QTYORG
+			, QTSHPO
+			, QTALOC
+			, DESC01
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{WAREKY}
+			, #{GRPKEY}::NUMERIC
+			, COALESCE(#{SHPMTY}, '')
+			, COALESCE(#{DOCDAT}, '')
+			, COALESCE(#{DOCCAT}, '')
+			, COALESCE(#{DOCUTY}, '')
+			, COALESCE(#{OWNRKY}, '')
+			, COALESCE(#{RQSHPD}, '')
+			, COALESCE(#{DPTNKY}, '')
+			, COALESCE(#{PTRCVR}, '')
+			, COALESCE(#{DNAME1}, '')
+			, COALESCE(#{DNAME2}, '')
+			, COALESCE(#{LOCAKY}, '')
+			, COALESCE(#{TASOTY}, '')
+			, COALESCE(#{SHPOKY}, '')
+			, COALESCE(#{SHPOIT}, '')
+			, 'NEW'
+			, COALESCE(#{SKUKEY}, '')
+			, #{QTSHPO}::NUMERIC
+			, #{QTSHPO}::NUMERIC
+			, #{QTTAOR}::NUMERIC
+			, COALESCE(#{DESC01}, '')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<select id="PRCS_GRP_ALLOCATION_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT PRCS_GRP_ALLOCATION(#{SES_USER_COMPANY}, #{SES_WAREKY}, #{GRPKEY}::NUMERIC, #{ALSTKY}, #{SES_USER_ID})::INTEGER AS "COUNT"
+	</select>
+</mapper>

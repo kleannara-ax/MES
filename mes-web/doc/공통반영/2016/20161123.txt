@@ -1,0 +1,20 @@
+grid.js
+ - ie에서 setColValue로 값 변경 후 다시 기존 값으로 변경시 event 타지 않는 오류 수정
+ - getGridData, getSelectData, getSelectRowNumList, getGridAvailData, copyData 함수에 마지막 인자로 viewSortType 추가
+   viewSortType을 true로 넘기는 경우 화면에 보이는 순서대로 데이터 리턴함.
+ - layout save 시 sort정도 저장되는 기능 추가 
+ - row double click 시 text block가 gridListEventRowDblclick 이전에 발생 하도록 변경
+ 
+select문으로 그리드 생성조회 되는 화면 추가
+ - CommonController.java, CommonDAO.java, CommonService.java
+ - toolMenu.jsp, sqlGrid.jsp
+ 
+page.js
+ - linkPopClose 호출시 ie상에서 linkPopCloseEvent 이벤트 타지 않는 오류 수정
+
+content_body.css
+ - row bg 적용 오류 수정
+
+엑셀 데이터를 검증해서 테이블에 insert 하기 위한 기본 모듈 가이드 제공
+ - CommonConfig.java, CommonController.java, CommonService.java
+ - toolMenu.jsp, excelGrid.jsp

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="IFSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="/WEB-INF/conf/spring/ibatis/sqlmap-IF-config.xml"/>
+		<property name="dataSource" ref="IFDataSource"/>
+		<property name="lobHandler" ref="oracleLobhandler"/>
+	</bean>
+	
+	<bean id="IFSqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient" ref="IFSqlMapClient" />
+	</bean>
+</beans>

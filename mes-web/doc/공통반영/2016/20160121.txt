@@ -1,0 +1,96 @@
+쿼리를 xml파일이 아닌 db에 저장하여 동작하는 기능 추가
+ - commonconfig.properties : system.sqlType=load 로 설정하는 경우 DB에서 sql 읽어서 적용함.
+ - SystemConfig.java
+ - CommonController.java
+ - CommonService.java
+ - CommonDAO.java
+ - load.xml
+ - SqlMapLoad.java
+ - SqlMapClientFactoryBean.java
+ - context-common.xml
+ - context-sqlmap.xml
+ - sqlmap-load-config.xml
+ - YS01.jsp
+ 
+search help 사용시 where 에 기본 조회값 지정이 가능한 기능 추가
+ - SHLPH 테이블 컬럼추가 : DWHERE VARCHAR2(1000) ex - AND (PTYPE = 'ALL' OR ZONEKY = #ZONEKY#) AND 
+ - Common_oracle.xml
+ - search.jsp
+ - dataMap.js
+ - commonUtil.js
+ - dataBind.js
+ - input.js
+ - YH01.jsp
+ 
+search help 성능 개선을 위해 설정 데이터를 캐시에 보관하는 기능 추가
+ - CommonSearch.java
+ - CommonController.java
+ 
+개시판 기능 추가
+ - board 관련 페키지 및 폴더 전체
+ 
+login, logout 시간 저장
+ - CommonController.java
+ - Common_oracle.xml
+ 
+grid head,item 연결 기능추가
+ - gridList.setGrid - itemGrid : "gridListItem"// 연결한 item grid id
+ - head check시 item 자동체크, item 체크시 head 자동채크
+ - item 수정데이터 이쓴 경우 head 포커스 이동시 메세지 처리
+
+ 빅데이터 처리시 copyRow, addRow 시 포커스 이동 및 editable 색상으로 변경처리
+  - grid.js
+  
+logout btn 다국어 처리
+ - topS.jsp
+
+grid head body tag와 상관없이 동작하도록 변경
+ - grid.js
+ 
+ezgen 설정 값을 기본 설전commonconfig.properties를 활용하도록 변경
+ - web.xml
+ - CommonController.java
+ - eftpmanager.java
+ - hnwjdbc.java
+ - common_ezprint.jsp
+ 
+숫자 포멧에서 소수점이 없는 경우 문자가 제거되지 않는 오류 수정
+ - input.js
+ 
+range format 설정시 range 레이어 그리드에 format이 적용되지 않는 문제 해결
+ - intput.js
+ - grid.js
+ 
+paging 처리시 url로 선언 가능하도록 기능 추가
+ - CommonConfig.java
+ - grid.js
+ - configData.js
+ 
+label, message 생성시 데이터가 없으면 파일 생성하지 않도록 변경
+ - CommonService.java
+ 
+total view 사용시 컬럼크기 변경하면 total에 컬럼 라벨 표기되는 오류 수정
+ - grid.js
+ 
+grid head multi row 기능추가
+ - grid.js
+ - layoutSave.js
+ 
+grid head col 크기조정 영역 더블클릭시 컬럼 크기 자동 조절기능 추가
+ - grid.js
+ 
+range autocomplete 처음 데이터 기록시 오류 수정
+ - ui.js
+ 
+레인지 sql 서버에서 작성하는 기능 추가 
+ - input.js
+ - CommonConfig.java
+ - CommonIntercepter.java
+ 
+레이아웃 팝업에서 다중컬럼 선택후 이동 및 컨트롤 가능한 기능 추가
+ - grid.js
+ - layoutSave.js
+ - wmsHead.js
+ 
+grid find 사용시 focus 정상적이지 않은 요류 해결
+ - grid.js

@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>getWidth</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">ImageTool</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>getWidth</h2>
+            <p class="dscrpt">현재 이미지 파일의 너비를 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>int <span class="fname">getWidth</span> ()</pre>
+            </ul>
+            <h4>Parameters</h4>
+           
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt">현재 이미지 파일의 너비를 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileUpload fileUpload = new FileUpload(request, response); 
+try { 
+	fileUpload.setAutoMakeDirs(true);
+
+	String saveDirPath = request.getRealPath("/");
+	saveDirPath += ("UploadDir" + File.separator);
+	fileUpload.startUpload(saveDirPath); 	
+
+	FileItem fileItem = fileUpload.getFileItem("files");
+	if(fileItem != null) { 
+		fileItem.save(saveDirPath); 	
+		
+		// 이미지 객체 생성.
+		ImageTool image = ImageTool.getImage(fileItem);
+		// 다른 유형의 Image 객체를 가져오는 함수들
+		// getImage(File sourceFile);
+		// getImage(String sourceFilePath);
+		
+		// image가 null이면, 지원되지 않는 이미지 포맷이거나 파일을 찾을 수 없는 경우입니다. 
+		if(image != null) { 
+			String imageFormatName = image.getFormatName();  
+			<b>int imageWidth = image.getWidth();</b> 
+			int imageHeight = image.getHeight(); 
+		}
+	}
+}
+catch(CrossUploaderException ex) { 
+}
+catch(Exception ex) { 
+	fileUpload.deleteUploadedFiles(); 
+}
+finally { 
+	fileUpload.clear(); 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

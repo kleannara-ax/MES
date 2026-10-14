@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+<select id="Common.JLBLM_LANG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDVL AS LANGKY
+		FROM CMCDV
+		WHERE CMCDKY = 'LANGKY' 
+		ORDER BY CMCDVL,USARG1
+	</select>
+</sqlMap>

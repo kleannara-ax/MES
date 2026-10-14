@@ -1,0 +1,17 @@
+grid.js
+ - combo group column 옵션 사용시 데이터값에 특수 문자가 들어가는 경우 발생하는 오류 수정
+
+input.js
+ - range data에 의한 sql생성을 serverside에서 실행하도록 기본기능 변경
+
+UIFormat D의 경우도 C와 동일하게 동작하도록 기능 추가 
+ - ui.js, configData.js
+ 
+range에 입력된 데이터를 CommonConfig.RNAGE_DATA_MAP 키로 DataMap 객체 형태을 params에 저장해서 넘기는 기능 추가
+ - CommonIntercepter.java, CommonConfig.java
+ 
+dataBind.js
+ - dataNameBind 호출시 range에도 값이 적용되는 문제 해결
+ 
+ range input의  UIFormat 사용 시 "C N" 외에도 "C -3" 등으로 숫자를 지정시 해당 일자가 자동으로  일자가 입력되는 기능 추가
+  - input.js, ui,js

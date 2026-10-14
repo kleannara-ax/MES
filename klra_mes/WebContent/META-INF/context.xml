@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>WEB-INF/tomcat-web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
+
+    <Resource
+        name="jdbc/KNRAMESDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="oracle.jdbc.driver.OracleDriver"
+        url="jdbc:oracle:thin:@10.2.14.190:1522:KNMESWMS"
+        username="KNRAMES"
+        password="knrames321$"
+        maxTotal="50"
+        maxIdle="30"
+        maxWaitMillis="3000"
+        minIdle="10" />
+
+    <Resource
+        name="jdbc/mariaDB_WCS"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="org.mariadb.jdbc.Driver"
+        url="jdbc:mariadb://10.2.14.189:3306/wcs"
+        username="mes_dev"
+        password="kleannara12"
+        maxTotal="50"
+        maxIdle="30"
+        maxWaitMillis="3000"
+        minIdle="10" />
+</Context>

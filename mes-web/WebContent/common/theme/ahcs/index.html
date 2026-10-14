@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta charset="utf-8" />	
+	<title>헬스케어 통합시스템 구축</title>
+	<style type="text/css">
+		body{ min-width:1280px;}
+		* {font-family:dotum;font-size:11px;color:#333;}
+		h1 {position:relative;height:35px;font:bold 22px/26px Dotum;padding:10px;margin-bottom:10px;border-bottom:2px solid #666;}
+		h2 {font:bold 20px/24px Dotum;padding:30px 0 0 0;}
+		dt {margin:0;padding:10px 0;border-top:1px solid #666;}
+		dd {margin:0;padding:0;}
+		a {cursor:pointer; color:#02557b;}
+		a:visited {color:#666;}
+		a:link {}
+		a:hover {}
+		.intro {position:absolute;top:0;right:0;width:500px;text-align:right;line-height:14px;color:#999;}
+		.link {position:absolute;top:10px;left:350px;}
+		.link a{color:#999;font-size:14px;color:#555;padding-right:10px;}
+		.menutree {border-collapse:collapse;width:100%; margin-bottom:100px;}
+		.menutree thead th {background:#eee; font-weight:bold;}
+		.menutree th {border:1px solid #999;padding:5px 0;vertical-align:top; font-weight:normal;}
+		.menutree tbody{border-bottom:2px soild blue;margin-bottom:3px;}
+		.menutree tr:hover td{ background-color:#666; color:#fff;}
+		.menutree tr:hover td a{ color:#fff;}
+		.menutree td {border:1px solid #999;padding:5px;text-align:center;}
+		.menutree td.url {text-align:left;padding-left:10px;}
+		.html {background:pink;}
+		.dev {background:skyblue;}
+		.complete {background:#eee;}
+		.question {background:red;}
+		.menutreeheader {border-collapse:collapse;width:100%; margin-bottom:10px;}
+		.menutreeheader thead th {background:#ddd; font-weight:bold; border:1px solid #777;  border-bottom:2px solid #777; padding:0px;}
+		.menutreeheader thead th a{ display:block; line-height:40px; text-decoration:none; font-size:14px; color:#777; font-weight:normal; }
+		.menutreeheader thead th.on { background-color:#fff; border:2px solid #777; border-bottom:0px;}
+		.menutreeheader thead th.on a{ color:#000; font-weight:bold;}
+
+	</style>
+</head>
+
+<body>
+<h1>
+	Project - 헬스케어 통합시스템 구축 - 01운영사
+	<span class="intro">
+		HTML5 / utf-8 <br />
+		Browser - Firefox , IE8.0~, Crome, Safari, Opera <br />
+		Publisher - 안성철
+	</span>
+</h1>
+    
+<table class="menutree" style="margin-bottom:50px;" summary="메뉴구조도" >
+	<colgroup>
+		<col width="80" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="5%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>1depth</th>
+			<th>2depth</th>
+			<th>3depth</th>
+			<th>4depth</th>
+			<th>폴더명</th>
+			<th>ID</th>
+			<th>URL</th>
+			<th>K-WAH</th>
+			<th>Browser</th>
+			<th>시작날짜</th>
+			<th>완료날짜</th>
+			<th>진행상태</th>
+			<th>작업자</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>공통</td>
+			<td>템플릿</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>sub</td>
+			<td></td>
+			<td class="url"><a href="sub/template.html" target="_blank">sub/template.html</a></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>안성철</td>
+		</tr>
+	</tbody>
+</table>
+<table class="menutreeheader" summary="메뉴구조도" id="01">
+	<colgroup>
+    	<col width="*" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th class="on"><a href="#01">공통 ▼</a></th>
+			<th><a href="#02">영업</a></th>
+            <th><a href="#03">물류</a></th>
+            <th><a href="#04">구매</a></th>
+		</tr>
+	</thead>
+</table>
+    
+<table class="menutree" summary="메뉴구조도" >
+	<colgroup>
+		<col width="80" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="5%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>1depth</th>
+			<th>2depth</th>
+			<th>3depth</th>
+			<th>4depth</th>
+			<th>폴더명</th>
+			<th>ID</th>
+			<th>URL</th>
+			<th>K-WAH</th>
+			<th>Browser</th>
+			<th>시작날짜</th>
+			<th>완료날짜</th>
+			<th>진행상태</th>
+			<th>작업자</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>공통</td>
+			<td>사용자로그인</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>COM</td>
+			<td>CSYA10M</td>
+			<td class="url"><a href="COM/CSYA10M.html" target="_blank">COM/CSYA10M.html</a></td>
+			<td>100%</td>
+			<td>5/5</td>
+			<td>2016.05.27</td>
+			<td>2016.05.27</td>
+			<td>완료</td>
+			<td>안성철</td>
+		</tr>
+	</tbody>
+</table>
+<table class="menutreeheader" summary="메뉴구조도" id="02">
+	<colgroup>
+    	<col width="*" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th><a href="#01">공통</a></th>
+			<th class="on"><a href="#02">영업 ▼</a></th>
+            <th><a href="#03">물류</a></th>
+            <th><a href="#04">구매</a></th>
+		</tr>
+	</thead>
+</table>
+    
+<table class="menutree" summary="메뉴구조도" >
+	<colgroup>
+		<col width="80" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="5%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>1depth</th>
+			<th>2depth</th>
+			<th>3depth</th>
+			<th>4depth</th>
+			<th>폴더명</th>
+			<th>ID</th>
+			<th>URL</th>
+			<th>K-WAH</th>
+			<th>Browser</th>
+			<th>시작날짜</th>
+			<th>완료날짜</th>
+			<th>진행상태</th>
+			<th>작업자</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>영업</td>
+			<td>VOC</td>
+			<td>VOC 요청 문의 관리 </td>
+			<td></td>
+			<td></td>
+			<td>SAL</td>
+			<td>SCSA10M</td>
+			<td class="url"><a href="SAL/SCSA10M.html" target="_blank">SAL/SCSA10M.html</a></td>
+			<td>100%</td>
+			<td>5/5</td>
+			<td>2016.06.07</td>
+			<td>2016.06.07</td>
+			<td>완료</td>
+			<td>안성철</td>
+		</tr>
+	</tbody>
+</table>
+<table class="menutreeheader" summary="메뉴구조도" id="03">
+	<colgroup>
+    	<col width="*" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th><a href="#01">공통</a></th>
+			<th><a href="#02">영업</a></th>
+            <th class="on"><a href="#03">물류 ▼</a></th>
+            <th><a href="#04">구매</a></th>
+		</tr>
+	</thead>
+</table>
+    
+<table class="menutree" summary="메뉴구조도" >
+	<colgroup>
+		<col width="80" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="5%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>1depth</th>
+			<th>2depth</th>
+			<th>3depth</th>
+			<th>4depth</th>
+			<th>폴더명</th>
+			<th>ID</th>
+			<th>URL</th>
+			<th>K-WAH</th>
+			<th>Browser</th>
+			<th>시작날짜</th>
+			<th>완료날짜</th>
+			<th>진행상태</th>
+			<th>작업자</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>물류</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>WMS</td>
+			<td></td>
+			<td class="url"><a href="WMS/.html" target="_blank">WMS/.html</a></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>안성철</td>
+		</tr>
+	</tbody>
+</table>
+<table class="menutreeheader" summary="메뉴구조도" id="04">
+	<colgroup>
+    	<col width="*" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th><a href="#01">공통</a></th>
+			<th><a href="#02">영업</a></th>
+            <th><a href="#03">물류</a></th>
+            <th class="on"><a href="#04">구매 ▼</a></th>
+		</tr>
+	</thead>
+</table>
+    
+<table class="menutree" summary="메뉴구조도" >
+	<colgroup>
+		<col width="80" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="10%" />
+		<col width="5%" />
+		<col width="10%" />
+		<col width="*" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+		<col width="80" />
+	</colgroup>
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>1depth</th>
+			<th>2depth</th>
+			<th>3depth</th>
+			<th>4depth</th>
+			<th>폴더명</th>
+			<th>ID</th>
+			<th>URL</th>
+			<th>K-WAH</th>
+			<th>Browser</th>
+			<th>시작날짜</th>
+			<th>완료날짜</th>
+			<th>진행상태</th>
+			<th>작업자</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>구매</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>PUR</td>
+			<td></td>
+			<td class="url"><a href="PUR/.html" target="_blank">PUR/.html</a></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td>안성철</td>
+		</tr>
+	</tbody>
+</table>
+
+
+</body>
+</html>

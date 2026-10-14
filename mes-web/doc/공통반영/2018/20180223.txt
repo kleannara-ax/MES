@@ -1,0 +1,2 @@
+save variant시 Range에 UISave="false"가 적용 되도록 변경
+ - input.js

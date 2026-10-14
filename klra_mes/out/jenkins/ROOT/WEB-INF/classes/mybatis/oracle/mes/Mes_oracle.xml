@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Feb 23 09:49:03 KST 2022-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Wms">
+	
+	<select id="FN_DOCUSEQ_MAP" parameterType="Map" resultType="DataMap">
+		SELECT SZF_GETDOCNUMBER(#{DOCUTY}) AS DOCSEQ FROM DUAL
+	</select>
+	
+	<select id="FN_NROBJ_MAP" parameterType="Map" resultType="DataMap">
+		SELECT SZF_SEQDOCNUMBER(#{NUMOBJ}) AS NUMSEQ FROM DUAL
+	</select>	
+	
+	<select id="RSNCD_LIST" parameterType="Map" resultType="DataMap">
+		SELECT
+		    RSNCOD AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM RSNCD 
+		WHERE DOCUTY = #{DOCUTY} 
+		  AND OWNRKY = #{SES_OWNER}
+	</select>
+	
+	<select id="WAHMACOMBO_LIST" parameterType="Map" resultType="DataMap">
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME01 AS TEXT_COL
+		FROM WAHMA 
+		WHERE DELMAK = ' '
+		ORDER BY WAREKY 
+	</select>
+	
+	<select id="DOCTCOMBO_LIST" parameterType="Map" resultType="DataMap">
+		SELECT DOCUTY AS VALUE_COL
+		     , SHORTX AS TEXT_COL
+		     , DOCUTY AS GROUP_COL
+		FROM DOCTM
+		WHERE 1 =1
+		<if test="DOCCAT != null and DOCCAT != ''">
+		  AND DOCCAT = #{DOCCAT}
+		</if>
+		<if test="DOCUTY != null and DOCUTY != ''">
+		  AND DOCUTY = #{DOCUTY}
+		</if>
+		ORDER BY DOCUTY
+	</select>
+	
+	<select id="USERWAHCOMBO_LIST" parameterType="Map" resultType="DataMap">
+		SELECT WAREKY AS VALUE_COL
+		     , NAME01 AS TEXT_COL
+		  FROM WAHMA
+		 WHERE WAREKY IN (
+		                   SELECT WAREKY
+		                     FROM ROLCT
+		                    WHERE UROLKY IN (
+		                                      SELECT UROLKY
+		                                        FROM USRRA
+		                                       WHERE USERID = #{SES_USER_ID}
+		                                    )
+		                 )
+		ORDER BY WAREKY
+	</select>
+	
+	<select id="LANGKYCOMBO_LIST" parameterType="Map" resultType="DataMap">
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME02 AS TEXT_COL
+		FROM CMCDV 
+		WHERE CMCDKY = 'LANGKY' 
+		ORDER BY CMCDVL DESC 
+	</select>
+	
+	<select id="OWNER_MAP" parameterType="Map" resultType="DataMap">
+		SELECT COMPKY AS OWNER
+		FROM WAHMA 
+		WHERE WAREKY = #{WAREKY}
+	</select>
+		
+	<select id="SKUMA_LIST" parameterType="Map" resultType="DataMap">
+		<!-- SQL Key : FIND.SKUMA -->
+		SELECT	*
+		FROM	SKUMA
+		WHERE	1 = 1
+		<if test="OWNRKY != null and OWNRKY != ''">AND OWNRKY = #{OWNRKY}</if>
+		<if test="SKUKEY != null and SKUKEY != ''">AND SKUKEY = #{SKUKEY}</if>
+	</select>
+	
+	<select id="USERINFO_MAP" parameterType="Map" resultType="DataMap">
+		SELECT DEPART ,
+	           USERG1 AS AREA , 
+	           USERG2 AS ZONE , 
+	           USERG3 AS LOCA , 
+	           USERG4 AS LOCA1 , 
+	           USERG5 AS ETC  
+		FROM USRMA
+		WHERE USERID = #{SES_USER_ID}
+	</select>
+	
+	<select id="LOCMA_MAP" parameterType="Map" resultType="DataMap">
+		SELECT  COUNT(LM.LOCAKY) OVER() AS CNT
+		      , LM.LOCAKY
+		      , LM.MIXSKU
+		      , LM.MIXLOT
+		FROM    LOCMA LM
+		WHERE   1=1
+		AND     LM.WAREKY = #{WAREKY}
+		AND     LM.LOCAKY = #{LOCAKY}
+	</select>
+	
+	<select id="GETMESSAGE_MAP" parameterType="Map" resultType="DataMap">
+		SELECT SZF_GetMessage(NVL(#{LANGKY},'KR'),#{MESGGR},#{MESGKY} ) AS  MESSAGE
+		  FROM DUAL 
+	</select>	
+	
+	<!-- 플랜저 콤보 리스트 조회 -->
+    <select id="PLNTKYCOMBO_LIST" parameterType="Map" resultType="DataMap">
+        SELECT DISTINCT MS.PLNTKY AS VALUE_COL
+              , SZF_GET_CMCDV_CDESC1_TEXT(#{LANGKY}, 'LOTA02', MS.PLNTKY) AS TEXT_COL
+        FROM STLMA MS
+        WHERE MS.OWNRKY = #{OWNRKY}
+        <if test="WAREKYS != null and WAREKYS != ''">
+            AND MS.WAREKY IN (${WAREKYS})
+        </if>
+        <if test="WAREKY_LIST != null and WAREKY_LIST != ''">
+           <foreach collection="WAREKY_LIST" item="item" separator="," close=")" open="AND MS.WAREKY IN (">
+                #{item}
+          </foreach>
+        </if>
+        ORDER BY MS.PLNTKY 
+    </select>
+    
+    <insert id="PROGM_SEARCH_LOG_INSERT" parameterType="Map">
+        INSERT INTO SYSLG
+        (
+            LOGDAT, LOGTIM, LOGTYP, LOGUSR, LOGIPA, PROGID
+          , CREDAT, CRETIM, CREUSR
+          , LMODAT, LMOTIM, LMOUSR
+        )
+        VALUES(
+                  TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), 'PGSC', #{SES_USER_ID}
+		<choose>
+			<when test='SES_USER_IP == null or SES_USER_IP == "" '>
+				,' '
+			</when>
+			<otherwise>
+				,#{SES_USER_IP}
+			</otherwise>
+		</choose>
+				  , #{PROGID}
+                , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #{SES_USER_ID}
+                , TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #{SES_USER_ID}
+              )
+    </insert>	
+</mapper>

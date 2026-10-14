@@ -1,0 +1,33 @@
+--------------------------------------------------------
+--  DDL for Procedure SP_TEMP
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_TEMP" 
+(
+     P_WERKS     		IN VARCHAR2 	                --플랜트
+    
+)
+AS 
+V_WGT TB_WRK002.WGT%TYPE;					--중량
+V_WGT_ROUNRD TB_WRK002.WGT%TYPE;
+BEGIN					--중량
+--        IF vOrgPaper = 'a' THEN
+--    V_WGT := 6.5;
+    SELECT A.WLEN INTO V_WGT FROM TB_MAS001 A , TB_WRK002 B
+    WHERE 1 = 1
+    AND A.MATNR = B.MATNR
+    AND A.WERKS = B.WERKS
+--    AND A.WERKS = P_WERKS
+    AND A.MATNR = 'F2A11220-05400990A'
+--    AND A.MATNR = V_MATNR
+     AND ROWNUM = 1 
+    ;
+    IF P_WERKS = 'ABC' THEN
+    V_WGT := V_WGT +0.5;
+    END IF;
+    SELECT ROUND(V_WGT) INTO V_WGT_ROUNRD FROM DUAL;
+    V_WGT := V_WGT_ROUNRD;
+END;
+
+/

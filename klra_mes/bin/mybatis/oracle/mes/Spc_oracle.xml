@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Spc">
+	<select id="SPC01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SPC01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+</mapper>

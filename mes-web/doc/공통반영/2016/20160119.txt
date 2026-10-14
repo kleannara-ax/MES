@@ -1,0 +1,20 @@
+로그인 시 메세지 및 기본 validation 메세지 db코드 처리
+ - index.jsp : 하드코딩 메세지 처리 부분에 주석처리된 코드로 메세지 추가
+ - configData.js : this.VALIDATE_MSG.put 부분 주석처리된 코드로 메세지 추가
+ - validateUtil.js
+ 
+화면 전환시 또는 팝업 호출시 menu id key가 없는 경우 자동으로 생성해주는 로직 수정
+ - CommonIntercepter 
+ 
+ 팝업에서 layout close 않되는 버그 수정
+ - popHead.jsp
+ 
+ search help 단일 조회 항목에서 %값 입력시 자동으로 like 검색 하도록 변경
+  - input.js
+  
+ 프레임웍 설정 간소화를 위한 정리
+  - commonconfig.properties
+  - FileRepository.java
+  - DevCheck.java
+  - FormatBean.java
+  - SystemConfig.java

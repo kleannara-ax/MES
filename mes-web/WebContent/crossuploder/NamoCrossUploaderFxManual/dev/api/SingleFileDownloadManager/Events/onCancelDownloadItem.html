@@ -1,0 +1,95 @@
+﻿<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>onCancelDownloadItem</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">SingleFileDownloadManager</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Events</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>onCancelDownloadItem</h2>
+            <p class="dscrpt">개별 파일에 대한 다운로드 취소 시 호출됩니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">onCancelDownloadItem</span> ( String <span class="paraname">params</span> )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname">params</span></p>
+            <p class="paradsc">[out] 취소된 파일정보로 JSON 타입의 String입니다.</p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Javascript</p>
+<pre class="scodedsc">
+<b>[namocrossuploader.js]</b>
+/**
+* NamoCrossDownloader 객체에서 Javascript로 전송할 이벤트 함수 이름을 설정합니다.
+*/
+var getDownloadManagerEventNames = function () {
+    var flashvars = {};
+    flashvars.onCreationComplete     = "onCreationCompleteCd";       // NamoCrossDownloader Manager 객체 생성 완료 시
+    flashvars.onStartDownloadItem    = "onStartDownloadItemCd";      // 개별 파일의 다운로드 시작 시 (Single Download Only)
+    flashvars.onEndDownloadItem      = "onEndDownloadItemCd";        // 개별 파일의 다운로드 완료 시 (Single Download Only)
+    <b>flashvars.onCancelDownloadItem   = "onCancelDownloadItemCd";     // 개별 파일의 다운로드 취소 시 (Single Download Only)</b>
+    flashvars.onException            = "onExceptionCd";              // 예외 발생 시
+    return flashvars;
+}
+
+<b>[DownloadForm.html]</b>
+/**
+* 다운로드 취소 시 호출됩니다.
+*/
+var onCancelDownloadItemCd = function (params) {
+    /*
+    var obj = jQuery.parseJSON(params); 
+    alertTimeout("[파일 다운로드 취소]\n" + 
+    "FileId : "   + obj.fileId + "\n" +
+    "FileName : " + obj.fileName + "\n" +
+    "FileSize : " + obj.fileSize
+    ); 
+    */
+}
+
+/**
+* Flash로부터 호출되는 Javascript 콜백함수 내에서 alert 창을 띄우기 위한 처리로 Chrome, Firefox, Safari 브라우저의 일부 버전에 해당됩니다. 
+*/
+var alertTimeout = function (params) {
+    window.focus();
+    setTimeout(function () { alert(params) }, 100);
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

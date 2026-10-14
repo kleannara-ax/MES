@@ -1,0 +1,9 @@
+Range에서 레인지 버튼만 뺀 Between 기능 추가
+달력이나 search help 옵션이 있는 경우 레인지 버튼 위치에 켈린더 서치핼프 버튼 추가
+모든 기능과 동작 원리는 Range와 동일
+UIInput="B"
+ - configData.js, dataBind.js, input.js, ui.js
+ 
+Theme 적용시 버튼 및 컴퍼넌트 표시를 위해 관련 기능을 theme.js로 분리
+ - head.jsp
+ - theme.js, grid.js, input.js, ui.js

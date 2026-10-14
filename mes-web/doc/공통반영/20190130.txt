@@ -1,0 +1,6 @@
+대용량 조회 시 preparestatement parameter 형식으로 처리 하도록 변경
+ - CommonConfig.java, CommonService.java, CommonDAO.java, SqlUtil.java
+ 
+로그인시 허용된 페이지 왜에 접근이 않되도록 보안 강화
+ - CommonConfig.java, CommonController.java, SessionIntercepter.java
+ - jsp/common/ main.jsp. info.jsp, left.jsp, top.jsp, wintab.jsp

@@ -1,0 +1,2 @@
+grid.js
+ - readonly 함수 사용시 row check 적용 않되는 오류 수정

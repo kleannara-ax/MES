@@ -1,0 +1,26 @@
+SCC = This is a Source Code Control file.
+
+[SmartWMS.sln]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS
+
+[OracleBridge.csproj]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS/OracleBridge
+
+[SAMMI.OR.csproj]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS/ORHelper
+
+[SAMMI.PopManager.csproj]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS/PopManager
+
+[ProcessRestarter.csproj]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS/ProcessRestarter
+
+[SAMMI.csproj]
+SCC_Aux_Path = 125.141.59.77:8788:SAMMI_Project
+SCC_Project_Name = $/Daelim/WMS_AUTO2/SmartWMS/SAMMI
+

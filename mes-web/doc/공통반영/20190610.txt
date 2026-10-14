@@ -1,0 +1,3 @@
+grid.js
+ - scroll page 동작시 scroll event 성능개선
+ - file type 추가 : configData.GRID_COL_TYPE_BTN2, configData.GRID_COL_TYPE_ICON

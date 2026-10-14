@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=1150">
+<link rel="stylesheet" type="text/css" href="/common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/common/css/content_header.css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+<script type="text/javascript" src="/common/js/dataMap.js"></script>
+<script type="text/javascript" src="/common/js/configData.js"></script>
+<script type="text/javascript" src="/common/js/commonUtil.js"></script>
+<script type="text/javascript" src="/common/js/ui.js"></script>
+<script type="text/javascript">
+	var $multiList;
+	var $tabObj;
+	//var $pathTitle;
+	$(document).ready(function(){
+		$multiList = jQuery("#multiList");
+		$tabObj = $multiList.find("li").clone();
+		$multiList.find("li").remove();
+		//$pathTitle = $("#pathTitle");
+		
+		uiList.UICheck();
+	});
+	function sizeToggle(self){
+		var self = $(self);
+		var src = self.find("img").attr("src");
+		var filename = src.substring(src.lastIndexOf("/")+1,src.lastIndexOf("."));
+		filename!="ico_lnb_closer"?self.find("img").attr("src","/common/images/ico_lnb_closer.png"):self.find("img").attr("src","/common/images/ico_lnb_closel.png");
+		console.log(filename)
+		window.top.sizeToggle();
+	}
+	/*
+	function setPathTitle(pathTitle){
+		return;
+		if(pathTitle.length > 50){
+			pathTitle = " ";
+		}
+		$pathTitle.text(pathTitle);
+	}	
+	*/
+	function activeTab($tab){
+		$multiList.find("li").removeClass("active");
+		$tab.addClass("active");
+		var menuId = $tab.attr("menuId");
+		window.top.changeWindow(menuId);
+		//var pathTitle = $tab.attr("pathTitle");
+		//setPathTitle(pathTitle);		
+	}
+	function changeWindow(menuId){
+		var $tab = $multiList.find("[menuId="+menuId+"]");
+		if($tab.hasClass("active")){
+			
+		}else{
+			activeTab($tab);
+			/*
+			$multiList.find("li").removeClass("active");
+			$tabs.addClass("active");
+			var pathTitle = $tabs.attr("pathTitle");
+			window.top.changeWindow(menuId);
+			$("#pathTitle").text(pathTitle);
+			*/
+		}		
+	}
+	function closeWindow(menuId){
+		var $tabs = $multiList.find("[menuId="+menuId+"]");
+		var $tmp = $tabs.clone();
+		$tabs.remove();
+		if($tabs.hasClass("active")){
+			var $tabList =  $multiList.find("[menuId]");
+			if($tabList.length > 1){
+				var $tmpTab = $tabList.eq($tabList.length-1);
+				activeTab($tmpTab);
+			}
+		}else{
+			
+		}		
+		window.top.closeWindow(menuId);
+	}
+	
+	function closeAll(){
+		var tabList = $multiList.find("li");
+		var menuId;
+		for(var i=0;i<tabList.length;i++){
+			menuId = tabList.eq(i).attr("menuId");
+			closeWindow(menuId);
+		}
+	}
+	function setPage(pathTitle, title, url, menuId){
+		//setPathTitle(pathTitle);
+		
+		$multiList.find("li").removeClass("active");
+		var $tmpObj = $tabObj.clone();
+		var $tmpSpan = $tmpObj.find("span").eq(0);
+		$tmpSpan.text(title);
+		$tmpObj.addClass("active");
+		$tmpObj.attr("menuId",menuId);
+		//$tmpObj.attr("pathTitle",pathTitle);
+		$tmpSpan.click(function(event){
+			var $obj = $(event.target);
+			var menuId = $obj.parents("[menuId]").attr("menuId");
+			changeWindow(menuId);
+		});
+		$tmpObj.find("img").click(function(event){
+			var $obj = $(event.target);
+			var menuId = $obj.parents("[menuId]").attr("menuId");
+			closeWindow(menuId);
+		});
+		$multiList.append($tmpObj);
+	}
+	
+	
+</script>
+</head>
+<body>
+<button type="button" class="lnbCloser" onclick="sizeToggle(this)"><img src="/common/images/ico_lnb_closer.png" alt="LNB Close" /></button>
+<div class="tab type1" id="windowTabs">
+	<div class="menu-info" id="pathTitle">
+		<div class="all_close" id="allClose">
+			<span style="margin-right: 1px"></span><img src="/common/images/btn_closeAll.png" alt="close" style="width:25px;margin-bottom: 3px" onClick="closeAll()" />
+		</div>
+	</div>	
+	<ul id="multiList">
+		<li><div class="tab_right"><span class="txt_wrap">Sample</span><img src="/common/images/btn_null.png" alt="close" /></div></li>
+	</ul>
+</div>
+</body>
+</html>

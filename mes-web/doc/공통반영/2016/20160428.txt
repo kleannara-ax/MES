@@ -1,0 +1,5 @@
+grid.js
+ - 컬럼 format을 동적으로 변경 가능한 이벤트 함수 추가 : gridListEventColFormat(gridId, rowNum, colName)
+
+ui.js
+ - numberFormat 자리수 처리 기능 추가

@@ -1,0 +1,13 @@
+조회쪽 search help 버튼에 enter 이벤트를 site별로 선택가능하도록 변경
+ - input.js, site.js
+ 
+grid head 우측 더블클릭으로 크기 자동 고정시 head text까지 고려해서 크기 조정하도록 변경
+ - grid.js
+ 
+grid excel download 버튼의 숨겨진 컬럼포함 다운로드 버튼 기능추가
+ - config.js, grid.js
+ - <button type="button" GBtn="excelAll"></button>
+ 
+grid 상에서 add, copy, delete, total, layout 버튼이 있는 경우 단축티 동작 하도록 변경
+add버튼이 없는 경우 붙여넣기시 자동 행 추가 가능 막음
+ - theme.js, grid.js

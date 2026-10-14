@@ -1,0 +1,19 @@
+commonconfig.properties root path 설정없이 동작하도록 변경. FormatBean 객체 제거
+ - FileRepository.java, FormatBean.java, CommonLoad.java, CommonIntercepter.java, SessionIntercepter.java
+ - path.properties, commonconfig.properties
+ - context-common.xml
+ - grid.js
+ 
+라벨을 DataMap에 저장해서 사용하는 구조를 일반 javascript object로 변경하여 성능개선
+ - CommonService.java
+ - label.js, ui.js
+ - main.jsp
+ 
+head, item 구조에서 위아래 크기 조절이 영역을 넘어서는 오류 수정
+ - head.js
+
+grid excel upload시 excel파일이 아닌 경우 validation 체크 기능 추가
+ - validateUtil.js, bottom.jsp
+ 
+search help 멀티선택 버튼에 label 적용
+ - search.jsp

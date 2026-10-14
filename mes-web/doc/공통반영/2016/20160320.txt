@@ -1,0 +1,19 @@
+grid.js
+ - 조회 후 첫 로우 포커스 가지 않는 옵션 추가. firstRowFocusType
+ - 크롬에서 클립보드 복사 시 prompt에서의 오류 수정
+ - pkcol이 선언되어 있지 않은 경우 gridSave 오류 수정
+ - 컬럼 수정 시 색변경되지 않는 옵션 추가. editedClassType=true
+
+searchHelp 에서 labal구성 방식 변경
+ - searchHead.jsp
+ - search.jsp
+ - commonController.java
+
+input.js 
+ - data format적용 오류 수정
+ 
+ range에 AND,OR 선택 기능 추가
+  - input.js
+  - configData.js
+  - CommonIntercepter.java
+  

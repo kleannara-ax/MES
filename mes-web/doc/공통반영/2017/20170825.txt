@@ -1,0 +1,37 @@
+range 뒤쪽 입력이 나오지 않는 짧은 range 기능 추가
+ - UIInput="SR"
+ - input.js, configData.js, ui.js
+ 
+range 의 format이 date, number인 경우 범위값의 뒤쪽이 작은 경우 validate 자동체크하는 기능 추가
+ - message 추가 : VALIDATE_datebetween(시작일은 종료일 보다 미래일 수 없습니다.), VALIDATE_numberbetween(숫자 범위값의 시작값이 클 수 없습니다.)
+ - input.js
+ 
+기본 단축기 코드 site별 변경 가능하도록 상수값 위치 변경
+ - configData.js, site.js, head.js, 
+ - site.js 아래 코드 정의
+    this.COMMON_KEY_EVENT_SEARCH = "F"; // 조회
+	this.COMMON_KEY_EVENT_SAVE = "S"; // 저장
+	this.COMMON_KEY_EVENT_CREATE = "C"; // 생성
+	this.COMMON_KEY_EVENT_SEARCH_POP = "W"; // 조회창 전환
+	this.COMMON_KEY_EVENT_SEARCH_HELP = "A"; // search help
+	
+	this.COMMON_KEY_EVENT_SEARCH_CODE = 70;//f - 조회
+	this.COMMON_KEY_EVENT_SAVE_CODE = 83;//s - 저장
+	this.COMMON_KEY_EVENT_CREATE_CODE = 67;//c - 생성
+	this.COMMON_KEY_EVENT_SEARCH_POP_CODE = 87;//w 조회창 전환
+	this.COMMON_KEY_EVENT_SEARCH_HELP_CODE = 65;//a - search help
+	
+그리드 row focus시 readonly 색상 구분이 되도록 변경
+ - content_body.css
+ 
+loading bar가 안올라 오더라도 loading상태이면 버튼실행이 불가하도록 변경
+ - site.js : buttonLoadingCheck = true;
+ - ui.js
+ - message 추가 : MASTER_LOADING(다른 명령 실행중으로 중복 실행이 불가합니다.)
+ 
+ 조회항목에 필수입력 조건인 경우 우측 상단에 빨간 삼각형 표시
+  - content_body.css, icon-red.png
+  - input.js, ui.js
+ 
+ 그리드 3단 크기 변경 기능 수정
+  - head-w.js, grid3-1.jsp

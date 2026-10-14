@@ -1,0 +1,362 @@
+--------------------------------------------------------
+--  DDL for Procedure SP_QLT08_S01
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_QLT08_S01" (
+	P_TYPE           IN    varchar2, -- LIST, SUB_LIST, SUB_SAVE
+	P_JSON_STR       IN    CLOB,
+	P_SUCCESS       OUT    varchar2,
+	P_RS_LIST       OUT    SYS_REFCURSOR
+)
+/*==============================================================================
+ * PROGRAM ID    : QLT08{호출 프로그램 ID 기술}
+ * PROGRAM NAME  : 품질검사(순회 외관 검사)이력조회{호출 프로그램 명 기술}
+ * VERSION       : 1.0.0{최종 버전 기술}
+ * DESCRIPTION   : 품질검사(순회 외관 검사)이력을 조회한다.{프로그램에 대한 상세한 내용 기술}
+ *                 
+ * AUTHOR NAME   : 김성하{최초 작성자 명 기술}
+ * CREATE DATE   : 2022/05/05 {최초 작성일자 기술}
+ * SYSTEM NAME   : MES
+ * MAIN PROCEDURE: {주(상위) 프로시저 명칭 기술}  <생략가능>
+ * SUB PROCEDURE : {아휘 프로시저 명칭 기술}      <생략가능>
+ * SUB PACKAGES  : {하위 패키지 기술}            <생략가능>
+ * OLD PROGRAM ID: {이전 시스템 프로그램 명 기술} <생략가능>
+ * REVERSION HISTORY
+ * ------------ ------- ------------- ------------------------------------------
+ *    Date        Ver       Name          Description      
+ * ------------ ------- ------------- ------------------------------------------
+ * yyyy/mm/dd    1.0.0   김성하         Initial Version 
+ *==============================================================================
+ *  관련 테이블
+ *       - [TB_MAS001] : (.R..) 자재 마스트                              
+ *       - [TB_MAS015] : (.R..) 검사항목별 기준정보 등록 마스트                              
+ *       - [TB_MAS016] : (.R..) 검사항목별 기준값 정보                                
+ *       - [TB_QLT020] : (.R..) 검사항목별 판정결과 등록 마스트                              
+ *       - [TB_QLT021] : (.R..) 검사항목별 판정결과 정보
+ *=============================================================================*/
+
+AS
+
+    V_PRG_NM          VARCHAR2(100)  := 'SP_QLT08_S01';     -- PROCEDURE NAME
+
+    -- 오라클 에러 처리용 변수선언 영역
+    E_EXCEPTION_USER  EXCEPTION;
+    E_SQL_ERR_CD      NUMBER(5)           := 0;
+    E_SQL_ERR_MSG     VARCHAR2(4000);
+
+
+   -- V_RTN_CLOB       CLOB;
+   -- V_RTN_CURSOR     SYS_REFCURSOR;
+   -- V_ERROR          CLOB;
+
+
+    -- JSON을 위한 변수선언 영역
+    V_JSON           JSON_OBJECT_T;
+    V_ARR_LIST       JSON_ARRAY_T;
+    V_ARR_HEAD       JSON_ARRAY_T;
+    V_OBJ            JSON_OBJECT_T;
+
+    -- 세션값 처리용 변수선언 영역
+    V_SQL            CLOB;
+    V_RUN_SQL        varchar2(1);
+    V_RANGE_SQL      varchar2(4000);
+    V_DEBUG          varchar2(1);
+
+    -- 세션값 처리용 변수선언 영역
+    V_PLT_CD         varchar2(2);
+    V_SESS_USER_ID   varchar2(20);
+
+    -- 조건절 처리용 변수선언 영역
+    V_WERKS            TB_MAS015.WERKS%TYPE; -- 플랜트코드
+    V_MATNR            TB_MAS015.MATNR%TYPE; -- 자재코드
+    V_MATNR_NM         TB_MAS001.MATNR_NM%TYPE; -- 자재명
+    V_MATNR_GRP_CD     TB_MAS001.MATNR_GRP_CD%TYPE; -- 자재그룹
+    V_INSP_YN          VARCHAR2(1);          -- 등록여부
+
+    -- 리스트(그리드)의 값을 할당하기 위한 변수선언 영역        
+    V_INSP_ITEM_GRP_CD TB_MAS015.INSP_ITEM_GRP_CD%TYPE; 
+    V_INSP_ITEM_CD     TB_MAS016.INSP_ITEM_CD%TYPE;
+
+    V_STD_VAL          TB_MAS016.STD_VAL%TYPE;
+    V_UPP_VAL          TB_MAS016.UPP_VAL%TYPE;
+    V_LOW_VAL          TB_MAS016.LOW_VAL%TYPE;
+    V_STD_SEL          TB_MAS016.STD_SEL%TYPE;
+    V_INSP_STD_1       TB_MAS016.INSP_STD_1%TYPE;
+    V_INSP_STD_2       TB_MAS016.INSP_STD_2%TYPE;
+
+
+    V_MSRM_DATE        TB_QLT020.MSRM_DATE%TYPE;
+    V_PRC_SEQNO        TB_QLT020.PRC_SEQNO%TYPE;
+
+    V_MSRM_DT          VARCHAR2(20) := '';
+    V_SDATE            VARCHAR2(30);
+    V_EDATE            VARCHAR2(30);
+    V_MSRM_ID          TB_QLT020.MSRM_ID%TYPE;
+    V_SMPL_AMT         TB_QLT020.SMPL_AMT%TYPE;
+    V_FNL_JDGM         TB_QLT020.FNL_JDGM%TYPE;
+    V_LOT_NO           TB_QLT020.LOT_NO%TYPE;
+    V_IND_BCD          TB_QLT020.IND_BCD%TYPE;
+    V_VND_LOT_NO       TB_QLT020.VND_LOT_NO%TYPE;
+    V_SUPY_VND_BCD     TB_QLT020.SUPY_VND_BCD%TYPE;
+    V_VGBEL            TB_QLT020.VGBEL%TYPE;
+    V_VGPOS            TB_QLT020.VGPOS%TYPE;
+    V_REQ_DIV          TB_QLT020.REQ_DIV%TYPE; 
+
+    V_RST_VAL          TB_QLT021.RST_VAL%TYPE;
+    V_RST_SEL          TB_QLT021.RST_SEL%TYPE;
+    V_RST_TXT          TB_QLT021.RST_TXT%TYPE;
+    V_RMK              TB_QLT021.RMK%TYPE;
+    V_FIT_YN           TB_QLT021.FIT_YN%TYPE;
+    V_INSP_REP_YN      TB_QLT021.INSP_REP_YN%TYPE;
+    V_UUID             TB_QLT021.UUID%TYPE;
+
+    --기타처리
+    V_CREATE_FLG       CHAR(1)  := 'N';
+    V_UPDATE_FLG       CHAR(1)  := 'N';    
+    V_Q021_CNT         NUMBER   := 0;
+    V_CHG_ACC          NUMBER   := 0;
+
+BEGIN
+   OPEN P_RS_LIST FOR 
+   SELECT NULL FROM DUAL WHERE ROWNUM = 0;
+
+   V_DEBUG := 'N';
+   V_RUN_SQL := 'Y';
+
+   V_JSON := JSON_OBJECT_T.parse(P_JSON_STR);
+
+   V_SESS_USER_ID       :=       V_JSON.get_string('SES_USER_ID');
+   V_PLT_CD             :=       V_JSON.get_string('SES_WAREKY');
+
+   /* 조건값 할당 */
+   V_RANGE_SQL          :=       V_JSON.get_string('RANGE_SQL'); -- 플랜트코드, 자재그룹, 자재코드
+
+   V_WERKS              :=       V_JSON.get_string('WERKS');     -- 플랜트코드
+   V_MATNR_NM           :=       V_JSON.get_string('MATNR_NM');     -- 자재명 
+   V_INSP_YN            :=       V_JSON.get_string('INSP_YN');   -- 검사여부
+   V_INSP_ITEM_GRP_CD   :=       V_JSON.get_string('INSP_ITEM_GRP_CD'); -- 검사항목그룹
+   V_MATNR              :=       V_JSON.get_string('MATNR');            -- 자재코드
+   V_LOT_NO             :=       V_JSON.get_string('LOT_NO');            -- LOT번호
+   V_SDATE              :=       V_JSON.get_string('SDATE');     -- 측정일시(시작)
+   V_EDATE              :=       V_JSON.get_string('EDATE');     -- 측정일시(끝)
+
+   IF P_TYPE = 'LIST' THEN /*상단 조회 리스트*/
+
+      V_SQL := '  SELECT   Q020.INSP_ITEM_GRP_CD AS "INSP_ITEM_GRP_CD"
+                         , Q020.MATNR            AS "MATNR"           -- 자재코드
+                         , M001.MATNR_NM         AS "MATNR_NM"        -- 자재명
+                         , Q020.WERKS            AS "WERKS"           -- 플랜트
+                         , Q020.MSRM_DATE        AS "MSRM_DATE"       -- 측정일시
+                         , Q020.PRC_SEQNO        AS "PRC_SEQNO"       -- 처리순번(H) 
+                         , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.MSRM_ID),'''') AS "MSRM_NM"   
+                         , Q020.SMPL_AMT         AS "SMPL_AMT"        -- 시료량(H)  
+                         ,(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''FNL_JDGM''  AND CMCDVL = Q020.FNL_JDGM) AS "FNL_JDGM_NM"      
+                         , Q020.LOT_NO           AS "LOT_NO"          -- 로트번호
+                         , Q020.IND_BCD          AS "IND_BCD"         -- 개별바코드 
+                         , Q020.UCFMTY_AMT       AS "UCFMTY_AMT"      -- 부적합량 
+                         , W501.WRK_ORDR_NO      AS "WRK_ORDR_NO"     -- 작업지시번호 
+                         , W501.WRK_ORDR_SEQNO   AS "WRK_ORDR_SEQNO"  -- 작업지시번호순번 
+                         , W501.MACH_CD          AS "MACH_CD"         -- 설비코드(H) 
+                         , NVL((SELECT MACH_NM FROM TB_MAS012 WHERE MACH_CD = W501.MACH_CD ),'''') AS "MACH_NM"   
+                         , (SELECT SUM(DECODE(UNIT, ''PAL'', PLT_QTY, ''ROL'', PLT_QTY, ''BOX'', BOX_QTY, ''BAG'', BAG_QTY, ''EA'', EA_QTY)) 
+                              FROM TB_WRK001 
+                             WHERE WERKS          = W501.WERKS 
+                               AND LOT_NO         = W501.LOT_NO 
+                               AND WRK_ORDR_NO    = W501.WRK_ORDR_NO 
+                               AND WRK_ORDR_SEQNO = W501.WRK_ORDR_SEQNO
+                               AND IND_BCD        = Q020.IND_BCD) AS "PRFM_QTY" -- 실적수량
+                         , Q020.DRFT_ID         AS "DRFT_ID"        -- 기안자
+                         , Q020.DRFT_DATE       AS "DRFT_DATE"      -- 기안일시
+                         , Q020.APVR_STA        AS "APVR_STA"       -- 결재상태
+                         ,(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''APVR_STA''  AND CMCDVL = Q020.APVR_STA) AS "APVR_STA_NM"                               
+                         , Q020.CFRM_ID         AS "CFRM_ID"        -- 승인자
+                         , Q020.CFRM_DATE       AS "CFRM_DATE"      -- 승인일시
+                         , Q020.REGDATE
+                         , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.REGID),'''') AS "REGNM"
+                         , Q020.UPDDATE
+                         , NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q020.UPDID),'''') AS "UPDNM"                         
+                    FROM TB_QLT020 Q020,
+                         TB_MAS001 M001, 
+                         TB_WRK501 W501,
+                         TB_WRK001 W001
+                   WHERE Q020.WERKS    = W501.WERKS(+)
+                     AND Q020.LOT_NO   = W501.LOT_NO(+)
+                     AND Q020.MATNR    = M001.MATNR(+)
+                     AND Q020.WERKS    = M001.WERKS(+)  
+                     AND Q020.WERKS    = W001.WERKS(+)
+                     AND Q020.MATNR    = W001.MATNR(+)
+                     AND Q020.LOT_NO   = W001.LOT_NO(+)
+                     AND Q020.IND_BCD  = W001.IND_BCD(+)
+                     AND Q020.INSP_ITEM_GRP_CD = ''H2''';
+
+        IF  V_WERKS IS NOT NULL OR TRIM(V_WERKS) != '' THEN -- 플랜트
+            V_SQL := V_SQL || ' AND Q020.WERKS  = ''' || V_WERKS || '''';             
+        END IF;
+
+        IF  V_RANGE_SQL IS NOT NULL OR TRIM(V_RANGE_SQL) != '' THEN -- 제조일자, 자재코드, 측정일시
+            V_SQL := V_SQL || V_RANGE_SQL;
+        END IF;                     
+
+        IF  ( V_SDATE IS NOT NULL OR TRIM(V_SDATE) != '' ) AND (V_EDATE IS NOT NULL OR TRIM(V_EDATE) != '')THEN -- 자재코드
+            V_SQL := V_SQL || ' AND Q020.MSRM_DATE >= TO_DATE(''' || V_SDATE || ''',''YYYY-MM-DD HH24:MI:SS'') AND Q020.MSRM_DATE < TO_DATE(''' || V_EDATE || ''',''YYYY-MM-DD HH24:MI:SS'') + 1';  
+        END IF;
+
+        IF  V_IND_BCD IS NOT NULL OR TRIM(V_IND_BCD) != '' THEN -- 개별바코드
+            V_SQL := V_SQL || ' AND W001.IND_BCD  = ''' || V_IND_BCD || '''';             
+        END IF;
+
+		V_SQL := V_SQL || ' ORDER BY Q020.MSRM_DATE';
+
+        BEGIN           
+     		OPEN P_RS_LIST FOR V_SQL;
+
+        EXCEPTION           
+        WHEN OTHERS THEN 
+            P_SUCCESS           := 'N';
+            E_SQL_ERR_CD        := -20000;
+			E_SQL_ERR_MSG       := SQLCODE || ': EXCEPTION OTHER ERROR. [' || SUBSTR(SQLERRM,1,500) || ']';
+
+            SP_PROC_ERROR(V_PLT_CD, V_PRG_NM, E_SQL_ERR_CD, E_SQL_ERR_MSG, V_SESS_USER_ID);
+
+            RAISE_APPLICATION_ERROR(E_SQL_ERR_CD, E_SQL_ERR_MSG);           
+            RETURN;           
+        END;    
+
+
+    ELSIF P_TYPE = 'SUB_LIST' THEN  /* 하단 상세 조회 리스트*/
+
+		V_MATNR              := V_JSON.get_string('MATNR');
+		V_WERKS              := V_JSON.get_string('WERKS');   
+
+        V_MSRM_DT            := V_JSON.get_string('MSRM_DATE');
+        V_PRC_SEQNO          := V_JSON.get_number('PRC_SEQNO');
+
+        V_SQL :=  '  SELECT Q021.INSP_ITEM_GRP_CD, Q021.MATNR, Q021.WERKS, 
+                            Q021.INSP_ITEM_CD, --항목코드 
+                            M016.INSP_ITEM_NM, --항목명
+                            M016.MID_CAT_NM,   --중분류
+                            M016.BIG_CAT_NM,   --대분류
+                            M016.MSRM_CYC,     --측정주기
+                            M016.MSRM_ACC,     --측정차수
+                            M016.MSRM_MTD,     --측정방법
+                            M016.MSRM_UNIT,    --측정단위
+                            M016.INSP_SPEC,    --시험규격                
+                            M016.STD_VAL,      --기준값
+                            M016.UPP_VAL,      --상한값
+                            M016.LOW_VAL,      --하한값
+                            M016.STD_SEL,      --기준선택값
+                            M016.INSP_STD_1,   --검사기준(1)
+                            M016.INSP_STD_2,   --검사기준(2)
+                            Q021.RST_VAL,      --결과값(숫자)
+                            Q021.RST_SEL,      --결과값(선택)
+                            Q021.RST_TXT,      --결과값(문자열)
+                            Q021.RMK,          --특이사항
+                            (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''FITYN'' AND CMCDVL = Q021.FIT_YN) AS "FIT_YN",       --적합여부(Y/N)
+                            M016.INSP_REP_YN,  --성적서 항목여부(Y/N)
+                            M016.DISP_SEQ,
+                            DECODE(Q021.UUID, NULL, '''', Q021.UUID) AS "UUID",
+                            SFILE.NAME AS "UUID_FILEVIEW", 
+                            SFILE.RPATH, SFILE.FNAME,
+                            Q021.REGDATE,
+                            NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q021.REGID),'''') AS "REGNM",
+                            Q021.UPDDATE,
+                            NVL((SELECT NMLAST FROM USRMA WHERE USRMA.USERID = Q021.UPDID),'''') AS "UPDNM"                         
+                       FROM TB_QLT021 Q021,
+                            SYSFILE SFILE,
+                            (SELECT M016.INSP_ITEM_GRP_CD, 
+                                    M016.INSP_ITEM_CD, 
+                                    M014.INSP_ITEM_NM,
+                                    M014.PROD_GRP_CD,
+                                    M014.MID_CAT_NM,
+                                    M014.BIG_CAT_NM,
+                                   (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''INPTDIV'' AND CMCDVL = M014.INPT_DIV) AS "INPT_DIV",
+                                   (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''MSRMUNIT'' AND CMCDVL = M014.MSRM_CYC) AS "MSRM_CYC",
+                                    M014.MSRM_ACC, --측정차수
+                                    M014.NECSY_YN, -- 필수입력 여부
+                                   (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''INPTTYP'' AND CMCDVL = M014.INPT_TYP) AS "INPT_TYP",                           
+                                   (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = ''INPTMTD'' AND CMCDVL = M014.INPT_MTD) AS "INPT_MTD",          
+                                    M014.MSRM_MTD, -- 측정방법
+                                    M014.MSRM_UNIT,-- 측정단위
+                                    M014.INSP_SPEC,
+                                    M014.INSP_REP_YN,
+                                    M014.DISP_SEQ,
+                                    M016.MATNR, 
+                                    M016.WERKS, 
+                                    M016.STD_VAL, 
+                                    M016.UPP_VAL, 
+                                    M016.LOW_VAL, 
+                                    M016.STD_SEL, 
+                                    M016.INSP_STD_1, 
+                                    M016.INSP_STD_2
+                               FROM TB_MAS016 M016,
+                                    TB_MAS014 M014
+                              WHERE M016.INSP_ITEM_GRP_CD =  M014.INSP_ITEM_GRP_CD(+)
+                                AND M016.INSP_ITEM_CD     =  M014.INSP_ITEM_CD(+) 
+                                AND M016.INSP_ITEM_GRP_CD = ''H2''
+                                AND M014.PROD_GRP_CD  = FN_GET_PROD_GRP( '''|| V_WERKS || ''','''|| V_MATNR ||''' )
+                                AND M016.MATNR            = '''|| V_MATNR ||''' 
+                                AND M016.WERKS            = '''|| V_WERKS ||''' ) M016            
+                      WHERE Q021.UUID             = SFILE.UUID(+) 
+                        AND Q021.INSP_ITEM_GRP_CD = M016.INSP_ITEM_GRP_CD(+) 
+                        AND Q021.INSP_ITEM_CD     = M016.INSP_ITEM_CD(+) 
+                        AND Q021.MATNR            = M016.MATNR(+) 
+                        AND Q021.WERKS            = M016.WERKS(+)
+                        AND Q021.INSP_ITEM_GRP_CD = ''H2'' 
+                        AND Q021.MATNR            = '''|| V_MATNR ||''' 
+                        AND Q021.WERKS            = '''|| V_WERKS ||'''
+                        AND Q021.MSRM_DATE        = TO_DATE('''|| V_MSRM_DT ||''',''YYYY-MM-DD HH24:MI:SS'')
+                        AND Q021.PRC_SEQNO        = TO_NUMBER(''' || V_PRC_SEQNO ||''')
+                     ORDER BY M016.BIG_CAT_NM, M016.MID_CAT_NM, M016.DISP_SEQ ';
+
+        BEGIN           
+   	    	OPEN P_RS_LIST FOR V_SQL;
+
+        EXCEPTION           
+        WHEN OTHERS THEN 
+            P_SUCCESS           := 'N';
+            E_SQL_ERR_CD        := -20000;
+			E_SQL_ERR_MSG       := SQLCODE || ': EXCEPTION OTHER ERROR. [' || SUBSTR(SQLERRM,1,500) || ']';
+
+            SP_PROC_ERROR(V_PLT_CD, V_PRG_NM, E_SQL_ERR_CD, E_SQL_ERR_MSG, V_SESS_USER_ID);
+
+            RAISE_APPLICATION_ERROR(E_SQL_ERR_CD, E_SQL_ERR_MSG);           
+            RETURN;           
+        END;    
+
+
+    ELSIF P_TYPE = 'SAVE' THEN
+          RETURN;            
+
+    ELSIF P_TYPE = 'SUB_SAVE' THEN
+          RETURN;
+
+    END IF;
+
+    P_SUCCESS := 'Y';
+
+    COMMIT;
+
+    EXCEPTION
+    WHEN E_EXCEPTION_USER THEN
+
+        -- 에러 내역 SET
+	    P_SUCCESS           := 'N';
+        E_SQL_ERR_CD        := -20000;
+		E_SQL_ERR_MSG       := SQLCODE || ': EXCEPTION OTHER ERROR. [' || SUBSTR(SQLERRM,1,500) || ']';
+        SP_PROC_ERROR(V_PLT_CD, V_PRG_NM, E_SQL_ERR_CD, V_SQL||E_SQL_ERR_MSG, V_SESS_USER_ID);
+
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(E_SQL_ERR_CD, E_SQL_ERR_MSG);
+
+    WHEN OTHERS THEN
+	    P_SUCCESS           := 'N';
+        E_SQL_ERR_CD        := -20000;
+		E_SQL_ERR_MSG       := SQLCODE || ': EXCEPTION OTHER ERROR. [' || SUBSTR(SQLERRM,1,500) || ']';
+        SP_PROC_ERROR(V_PLT_CD, V_PRG_NM, E_SQL_ERR_CD, E_SQL_ERR_MSG, V_SESS_USER_ID);
+
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(E_SQL_ERR_CD, E_SQL_ERR_MSG);
+END;
+
+/

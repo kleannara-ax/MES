@@ -1,0 +1,16 @@
+search combo, multiple combo 기능 추가
+ - configData.js, input.js, common/theme/darkness/js/theme.js
+ - search combo : ComboType="SC"
+ - multiple combo : ComboType="MC"
+ - demo/input/default.jsp 참조
+
+ grid like filter 기능 추가
+  - grid.js, commonUtil.js
+  - 특정 컬럼의 데이터를 like 검색해서 필터된 데이터만 그리드에 표시(대소문자 구분없이 검색)
+  - filter : gridList.filterGridData(gridId, colName, data);
+  - filter map : 여러 컬럼의 필터 적용시 : gridList.filterGridDataMap(gridId, dataMap); dataMap(colName, data)
+  - filter reset : gridList.filterGridClear(gridId);
+  - demo/grid/filter.jsp 참조
+  
+ single range %를 통해 like 검색시 수식이 != 인 경우 not like가 적용 되도록 변경
+  - SqlUtil.java 

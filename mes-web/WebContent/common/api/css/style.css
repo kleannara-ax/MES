@@ -1,0 +1,18 @@
+/*
+Theme Name: api-jqueryui-com
+Template: jquery
+*/
+
+a {
+	/* color: #b24926; */
+	color: #007CDB;
+}
+
+.version-details a,
+.returns a {
+	color: #faa523;
+}
+
+.signatures li h4 {
+	background: #b24926;
+}

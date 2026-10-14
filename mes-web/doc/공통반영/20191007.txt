@@ -1,0 +1,2 @@
+ibatis select시 fetchSize 적용 가능하도록 변경
+ - CommonDAO.java, SqlUtil.java

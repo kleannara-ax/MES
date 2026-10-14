@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script>
+        //ersmp ng연결 함수정의
+        $.toNative   = function(functionName, params, callback) {
+            if(isMobile.Android()){
+                window.TWOAPP.NativeCall(functionName, JSON.stringify(params), callback);
+            }else if(isMobile.iOS()){
+                var sendBody = {
+                    "functionName" : functionName,
+                    "body" : params,
+                    "callback" : callback
+                }
+                webkit.messageHandlers.TWOAPP.postMessage(JSON.stringify(sendBody));
+            }
+        };
+
+        // userAgent를 이용한 모바일 디바이스 구분 함수
+        var isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i) == null ? false : true;
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i) == null ? false : true;
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i) == null ? false : true;
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i) == null ? false : true;
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i) == null ? false : true;
+            },
+            any: function () {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.IOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+
+        //오픈 갤러리
+        function openGallery(){
+            var para = {};
+            $.toNative('openGalleryHttp',para,'openGalleryHttpCallback');
+        }
+
+        function openGalleryHttpCallback(returnData){
+            console.log(returnData);
+            console.log("openGalleryHttpCallback");
+            var data = JSON.parse(returnData.replace(/\n/g,''));
+            alert(data.result.resultData.data[0]);
+        }
+
+        //오픈카메라
+        function openCamera(){
+            var para = {imageThumbnailSize:"300"};
+            $.toNative('openCameraHttp',para,'openCameraHttpCallback');
+        }
+
+        function openCameraHttpCallback(returnData){
+            console.log(returnData);
+            console.log("openCameraHttpCallback");
+            var data = JSON.parse(returnData.replace(/\n/g,''));
+            alert(data.result.resultData.data[0]);
+        }
+
+    </script>
+</head>
+<body>
+    <input type="button" value="새로고침" onclick="window.location.reload()" />
+    <input type="button" value="갤러리" onclick="openGallery();" />
+    <input type="button" value="카메라" onclick="openCamera();" />
+</body>
+</html>

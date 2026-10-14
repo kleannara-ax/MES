@@ -1,0 +1,85 @@
+﻿<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>setAllowedFileExtension</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">BasicFileUploadManager</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>setAllowedFileExtension</h2>
+            <p class="dscrpt">파일 추가시 허용할 파일 확장자를 설정합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">setAllowedFileExtension</span> ( String <span class="paraname">fileExtensions</span> )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname">fileExtensions</span></p>
+            <p class="paradsc">[in] 파일 추가시 허용할 파일 확장자입니다. 파일 확장자를 세미콜론(;) 문자로 연결해서 입력해 주십시오.</p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Javascript</p>
+<pre class="scodedsc">
+/**
+* NamoCrossUploader의 Manager 객체 생성 완료 시 호출됩니다.
+*/
+var onCreationCompleteCu = function () {
+    cuManager = document.getElementById("crossUploadManager");
+    // upload url 설정
+    cuManager.setUploadURL("http://localhost:8080/NamoCrossUploaderFxSamples/Upload/LimitFileUpload/UploadProcess.jsp");
+
+    // 파일 필터 설정
+    var imageFilter = { "desc": "이미지 파일(jpg, jpeg)", "ext": "*.jpg;*.jpeg" };
+    var textFilter = { "desc": "텍스트 파일(txt)", "ext": "*.txt" };
+    var allFilter = { "desc": "모든 파일", "ext": "*.*" };
+    cuManager.setFileFilter([imageFilter, textFilter, allFilter]);
+    <b>
+    // 실제 허용할 파일의 확장자를 설정 (filter에서는 모든 파일을 등록 했지만, 실제 업로드 할 수 있는 확장자는 아래와 같이 제한)
+	cuManager.setAllowedFileExtension("jpg;jpeg;txt");
+    // 허용하지 않을 파일 확장자 기준으로 File Extension을 설정하시려면 setAllowedFileExtension 메소드의 두번째 파라미터에 true를 입력해 주십시오.
+    // cuManager.setAllowedFileExtension("jpg;jpeg;txt", true); 
+    </b>
+    // 파일 개수 제한
+    cuManager.setMaxFileCount(3);
+    // 전체 파일 크기를 10MB로 제한
+    cuManager.setMaxTotalFileSize(1024 * 1024 * 10);
+    // 개별 파일 크기를 10KB로 제한
+    cuManager.setMaxFileSize(1024 * 10);
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,30 @@
+ - YL01.jsp : Label 변경시 즉시 전체 반영기능 제거, reload버튼으로 처리
+ - YM01.jsp : Message 변경시 즉시 전체 반영기능 제거, reload버튼으로 처리
+ - input.js : Combo자동 생성 시 콤보 생성 쿼리에 파라메터 넘기는 기능 추가
+              comboEventDataBindeBefore(comboAtt) 함수에서 return하는 DataMap을 파라메터로 전송
+              Get variant 에서 선택 시 Save variant 에 자동으로 값 셋팅하는 기능 추가
+              Range clear 후 X 버튼으로 취소하는 경우 다시 Range에 들어왔을때 데이터가 정상적으로 보이지 않는 문제 해결
+ - grid.js : LayoutSave시 컬럼 label을 저장하는 기능 제거
+             한국어로 저장하고 중국어로 로그인해서 LayoutSave사용시 한글 라벨이 나오는 문제 해결
+             기존 저장된 LayoutSave데이터에 컬럼 폭 데이터가 잘못 저장되어 있는경우 100으로 적용되도록 변경
+             개발자 실수로 Grid Head와 Row의 col지정 개수와 row지정 개수가 다른경우 경고창으로 알림기능 추가
+ 
+  - jsp/wms/index.jsp : 이미 session이 잇는 경우 자동 로그인이 되면서 로그인 화면에 잔상으로 사용자 오해가 생기는 부분 해결
+             
+인터페이스 데이터를 조회하는 그리드에서 excelDown 기능 추가
+ - IFController.java, IFDAO.java, IFService.java
+ - grid.js
+ 
+Excel down 이 기본적으로 xls로 되어있는 경우 csv로 선택적 다운로드가 가능한기능 추가
+ - CommonConfig.java, BaseController.java
+ - configData.js, grid.js
+ 
+Java영역에서 Menu id를 얻어오기 위한 로직 추가
+ - jsp화면 변수명 menuId 으로 Menu id 확인가능
+ - CommonIntercepter.java
+ - configData.js, left.jsp
+ 
+ 컬럼 History 기능 추가(IAname="KEY"). input, range, grid 전체 사용가능
+  - ui.js, grid.js, input.js
+
+ 

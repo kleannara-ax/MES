@@ -1,0 +1,8 @@
+grid layout save 에서 좌, 우측 리스트에 값이 없는 경우 좌우 이동시 빈 값이 추가되는 오류 수정
+ - layoutSave.js
+
+grid.js
+ - grid excel tmp dowmload 수행 시 url 지정 및 추가 기능 지정 가능 옵션 추가
+ - setGrid - excelTempUrl : "/file/excel/test.xls" 옵션 지정시 해당 파일 다운로드
+ - setGrid - excelTempUrl : "" 옵션 지정 시 gridExcelTempEmptyEvent(gridId) 이벤트 함수 호출
+ - sort type false 에서 sort 오류 수정

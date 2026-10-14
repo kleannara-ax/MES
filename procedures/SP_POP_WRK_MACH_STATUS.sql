@@ -1,0 +1,26 @@
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_POP_WRK_MACH_STATUS" SP_POP_WRK_MACH_STATUS
+(
+    P_MACH_CD   		IN VARCHAR2 	                --설비코드
+    ,Lang       		IN VARCHAR2 DEFAULT 'KO'
+    ,RS_CODE     		OUT VARCHAR2 
+    ,RS_MSG      		OUT VARCHAR2
+    ,CUR_1              OUT SYS_REFCURSOR              --실적
+)
+
+AS
+    --프로그램 ID : 점보롤 실적등록
+    V_PRG_NM        VARCHAR2(100)  := 'SP_POP_WRK_MACH_STATUS';     -- PROCEDURE NAME
+    V_PLT_CD         varchar2(2) := '99'; --PLANTCODE TEST
+    -- 오라클 에러 처리용 변수선언 영역
+    E_EXCEPTION_USER  EXCEPTION;
+    E_SQL_ERR_CD      NUMBER(5) := 0;
+    E_SQL_ERR_MSG     VARCHAR2(4000);
+
+BEGIN
+	OPEN CUR_1 FOR 
+	SELECT	MACH_STA
+	FROM	TB_WRK011
+	WHERE	MACH_CD = P_MACH_CD;
+END;
+/

@@ -1,0 +1,9 @@
+@charset "utf-8";
+.has-js .label_check,
+.has-js .label_radio {height:33px;padding-left:31px;line-height:1.35}
+.has-js .label_radio {background: url(/pop/images/bg_input_box.png) no-repeat 0 5px}
+.has-js .label_check {background: url(/pop/images/bg_input_box.png) no-repeat 0 -95px}
+.has-js label.c_on {background: url(/pop/images/bg_input_box.png) no-repeat 0 -145px}
+.has-js label.r_on {background: url(/pop/images/bg_input_box.png) no-repeat 0 -45px}
+.has-js .label_check input,
+.has-js .label_radio input {position: absolute;left: -9999px;}

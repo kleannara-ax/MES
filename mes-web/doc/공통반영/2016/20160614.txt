@@ -1,0 +1,30 @@
+Excel download시 숫자 format의 컬럼은 숫자로 인식해서 내려가도록 변경
+ - grid.js : gridExcelRequest 함수
+ - configData.js : this.DATA_EXCEL_FORMAT_KEY = "dataExcelFormat";
+ - CommonConfig.jave : public final static String DATA_EXCEL_FORMAT_KEY = "dataExcelFormat";
+ - BaseController
+ - ExcelView
+ 
+ ReadOnly 송성 지정시 cell 색상 변경 않되는 오류와, 모바일 그리드에서 적용 않되는 오류수정
+  - grid.js
+  
+Uppercase Lowercase 기능 개선. key event 방식에서 CSS방식으로 변경. 데이터 수집시 문자 변환추가
+ - content_body.css, configData.js, grid.js, input.js, ui.js
+ 
+Calender range M1 옵션추가. from은 이번달 1일 to는 오늘날자
+ - input.js : UIFormat="C M1"
+ 
+grid row select 한 경우 row 선택 색상으로 변경하는 기능 옵션으로 추가
+ - content_body.css, grid.js : selectRowClassView : true
+ 
+head item 구조에서 head check all 하는 경우 item에 전체 체크되도록 기능 개선
+ - grid.js
+ 
+레인지에 단순 값을 저장하고 싶은 경우 쉽게 함수를 사용하도록 개선
+ - input.js : inputList.setRangeData(rangeName, configData.INPUT_RANGE_RANGE_FROM, data);
+ 
+grid validation 체크시 데이터 전체 체크하는 옵션 추가
+ - grid.js : gridList.validationCheck(gridId, "data")
+
+ui.js
+  - 마지막 누른 버튼의 name을 가져오는 함수 추가 : uiList.getLastClickBtnName()

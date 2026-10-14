@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Demo">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+
+	<select id="DEMOHEAD_LIST" parameterClass="Map" resultClass="DataMap">
+			SELECT  WAREKY
+				   ,' ' AS CHECKDATA
+				   ,ROWNUM AS TMPNUM 
+			       ,ZONEKY
+			       ,ZONETY
+			       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'ZONETY' AND C.CMCDVL = Z.ZONETY) AS ZONETYT
+			       ,SHORTX
+			       ,AREAKY
+			       ,(SELECT SHORTX FROM AREMA A WHERE A.WAREKY = Z.WAREKY AND A.AREAKY = Z.AREAKY) AS AREAKYT
+			       ,TO_CHAR(TO_DATE(CREDAT,'YYYYMMDD'),'$FORMAT_DATE$') AS CREDAT
+			       ,TO_CHAR(TO_DATE(CRETIM,'HH24MISS'),'$FORMAT_TIME$') AS CRETIM
+			       ,CREUSR
+			       ,TO_CHAR(TO_DATE(LMODAT,'YYYYMMDD'),'$FORMAT_DATE$') AS LMODAT
+			       ,TO_CHAR(TO_DATE(LMOTIM,'HH24MISS'),'$FORMAT_TIME$') AS LMOTIM
+			       ,LMOUSR
+			       ,INDBZL
+			       ,INDARC
+			       ,UPDCHK
+			FROM ZONMA Z
+			WHERE 1=1 
+		<isNotEmpty property="WAREKY">
+			AND Z.WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	<select id="DEMOITEM_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT 
+			COUNT(*)
+		FROM LOCMA A 
+		WHERE 1=1 
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	<select id="DEMOITEM_LIST" parameterClass="Map" resultClass="DataMap" fetchSize="500">
+		<![CDATA[
+		SELECT WAREKY
+			,LOCAKY
+			,LOCATY
+			,SHORTX
+			,TASKTY
+			,ZONEKY
+			,AREAKY
+			,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'LOCATY' AND C.CMCDVL = A.LOCATY) AS LOCATYT
+			,TKZONE
+			,FACLTY
+			,ARLVLL
+			,INDCPC
+			,INDTUT
+			,IBROUT
+			,OBROUT
+			,RPROUT
+			,STATUS
+			,(SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'STATUS' AND C.CMCDVL = A.STATUS) AS STATUST
+			,ABCANV
+			,LENGTH
+			,WIDTHW
+			,HEIGHT
+			,CUBICM
+			,MAXCPC
+			,MAXQTY
+			,MAXWGT
+			,MAXLDR
+			,MAXSEC
+			,MIXSKU
+			,MIXLOT
+			,RPNCAT
+			,INDQTC
+			,QTYCHK
+			,NEDSID
+			,INDUPA
+			,INDUPK
+			,AUTLOC
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,' ' AS CUSRNM
+			,'0' AS CUSRNM_FILEVIEW
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,' ' AS LUSRNM
+			,INDBZL AS INDBZL
+			,INDARC AS INDARC
+			,UPDCHK AS UPDCHK
+		FROM LOCMA A 
+		WHERE 1=1 
+		AND ROWNUM < 1000
+		]]>
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="ZONEKY">
+			AND ZONEKY = #ZONEKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>		
+	</select>
+	<insert id="DEMOITEM_BACK" parameterClass="Map">
+		INSERT INTO ZONMA (WAREKY,AREAKY,ZONEKY,ZONETY,SHORTX,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#WAREKY#,#AREAKY#,#ZONEKY#,#ZONETY#,#SHORTX#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="DEMOITEM_DELETE" parameterClass="Map">
+		DELETE FROM ZONMA 
+		 WHERE WAREKY = #WAREKY# 
+	       AND ZONEKY = #ZONEKY#
+	</delete>
+	
+	<update id="DEMOITEM_UPDATE" parameterClass="Map">
+		UPDATE ZONMA SET 
+			<isNotEmpty property="ZONETY">
+				 ZONETY = #ZONETY#,
+			</isNotEmpty>
+			<isNotEmpty property="SHORTX">			
+				 SHORTX = #SHORTX#,
+			</isNotEmpty> 
+			<isNotEmpty property="AREAKY">			
+				 AREAKY = #AREAKY#,
+			</isNotEmpty>
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE WAREKY = #WAREKY# 
+			AND ZONEKY = #ZONEKY# 
+	</update>
+	<update id="DEMOITEM_INSERT" parameterClass="Map">
+        UPDATE LOCMA SET 
+            <isNotEmpty property="WAREKY"> 
+                 WAREKY = #WAREKY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="LOCAKY"> 
+                 LOCAKY = #LOCAKY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="LOCATY"> 
+                 LOCATY = #LOCATY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="SHORTX"> 
+                 SHORTX = #SHORTX# ,
+            </isNotEmpty> 
+            <isNotEmpty property="TASKTY"> 
+                 TASKTY = #TASKTY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="ZONEKY"> 
+                 ZONEKY = #ZONEKY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="AREAKY"> 
+                 AREAKY = #AREAKY# ,
+            </isNotEmpty>
+            <isNotEmpty property="FACLTY"> 
+                 FACLTY = #FACLTY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="ARLVLL"> 
+                 ARLVLL = #ARLVLL# ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDCPC"> 
+                 INDCPC = #INDCPC# ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDTUT"> 
+                 INDTUT = #INDTUT# ,
+            </isNotEmpty> 
+            <isNotEmpty property="IBROUT"> 
+                 IBROUT = #IBROUT# ,
+            </isNotEmpty> 
+            <isNotEmpty property="OBROUT"> 
+                  OBROUT = CASE WHEN TRIM(#OBROUT#) IS NOT NULL                     THEN TRIM(#OBROUT#)
+							     WHEN #LOCATY# = '80'                                 THEN '0000100'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '02'  THEN '0000200'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '03'  THEN '0000300'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '04'  THEN '0000400'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '05'  THEN '0000500'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '06'  THEN '0000600'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '07'  THEN '0000700'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '08'  THEN '0000800'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '09'  THEN '0000900'
+								 WHEN #LOCATY# = '81'                                 THEN '0001000'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '01'  THEN '0001100'
+								 WHEN TRIM(#SKUKEY#) IS NOT NULL                      THEN '0001200'
+								 WHEN #LOCATY# = '02'                                 THEN '0001300'
+							     WHEN #LOCATY# = '90'                                 THEN '0002000'
+							     WHEN TRIM(#OBROUT#) IS NULL                          THEN '0003000'
+							 END,
+            </isNotEmpty> 
+            <isNotEmpty property="RPROUT"> 
+                  RPROUT = CASE WHEN TRIM(#RPROUT#) IS NOT NULL                     THEN TRIM(#RPROUT#)
+							     WHEN #LOCATY# = '80'                                THEN '0000100'
+								 WHEN #LOCATY# = '02'                                THEN '0001200'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '01' THEN '0000200'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '02' THEN '0000300'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '03' THEN '0000400'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '04' THEN '0000500'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '05' THEN '0000600'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '06' THEN '0000700'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '07' THEN '0000800'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '08' THEN '0000900'
+								 WHEN #LOCATY# = '01' AND SUBSTR(#LOCAKY#,-2) = '09' THEN '0001000'
+								 WHEN #LOCATY# = '81'                                THEN '0001100'
+								 WHEN #LOCATY# = '90'                                THEN '0002000'
+								 WHEN TRIM(#RPROUT#) IS NULL                         THEN '0003000'
+							 END ,
+            </isNotEmpty> 
+            <isNotEmpty property="STATUS"> 
+                 STATUS = #STATUS# ,
+            </isNotEmpty> 
+            <isNotEmpty property="ABCANV"> 
+                 ABCANV = #ABCANV# ,
+            </isNotEmpty> 
+            <isNotEmpty property="LENGTH"> 
+                 LENGTH = #LENGTH# ,
+            </isNotEmpty> 
+            <isNotEmpty property="WIDTHW"> 
+                 WIDTHW = #WIDTHW# ,
+            </isNotEmpty> 
+            <isNotEmpty property="HEIGHT"> 
+                 HEIGHT = #HEIGHT# ,
+            </isNotEmpty> 
+            <isNotEmpty property="CUBICM"> 
+                 CUBICM = #CUBICM# ,
+            </isNotEmpty> 
+            <isNotEmpty property="MAXCPC"> 
+                 MAXCPC = #MAXCPC# ,
+            </isNotEmpty> 
+            <isNotEmpty property="MAXQTY"> 
+                 MAXQTY = #MAXQTY# ,
+            </isNotEmpty> 
+            <isNotEmpty property="MAXWGT"> 
+                 MAXWGT = #MAXWGT# ,
+            </isNotEmpty> 
+            <isNotEmpty property="MAXLDR"> 
+                 MAXLDR = #MAXLDR# ,
+            </isNotEmpty> 
+            <isNotEmpty property="MAXSEC"> 
+                 MAXSEC = #MAXSEC# ,
+            </isNotEmpty> 
+            <!-- <isNotEmpty property="MIXLOT"> 
+                 MIXLOT = DECODE(#MIXLOT#,'Y','V','N',' ')  ,
+                 MIXSKU = DECODE(#MIXLOT#,'Y','V','N',' ')  ,
+            </isNotEmpty>  -->
+            <isNotEmpty property="RPNCAT"> 
+                 RPNCAT = #RPNCAT# ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDQTC"> 
+                 INDQTC = #INDQTC# ,
+            </isNotEmpty> 
+            <isNotEmpty property="QTYCHK"> 
+                 QTYCHK = #QTYCHK# ,
+            </isNotEmpty> 
+            <isNotEmpty property="NEDSID"> 
+                 NEDSID = #NEDSID# ,
+            </isNotEmpty> 
+            <!-- <isNotEmpty property="INDUPA"> 
+                 INDUPA = DECODE(#INDUPA#,'Y','V','N',' ') ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDUPK"> 
+                 INDUPK = DECODE(#INDUPK#,'Y','V','N',' ') ,
+            </isNotEmpty> --> 
+            <isNotEmpty property="AUTLOC"> 
+                 AUTLOC = #AUTLOC# ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDBZL"> 
+                 INDBZL = #INDBZL# ,
+            </isNotEmpty> 
+            <isNotEmpty property="INDARC"> 
+                 INDARC = #INDARC# ,
+            </isNotEmpty> 
+            <!-- <isNotEmpty property="UPDCHK"> 
+                 UPDCHK = #UPDCHK#  ,
+            </isNotEmpty>
+            LOCAR0 = NVL(TRIM(#LOCAR0#),' '),
+            LOCAR1 = NVL(TRIM(#LOCAR1#),' '),
+            LOCAR2 = NVL(TRIM(#LOCAR2#),' '),
+            LOCAR3 = NVL(TRIM(#LOCAR3#),' '),
+            SKUKEY = NVL(TRIM(#SKUKEY#),' '),
+            FIXLOC = CASE WHEN TRIM(#SKUKEY#) IS NULL THEN ' '
+                          ELSE 'V' END, -->
+            LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+            LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+            LMOUSR = #SES_USER_ID#
+         WHERE WAREKY = #WAREKY# 
+           AND LOCAKY = #LOCAKY# 
+    </update>
+	<select id="DEMOITEM_VALIDATION" parameterClass="Map" resultClass="DataMap"> 
+		SELECT
+		  CASE
+		    WHEN A.AREAKY IS NULL THEN 'MASTER_M0255' || ' ' || P.AREAKY
+		    WHEN Z.ZONEKY IS NOT NULL THEN 'VALID_M0103' || ' ' || P.ZONEKY
+		    ELSE 'OK'
+		  END AS MSG
+		FROM(
+		    	$VALIDATION_SQL$ 
+		    ) P 
+		    LEFT OUTER JOIN AREMA A ON A.WAREKY = P.WAREKY AND A.AREAKY = P.AREAKY
+		    LEFT OUTER JOIN ZONMA Z ON Z.ZONEKY = P.ZONEKY AND Z.WAREKY = P.WAREKY
+		WHERE 1=1
+		   OR A.AREAKY IS NULL
+		   OR Z.ZONEKY IS NOT NULL
+	</select>
+	
+	<select id="MENUTREE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT M.MENULV, M.MENUKY, M.MENUID AS IDKEY, M.MENUID, TO_NUMBER(M.SORTSQ) AS ID, M.AMNUID, M.AMNUID AS PIDKEY, 
+        NVL(TO_NUMBER((SELECT S.SORTSQ FROM MNUDT S WHERE S.MENUKY = 'DEV' AND S.MENUID = M.AMNUID)),0) AS PID, 
+        M.INDMUK, M.SORTSQ, M.PROGID, M.LABLGR, M.LABLKY, L.LBLTXL, L.LBLTXL AS "name" 
+		FROM MNUDT M
+		LEFT OUTER JOIN JLBLM L ON L.LANGKY = 'KR' AND L.LABLGR = M.LABLGR AND L.LABLKY = M.LABLKY
+		WHERE MENUKY = 'DEV'
+		ORDER BY SORTSQ
+	</select>
+	
+	<select id="GRIDTEST_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 CMCDKY,
+			 CMCDVL,
+			 CDESC1,
+			 CDESC2,
+			 USARG1,
+			 USARG2,
+			 USARG3,
+			 USARG4,
+			 USARG5,
+			 CREDAT,
+			 CRETIM,
+			 CREUSR,
+			 LMODAT,
+			 LMOTIM,
+			 LMOUSR,
+			 INDBZL,
+			 INDARC,
+			 UPDCHK
+		 FROM CMCDV 
+		 WHERE
+		 	CMCDKY = #CMCDKY#
+		 <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="LOTTO_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[		
+		SELECT MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 1, NUM)) NO1,
+		       MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 2, NUM)) NO2,
+		       MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 3, NUM)) NO3,
+		       MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 4, NUM)) NO4,
+		       MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 5, NUM)) NO5,
+		       MIN(DECODE(MOD(ROWNUM - 1, 6) + 1, 6, NUM)) NO6
+		FROM (
+		        SELECT GRP, NUM
+		        FROM (
+		            SELECT GRP, NUM, MOD(ROWNUM - 1, 45) + 1 RNUM
+		            FROM (
+		                SELECT CEIL(LEVEL / 45) GRP, MOD(LEVEL - 1, 45) + 1 NUM
+		                FROM DUAL
+		                CONNECT BY LEVEL <= 45 * 2
+		                ORDER BY 1, DBMS_RANDOM.VALUE
+		            )
+		        )
+		        WHERE RNUM <= 6
+		        ORDER BY GRP, NUM
+		    )
+		GROUP BY GRP
+		]]>
+	</select>
+	
+	<select id="MCOMBO1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME01 AS TEXT_COL
+		FROM WAHMA
+	</select>
+	
+	<select id="MCOMBO2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    AREAKY AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM AREMA
+		WHERE
+		<isEmpty property="MCOMBO1">
+			1=2
+		</isEmpty>
+		<isNotEmpty property="MCOMBO1">
+			WAREKY IN ($MCOMBO1$)
+		</isNotEmpty>
+	</select>
+	
+	<select id="MCOMBO3_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    LOCAKY AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM LOCMA
+		WHERE
+		<isEmpty property="MCOMBO2">
+			1=2
+		</isEmpty>
+		<isNotEmpty property="MCOMBO2">
+			AREAKY IN ($MCOMBO2$)
+		</isNotEmpty>
+	</select>
+	
+	<select id="FWCMFL001_DEMO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    FEX.SEQ    AS SEQ,
+		    FEX.UUID   AS UUID,
+		    F10.NAME  AS UUID_FILEVIEW,
+		    F10.RPATH  AS RPATH,
+		    F10.PATH   AS PATH,
+		    F10.FNAME  AS FNAME,
+		    F10.UUID   AS ATTACH,
+		    F10.NAME   AS ATTACH_FILEVIEW,
+		    F10.STYPE  AS STYPE,
+		    F10.BYTE   AS BYTE,
+		    
+		    CASE WHEN F10.BYTE <![CDATA[<]]> 1024 THEN F10.BYTE || ' BYTE'
+				 WHEN F10.BYTE > 1024 AND F10.BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(F10.BYTE/1024,2) || ' KB'
+				 ELSE ROUND(F10.BYTE/(1024*1024),2) || ' MB'
+		    END        AS BYTE_FILESIZEVIEW,
+		    
+		    FEX.ETCTXT AS ETCTXT
+		FROM FWCMFL001_EXP FEX
+		     LEFT OUTER JOIN FWCMFL0010 F10
+		                  ON FEX.UUID = F10.UUID
+		ORDER BY FEX.SEQ DESC                 
+	</select>
+	
+	<insert id="FWCMFL001_DEMO_INSERT" parameterClass="Map">
+		INSERT INTO FWCMFL001_EXP(SEQ,UUID,FNAME,ETCTXT)VALUES(SEQ_FWCMFL001_EXP.NEXTVAL,#ATTACH#,#ATTACH_FILEVIEW#,#ETCTXT#)
+	</insert>
+	
+	<update id="FWCMFL001_DEMO_UPDATE" parameterClass="Map">
+		UPDATE FWCMFL001_EXP
+		   SET UUID = #ATTACH#,
+		       FNAME = #ATTACH_FILEVIEW#,
+		       ETCTXT = NVL(#ETCTXT#,' ')
+		WHERE SEQ = #SEQ#       
+	</update>
+	
+	<delete id="FWCMFL001_DEMO_DELETE" parameterClass="Map">
+		DELETE FROM FWCMFL001_EXP WHERE SEQ = #SEQ#
+	</delete>
+</sqlMap>

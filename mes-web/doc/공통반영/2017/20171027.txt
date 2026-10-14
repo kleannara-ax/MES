@@ -1,0 +1,14 @@
+엑셀 업로드시 숫자 지수표시, 날자포멧 cell처리  문제 해결
+ - FileUtil.java
+ 
+그리드 단축키 기능 추가
+ - site.js, grid.js
+ - this.GRID_KEY_EVENT_ROWCOPY_CODE = 81;//행복사 : alt+q
+	this.GRID_KEY_EVENT_ADDROW_CODE = 78;//행추가 : alt+n
+	this.GRID_KEY_EVENT_DELETEROW_CODE = 68;//행삭제 : alt+d
+	this.GRID_KEY_EVENT_LAYOUT_CODE = 76;//레이아웃 : alt+l
+	this.GRID_KEY_EVENT_TOTAL_CODE = 84;//합계 : alt+t
+	this.GRID_KEY_EVENT_EXCELDOWN_CODE = 69;//엑셀다운로드 : alt+e
+	this.GRID_KEY_EVENT_SORT_CODE = 82;//정렬 초기화: alt+r
+ - 그리드상에 focus가 없는 경우 default grid에 적용. default grid는 기본적으로 id가 gridList인 grid이지만 gridList.setDefaultGridId(gridId)로 변경 가능
+ - default grid id 기본값을 변경하고 싶은 경우 site.js this.DEFAUTL_GRID_ID = "gridList";변경

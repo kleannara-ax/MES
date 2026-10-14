@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<bean id="placeholderConfig"
+		class="project.mes.util.DynamicPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/conf/commonconfig.properties</value>
+<!--				<value>/WEB-INF/conf/commonconfig-prod.properties</value>-->
+			</list>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="project">
+       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+	
+	<bean id="systemConfig" class="project.common.bean.SystemConfig" scope="application">
+		<!-- property name="asyncType" value="${asyncType}" /-->
+		<property name="theme" value="${sysconfig.theme}" />
+		<property name="cmmonType" value="${sysconfig.cmmonType}" />
+		<property name="dbType" value="${jdbc.db}" />
+		<property name="sqlType" value="${jdbc.db}" />
+	</bean>
+	
+	<bean id="commonLoad" class="project.common.controller.CommonLoad" />
+	<bean id="commonLabel" class="project.common.bean.CommonLabel" scope="application" />
+	<bean id="commonSearch" class="project.common.bean.CommonSearch" scope="application" />
+	<bean id="commonUser" class="project.common.bean.CommonUser" scope="application" />
+	<!-- <bean id="commonMenu" class="project.common.bean.CommonMenu" scope="application" /> -->
+	<bean id="fileRepository" class="project.common.bean.FileRepository" scope="application" />
+	<bean id="util" class="project.common.util.Util">
+		<property name="sqlType" value="${jdbc.db}" />
+	</bean>
+</beans>

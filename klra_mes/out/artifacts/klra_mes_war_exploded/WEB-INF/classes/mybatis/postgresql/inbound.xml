@@ -1,0 +1,997 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Inbound">
+	
+	<!-- **[AS01] 입고예정정보 -->
+	<select id="AS01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT IASNKY  AS "IASNKY"
+		    ,  ASNTTY  AS "ASNTTY"
+		    ,  WAREKY  AS "WAREKY"
+		    ,  SEBELN  AS "SEBELN"
+		    ,  SEBELP  AS "SEBELP"
+		    ,  SVBELN  AS "SVBELN"
+		    ,  SPOSNR  AS "SPOSNR"
+		    ,  DOCDAT  AS "DOCDAT"
+		    ,  ASNDAT  AS "ASNDAT"
+		    ,  PTNRKY  AS "PTNRKY"
+		    ,  OWNRKY  AS "OWNRKY"
+		    ,  SKUKEY  AS "SKUKEY"
+		    ,  DESC01  AS "DESC01"
+		    ,  QTYASN  AS "QTYASN"
+		    ,  UOMKEY  AS "UOMKEY"
+		    ,  LOTA01  AS "LOTA01"
+		    ,  LOTA02  AS "LOTA02"
+		    ,  LOTA03  AS "LOTA03"
+		    ,  SZMBLNO AS "SZMBLNO"
+		    ,  SZMIPNO AS "SZMIPNO"
+		    ,  STDLNR  AS "STDLNR"
+		    ,  DOCTXT  AS "DOCTXT"
+		FROM   IFASN
+		WHERE  IASNKY = #{IASNKY}
+	</select>
+	
+	<select id="AS01_IASNKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT NEXTVAL('seq_ifasn') AS "IASNKY"
+	</select>
+	
+	<insert id="AS01_INSERT"  parameterType="hashmap">
+		INSERT INTO IFASN(
+			  IASNKY
+			, ASNTTY
+			, COMPKY
+			, WAREKY
+			, OWNRKY
+			, SEBELN
+			, SEBELP
+			, SVBELN
+			, SPOSNR
+			, DOCDAT
+			, ASNDAT
+			, PTNRKY
+			, PTNRNM
+			, RPTNKY
+			, RPTNNM
+			, SKUKEY
+			, DESC01
+			, QTYASN
+			, UOMKEY
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, SZMBLNO 
+			, SZMIPNO 
+			, STDLNR
+			, AWMSNO
+			, DOCTXT
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{IASNKY}
+			, #{ASNTTY} 
+			, #{SES_USER_COMPANY} 
+			, #{SES_WAREKY} 
+			, #{OWNRKY}
+			, #{SEBELN} 
+			, #{SEBELP} 
+			, COALESCE(#{SVBELN}, ' ') 
+			, COALESCE(#{SPOSNR}, ' ') 
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, COALESCE(#{ASNDAT}, ' ')
+			, COALESCE(#{PTNRKY}, ' ') 
+			, COALESCE(#{PTNRNM}, ' ') 
+			, COALESCE(#{RPTNKY}, ' ') 
+			, COALESCE(#{RPTNNM}, ' ') 
+			, COALESCE(#{SKUKEY}, ' ') 
+			, COALESCE(#{DESC01}, ' ') 
+			, #{QTYASN}::NUMERIC 
+			, COALESCE(#{UOMKEY}, ' ') 
+			, COALESCE(#{LOTA01}, ' ') 
+			, COALESCE(#{LOTA02}, ' ') 
+			, COALESCE(#{LOTA03}, ' ') 
+			, COALESCE(#{LOTA04}, ' ') 
+			, COALESCE(#{LOTA05}, ' ') 
+			, COALESCE(#{SZMBLNO}, ' ') 
+			, COALESCE(#{SZMIPNO}, ' ') 
+			, COALESCE(#{STDLNR}, ' ')
+			, COALESCE(#{AWMSNO}, ' ')
+			, COALESCE(#{DOCTXT}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<select id="IFASN_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		       I.IASNKY  AS "IASNKY"
+		   ,   I.COMPKY  AS "COMPKY"
+		   ,   I.WAREKY  AS "WAREKY"
+		   ,   I.ASNTTY  AS "ASNTTY"
+		   ,   'NEW'     AS "STATDO"
+		   ,   I.ASNDAT  AS "DOCDAT"
+		   ,   D.DOCCAT  AS "DOCCAT"
+		   ,   I.OWNRKY  AS "OWNRKY"
+		   <choose>
+   		   <when test='ASNTTY == "003"'>
+   		   ,   I.RPTNKY  AS "DEPTID3"
+           ,   I.RPTNNM  AS "DNAME3"
+   		   </when>
+   		   <otherwise>
+   		   ,   I.PTNRKY  AS "DPTNKY"
+           ,   I.PTNRNM  AS "DNAME1"
+   		   </otherwise>
+		   </choose>
+		   ,   I.SEBELN  AS "USRID1"
+		   ,   I.SVBELN  AS "USRID2"
+		   ,   I.SZMBLNO AS "UNAME1"
+		FROM   IFASN I
+		       INNER JOIN DOCTM D ON I.ASNTTY = D.DOCUTY
+		WHERE  I.COMPKY = #{SES_USER_COMPANY}
+		AND    I.IASNKY = #{IASNKY}
+		ORDER BY
+		       I.SEBELN, I.ASNDAT
+	</select>
+	
+	<select id="IFASN_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.IASNKY  AS "IASNKY"
+		    ,  LPAD(CAST(ROW_NUMBER() OVER(ORDER BY I.SEBELN, I.SEBELP) * 10 AS VARCHAR),6,'0') AS "ASNDIT" 
+		    ,  'NEW'     AS "STATIT"
+		    ,  I.COMPKY  AS "COMPKY"
+			,  I.SKUKEY  AS "SKUKEY"
+			,  I.DESC01  AS "DESC01"
+			,  I.QTYASN  AS "QTYASN"
+			,  0         AS "QTYRCV"
+			,  I.SEBELN  AS "SEBELN"
+			,  I.SEBELP  AS "SEBELP"
+			,  I.SVBELN  AS "SVBELN"
+			,  I.SPOSNR  AS "SPOSNR"
+			,  I.OWNRKY  AS "OWNRKY"
+			,  C.MEASKY  AS "MEASKY"
+			,  M.QTPUOM  AS "QTPUOM"
+			,  I.UOMKEY  AS "UOMKEY"
+			,  S.DUOMKY  AS "DUOMKY"
+		    ,  S.QTDUOM  AS "QTDUOM"
+			,  I.LOTA01  AS "LOTA01"
+			,  I.LOTA02  AS "LOTA02"
+			,  I.LOTA03  AS "LOTA03"
+			,  I.LOTA04  AS "LOTA04"
+			,  I.LOTA05  AS "LOTA05"
+			,  I.SZMBLNO AS "SZMBLNO"
+			,  I.SZMIPNO AS "SZMIPNO"
+			,  I.STDLNR  AS "STDLNR"
+			,  S.EANCOD  AS "EANCOD"
+			,  S.GTINCD  AS "GTINCD"
+			,  I.RPTNKY  AS "RPTNKY"
+            ,  I.RPTNNM  AS "RPTNNM"
+            ,  I.AWMSNO  AS "AWMSNO"
+		FROM   IFASN I
+		       INNER JOIN SKUMA S ON  I.COMPKY = S.COMPKY
+			                      AND I.OWNRKY = S.OWNRKY
+								  AND I.SKUKEY = S.SKUKEY
+		       INNER JOIN SKUWC C ON  I.WAREKY = C.WAREKY
+			                      AND S.OWNRKY = C.OWNRKY
+								  AND S.SKUKEY = C.SKUKEY
+		       INNER JOIN MEASI M ON  C.WAREKY = M.WAREKY
+			                      AND C.MEASKY = M.MEASKY
+								  AND S.DUOMKY = M.UOMKEY
+		WHERE  I.IASNKY  = #{IASNKY}          
+		AND    I.COMPKY  = #{SES_USER_COMPANY}
+		AND    I.WAREKY  = #{WAREKY}          
+		AND    I.OWNRKY  = #{OWNRKY}          
+		AND    I.ASNTTY  = #{ASNTTY}          
+		AND    I.SEBELN  = #{USRID1}          
+		AND    I.SVBELN  = #{USRID2}          
+		AND    I.SZMBLNO = #{UNAME1}          
+		AND    I.ASNDAT  = #{DOCDAT}          
+		<choose>
+   		<when test='ASNTTY == "003"'>
+		AND    I.RPTNKY  = #{DEPTID3}    
+		</when>  
+		<otherwise>
+		AND    I.PTNRKY  = #{DPTNKY}
+		</otherwise>     
+		</choose>
+		ORDER BY
+		       I.SEBELN, I.SEBELP       
+	</select>
+	
+	<insert id="ASNDH_INSERT"  parameterType="hashmap">
+		INSERT INTO ASNDH(
+			  COMPKY
+			, WAREKY
+			, ASNDKY
+			, ASNTTY
+			, STATDO
+			, DOCDAT
+			, DOCCAT
+			, OWNRKY
+			, DPTNKY
+			, DNAME1
+			, USRID1
+			, UNAME1
+			, USRID2
+			, DEPTID3
+			, DNAME3
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+		      #{COMPKY}
+		    , #{WAREKY}
+			, #{ASNDKY}
+			, #{ASNTTY}
+			, #{STATDO}
+			, #{DOCDAT}
+			, #{DOCCAT}
+			, #{OWNRKY}
+			, COALESCE(#{DPTNKY}, ' ')
+			, COALESCE(#{DNAME1}, ' ')
+			, COALESCE(#{USRID1}, ' ')
+			, COALESCE(#{UANME1}, ' ')
+			, COALESCE(#{USRID2}, ' ')
+			, COALESCE(#{DEPTID3}, ' ')
+			, COALESCE(#{DNAME3}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<insert id="ASNDI_INSERT"  parameterType="hashmap">
+		INSERT INTO ASNDI(
+			  ASNDKY
+			, ASNDIT
+			, STATIT
+			, COMPKY
+			, SKUKEY
+			, DESC01
+			, QTYASN
+			, QTYRCV
+			, SEBELN
+			, SEBELP
+			, SVBELN
+			, SPOSNR
+			, MEASKY
+			, QTPUOM
+			, UOMKEY
+			, DUOMKY
+			, QTDUOM
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, SZMBLNO
+			, SZMIPNO
+			, STDLNR
+			, EANCOD
+			, GTINCD
+			, AWMSNO
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{ASNDKY}
+			, #{ASNDIT}
+			, #{STATIT}
+			, #{COMPKY}
+			, #{SKUKEY}
+			, #{DESC01}
+			, #{QTYASN}::NUMERIC 
+			, #{QTYRCV}::NUMERIC 
+			, #{SEBELN}
+			, #{SEBELP}
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')
+			, COALESCE(#{MEASKY}, ' ')
+			, #{QTPUOM}::NUMERIC
+			, #{UOMKEY}
+			, COALESCE(#{DUOMKY}, ' ')
+			, #{QTDUOM}::NUMERIC
+			, COALESCE(#{LOTA01}, ' ')
+			, COALESCE(#{LOTA02}, ' ')
+			, COALESCE(#{LOTA03}, ' ')
+			, COALESCE(#{LOTA04}, ' ')
+			, COALESCE(#{LOTA05}, ' ')
+			, COALESCE(#{SZMBLNO}, ' ')
+			, COALESCE(#{SZMIPNO}, ' ')
+			, COALESCE(#{STDLNR}, ' ')
+			, COALESCE(#{EANCOD}, ' ')
+			, COALESCE(#{GTINCD}, ' ')
+			, COALESCE(#{AWMSNO}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<select id="SHPDH_BZPTN_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT DPTNKY AS "PTNRKY"
+		   ,   DNAME1 AS "PTNRNM"
+		   ,   PTRCVR AS "PTRCVR"
+		   ,   DNAME2 AS "PTRCNM"
+		FROM   SHPDH
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    WAREKY = #{SES_WAREKY}
+		AND    SHPOKY = #{SHPOKY}
+	</select>
+	
+	<select id="LOT_BZPTN_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT L.SEBELN AS "SEBELN"
+		   ,   L.SEBELP AS "SEBELP"
+		   ,   L.LOTA02 AS "LOTA02"
+		   ,   L.LOTA03 AS "LOTA03"
+		   ,   L.LOTA04 AS "PTNRKY"
+		   ,   L.LOTA05 AS "PTNRNM"
+		FROM   LOTAT L
+		WHERE  L.COMPKY = #{SES_USER_COMPANY}
+		AND    L.WAREKY = #{SES_WAREKY}
+		AND    L.LOTNUM = #{LOTNUM}
+	</select>
+	<!-- [AS01] 입고예정정보** -->
+	
+	<!-- **[AS02] 입고 Closing -->
+	<select id="AS02_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		       A.ASNDKY AS "ASNDKY"
+		   ,   A.COMPKY AS "COMPKY"    
+		   ,   A.WAREKY AS "WAREKY"
+		   ,   W.NAME01 AS "WARENM"
+		   ,   A.OWNRKY AS "OWNRKY"
+		   ,   O.NAME01 AS "OWNRNM"
+		   ,   A.ASNTTY AS "ASNTTY"
+		   ,   D.SHORTX AS "ASNTNM"
+		   ,   A.STATDO AS "STATDO"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   A.DOCDAT AS "DOCDAT"
+		   ,   A.DPTNKY AS "DPTNKY"
+		   ,   A.DNAME1 AS "DNAME1"
+		   ,   A.USRID1 AS "SEBELN"
+		   ,   A.USRID2 AS "SVBELN"
+		   ,   A.UNAME1 AS "SZMBLNO"
+		FROM   ASNDH A
+		       INNER JOIN OWNER O ON  O.COMPKY = A.COMPKY 
+		                          AND O.OWNRKY = A.OWNRKY
+			   INNER JOIN OWNWC C ON  C.COMPKY = O.COMPKY 
+		                          AND C.OWNRKY = O.OWNRKY
+			   					  AND C.WAREKY = A.WAREKY
+			   INNER JOIN WAHMA W ON  C.WAREKY = W.WAREKY					  
+		       INNER JOIN ASNDI I ON  I.COMPKY = A.COMPKY
+		                          AND I.ASNDKY = A.ASNDKY
+			   INNER JOIN DOCTM D ON  A.DOCCAT = D.DOCCAT
+			                      AND A.ASNTTY = D.DOCUTY
+		       INNER JOIN CMCDV V ON  V.CMCDKY = 'STATDO'
+			                      AND A.STATDO = V.CMCDVL
+		WHERE  A.COMPKY = #{SES_USER_COMPANY}
+		AND    A.WAREKY = #{WAREKY}
+		AND    A.ASNTTY = #{ASNTTY}
+		AND    A.INDDCL != 'V'
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="AS02_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.ASNDKY  AS "ASNDKY"
+		   ,   I.ASNDIT  AS "ASNDIT"
+		   ,   I.COMPKY  AS "COMPKY"
+		   ,   I.STATIT  AS "STATIT"
+		   ,   V1.CDESC1 AS "STATNM"
+		   ,   I.SKUKEY  AS "SKUKEY"
+		   ,   I.DESC01  AS "DESC01"
+		   ,   I.QTYASN  AS "QTYASN"
+		   ,   I.UOMKEY  AS "UOMKEY"
+		   ,   I.SZMIPNO AS "SZMIPNO"
+		   ,   I.STDLNR  AS "STDLNR"
+		   ,   I.LOTA01  AS "LOTA01"
+		   ,   V2.CDESC1 AS "LT01NM"
+		   ,   I.LOTA02  AS "LOTA02"
+		   ,   I.LOTA03  AS "LOTA03"
+		   ,   I.LOTA04  AS "LOTA04"
+		   ,   I.LOTA05  AS "LOTA05"
+		FROM   ASNDI I
+		       INNER JOIN CMCDV V1 ON  V1.CMCDKY = 'STATIT'
+			                       AND I.STATIT  = V1.CMCDVL
+			   INNER JOIN CMCDV V2 ON  V2.CMCDKY = 'LOTA01'
+			                       AND I.LOTA01  = V2.CMCDVL					  
+		WHERE  I.COMPKY  = #{SES_USER_COMPANY}
+		AND    I.ASNDKY  = #{ASNDKY}
+		AND    I.SWERKS != 'V'
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="AS02_SAVE_CHECK_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   ASNDH
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		AND    STATDO IN('PPC', 'FPC') 
+	</select>
+	
+	<select id="AS02_ITEM_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   ASNDI
+		WHERE  COMPKY  = #{SES_USER_COMPANY}
+		AND    ASNDKY  = #{ASNDKY}
+		AND    SWERKS != 'V'
+	</select>
+	
+	<update id="AS02_HEAD_UPDATE"  parameterType="hashmap">
+		UPDATE ASNDH 
+		SET    INDDCL = 'V'
+		  ,    LRCPTD = TO_CHAR(NOW(),'YYYYMMDD')
+		  ,    LMODAT = TO_CHAR(NOW(),'YYYYMMDD')
+		  ,    LMOTIM = TO_CHAR(NOW(),'HH24MISS')
+		  ,    LMOUSR = #{SES_USER_ID}
+		  ,    UPDCHK = UPDCHK + 1 
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY} 
+	</update>
+	
+	<update id="AS02_ITEM_UPDATE"  parameterType="hashmap">
+		UPDATE ASNDI 
+		SET    SWERKS = 'V'
+		  ,    LRCPTD = TO_CHAR(NOW(),'YYYYMMDD')
+		  ,    LMODAT = TO_CHAR(NOW(),'YYYYMMDD')
+		  ,    LMOTIM = TO_CHAR(NOW(),'HH24MISS')
+		  ,    LMOUSR = #{SES_USER_ID}
+		  ,    UPDCHK = UPDCHK + 1 
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		<if test="ASNDIT != null and ASNDIT != ''">
+		AND    ASNDIT = #{ASNDIT}
+		</if>
+	</update>
+	<!-- [AS02] 입고 Closing** -->
+	
+	<!-- **[GR01] 입고처리 -->
+	<select id="GR01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		       A.ASNDKY AS "ASNDKY"
+		   ,   A.COMPKY AS "COMPKY"    
+		   ,   A.WAREKY AS "WAREKY"
+		   ,   A.OWNRKY AS "OWNRKY"
+		   ,   O.NAME01 AS "OWNRNM"
+		   ,   A.ASNTTY AS "ASNTTY"
+		   ,   D.DOCGRP as "DOCCAT"
+		   ,   D.CDOCTY as "RCPTTY"
+		   ,   T.SHORTX as "RCPTNM"
+		   ,   A.STATDO AS "STATDO"
+		   ,   V.CDESC1 AS "STATNM"
+		   ,   A.DOCDAT AS "DOCDAT"
+		   <choose>
+		   <when test='RCPTTY != null and RCPTTY == "103"'>
+		   ,   A.DEPTID3 AS "DEPTID3"
+		   ,   A.DNAME3  AS "DNAME3"
+		   </when>
+		   <otherwise>
+		   ,   A.DPTNKY AS "DPTNKY"
+		   ,   A.DNAME1 AS "DNAME1"
+		   </otherwise>
+		   </choose>
+		   ,   A.USRID1 AS "SEBELN"
+		   ,   A.USRID2 AS "SVBELN"
+		   ,   A.UNAME1 AS "SZMBLNO"
+		FROM   ASNDH A
+		       INNER JOIN OWNER O ON O.COMPKY = A.COMPKY 
+		                         AND O.OWNRKY = A.OWNRKY
+			   INNER JOIN OWNWC C ON C.COMPKY = O.COMPKY 
+		                         AND C.OWNRKY = O.OWNRKY
+			   					 AND C.WAREKY = A.WAREKY				  
+		       INNER JOIN ASNDI I ON I.COMPKY = A.COMPKY
+		                         AND I.ASNDKY = A.ASNDKY
+			   INNER JOIN DOCTM D ON A.DOCCAT = D.DOCCAT
+			                     AND A.ASNTTY = D.DOCUTY
+			   INNER JOIN DOCTM T ON D.DOCGRP = T.DOCCAT
+			                     AND D.CDOCTY = T.DOCUTY                   
+		       INNER JOIN CMCDV V ON V.CMCDKY = 'STATDO'
+			                     AND A.STATDO = V.CMCDVL
+		WHERE  A.COMPKY = #{SES_USER_COMPANY}
+		AND    A.WAREKY = #{WAREKY}
+		AND    D.CDOCTY = #{RCPTTY}
+		AND    A.INDDCL != 'V'
+		AND    A.STATDO IN('NEW','PPC')
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="GR01_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.ASNDKY  AS "REFDKY"
+		   ,   I.ASNDIT  AS "REFDIT"
+		   ,   I.SEBELN  AS "SEBELN"
+		   ,   I.SEBELP  AS "SEBELP"
+		   ,   I.COMPKY  AS "COMPKY"
+		   ,   I.STATIT  AS "STATIT"
+		   ,   V.CDESC1  AS "STATNM"
+		   ,   I.SKUKEY  AS "SKUKEY"
+		   ,   I.DESC01  AS "DESC01"
+		   ,   I.QTYASN  AS "QTYORG"
+		   ,   (I.QTYASN - I.QTYRCV) AS "QTYRCV"
+		   ,   I.MEASKY  AS "MEASKY"
+		   ,   I.UOMKEY  AS "UOMKEY"
+		   ,   I.QTYUOM  AS "QTYUOM"
+		   ,   I.QTPUOM  AS "QTPUOM"
+		   ,   I.DUOMKY  AS "DUOMKY"
+		   ,   I.QTDUOM  AS "QTDUOM"
+		   ,   I.SZMIPNO AS "SZMIPNO"
+		   ,   I.STDLNR  AS "STDLNR"
+		   ,   I.SVBELN  AS "SVBELN"
+		   ,   I.SPOSNR  AS "SPOSNR"
+		   ,   I.LOTA01  AS "LOTA01"
+		   ,   L.CDESC1  AS "LT01NM"
+		   ,   I.LOTA02  AS "LOTA02"
+		   ,   I.LOTA03  AS "LOTA03"
+		   ,   I.LOTA04  AS "LOTA04"
+		   ,   I.LOTA05  AS "LOTA05"
+		   ,   I.EANCOD  AS "EANCOD"
+		   ,   I.GTINCD  AS "GTINCD"
+		   ,   I.AWMSNO  AS "LOTNUM"
+		FROM   ASNDI I
+		       INNER JOIN CMCDV V ON  V.CMCDKY = 'STATIT'
+			                      AND I.STATIT = V.CMCDVL
+			   INNER JOIN CMCDV L ON  L.CMCDKY = 'LOTA01'
+			                      AND I.LOTA01 = L.CMCDVL                   					  
+		WHERE  I.COMPKY  = #{SES_USER_COMPANY}
+		AND    I.ASNDKY  = #{ASNDKY}
+		AND    I.SWERKS != 'V'
+		AND    I.STATIT IN('NEW','PPC')
+	</select>
+	
+	<select id="RECDH_ASN_MAP" parameterType="hashmap" resultType="DataMap">
+		WITH A AS(
+			SELECT ' ' AS RECVKY
+		)
+		SELECT COALESCE(H.RECVKY, A.RECVKY) AS "RECVKY"
+		FROM   RECDH H LEFT OUTER JOIN A ON H.RECVKY = A.RECVKY 
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    H.USRID3 = #{ASNDKY}
+	</select>
+	
+	<select id="RECDI_MAXRIT_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT CAST(COALESCE(MAX(RECVIT), '0') AS NUMERIC) AS "MAXRIT"
+		FROM   RECDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+	    AND    REFDKY = #{ASNDKY}
+	</select>
+	
+	<select id="RECDI_ASN_MAP" parameterType="hashmap" resultType="DataMap">
+		WITH A AS(
+			SELECT ' ' AS RECVKY, ' ' AS RECVIT
+		)
+		SELECT COALESCE(I.RECVKY, A.RECVKY) AS "RECVKY"
+		   ,   COALESCE(I.RECVIT, A.RECVIT) AS "RECVIT"
+		FROM   RECDI I LEFT OUTER JOIN A ON I.RECVKY = A.RECVKY
+		                                AND I.RECVIT = A.RECVIT
+		WHERE  I.COMPKY = #{SES_USER_COMPANY}
+		AND    I.REFDKY = #{REFDKY}
+		AND    I.REFDIT = #{REFDIT}
+		AND    I.LOTA01 = #{LOTA01}
+	</select>
+	
+	<select id="RECDH_STATDO_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN COALESCE(B.QTYRCV, 0) <![CDATA[<=]]> 0  THEN 'NEW'
+		            ELSE CASE WHEN COALESCE(A.QTYORG, 0) != COALESCE(B.QTYRCV, 0) THEN 'PPC' ELSE 'FPC' END
+		       END  "STATDO"
+		FROM(
+			SELECT ASNDKY
+			   ,   SUM(QTYASN) AS QTYORG
+			FROM   ASNDI
+			WHERE  COMPKY = #{SES_USER_COMPANY}
+			AND    ASNDKY = #{ASNDKY}
+			GROUP BY 
+			       ASNDKY
+		) A INNER JOIN(
+			SELECT REFDKY
+			   ,   COALESCE(SUM(QTYRCV), 0) AS QTYRCV
+			FROM   RECDI
+			WHERE  COMPKY = #{SES_USER_COMPANY}
+			AND    RECVKY = #{RECVKY}
+			GROUP BY
+			       REFDKY
+		) B ON A.ASNDKY = B.REFDKY
+	</select>
+	
+	<insert id="RECDH_INSERT" parameterType="hashmap">
+		INSERT INTO RECDH(
+			  COMPKY
+			, RECVKY
+			, WAREKY
+			, RCPTTY
+			, STATDO
+			, DOCDAT
+			, DOCCAT
+			, DPTNKY
+			, ARCPTD
+			, OWNRKY
+			, USRID1
+			, UNAME1
+			, DNAME1
+			, USRID2
+			, USRID3
+			, DEPTID3
+			, DNAME3
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{RECVKY}
+			, #{WAREKY}
+			, #{RCPTTY}
+			, COALESCE(#{STATDO}, ' ')
+			, COALESCE(#{DOCDAT}, ' ')
+			, COALESCE(#{DOCCAT}, ' ')
+			, COALESCE(#{DPTNKY}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, COALESCE(#{OWNRKY}, ' ')
+			, COALESCE(#{USRID1}, ' ')
+			, COALESCE(#{UNAME1}, ' ')
+			, COALESCE(#{DNAME1}, ' ')
+			, COALESCE(#{USRID2}, ' ')
+			, COALESCE(#{ASNDKY}, ' ')
+			, COALESCE(#{DEPTID3}, ' ') 
+			, COALESCE(#{DNAME3}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="RECDH_UPDATE" parameterType="hashmap">
+		UPDATE RECDH
+		SET    STATDO = #{STATDO}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+	</update>
+	
+	<insert id="RECDI_INSERT" parameterType="hashmap">
+		INSERT INTO RECDI(
+		      COMPKY	
+			, RECVKY
+		    , RECVIT
+			, STATIT
+			, SKUKEY
+			, LOTNUM
+			, QTYRCV
+			, QTYUOM
+			, MEASKY
+			, UOMKEY
+			, QTPUOM
+			, DUOMKY
+			, QTDUOM
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, REFDKY
+			, REFDIT
+			, REFCAT
+			, REFDAT
+			, DESC01
+			, QTYORG
+			, SEBELN
+			, SEBELP
+			, SZMBLNO
+			, SZMIPNO
+			, SVBELN
+			, SPOSNR
+			, STDLNR
+			, EANCOD
+			, GTINCD
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{RECVKY}
+		    , #{RECVIT}
+			, COALESCE(#{STATIT}, ' ')
+			, #{SKUKEY}
+			, CASE WHEN LENGTH(COALESCE(TRIM(#{LOTNUM}),'')) > 0 THEN #{LOTNUM}
+			       ELSE 
+						  FN_GET_LOTNUMBER(
+							  #{SES_USER_COMPANY}
+							, #{WAREKY}
+							, #{OWNRKY}
+							, #{SKUKEY}
+							, COALESCE(#{SEBELN},'')
+							, COALESCE(#{SEBELP},'')
+							, COALESCE(#{LOTA02},'')
+							, COALESCE(#{LOTA03},'')
+							, COALESCE(#{LOTA04}, ' ')
+						    , COALESCE(#{LOTA05}, ' ')
+							, TO_CHAR(NOW(),'YYYYMMDD')
+						  )
+			  END			  
+			, #{QTYRCV}::NUMERIC
+			, #{QTYUOM}::NUMERIC
+			, COALESCE(#{MEASKY},' ')
+			, COALESCE(#{UOMKEY},' ')
+			, #{QTPUOM}::NUMERIC
+			, COALESCE(#{DUOMKY},' ')
+			, #{QTDUOM}::NUMERIC
+			, COALESCE(#{LOTA01}, ' ')
+			, COALESCE(#{LOTA02}, ' ')
+			, COALESCE(#{LOTA03}, ' ')
+			, COALESCE(#{LOTA04}, ' ')
+			, COALESCE(#{LOTA05}, ' ')
+			, COALESCE(#{REFDKY}, ' ')
+			, COALESCE(#{REFDIT}, ' ')
+			, COALESCE(#{REFCAT}, ' ')
+			, COALESCE(#{REFDAT}, ' ')
+			, #{DESC01}
+			, #{QTYORG}::NUMERIC
+			, COALESCE(#{SEBELN}, ' ')
+			, COALESCE(#{SEBELP}, ' ')
+			, COALESCE(#{SZMBLNO}, ' ')
+			, COALESCE(#{SZMIPNO}, ' ')
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')
+			, COALESCE(#{STDLNR}, ' ')
+			, COALESCE(#{EANCOD}, ' ')
+			, COALESCE(#{GTINCD}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="RECDI_QTYRCV_UPDATE" parameterType="hashmap">
+		UPDATE RECDI
+		SET    QTYRCV = (QTYRCV + #{QTYRCV}::NUMERIC)
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+		AND    RECVIT = #{RECVIT}
+	</update>
+	
+	<select id="ASNDI_STATUS_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.ASNDKY AS "ASNDKY"
+		   ,   B.ASNDIT AS "ASNDIT"
+		   ,   C.RECVKY AS "RECVKY"
+		   ,   C.SKUKEY AS "SKUKEY"
+		   ,   B.QTYASN AS "QTYASN"
+		   ,   COALESCE(SUM(C.QTYRCV), 0) AS "QTYRCV"
+		   ,   B.QTYASN - COALESCE(SUM(C.QTYRCV), 0) AS "QTYDIF"
+		   ,   CASE WHEN COALESCE(SUM(C.QTYRCV), 0) = 0            THEN 'NEW'
+		   		    WHEN B.QTYASN - COALESCE(SUM(C.QTYRCV), 0) = 0 THEN 'FPC'
+		            ELSE 'PPC'
+		       END "STATIT"   
+		FROM   ASNDH A
+		       INNER JOIN ASNDI B      ON A.COMPKY = B.COMPKY
+		                              AND A.ASNDKY = B.ASNDKY
+		       LEFT OUTER JOIN RECDI C ON B.COMPKY = C.COMPKY
+		                              AND B.SEBELN = C.SEBELN
+		                              AND B.SEBELP = C.SEBELP
+		                              AND C.RECVKY = #{RECVKY}
+		WHERE A.COMPKY = #{SES_USER_COMPANY}
+		AND   A.ASNDKY = #{ASNDKY}
+		GROUP BY 
+		      A.ASNDKY
+		   ,  B.ASNDIT
+		   ,  C.RECVKY
+		   ,  C.SKUKEY
+		   ,  B.QTYASN
+	</select>
+	
+	<select id="ASNDH_STATUS_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT CASE WHEN SUM(QTYRCV) = 0                 THEN 'NEW'
+		            WHEN (SUM(QTYASN) - SUM(QTYRCV)) = 0 THEN 'FPC'
+		            ELSE 'PPC'
+		       END  "STATDO"       
+		FROM   ASNDI
+		WHERE  COMPKY = #{SES_USER_COMPANY} 
+		AND    ASNDKY = #{ASNDKY}
+	</select>
+	
+	<update id="ASNDH_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE ASNDH
+		SET    STATDO = #{STATDO}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+	</update>
+	
+	<update id="ASNDI_STATUS_UPDATE" parameterType="hashmap">
+		UPDATE ASNDI
+		SET    STATIT = #{STATIT}
+		  ,    QTYRCV = #{QTYRCV}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		AND    ASNDIT = #{ASNDIT}
+	</update>
+	
+	<update id="ASNDI_STATIT_UPDATE" parameterType="hashmap">
+		UPDATE ASNDI
+		SET    STATIT = CASE WHEN (QTYASN - QTYRCV) = 0 THEN 'FPC'
+		                     WHEN (QTYASN - QTYRCV) = QTYASN THEN 'NEW'
+		                     ELSE 'PPC'
+		                END      
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		AND    ASNDIT = #{ASNDIT}
+	</update>
+	
+	<update id="ASNDI_QTYRCV_UPDATE" parameterType="hashmap">
+		UPDATE ASNDI
+		SET    QTYRCV = QTYRCV + #{QTYRCV}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		AND    ASNDIT = #{ASNDIT}
+	</update>
+	
+	<select id="PRCS_RTN_GRP_STKKY_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_RTN_GRP_STKKY(#{COMPKY}, #{WAREKY}, #{RECVKY}, #{SES_USER_ID}) AS "RECVKY"
+	</select>
+	
+	<select id="PRCS_RTN_IN_STKKY_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_RTN_IN_STKKY(#{COMPKY}, #{WAREKY}, #{RECVKY}, #{RECVIT}, #{SES_USER_ID}) AS "RECVKY"
+	</select>
+	<!-- [GR01] 입고처리** -->
+	
+	<!-- **[GR09] 입고이력조회-->
+	<select id="GR09_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		       H.COMPKY  AS "COMPKY"
+		   ,   H.RECVKY  AS "RECVKY"
+		   ,   H.WAREKY  AS "WAREKY"
+		   ,   H.RCPTTY  AS "RCPTTY"
+		   ,   D.SHORTX  AS "RCPTNM"
+		   ,   H.DOCDAT  AS "DOCDAT"
+		   ,   H.DOCCAT  AS "DOCCAT"
+		   ,   H.DPTNKY  AS "DPTNKY"
+		   ,   H.ARCPTD  AS "ARCPTD"
+		   ,   H.OWNRKY  AS "OWNRKY"
+		   ,   O.NAME01  AS "OWNRNM"
+		   ,   I.SEBELN  AS "SEBELN"
+		   ,   I.SZMBLNO AS "SZMBLNO"
+		   ,   H.DNAME1  AS "PTNRNM"
+		   ,   I.SVBELN  AS "SVBELN"
+		   ,   H.USRID3  AS "ASNDKY"
+		FROM   RECDH H
+		       INNER JOIN RECDI I ON  H.COMPKY = I.COMPKY
+			                      AND H.RECVKY = I.RECVKY
+			   INNER JOIN OWNER O ON  H.COMPKY = O.COMPKY
+			                      AND H.OWNRKY = O.OWNRKY
+		       INNER JOIN DOCTM D ON  H.DOCCAT = D.DOCCAT
+								  AND H.RCPTTY = D.DOCUTY
+		WHERE  H.COMPKY = #{SES_USER_COMPANY}
+		AND    H.WAREKY = #{WAREKY}
+		AND    H.RCPTTY = #{RCPTTY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY 
+		       H.RECVKY DESC
+	</select>
+	
+	<select id="GR09_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.RECVKY  AS "RECVKY"
+		   ,   I.RECVIT  AS "RECVIT"
+		   ,   I.LOTNUM  AS "LOTNUM"
+		   ,   I.SKUKEY  AS "SKUKEY"
+		   ,   I.DESC01  AS "DESC01"
+		   ,   I.QTYRCV  AS "QTYORG"
+		   ,   I.QTYRCV  AS "QTYRCV"
+		   ,   I.UOMKEY  AS "UOMKEY"
+		   ,   I.LOTA01  AS "LOTA01"
+		   ,   I.LOTA02  AS "LOTA02"
+		   ,   I.LOTA03  AS "LOTA03"
+		   ,   V.CDESC1  AS "LT01NM"
+		   ,   I.REFDKY  AS "ASNDKY"
+		   ,   I.REFDIT  AS "ASNDIT"
+		   ,   I.SEBELN  AS "SEBELN"
+		   ,   I.SEBELP  AS "SEBELP"
+		   ,   I.SVBELN  AS "SVBELN"
+		   ,   I.SPOSNR  AS "SPOSNR"
+		   ,   I.SZMBLNO AS "SZMBLNO"
+		   ,   I.SZMIPNO AS "SZMIPNO"
+		   ,   I.STDLNR  AS "STDLNR"
+		FROM   RECDI I
+		       INNER JOIN CMCDV V ON  I.LOTA01 = V.CMCDVL
+								  AND V.CMCDKY = 'LOTA01'
+		WHERE  I.COMPKY = #{SES_USER_COMPANY}
+		AND    I.RECVKY = #{RECVKY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY
+		       I.RECVKY, I.RECVIT
+	</select>
+	
+	<select id="GR09_TASK_CHECK_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT SUM(QTYDIF) AS "QTYTSK"
+		FROM   RECDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+	</select>
+	
+	<select id="GR09_RECDI_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   RECDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+	</select>
+	
+	<select id="GR09_ASNDI_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT QTYASN AS "QTYASN"
+		   ,   QTYRCV AS "QTYRCV"
+		FROM   ASNDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    ASNDKY = #{ASNDKY}
+		AND    ASNDIT = #{ASNDIT} 
+	</select>
+	
+	<delete id="GR09_RECDH_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   RECDH
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+	</delete>
+	
+	<delete id="GR09_RECDI_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   RECDI
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+		AND    RECVIT = #{RECVIT} 
+	</delete>
+	
+	<delete id="GR09_RECDI_UPDATE" parameterType="hashmap">
+		UPDATE RECDI
+		SET    QTYRCV = #{QTYRCV}::NUMERIC
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    RECVKY = #{RECVKY}
+		AND    RECVIT = #{RECVIT} 
+	</delete>
+	<!-- [GR09] 입고이력조회**-->
+</mapper>

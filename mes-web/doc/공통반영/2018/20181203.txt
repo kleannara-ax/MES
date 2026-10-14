@@ -1,0 +1,7 @@
+search combo, multiple combo 기능 추가
+ - commonUtil.js, dataBind.js, input.js, ui.js, common/theme/darkness/js/theme.js
+ - saveVarient, getVarient 적용.
+ - parameter 함수 로 조회 조건 꺼내는 경우 선택된 값들이 ,로 이어진 string 으로 값 저장: "valueA,valueB,valueC" 
+ - search combo : ComboType="SC" ComboType="SC,100" ,뒤에 combo 앞 입력창 크기 지정 표시
+ - multiple combo : ComboType="MC" ComboType="MC,100" ,뒤에 combo 앞 입력창 크기 지정 표시
+ - demo/input/default.jsp 참조

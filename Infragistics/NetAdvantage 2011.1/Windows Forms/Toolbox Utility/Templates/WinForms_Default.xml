@@ -1,0 +1,8 @@
+﻿<!--The default template for installing the Windows Forms product-->
+<Toolbox>
+  <Tab Name="NetAdvantage $(var.Major).$(var.Minor) Win CLR2x">
+    <Assembly Include="^Infragistics2.*" />
+    <Assembly Exclude="^Infragistics2.*.Design.*" />
+    <Assembly Include="^Infragistics3.*" />
+  </Tab>
+</Toolbox>

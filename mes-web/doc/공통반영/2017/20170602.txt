@@ -1,0 +1,14 @@
+excel download시 searchArea의 validation을 check하도록 변경
+gridExcelDownloadEventBefore 이벤트를 사용하는 경우 searchArea의 validation을 check하지 않음.
+단, return 값이 false일 경우 excel down를 하지 않음
+ - grid.js
+
+excel down시 excelRequestMaxRow를 지정하는 경우 max row를 넘지 않는 경우 excel down error 수정
+ - BaseController.java
+ 
+excel down excelRequestMaxRow 를 site 속성 추가
+ - gris.js, site.js excelRequestMaxRow
+ - excelRequestMaxRow 값이 0이 아닌 경우 화면에서 excelRequestMaxRow 값을 주지 않으면 site 속성이 적용
+ 
+validation message생성시 label의 공백으로 발생한 오류 수정
+ - grid.js, validateUtil.js, input.js

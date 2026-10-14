@@ -1,0 +1,530 @@
+--------------------------------------------------------
+--  DDL for Procedure SP_POP_WRK30_I02_MES
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_POP_WRK30_I02_MES" 
+(
+     P_WERKS     		IN  VARCHAR2 	                --플랜트
+    ,P_MACH_CD   		IN  VARCHAR2 	                --설비코드
+    ,P_IND_BCD_LIST     IN  CLOB			   	            --개별바코드 리스트
+    ,P_CNL_RMK          IN  VARCHAR2 	                --취소내용
+    ,P_USERID           IN  VARCHAR2                    --USER ID
+    ,Lang       		IN  VARCHAR2 DEFAULT 'KO'
+    ,RS_CODE     		OUT VARCHAR2 
+    ,RS_MSG      		OUT VARCHAR2
+    ,RS_PRFM_RFCFN      OUT VARCHAR2                    --실적 RFCFN값
+    ,RS_PRFM_I_IF_ID    OUT VARCHAR2
+    ,RS_PRFM_I_IF_KEY   OUT VARCHAR2
+    ,RS_PRFM_SQL        OUT VARCHAR2
+    ,RS_DISPO_RFCFN     OUT VARCHAR2                    --폐품 RFCFN값    
+    ,RS_DISPO_I_IF_ID   OUT VARCHAR2
+    ,RS_DISPO_I_IF_KEY  OUT VARCHAR2
+    ,RS_DISPO_SQL       OUT VARCHAR2
+)
+/*==============================================================================
+ * PROGRAM ID    : SP_POP_WRK30_I02_MES  {호출 프로그램 ID 기술}
+ * PROGRAM NAME  : 점보롤 실적취소 MES웹용
+ * VERSION       : 1.0.0{최종 버전 기술}
+ * DESCRIPTION   : .{프로그램에 대한 상세한 내용 기술}
+ *                 
+ * AUTHOR NAME   : 박충식{최초 작성자 명 기술}
+ * CREATE DATE   : 2022/06/29 {최초 작성일자 기술}
+ * SYSTEM NAME   : POP
+ * MAIN PROCEDURE: {주(상위) 프로시저 명칭 기술}  <생략가능>
+ * SUB PROCEDURE : {아휘 프로시저 명칭 기술}      <생략가능>
+ * SUB PACKAGES  : {하위 패키지 기술}            <생략가능>
+ * OLD PROGRAM ID: {이전 시스템 프로그램 명 기술} <생략가능>
+ * REVERSION HISTORY
+ * ------------ ------- ------------- ------------------------------------------
+ *    Date        Ver       Name          Description      
+ * ------------ ------- ------------- ------------------------------------------
+ * 2022/06/20    1.0.0   박충식         Initial Version 
+ *==============================================================================
+ *  관련 테이블
+ *       - [TB_WRK011] : (.RU.) 설비별 현재진행사항 
+ *       - [TB_WRK012] : (C.U.) 설비별 현재진행사항 
+ *       - [TB_SCH016] : (.R..) 밀롤,슬리터 작업지지서
+ *=============================================================================*/
+
+AS 
+    --프로그램 ID : 점보롤 실적취소 
+    V_PRG_NM        VARCHAR2(100)  := 'SP_POP_WRK30_I02_MES';     -- PROCEDURE NAME
+    V_PLT_CD         varchar2(2) := '99'; --PLANTCODE TEST
+    V_SESS_USER_ID   varchar2(20) := P_USERID; --USERID
+
+    -- 오라클 에러 처리용 변수선언 영역
+    E_EXCEPTION_USER  EXCEPTION;
+    E_SQL_ERR_CD      NUMBER(5) := 0;
+    E_SQL_ERR_MSG     VARCHAR2(4000);
+
+    -- JSON을 위한 변수선언 영역
+    V_JSON           JSON_OBJECT_T;
+    V_ARR_LIST       JSON_ARRAY_T;
+    V_ARR_HEAD       JSON_OBJECT_T;
+    V_OBJ            JSON_OBJECT_T;
+
+    --parameter변수 처리
+    V_WERKS             TB_WRK002.WERKS%TYPE;        -- 플랜트코드    
+    V_MACH_CD           TB_WRK002.MACH_CD%TYPE;      -- 설비코드  
+    V_IND_BCD           TB_WRK002.IND_BCD%TYPE;      -- 개별바코드
+
+    V_WRK_ORDR_NO           TB_SCH015.WRK_ORDR_NO%TYPE;         
+    V_WRK_ORDR_SEQNO        TB_SCH015.WRK_ORDR_SEQNO%TYPE;      
+    V_ORDER_NO              TB_WRK002.ORDER_NO%TYPE;
+    V_STA                   TB_WRK002.STA%TYPE;
+    V_SDOC_NO               TB_WRK002.SDOC_NO%TYPE;
+    V_SDOC_SEQNO            TB_WRK002.SDOC_SEQNO%TYPE;
+    V_SAP_WRK_CD            TB_MAS012.SAP_WRK_CD%TYPE;
+    V_ROLLCNT	            TB_WRK002.ROLLCNT%TYPE;		    --권치수
+    V_DOC_NO                VARCHAR2(20);
+    V_DOC_SEQNO             NUMBER;
+    V_PRFM_QTY	            TB_WRK002.PRFM_QTY%TYPE;     --실적수량
+    V_DISPO_QTY	            TB_WRK002.PRFM_QTY%TYPE;     --폐품수량
+    V_MATNR                 TB_WRK004.MATNR%TYPE;        --자재코드
+    V_NAUFNR                TB_WRK002.NAUFNR%TYPE;
+    V_PRFM_DT               VARCHAR2(20);   
+    V_LOT_NO                VARCHAR2(20);   
+    V_SQL                   VARCHAR2(4000);
+    V_TOT_QTY               NUMBER(13,3);  
+    V_DMY                   VARCHAR2(5);     
+    V_YMCHK                 TB_MAS011.YMCHK%TYPE;   --실적등록 가능 여부
+BEGIN
+  BEGIN
+/*
+   OPEN CUR_1 FOR 
+   SELECT NULL FROM DUAL WHERE ROWNUM = 0;
+
+   OPEN CUR_2 FOR 
+   SELECT NULL FROM DUAL WHERE ROWNUM = 0;
+
+   OPEN CUR_3 FOR 
+   SELECT NULL FROM DUAL WHERE ROWNUM = 0;
+
+   OPEN CUR_4 FOR 
+   SELECT NULL FROM DUAL WHERE ROWNUM = 0;
+*/
+
+    --P_WERKS     		IN VARCHAR2 	                --플랜트
+    --,P_MACH_CD   		IN VARCHAR2 	                --설비코드
+    --,P_IND_BCD_LIST     IN CLOB			   	            --개별바코드 리스트
+    --,P_CNL_RMK          IN VARCHAR2 	                --취소내용
+    --,P_USERID           IN VARCHAR2                     --USER ID
+
+    V_JSON := JSON_OBJECT_T.parse(P_IND_BCD_LIST);
+
+    --V_SESS_USER_ID       :=       V_JSON.get_string('SES_USER_ID');
+    --V_WERKS              :=       V_JSON.get_string('WERKS');
+    --V_MACH_CD              :=       V_JSON.get_string('MACH_CD');
+
+    V_ARR_LIST        := V_JSON.get_array('list');    
+
+
+    FOR i IN 0..V_ARR_LIST.get_size-1 LOOP    
+        V_OBJ           := TREAT (V_ARR_LIST.get (i) AS json_object_t);
+        V_OBJ           := TREAT (V_OBJ.get ('map') AS json_object_t);
+        V_IND_BCD       := V_OBJ.get_string('IND_BCD');
+
+
+        -- 실적 취소------------------------------------------------------------------------------------------
+        BEGIN
+                SELECT WRK_ORDR_NO, WRK_ORDR_SEQNO, ORDER_NO, STA, SDOC_NO, SDOC_SEQNO, PRFM_QTY, ROLLCNT, LOT_NO, PRFM_DT, NAUFNR           
+                  INTO V_WRK_ORDR_NO, V_WRK_ORDR_SEQNO, V_ORDER_NO, V_STA, V_SDOC_NO, V_SDOC_SEQNO, V_PRFM_QTY, V_ROLLCNT,V_LOT_NO, V_PRFM_DT, V_NAUFNR
+                  FROM TB_WRK002
+                 WHERE WERKS   = P_WERKS
+                   AND MACH_CD = P_MACH_CD
+                   AND IND_BCD = V_IND_BCD
+                   ;
+        EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    V_ROLLCNT := 0;
+                WHEN OTHERS THEN
+                    V_ROLLCNT := 0;
+        END;
+
+        BEGIN
+                SELECT STCK_STA
+                  INTO V_DMY
+                  FROM TB_INV001
+                 WHERE WERKS      = P_WERKS
+                   AND IND_BCD    = V_IND_BCD
+                   AND ROWNUM     = 1
+                   ;
+        EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    V_DMY := 'N';
+                WHEN OTHERS THEN
+                    V_DMY := 'N';
+        END;        
+
+        IF V_DMY = '10'   THEN
+           RS_CODE      := 'E';
+           RS_MSG       := '후공정에 투입되어 실적취소를 할 수 없습니다.';
+           ROLLBACK;
+           RETURN;
+        END IF ;
+
+        BEGIN
+                SELECT ORDER_NO
+                  INTO V_ORDER_NO
+                  FROM TB_SCH015
+                 WHERE WRK_ORDR_NO    = V_WRK_ORDR_NO
+                   AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                   ;
+        EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    V_ORDER_NO := '';
+                WHEN OTHERS THEN
+                    V_ORDER_NO := '';
+        END;
+
+        IF V_ROLLCNT > 0 THEN   
+
+                UPDATE  TB_SCH015   
+                   SET  COMP_YN = 'N'
+                 WHERE WRK_ORDR_NO   = V_WRK_ORDR_NO
+                  AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                  ;
+
+                --실적등록 가능 월 검사                
+                BEGIN
+                    SELECT  YMCHK INTO  V_YMCHK
+                      FROM TB_MAS011
+                     WHERE WERKS = P_WERKS
+                       AND YMCHK = 'Y'
+                       AND YYMM  = SUBSTR(V_PRFM_DT, 1, 6);
+               
+                EXCEPTION
+                    WHEN NO_DATA_FOUND THEN
+                        V_YMCHK := 'N';
+                END;
+        
+                IF V_YMCHK = 'N' THEN
+                    RS_CODE := 'E';
+                    RS_MSG := '실적등록 가능한 월이 아닙니다.';
+                    ROLLBACK;
+                    RETURN;
+                END IF;
+
+
+                SELECT SAP_WRK_CD INTO V_SAP_WRK_CD
+                  FROM TB_MAS012
+                  WHERE MACH_CD = P_MACH_CD
+                  ;
+
+                IF V_STA = '00' OR V_STA = '60' THEN   --재고상태 정상
+                    IF V_STA = '60' THEN
+                        V_ORDER_NO := V_NAUFNR;
+                    END IF;
+                    
+                     V_DOC_NO := FN_GET_MDOCNO('M','IF129');
+                     V_DOC_SEQNO := 1;
+
+                     INSERT INTO TB_IFS007           --생산오더별실적 취소
+                                          (RUECK                        --SAP 확정번호
+                                         , RMZHL                        --SAP 확정카운터
+                                         , MDOCNO                       --MES 문서번호
+                                         , MDOCSEQ                      --MES 문서순번
+                                         , MAKE_DATE                    --등록일자 
+                                         , MAKER                        --등록자
+                                         , WORKCENTERCODE               --작업장코드(MES PK)
+                                         , AUFNR                        --오더번호
+                                         , ROLLCNT                      --권치수
+                                         , MBLNR                        --MBLNR
+                                         , LOTNO
+                           )                       
+                     VALUES(               V_SDOC_NO                    --SAP 확정번호
+                                         , V_SDOC_SEQNO                 --SAP 확정카운터 
+                                         , V_DOC_NO                     --MES 문서번호
+                                         , V_DOC_SEQNO                  --MES 문서순번 
+                                         , SYSDATE                      --등록일자 
+                                         , P_USERID                     --등록자
+                                         , V_SAP_WRK_CD                 --작업장코드(MES PK)
+                                         , V_ORDER_NO                   --오더번호
+                                         , V_ROLLCNT                    --권치수
+                                         , V_SDOC_NO                    --MBLNR 
+                                         , V_LOT_NO                     --LOT_NO
+                            );                  
+
+                            -- 개별바코드 전달
+                            --RS_IND_BCD := V_IND_BCD;
+
+                            --SAP FUNC ID
+                            SELECT RFCFN
+                              INTO RS_PRFM_RFCFN
+                              FROM TB_ITFMA
+                             WHERE 1=1
+                               AND IFID = 'MES_IF_129';   --생산오더별 실적 취소 TXN
+
+                            --인터페이스 파라미터
+                            --OPEN CUR_1 FOR
+                            SELECT 'MES_IF_129' AS I_IF_ID
+                                 , 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS I_IF_KEY
+                              INTO RS_PRFM_I_IF_ID ,  RS_PRFM_I_IF_KEY   
+                            FROM dual;
+
+                            --인터페이스 상세 파라미터
+                            --RS_PRFM_SQL := FN_IF_QUERY('MES_IF_129', V_DOC_NO);
+                            RS_PRFM_SQL := SUBSTR(V_DOC_NO,1, LENGTH(V_DOC_NO) );
+                            --OPEN CUR_2 FOR V_SQL;
+
+                            UPDATE TB_WRK002     --실적테이블(PS)
+                               SET CNL_YN = 'Y',
+                                   CNL_RMK = P_CNL_RMK,
+                                   ROLLCNT = ROLLCNT - V_ROLLCNT ,
+                                   UPDDATE = SYSDATE,
+                                   UPDID   = P_USERID
+                             WHERE WERKS   = P_WERKS
+                               AND MACH_CD = P_MACH_CD
+                               AND IND_BCD = V_IND_BCD;
+
+                           UPDATE TB_INV001
+                                SET STCK_QTY = 0,
+                                    DLFL = 'Y',
+                                    UPDDATE = SYSDATE,
+                                    UPDID   = P_USERID
+                              WHERE WERKS = P_WERKS
+                                AND MACH_CD = P_MACH_CD
+                                AND IND_BCD = V_IND_BCD;
+                                
+                              
+                            --[김병무:2022-07-19] 점보롤에서 투입자재 추가 하여 실적취소 시 삭제 기능 추가
+                            DELETE FROM TB_WRK008     --LOT 추적
+                              WHERE WERKS   = P_WERKS
+                              AND IND_BCD   = V_IND_BCD;
+
+                ELSIF V_STA = '10' THEN   --재고상태 투입
+                     RS_CODE      := 'E';
+                     RS_MSG       := '후공정에 투입되어 실적취소를 할 수 없습니다.';
+                     ROLLBACK;
+                     RETURN;
+                ELSIF V_STA = '20' THEN   --재고상태 생산실적
+                     RS_CODE      := 'E';
+                     RS_MSG       := '후공정에서 실적완료 되어 실적취소를 할 수 없습니다.';
+                     ROLLBACK;
+                     RETURN;
+                END IF;  
+        END IF;   
+
+        -- 폐품 취소------------------------------------------------------------------------------------------
+        BEGIN
+                SELECT WRK_ORDR_NO, WRK_ORDR_SEQNO, SDOC_NO, SDOC_SEQNO, DISPO_QTY,ROLLCNT,MATNR,PRFM_DT, LOT_NO,PRFM_DT           
+                  INTO V_WRK_ORDR_NO, V_WRK_ORDR_SEQNO, V_SDOC_NO, V_SDOC_SEQNO, V_DISPO_QTY,V_ROLLCNT,V_MATNR,V_PRFM_DT,V_LOT_NO,V_PRFM_DT           
+                  FROM TB_WRK004
+                 WHERE WERKS   = P_WERKS
+                   AND MACH_CD = P_MACH_CD
+                   AND IND_BCD = V_IND_BCD
+                   ;
+        EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    V_ROLLCNT := 0;
+                WHEN OTHERS THEN
+                    V_ROLLCNT := 0;
+        END;
+
+        BEGIN
+                SELECT ORDER_NO
+                  INTO V_ORDER_NO
+                  FROM TB_SCH015
+                 WHERE WRK_ORDR_NO   = V_WRK_ORDR_NO
+                   AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                   ;
+        EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    V_ORDER_NO := '';
+                WHEN OTHERS THEN
+                    V_ORDER_NO := '';
+        END;
+
+
+        IF V_ROLLCNT > 0 THEN   --폐품수량
+
+                UPDATE  TB_SCH015   
+                   SET  COMP_YN = 'N'
+                 WHERE WRK_ORDR_NO   = V_WRK_ORDR_NO
+                  AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                  ;
+        
+                --실적등록 가능 월 검사                
+                BEGIN
+                    SELECT YMCHK INTO  V_YMCHK
+                      FROM TB_MAS011
+                     WHERE WERKS = P_WERKS
+                       AND YMCHK = 'Y'
+                       AND YYMM  = SUBSTR(V_PRFM_DT, 1, 6)
+                       ;
+                EXCEPTION
+                    WHEN NO_DATA_FOUND THEN
+                        V_YMCHK := 'N';
+                END;
+        
+                IF V_YMCHK = 'N' THEN
+                    RS_CODE := 'E';
+                    RS_MSG := '실적등록 가능한 월이 아닙니다.';
+                    ROLLBACK;
+                    RETURN;
+                END IF;
+        
+                SELECT SAP_WRK_CD INTO V_SAP_WRK_CD
+                  FROM TB_MAS012
+                  WHERE MACH_CD = P_MACH_CD;
+
+                     V_DOC_NO := FN_GET_MDOCNO('M','IF144');
+                     V_DOC_SEQNO := 1;
+
+                     INSERT INTO TB_IFS022           --폐품취소
+                                          (
+                                             WORKCENTERCODE	--작업장코드(MES PK)
+                                            ,AUFNR	        --오더번호
+                                            ,POSNR	        --오더Item번호
+                                            ,BUDAT	        --투입일자(전기일)
+                                            ,MATNR	        --자재번호(투입자재)
+                                            ,MENGE	        --투입량
+                                            ,WERKS	        --플랜트
+                                            ,LGORT	        --저장위치
+                                            ,CHARG	        --LOT번호
+                                            ,MDOCNO	        --MES 문서번호
+                                            ,MDOCSEQ	    --MES 문서순번
+                                            ,MBLNR	        --SAP 문서번호
+                                            ,MJAHR	        --SAP 문서번호(년도)
+                                            ,ZRESULT	    --SAP 결과값 Return( S:성공, E:오류 )
+                                            ,ZRESULT_DATE    --전송 시간
+                                            ,MAKE_DATE	    --등록일자
+                                            ,IF_MES_KEY	    --MES Inserface Key(MES->SAP 인 경우만)
+                                            ,ZMESSAGE	    --SAP결과 메시지                                          
+                           )                       
+                     VALUES
+                          (               
+                                             V_SAP_WRK_CD	--작업장코드(MES PK)
+                                            ,V_ORDER_NO	    --오더번호
+                                            ,1	            --오더Item번호
+                                            ,V_PRFM_DT	    --투입일자(전기일)
+                                            ,V_MATNR	    --자재번호(투입자재)
+                                            ,V_DISPO_QTY	--투입량
+                                            ,P_WERKS	    --플랜트
+                                            ,'2000'	        --저장위치
+                                            ,V_LOT_NO	    --LOT번호
+                                            ,V_DOC_NO	    --MES 문서번호
+                                            ,V_DOC_SEQNO	--MES 문서순번
+                                            ,V_SDOC_NO	    --SAP 문서번호
+                                            ,V_SDOC_SEQNO	--SAP 문서번호(년도)
+                                            ,'N'	        --SAP 결과값 Return( S:성공, E:오류 )
+                                            ,NULL           --전송 시간
+                                            ,SYSDATE	    --등록일자
+                                            ,NULL	        --MES Inserface Key(MES->SAP 인 경우만)
+                                            ,NULL	        --SAP결과 메시지                                          
+                            );                  
+
+                            -- 개별바코드 전달
+                            --RS_IND_BCD := V_IND_BCD;
+
+                            --SAP FUNC ID
+                            SELECT RFCFN
+                              INTO RS_DISPO_RFCFN
+                              FROM TB_ITFMA
+                             WHERE 1=1
+                               AND IFID = 'MES_IF_144';
+
+                            --인터페이스 파라미터
+                            --OPEN CUR_3 FOR
+                            SELECT 'MES_IF_144' AS I_IF_ID
+                                 , 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS I_IF_KEY
+                               INTO  RS_DISPO_I_IF_ID,  RS_DISPO_I_IF_KEY 
+                            FROM dual;
+
+                            --인터페이스 상세 파라미터
+                            --RS_DISPO_SQL := FN_IF_QUERY('MES_IF_144', V_DOC_NO);
+                            RS_DISPO_SQL := SUBSTR(V_DOC_NO, 1, LENGTH(V_DOC_NO) );
+                            --OPEN CUR_4 FOR V_SQL;
+
+                            UPDATE TB_WRK004     --폐품테이블(PS)
+                               SET CNL_YN = 'Y',
+                                   UPDDATE = SYSDATE,
+                                   UPDID   = P_USERID
+                             WHERE WERKS   = P_WERKS
+                               AND MACH_CD = P_MACH_CD
+                               AND IND_BCD = V_IND_BCD;
+        END IF;            
+
+        V_TOT_QTY := 0 ;
+        SELECT
+               SUM(QTY)
+        INTO   V_TOT_QTY     
+        FROM 
+        (
+                        SELECT NVL(PRFM_QTY,0)   QTY
+                        FROM TB_WRK002 
+                         WHERE WRK_ORDR_NO    = V_WRK_ORDR_NO
+                           AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                           AND NVL(CNL_YN, 'N') =  'N'
+                        UNION ALL
+                        SELECT NVL(DISPO_QTY,0)  QTY
+                        FROM TB_WRK004 
+                         WHERE WRK_ORDR_NO    = V_WRK_ORDR_NO
+                           AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+                           AND NVL(CNL_YN, 'N') =  'N'
+        ) ;
+
+        UPDATE  TB_SCH015
+           SET  COMP_YN = 'N', PRFM_QTY = V_TOT_QTY
+         WHERE WRK_ORDR_NO   = V_WRK_ORDR_NO
+          AND WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+          ;
+
+    END LOOP;
+
+    /*
+    IF CUR_1%ISOPEN = FALSE THEN
+        OPEN CUR_1 FOR SELECT 1 FROM dual;
+    END IF;
+
+    IF CUR_2%ISOPEN = FALSE THEN
+        OPEN CUR_2 FOR SELECT 1 FROM dual;
+    END IF;
+
+    IF CUR_3%ISOPEN = FALSE THEN
+        OPEN CUR_3 FOR SELECT 1 FROM dual;
+    END IF;
+
+    IF CUR_4%ISOPEN = FALSE THEN
+        OPEN CUR_4 FOR SELECT 1 FROM dual;
+    END IF;
+    */
+           --RS_CODE      := 'E';
+           --RS_MSG       := '확인하세요.'||' 1'||RS_CODE||' 2 '||RS_MSG;
+           --ROLLBACK;
+           --RETURN;
+    
+    
+    RS_CODE := 'S';
+    COMMIT;    
+    --ROLLBACK;
+    --예외처리(catch)
+    EXCEPTION
+    WHEN E_EXCEPTION_USER THEN
+        -- 에러 내역 SET
+        E_SQL_ERR_CD        := SQLCODE;
+        E_SQL_ERR_MSG       := SUBSTRB(SQLERRM,1,300);
+
+        ROLLBACK;
+        SP_PROC_ERROR(V_PLT_CD, V_PRG_NM, E_SQL_ERR_CD, E_SQL_ERR_MSG, V_SESS_USER_ID);
+
+        RS_CODE := 'E';
+        RS_MSG  := SQLERRM;
+        RETURN;
+    WHEN OTHERS THEN
+        E_SQL_ERR_CD        := SQLCODE;
+        E_SQL_ERR_MSG       := 'EXCEPTION OTHER ERROR. [' || SUBSTR(SQLERRM,1,500) || ']';
+
+        ROLLBACK;
+        --RAISE_APPLICATION_ERROR(E_SQL_ERR_CD, E_SQL_ERR_MSG);
+        RAISE;
+
+        RS_CODE := 'E';
+        RS_MSG  := SQLERRM;
+        RETURN;
+    --예외처리 종료
+    END;
+END;
+
+/

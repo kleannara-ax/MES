@@ -1,0 +1,21 @@
+netUtil.js
+ - excelload 시에도 gridListEventDataViewEnd(gridId, dataCount) 이벤트 호출 되도록 추가
+
+ui.js
+ - 숫자 입력 (format N, NS) 에서 숫자 및 컨트롤키 동작 오류 수정
+ 
+wintab.css
+ - wintab 전체닫기, 탭이동 보튼 우측으로 수정
+ 
+그리드 데이터를 수정하고 
+ - 조회버튼이나 기타 수정 체크하는 버튼을 누른 경우 실행 확인
+ - 윈도우탭을 닫는 경우 실행 확인
+ - site.js 의 GRID_MODIFY_CHECK 값이 true인 경우만 수행
+ - 확인 수행 전 gridModifyStateCheckEvent() 함수의 return 값이 false인 경우 수행하지 않음
+ - btn name이 Search 인 경우 : <button CB="Search SEARCH BTN_DISPLAY"></button>
+ - btn CBtnModifyCheck="ture" 인 경우 : <button CB="Test EXECUTE STD_TEST" CBtnModifyCheck="true"></button>
+ - configData.js, grid.js, site.js, ui.js
+ - main.jsp, wintab.jsp
+ 
+top 에서 창고코드 변경하는 경우 변경 여부 물어본 후 변경
+ - top.jsp

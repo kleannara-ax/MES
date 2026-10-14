@@ -1,0 +1,5 @@
+ grid.js
+  - 데이터 붙여넣기 시 자동 행추가 방지 옵션 추가. autoCopyRowType : false
+
+ layoutSave.js
+  - 레이아웃 세이브 컬럼 이동시 포커스 바뀌는 오류 수정

@@ -1,0 +1,3 @@
+grid.js
+ - readonly 컬럼 조정의 경우 특정 컬럼 readonly false가 가능하도록 변경
+ - GF가 날자형식인 경우 input컬럼에서만 validation date 자동으로 추가되도록 변경

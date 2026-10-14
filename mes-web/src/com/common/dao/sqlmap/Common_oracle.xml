@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Common">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	<typeAlias alias="User" type="com.common.bean.User" />
+
+	<select id="SIMPLE_DUAL_SELECTOR_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 1 AS TEMP_COL
+		  FROM DUAL
+	</select>
+	
+	<select id="TABLE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		TABLE_NAME AS VALUE_COL,
+		TABLE_NAME AS TEXT_COL
+		FROM USER_TABLES
+		ORDER BY TABLE_NAME
+	</select>
+
+	<select id="SQL_LIST" parameterClass="Map" resultClass="DataMap">
+		$SQL$
+	</select>
+	
+	<select id="COMCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDVL AS VALUE_COL,
+			CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = #CODE# 
+		ORDER BY CMCDVL,USARG1
+	</select>
+	
+	<select id="LOGINMSG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 LANGKY||'_'||MESGKY AS MESGKY,
+			 MESGTX
+		 FROM JMSGM 
+		 WHERE MESGGR = 'LOGIN'
+	</select>
+	
+	<select id="JLBLM_LANG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDVL AS LANGKY
+		FROM CMCDV
+		WHERE CMCDKY = 'LANGKY' 
+		ORDER BY CMCDVL,USARG1
+	</select>
+	
+	<sql id="JLBLM_TABLE">
+		SELECT
+			 LABLGR||'_'||LABLKY AS LABLKY,
+			 LBLTXS,
+			 LBLTXM,
+			 LBLTXL
+		 FROM JLBLM
+	</sql>
+	
+	<select id="JLBLM_LIST" parameterClass="Map" resultClass="StringMap">
+		SELECT
+			 LABLGR||'_'||LABLKY AS LABLKY,
+			 LBLTXS,
+			 LBLTXM,
+			 LBLTXL
+		FROM JLBLM
+		WHERE LANGKY = #LANGKY#
+		<isNotEmpty property="LABLGR">
+		   AND LABLGR != #LABLGR#
+		</isNotEmpty>
+	</select>
+	
+	<select id="JMSGM_LANG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+			CMCDVL AS LANGKY
+		FROM CMCDV
+		WHERE CMCDKY = 'LANGKY' 
+		ORDER BY CMCDVL,USARG1
+	</select>
+	
+	<sql id="JMSGM_TABLE">
+		SELECT 
+			 MESGGR||'_'||MESGKY AS MESGKY,
+			 MESGTX
+		 FROM JMSGM
+	</sql>
+	
+	<select id="JMSGM_LIST" parameterClass="Map" resultClass="StringMap">
+		SELECT 
+			 MESGGR||'_'||MESGKY AS MESGKY,
+			 MESGTX
+		FROM JMSGM
+		WHERE LANGKY = #LANGKY#
+	</select>
+	
+	<select id="SEARCHHEAD_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SHLPKY,
+			SHORTX,
+			STARGO,
+			EXECTY,
+			WIDTHW,
+			HEIGHT
+		FROM SHLPH 
+	</select>
+	
+	<select id="SEARCHHEAD_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SHLPKY,
+			SHORTX,
+			STARGO,
+			EXECTY,
+			WIDTHW,
+			HEIGHT
+		FROM SHLPH 
+		WHERE SHLPKY = #SHLPKY#
+	</select>
+	
+	<select id="SEARCHITEM_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			S.SHLPKY AS HSHLPKY,
+		    S.DBFILD,
+		    S.INDUSO,
+		    S.POSSOS,
+		    S.INDNED,
+		    S.RQFLDS,
+		    S.INDULS,
+		    S.POSLIS,
+		    S.INDRVL,
+		    S.DFVSOS,
+		    S.DDICKY,
+		    D.DDICKY,
+		    D.DATFTY,
+		    D.SHORTX,
+		    D.DBFILD,
+		    D.PDATTY,
+		    D.OBJETY,
+		    D.DBLENG,
+		    D.DBDECP,
+		    D.OUTLEN,
+		    D.SHLPKY,
+		    D.FLDALN,
+		    D.LABLGR,
+		    D.LABLKY,
+		    D.LBTXTY,
+		    D.UCASOL
+		FROM SHLPI S
+		JOIN DFDIC D ON D.DDICKY = S.DDICKY 
+		<isNotEmpty property="SHLPKY">
+		WHERE S.SHLPKY = #SHLPKY#
+		</isNotEmpty>
+	</select>
+	
+	<select id="SEARCH_LIST" parameterClass="Map" resultClass="StringMap" fetchSize="10000">
+		SELECT 
+			$COL$
+		FROM $TABLE$  
+		WHERE 1=1 
+		<isNotEmpty property="WHARE_SQL">
+			$WHARE_SQL$
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="ELOLOGIN_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	
+			U.USERID,
+			U.PASSWD,
+			U.LANGKY,
+			U.LLOGWH
+		FROM USRMA U
+		WHERE U.USERID = #USERID# 
+	</select>
+	
+	<select id="SLOLOGIN_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT	
+			U.USERID,
+			U.PASSWD,
+			U.LANGKY,
+			U.LLOGWH
+		FROM USRMA U
+		WHERE U.EMAIL1 = #USERID# 
+	</select>
+	
+	<resultMap class="User" id="UserMap">
+		<result property="userid" column="USERID"></result>
+		<result property="passwd" column="PASSWD"></result>
+		<result property="nmlast" column="NMLAST"></result>
+		<result property="nmfirs" column="NMFIRS"></result>
+		<result property="addr01" column="ADDR01"></result>
+		<result property="addr02" column="ADDR02"></result>
+		<result property="addr03" column="ADDR03"></result>
+		<result property="addr04" column="ADDR04"></result>
+		<result property="addr05" column="ADDR05"></result>
+		<result property="city01" column="CITY01"></result>
+		<result property="regn01" column="REGN01"></result>
+		<result property="postcd" column="POSTCD"></result>
+		<result property="natnky" column="NATNKY"></result>
+		<result property="teln01" column="TELN01"></result>
+		<result property="teln02" column="TELN02"></result>
+		<result property="teln03" column="TELN03"></result>
+		<result property="tlext1" column="TLEXT1"></result>
+		<result property="faxtl1" column="FAXTL1"></result>
+		<result property="faxtl2" column="FAXTL2"></result>
+		<result property="pobox1" column="POBOX1"></result>
+		<result property="pobpc1" column="POBPC1"></result>
+		<result property="email1" column="EMAIL1"></result>
+		<result property="email2" column="EMAIL2"></result>
+		<result property="compky" column="COMPKY"></result>
+		<result property="depart" column="DEPART"></result>
+		<result property="emplid" column="EMPLID"></result>
+		<result property="userg1" column="USERG1"></result>
+		<result property="userg2" column="USERG2"></result>
+		<result property="userg3" column="USERG3"></result>
+		<result property="userg4" column="USERG4"></result>
+		<result property="userg5" column="USERG5"></result>
+		<result property="langky" column="LANGKY"></result>
+		<result property="datefm" column="DATEFM"></result>
+		<result property="datedl" column="DATEDL"></result>
+		<result property="decpfm" column="DECPFM"></result>
+		<result property="llogid" column="LLOGID"></result>
+		<result property="llogit" column="LLOGIT"></result>
+		<result property="llogod" column="LLOGOD"></result>
+		<result property="llogot" column="LLOGOT"></result>
+		<result property="menuky" column="MENUKY"></result>
+		<result property="llogwh" column="LLOGWH"></result>
+		<result property="timfmt" column="TIMFMT"></result>
+		<result property="currfm" column="CURRFM"></result>
+		<result property="recntf" column="RECNTF"></result>
+		<result property="delmak" column="DELMAK"></result>
+		<result property="pgsize" column="PGSIZE"></result>
+		<result property="ftsize" column="FTSIZE"></result>
+		<result property="credat" column="CREDAT"></result>
+		<result property="cretim" column="CRETIM"></result>
+		<result property="creusr" column="CREUSR"></result>
+		<result property="lmodat" column="LMODAT"></result>
+		<result property="lmotim" column="LMOTIM"></result>
+		<result property="lmousr" column="LMOUSR"></result>
+		<result property="updchk" column="UPDCHK"></result>
+		<result property="indbzl" column="INDBZL"></result>
+		<result property="indarc" column="INDARC"></result>
+		<result property="fmdesc1" column="FMDESC1"></result>
+		<result property="dldesc1" column="DLDESC1"></result>
+		<result property="dldesc2" column="DLDESC2"></result>
+		<result property="owner" column="OWNER"></result>
+		<result property="wareky" column="WAREKY"></result>
+		<result property="pwtodat" column="PWTODAT"></result>
+		<result property="pw90dat" column="PW90DAT"></result>
+		<result property="llogid90" column="LLOGID90"></result>
+	</resultMap>
+	
+	<select id="LOGIN_OBJECT" parameterClass="Map" resultMap="UserMap">
+		SELECT	
+			U.USERID,
+			U.PASSWD,
+			U.NMLAST,
+			U.NMFIRS,
+			U.ADDR01,
+			U.ADDR02,
+			U.ADDR03,
+			U.ADDR04,
+			U.ADDR05,
+			U.CITY01,
+			U.REGN01,
+			U.POSTCD,
+			U.NATNKY,
+			U.TELN01,
+			U.TELN02,
+			U.TELN03,
+			U.TLEXT1,
+			U.FAXTL1,
+			U.FAXTL2,
+			U.POBOX1,
+			U.POBPC1,
+			U.EMAIL1,
+			U.EMAIL2,
+			U.COMPKY,
+			U.DEPART,
+			U.EMPLID,
+			U.USERG1,
+			U.USERG2,
+			U.USERG3,
+			U.USERG4,
+			U.USERG5,
+			U.LANGKY,
+			U.DATEFM,
+			U.DATEDL,
+			U.DECPFM,
+			U.LLOGID,
+			U.LLOGIT,
+			U.LLOGOD,
+			U.LLOGOT,
+			U.MENUKY,
+			U.LLOGWH,
+			U.TIMFMT,
+			U.CURRFM,
+			U.RECNTF,
+			U.DELMAK,
+			U.PGSIZE,
+			U.FTSIZE,
+			U.CREDAT,
+			U.CRETIM,
+			U.CREUSR,
+			U.LMODAT,
+			U.LMOTIM,
+			U.LMOUSR,
+			U.UPDCHK,
+			U.INDBZL,
+			U.INDARC,
+			FM.CDESC1 AS FMDESC1,
+			DL.CDESC1 AS DLDESC1,
+			DL.CDESC2 AS DLDESC2, 	
+			<isNotEmpty property="WAREKY"> 
+			#WAREKY# AS WAREKY,
+			</isNotEmpty> 
+			<isEmpty property="WAREKY"> 
+			U.LLOGWH AS WAREKY,
+			</isEmpty> 
+			B.OWNRKY AS OWNER,
+			U.PWTODAT,
+		    U.PW90DAT,
+		    CASE WHEN F_VALID_DATE(U.LLOGID, 'YYYYMMDD') = 'TRUE'
+		           THEN TO_CHAR(TO_DATE(U.LLOGID,'YYYYMMDD')+90, 'YYYYMMDD')
+		         ELSE TO_CHAR(SYSDATE,'YYYYMMDD')
+		    END AS LLOGID90
+		FROM USRMA U
+		INNER JOIN CMCDV FM	ON FM.CMCDKY = 'DATEFM'	AND U.DATEFM = FM.CMCDVL
+		INNER JOIN CMCDV DL	ON DL.CMCDKY = 'DATEDL'	AND U.DATEDL = DL.CMCDVL 
+		INNER JOIN OWNER B  ON U.COMPKY = B.COMPKY
+		WHERE ROWNUM = 1 
+		AND   U.USERID = #USERID#
+		AND   U.PASSWD = #PASSWD#
+	</select>
+	
+	<select id="LOGINCHK_OBJECT" parameterClass="Map" resultMap="UserMap">
+		SELECT	
+			U.USERID,
+			U.PASSWD,
+			U.NMLAST,
+			U.NMFIRS,
+			U.ADDR01,
+			U.ADDR02,
+			U.ADDR03,
+			U.ADDR04,
+			U.ADDR05,
+			U.CITY01,
+			U.REGN01,
+			U.POSTCD,
+			U.NATNKY,
+			U.TELN01,
+			U.TELN02,
+			U.TELN03,
+			U.TLEXT1,
+			U.FAXTL1,
+			U.FAXTL2,
+			U.POBOX1,
+			U.POBPC1,
+			U.EMAIL1,
+			U.EMAIL2,
+			U.COMPKY,
+			U.DEPART,
+			U.EMPLID,
+			U.USERG1,
+			U.USERG2,
+			U.USERG3,
+			U.USERG4,
+			U.USERG5,
+			U.LANGKY,
+			U.DATEFM,
+			U.DATEDL,
+			U.DECPFM,
+			U.LLOGID,
+			U.LLOGIT,
+			U.LLOGOD,
+			U.LLOGOT,
+			U.MENUKY,
+			U.LLOGWH,
+			U.TIMFMT,
+			U.CURRFM,
+			U.RECNTF,
+			U.DELMAK,
+			U.PGSIZE,
+			U.FTSIZE,
+			U.CREDAT,
+			U.CRETIM,
+			U.CREUSR,
+			U.LMODAT,
+			U.LMOTIM,
+			U.LMOUSR,
+			U.UPDCHK,
+			U.INDBZL,
+			U.INDARC,
+			FM.CDESC1 AS FMDESC1,
+			DL.CDESC1 AS DLDESC1,
+			DL.CDESC2 AS DLDESC2, 	
+			<isNotEmpty property="WAREKY"> 
+			#WAREKY# AS WAREKY,
+			</isNotEmpty> 
+			<isEmpty property="WAREKY"> 
+			U.LLOGWH AS WAREKY,
+			</isEmpty> 
+			B.OWNRKY AS OWNER,
+			U.PWTODAT,
+		    U.PW90DAT,
+		    CASE WHEN F_VALID_DATE(U.LLOGID, 'YYYYMMDD') = 'TRUE'
+		           THEN TO_CHAR(TO_DATE(U.LLOGID,'YYYYMMDD')+90, 'YYYYMMDD')
+		         ELSE TO_CHAR(SYSDATE,'YYYYMMDD')
+		    END AS LLOGID90
+		FROM USRMA U
+		INNER JOIN CMCDV FM	ON FM.CMCDKY = 'DATEFM'	AND U.DATEFM = FM.CMCDVL
+		INNER JOIN CMCDV DL	ON DL.CMCDKY = 'DATEDL'	AND U.DATEDL = DL.CMCDVL 
+		INNER JOIN OWNER B  ON U.COMPKY = B.COMPKY
+		WHERE ROWNUM = 1 
+		AND   U.USERID = #USERID#
+	</select>	
+	
+	<update id="LOGIN_UPDATE" parameterClass="Map">
+		UPDATE USRMA SET 
+			LLOGID = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LLOGIT = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #USERID#
+		 WHERE 
+			USERID = #USERID# 
+	</update>
+	
+	<select id="PASSWORD_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 USERID 
+		 FROM USRMA 
+		 WHERE USERID = #USERID# 
+		 AND PASSWD = #PASSWD#
+	</select>
+	
+	<update id="PASSWORD_UPDATE" parameterClass="Map">
+		UPDATE USRMA SET
+			BFPWD2 = BFPWD1,
+            BFPWD1 = PASSWD,
+			PASSWD = #PASSWD1#,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			PWTODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			PW90DAT = TO_CHAR(SYSDATE+112, 'YYYYMMDD'),
+			LMOUSR = #USERID#
+		 WHERE 
+			USERID = #USERID# 
+	</update>
+	
+	<update id="LOGOUT_UPDATE" parameterClass="Map">
+		UPDATE USRMA SET 
+			LLOGOD = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LLOGOT = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		 WHERE 
+			USERID = #SES_USER_ID#
+	</update>
+	
+	<select id="MENUTREE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT MNUDT.AMNUID,
+		       MNUDT.MENUID,
+		       (SELECT JLBLM.LBLTXL FROM JLBLM WHERE JLBLM.LABLGR = MNUDT.LABLGR AND JLBLM.LABLKY = MNUDT.LABLKY AND JLBLM.LANGKY = #LANGKY#) AS LBLTXL,
+		       NVL((SELECT PROGM.PGPATH FROM PROGM WHERE MNUDT.PROGID = PROGM.PROGID), ' ') AS PGPATH,
+		       NVL(MNUDT.PROGID, ' ') AS PROGID,
+		       (SELECT COUNT(X.INDACR)
+		          FROM ROLPG X, USRRA Y
+		         WHERE X.UROLKY = Y.UROLKY
+		           AND Y.USERID = #USERID#
+		           AND X.PROGID = MNUDT.PROGID
+		           AND INDADS = 'V') AS INDADS
+		  FROM MNUDT
+		       LEFT OUTER JOIN MNUFV
+		          ON MNUDT.MENUKY = MNUFV.MENUKY
+		         AND MNUDT.MENUID = MNUFV.MENUID
+		         AND MNUFV.USERID =  #USERID#
+		 WHERE MNUDT.MENUKY = 'FAVORITE'
+		   AND MNUDT.VISIBLE = 'Y'
+		   AND MNUDT.INDMUK NOT IN ('PDA')
+		UNION ALL
+		SELECT 'root' AS AMNUID
+		     , 'FAVORITE' AS MENUID
+		     , (SELECT JLBLM.LBLTXL FROM JLBLM WHERE JLBLM.LABLGR = 'MENU' AND JLBLM.LABLKY = 'FAVORITE' AND JLBLM.LANGKY = #LANGKY#) AS LBLTXL
+		     , ' ' AS PGPATH
+		     , ' ' AS PROGID
+		     , 0 AS INDADS
+		  FROM DUAL
+		 WHERE NOT EXISTS (SELECT 1 FROM MNUDT WHERE MENUKY = 'FAVORITE' AND MENUID = 'FAVORITE')
+		UNION ALL
+		SELECT 'FAVORITE' AS AMNUID,
+		       MENUID,
+		       LBLTXL,
+		       NVL(PGPATH, ' ') AS PGPATH,
+		       PROGID,
+		       INDICATOR AS INDADS
+		  FROM (SELECT MNUFV.MENUID AS MENUID,
+		               (SELECT JLBLM.LBLTXL FROM JLBLM WHERE JLBLM.LABLGR = MNUDT.LABLGR AND JLBLM.LABLKY = MNUDT.LABLKY AND JLBLM.LANGKY = #LANGKY#) AS LBLTXL,
+		               (SELECT PROGM.PGPATH FROM PROGM WHERE MNUDT.PROGID = PROGM.PROGID) AS PGPATH,
+		               NVL(MNUDT.PROGID, ' ') AS PROGID,
+		               (SELECT COUNT(X.INDACR)
+		                  FROM ROLPG X, USRRA Y
+		                 WHERE X.UROLKY = Y.UROLKY
+		                   AND Y.USERID =  #USERID#
+		                   AND X.PROGID = MNUDT.PROGID
+		                   AND INDADS = 'V') AS INDICATOR
+		          FROM MNUFV
+		               INNER JOIN MNUDT
+		                  ON MNUDT.MENUKY = MNUFV.MENUKY
+		                 AND MNUDT.MENUID = MNUFV.MENUID
+		                 AND MNUFV.USERID = #USERID#
+		         WHERE MNUFV.MENUKY = (SELECT USRMA.MENUKY FROM USRMA WHERE USRMA.USERID = #USERID#)
+		           AND MNUDT.INDMUK NOT IN ('PDA')
+				   AND MNUDT.VISIBLE = 'Y'
+			ORDER BY MNUFV.SORTSQ)
+		UNION ALL
+		SELECT AMNUID,
+		       MENUID,
+		       LBLTXL,
+		       NVL(PGPATH, ' ') AS PGPATH,
+		       PROGID AS "progid",
+		       INDICATOR AS INDADS
+		  FROM (SELECT MNUDT.AMNUID AS AMNUID,
+		               MNUDT.MENUID AS MENUID,
+		               (SELECT JLBLM.LBLTXL FROM JLBLM WHERE JLBLM.LABLGR = MNUDT.LABLGR AND JLBLM.LABLKY = MNUDT.LABLKY AND JLBLM.LANGKY = #LANGKY#) AS LBLTXL,
+		               (SELECT PROGM.PGPATH FROM PROGM WHERE MNUDT.PROGID = PROGM.PROGID) AS PGPATH,
+		               NVL(MNUDT.PROGID, ' ') AS PROGID,
+		               (SELECT COUNT(X.INDACR)
+		                  FROM ROLPG X, USRRA Y
+		                 WHERE X.UROLKY = Y.UROLKY
+		                   AND Y.USERID = #USERID#
+		                   AND X.PROGID = MNUDT.PROGID
+		                   AND INDADS = 'V') AS INDICATOR
+		          FROM MNUDT
+		         WHERE MENUKY = (SELECT USRMA.MENUKY FROM USRMA WHERE USRMA.USERID = #USERID#)
+		           AND MNUDT.INDMUK NOT IN ('PDA')
+			  	   AND MNUDT.VISIBLE = 'Y'
+			  ORDER BY SORTSQ)
+	</select>
+	
+	<insert id="DOCUSEQ_INSERT" parameterClass="Map">
+		<selectKey keyProperty="DOCSEQ" resultClass="String">
+	    	SELECT
+    			LPAD(NVL(MAX(TO_NUMBER(NUMBST)),1)+1,10,'0') AS DOCSEQ
+			FROM NMOBJ
+			WHERE NUMOBJ = (SELECT NUMOBJ FROM DOCTM WHERE DOCUTY = #DOCUTY#)
+	    </selectKey>
+		UPDATE NMOBJ SET 
+			NUMBST = #DOCSEQ#
+		WHERE NUMOBJ = (SELECT NUMOBJ FROM DOCTM WHERE DOCUTY = #DOCUTY#)	
+	</insert>
+	
+	<insert id="NROBJ_INSERT" parameterClass="Map">
+		<selectKey keyProperty="NUMSEQ" resultClass="String">
+	    	SELECT
+    			LPAD(NVL(MAX(TO_NUMBER(NUMBST)),1)+1,10,'0') AS NUMSEQ
+			FROM NMOBJ
+			WHERE NUMOBJ =  #NUMOBJ#
+	    </selectKey>
+		UPDATE NMOBJ SET 
+			NUMBST = #NUMSEQ#
+		WHERE NUMOBJ =#NUMOBJ#	
+	</insert>	
+	
+	
+	<select id="RSNCD_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    RSNCOD AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM RSNCD 
+		WHERE DOCUTY = #DOCUTY# 
+		  AND OWNRKY = #SES_OWNER#
+		ORDER BY RSNCOD 
+	</select>
+	
+	<select id="USRLO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			PROGID,
+			COMPID,
+			LYOTID,
+			LAYDAT 
+		FROM USRLO
+		WHERE USERID = #SES_USER_ID# 
+		<isNotEmpty property="PROGID"> 
+			AND PROGID = #PROGID# 
+		</isNotEmpty> 
+		<isNotEmpty property="COMPID"> 
+			AND COMPID = #COMPID# 
+		</isNotEmpty> 
+		<isNotEmpty property="LYOTID"> 
+			AND LYOTID = #LYOTID# 
+		</isNotEmpty> 
+	</select>
+	
+	<insert id="USRLO_INSERT" parameterClass="Map">
+		INSERT INTO USRLO (USERID,PROGID,COMPID,LYOTID,LAYDAT,
+		CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#SES_USER_ID#,#PROGID#,#COMPID#,#LYOTID#,#LAYDAT#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<update id="USRLO_UPDATE" parameterClass="Map">
+		UPDATE USRLO SET 
+			LYOTID = #LYOTID#,		
+			LAYDAT = #LAYDAT#,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		 WHERE 
+			USERID = #SES_USER_ID# 
+			AND PROGID = #PROGID# 
+			AND COMPID = #COMPID# 
+	</update>
+	
+	<delete id="USRLO_DELETE" parameterClass="Map">
+		DELETE FROM USRLO
+		WHERE 
+			USERID = #SES_USER_ID# 
+			AND PROGID = #PROGID# 
+			AND COMPID = #COMPID# 
+			AND LYOTID = #LYOTID# 
+	</delete>
+	
+	<select id="USRPHC_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		    H.PROGID,
+		    H.PARMKY,
+		    H.DEFCHK,
+		    I.ITEMNO,
+			I.CTRLID,
+			I.CTRLTY,
+			I.CTRVAL 
+		FROM USRPH H
+		JOIN USRPI I ON H.USERID = I.USERID AND H.PROGID = I.PROGID 
+		WHERE H.USERID = #SES_USER_ID# 
+		AND H.DEFCHK = 'V'
+	</select>
+	
+	<select id="USRPH_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			USERID,
+			PROGID,
+			PARMKY,
+			SHORTX,
+			DEFCHK
+		FROM USRPH
+		WHERE USERID = #SES_USER_ID# 
+		<isNotEmpty property="PROGID">
+			AND PROGID = #PROGID# 
+		</isNotEmpty> 
+		<isNotEmpty property="DEFCHK"> 
+			AND DEFCHK = #DEFCHK# 
+		</isNotEmpty>
+	</select>
+	
+	<select id="USRPH_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			USERID,
+			PROGID,
+			PARMKY,
+			SHORTX,
+			DEFCHK
+		FROM USRPH
+		WHERE USERID = #SES_USER_ID# 
+		AND PROGID = #PROGID# 
+		AND PARMKY = #PARMKY#
+	</select>
+	
+	<insert id="USRPH_INSERT" parameterClass="Map">
+		INSERT INTO USRPH (USERID,PARMKY,PROGID,SHORTX,DEFCHK
+								,CREDAT,CRETIM,CREUSR
+								,LMODAT,LMOTIM,LMOUSR) 
+		VALUES (#SES_USER_ID#,#PARMKY#,#PROGID#,#SHORTX#,#DEFCHK#
+				,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+ 			    ,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<update id="USRPHDEF_UPDATE" parameterClass="Map">
+		UPDATE USRPH SET 
+			DEFCHK = ' '
+		WHERE 
+			 USERID = #SES_USER_ID# 
+			 AND PROGID = #PROGID# 
+	</update>
+	
+	<update id="USRPH_UPDATE" parameterClass="Map">
+		UPDATE USRPH SET 
+			SHORTX = #SHORTX#,
+			DEFCHK = #DEFCHK#
+		WHERE 
+			 USERID = #SES_USER_ID# 
+			 AND PARMKY = #PARMKY# 
+			 AND PROGID = #PROGID# 
+	</update>
+	
+	<delete id="USRPH_DELETE" parameterClass="Map">
+		DELETE FROM USRPH
+		WHERE 
+			 USERID = #SES_USER_ID# 
+			 AND PARMKY = #PARMKY# 
+			 AND PROGID = #PROGID# 
+	</delete>
+	
+	<select id="USRPI_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			ITEMNO,
+			CTRLID,
+			CTRLTY,
+			CTRVAL
+		FROM USRPI
+		WHERE 
+		<isNotEmpty property="USERID" >
+			USERID = #USERID#
+		</isNotEmpty>
+		<isEmpty property="USERID" >
+			USERID = #SES_USER_ID#
+		</isEmpty>
+		AND PROGID = #PROGID# 
+		AND PARMKY = #PARMKY# 
+	</select>
+	
+	<insert id="USRPI_INSERT" parameterClass="Map">
+		INSERT INTO USRPI (USERID,PARMKY,PROGID,ITEMNO,CTRLID
+								,CTRLTY,CTRVAL
+								,CREDAT,CRETIM,CREUSR
+								,LMODAT,LMOTIM,LMOUSR) 
+		 VALUES (#SES_USER_ID#,#PARMKY#,#PROGID#,#ITEMNO#,#CTRLID#
+					,' ',#CTRVAL#
+					,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#
+	 			    ,TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="USRPI_DELETE" parameterClass="Map">
+		DELETE FROM USRPI
+		WHERE 
+			 USERID = #SES_USER_ID# 
+			 AND PARMKY = #PARMKY# 
+			 AND PROGID = #PROGID# 
+	</delete>
+	
+	<select id="TEST_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    USERID 
+		FROM USRMA 
+		WHERE USERID = 'DEV' 
+		<isNotEmpty property="TEST">
+		 	AND DDD = 'DDD' 
+		</isNotEmpty> 
+	</select>
+	
+	<insert id="FMENU_INSERT" parameterClass="Map">
+		INSERT INTO MNUFV (USERID, MENUKY, MENUID, SORTSQ, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR)
+		(SELECT USERID, (SELECT USRMA.MENUKY FROM USRMA WHERE USRMA.USERID = #SES_USER_ID#), MENUID, SORTSQ, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR
+		  FROM (SELECT #SES_USER_ID# AS USERID,
+		               #MENUID# AS MENUID,
+		               LPAD(NVL(MAX(SORTSQ), 0) + 1, 4, '0') AS SORTSQ,
+		               TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT,
+		               TO_CHAR(SYSDATE, 'HH24MISS') AS CRETIM,
+		               #SES_USER_ID# AS CREUSR,
+		               TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT,
+		               TO_CHAR(SYSDATE, 'HH24MISS') AS LMOTIM,
+		               #SES_USER_ID# AS LMOUSR
+		          FROM MNUFV
+		          WHERE USERID = #SES_USER_ID#) MN
+		 WHERE NOT EXISTS (SELECT USERID
+		                     FROM MNUFV
+		                    WHERE MNUFV.MENUKY = (SELECT USRMA.MENUKY FROM USRMA WHERE USRMA.USERID = #SES_USER_ID#)
+		                      AND MNUFV.MENUID = MN.MENUID
+		                      AND MNUFV.USERID = MN.USERID))
+	</insert>	
+	
+	<insert id="FMENU_DELETE" parameterClass="Map">
+		DELETE FROM MNUFV 
+		WHERE USERID = #SES_USER_ID# 
+			AND MENUKY = (SELECT MENUKY FROM USRMA WHERE USERID = #SES_USER_ID#) 
+			AND MENUID = #MENUID#
+	</insert>
+	
+	<sql id="FWCMFL0010_TABLE">
+		SELECT
+			UUID,
+			RPATH,
+			PATH,
+			FNAME,
+			NAME,
+			MIME,
+			STYPE,
+			BYTE,
+			GUUID,
+			CASE WHEN BYTE <![CDATA[<]]> 1024 THEN BYTE || ' BYTE'
+		         WHEN BYTE > 1024 AND BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(BYTE/1024,2) || ' KB'
+		         ELSE ROUND(BYTE/(1024*1024),2) || ' MB'
+		    END  AS BYTE_FILESIZEVIEW,
+			DELKEY,
+			UPTBYN,
+			TO_CHAR(TO_DATE(CREDAT,'YYYYMMDD'),'$FORMAT_DATE$') AS CREDAT,
+			TO_CHAR(TO_DATE(CRETIM,'HH24MISS'),'$FORMAT_TIME$') AS CRETIM,
+			CREUSR,
+			TO_CHAR(TO_DATE(LMODAT,'YYYYMMDD'),'$FORMAT_DATE$') AS LMODAT,
+			TO_CHAR(TO_DATE(LMOTIM,'HH24MISS'),'$FORMAT_TIME$') AS LMOTIM,
+			LMOUSR
+		FROM FWCMFL0010 
+	</sql>
+	<select id="FWCMFL0010_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWCMFL0010_TABLE" />
+		WHERE 1=1
+		<isNotEmpty property="STYPE">
+			AND STYPE = #STYPE#
+		</isNotEmpty>
+		<isNotEmpty property="MIME">
+			AND MIME = #MIME#
+		</isNotEmpty>
+		<isNotEmpty property="DELKEY">
+			AND DELKEY = #DELKEY#
+		</isNotEmpty>
+		<isNotEmpty property="GUUID">
+			AND GUUID = #GUUID#
+		</isNotEmpty>
+	</select>
+
+	<select id="FWCMFL0010_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWCMFL0010_TABLE" />
+		WHERE UUID = #UUID#
+	</select>
+
+	<insert id="FWCMFL0010_INSERT" parameterClass="Map">
+		INSERT INTO
+		FWCMFL0010
+		(UUID,RPATH,PATH,FNAME,NAME,MIME,STYPE,BYTE,DELKEY,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR)
+		VALUES
+		(#UUID#,#RPATH#,#PATH#,#FNAME#,#NAME#,#MIME#,#STYPE#,#BYTE#,'N',
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+
+	<delete id="FWCMFL0010_DELETE" parameterClass="Map">
+		UPDATE FWCMFL0010
+		SET
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE
+		UUID = #UUID#
+	</delete>
+	
+	<!-- 2019.07.02 이범준 : 파일 정보 테이블의 저장 여부 flag update-->
+    <update id="FWCMFL0010_UPTBYN_UPDATE" parameterClass="Map">
+        UPDATE FWCMFL0010 SET UPTBYN = #UPTBYN# WHERE UUID = #UUID# 
+    </update>
+
+	<sql id="FWCMFL0011_TABLE">
+		SELECT
+			UUID,
+			PIXEL,
+			FNAME,
+			DELKEY,
+			TO_CHAR(TO_DATE(CREDAT,'YYYYMMDD'),'$FORMAT_DATE$') AS CREDAT,
+			TO_CHAR(TO_DATE(CRETIM,'HH24MISS'),'$FORMAT_TIME$') AS CRETIM,
+			CREUSR,
+			TO_CHAR(TO_DATE(LMODAT,'YYYYMMDD'),'$FORMAT_DATE$') AS LMODAT,
+			TO_CHAR(TO_DATE(LMOTIM,'HH24MISS'),'$FORMAT_TIME$') AS LMOTIM,
+			LMOUSR
+		FROM FWCMFL0011
+	</sql>
+	<select id="FWCMFL0011_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWCMFL0011_TABLE" />
+		WHERE 1=1
+		<isNotEmpty property="UUID" prepend=" AND ">
+			UUID = #UUID#
+		</isNotEmpty>
+	</select>
+
+	<select id="FWCMFL0011_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWCMFL0011_TABLE" />
+		WHERE UUID = #UUID# 
+		AND PIXEL = #PIXEL#
+	</select>
+	
+	<select id="FWCMFL0011MIN_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWCMFL0011_TABLE" />
+		WHERE UUID = #UUID# 
+		AND PIXEL = (SELECT NVL(MIN(PIXEL), ' ') FROM FWCMFL0011 WHERE UUID = #UUID#)
+	</select>
+
+	<insert id="FWCMFL0011_INSERT" parameterClass="Map">
+		INSERT INTO FWCMFL0011 
+		(UUID,PIXEL,FNAME,DELKEY,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES 
+ 		(#UUID#,#PIXEL#,#FNAME#,'N',
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+
+	<delete id="FWCMFL0011_DELETE" parameterClass="Map">
+		UPDATE FWCMFL0011
+		SET
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE
+		UUID = #UUID#
+	</delete>
+	
+	<select id="DFDIC_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    D.DDICKY,
+		    D.DATFTY,
+		    D.SHORTX,
+		    D.DBFILD,
+		    D.PDATTY,
+		    D.OBJETY,
+		    'TEXT' AS COLTY,
+		    NVL(D.DBLENG,0) AS DBLENG,
+		    NVL(D.DBDECP,0) AS DBDECP,
+		    NVL(D.OUTLEN,5)*10 AS OUTLEN,
+		    D.SHLPKY,
+		    D.FLDALN,
+		    D.LABLGR,
+		    D.LABLKY,
+		    D.LBTXTY,
+		    L.LBLTXS,
+		    D.LBTXTY AS GLBTXTY,
+		    L.LBLTXL AS GLBLTXS,
+		    ' ' AS SELECTOPTIONS,
+		    ROWNUM*10 AS SELECTORDER,  
+		    ' ' AS RANGE,
+		    'V' AS GRID,
+		    ROWNUM*10 AS GRIDORDER     
+		FROM DFDIC D
+		LEFT OUTER JOIN JLBLM L ON L.LABLGR = D.LABLGR AND L.LABLKY = D.LABLKY AND L.LANGKY = 'KR'
+		WHERE D.DDICKY = #name#
+	</select>
+	
+	<select id="LABLM_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    * 
+		FROM JLBLM 
+		WHERE LANGKY = #SES_LANGUAGE#
+		  AND LABLGR = #LABLGR# 
+		  AND LABLKY = #LABLKY#
+	</select>
+	
+	<select id="ROLCT_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+		  FROM ROLCT
+		 WHERE UROLKY IN ( SELECT UROLKY FROM USRRA WHERE USERID = #SES_USER_ID# )
+		   AND WAREKY = #WAREKY#
+	</select>
+	
+	<select id="FN_NROBJ_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT SZF_SEQDOCNUMBER(#NUMOBJ#) AS NUMSEQ FROM DUAL
+	</select>
+	
+	<select id="FN_DOCUSEQ_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT SZF_GETDOCNUMBER(#DOCUTY#) AS DOCSEQ FROM DUAL
+	</select>	
+	
+	<!-- 2019.06.28 이범준 : session key 체번 -->
+	<select id="PROCS_BTCSEQ_MAP" parameterClass="Map" resultClass="DataMap">
+    	SELECT TO_CHAR(SEQ_PROCS.NEXTVAL) AS BTCSEQ FROM DUAL
+    </select>
+    
+    <!-- 2019.06.28 이범준 : 프로시져를 이용해 저장시 이력을 남김 -->
+    <select id="PROCS_UPD_COUNT" parameterClass="Map" resultClass="Integer">
+       SELECT 
+		    COUNT(1) AS CNT
+	   FROM PROCS
+	   WHERE BTCSEQ = #BTCSEQ#
+	     AND PRCFLG IN('Y','E') 	
+    </select>
+    
+    <!-- 2021.08.10 정효진 : 비밀번호 변경 처리 -->    
+	<update id="PASSWORDNEW_UPDATE" parameterClass="Map">
+		UPDATE USRMA SET
+			PASSWD  = #PASSWD#,
+			PWTODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			PW90DAT = TO_CHAR(SYSDATE+180, 'YYYYMMDD'),
+			LMODAT  = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM  = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR  = #USERID# 
+		 WHERE 
+			USERID = #USERID#			
+	</update>    
+</sqlMap>

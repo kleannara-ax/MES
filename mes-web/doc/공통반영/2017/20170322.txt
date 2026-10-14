@@ -1,0 +1,4 @@
+grid.js
+ - navi 버튼으로 포커스 이동시 이벤트 함수 추가
+   : gridNaviFocusChange(gridId)
+   

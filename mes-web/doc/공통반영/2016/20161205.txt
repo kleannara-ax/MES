@@ -1,0 +1,12 @@
+input.js
+ - combo 생성시 파라메터 전달부분 오류 수정
+ 
+grid.js
+ - input 값 변경 시 불필요한 함수호출 방지
+ 
+netUtil.js
+ - sendData 시 failFunction 지정 가능하도록 추가
+ 
+이지젠 root properties 없이 동장하도록 변경
+ - eftpmanager.java, hnwjdbc.java
+ - web.xml

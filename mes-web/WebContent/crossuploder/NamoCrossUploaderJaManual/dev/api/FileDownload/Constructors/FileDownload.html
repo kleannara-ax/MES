@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>FileDownload</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">FileDownload</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Constructors</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>FileDownload</h2>
+            <p class="dscrpt">FileDownload 객체를 생성합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre><span class="fname">FileDownload</span> ( HttpServletRequest<span class="paraname"> request,</span> HttpServletResponse<span class="paraname"> response</span>)</pre>
+                <pre><span class="fname">FileDownload</span> ( HttpServletRequest<span class="paraname"> request,</span> HttpServletResponse<span class="paraname"> response</span>, String<span class="paraname"> charset</span>)</pre>
+            </ul>
+            <h4>Parameters</h4>
+            <p class="para"><span class="paraname">request</span></p>
+            <p class="paradsc">[in] HttpServletRequest 객체를 입력합니다.</p>
+            <p class="para"><span class="paraname">response</span></p>
+            <p class="paradsc">[in] HttpServletResponse 객체를 입력합니다.</p>
+            <p class="para"><span class="paraname">charset</span></p>
+            <p class="paradsc">[in] UTF-8 환경이 아닐 경우, EUC-KR 등 시스템에 맞는 Charset을 입력합니다.</p> 
+            
+            
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt">NamoCrossUploader Server Java Edition은 기본적으로 UTF-8(다국어) 환경에서 동작합니다. charset은 UTF-8 환경이 아닐 경우만 입력해 주십시오.</P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+<b>FileDownload fileDownload = new FileDownload(request, response);</b>
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

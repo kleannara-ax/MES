@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	   http://www.springframework.org/schema/aop 
+	   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<context:component-scan base-package="com">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="alwaysUseFullPath" value="true" />
+		<property name="interceptors">
+			<list>
+				<ref bean="commonIntercepter" />
+				<ref bean="sessionIntercepter" />
+				<ref bean="fileIntercepter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="alwaysUseFullPath" value="true" />
+	</bean>
+
+	<bean id="commonIntercepter" class="com.common.handler.CommonIntercepter" />
+	<bean id="fileIntercepter" class="com.common.handler.FileIntercepter" />
+	<bean id="sessionIntercepter" class="com.common.handler.SessionIntercepter" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<bean id="beanNameResolver"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1" />
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="downloadView" class="com.common.view.FileDownloadView" />
+	
+	<bean id="jsonView"
+		class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+		
+	<bean id="excelView"
+		class="com.common.view.ExcelView" />
+		
+	<bean id="excelXView"
+		class="com.common.view.ExcelXView" />
+		
+	<bean id="excelSXView"
+		class="com.common.view.ExcelSXView" />
+		
+	<bean id="textView"
+		class="com.common.view.TextView" />
+	
+	<bean id="csvView"
+		class="com.common.view.ExcelCsvView" />
+		
+	<bean id="excelTextView"
+		class="com.common.view.ExcelTextView" />
+
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="com.common.exception.SessionEmptyException">
+					sessionEmpty
+				</prop>
+				<prop key="java.lang.Exception">
+					dataException
+				</prop>
+			</props>
+		</property>
+		<property name="exceptionAttribute" value="exceptionMsg" />
+	</bean>
+</beans>

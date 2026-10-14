@@ -1,0 +1,1466 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GR23POP</title>
+<link rel="stylesheet" href="/pop/css/layer_popup.css">
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="/pop/css/layer_grid.css" type="text/css" />
+<link rel="stylesheet" href="/pop/css/jquery.custom.checkbox.css" type="text/css">
+<link rel="stylesheet" href="/pop/css/jquery.select.css" type="text/css">
+<link rel="stylesheet" href="/pop/css/content_ui.css" type="text/css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+<script type="text/javascript" src="/common/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/common/js/jquery-ui.custom.js"></script>
+<script type="text/javascript" src="/pop/js/jquery-custom-checkbox-min.js"></script>
+<!-- <script type="text/javascript" src="/pop/js/jquery.jqtransform.js"></script>
+<script type="text/javascript">
+	$(function(){
+		// selectbox design
+		$('.select').jqTransform();
+	});
+</script> -->
+<script type="text/javascript" src="/common/js/jquery.plugin.js"></script>
+<script type="text/javascript" src="/common/js/jquery.form.js"></script>
+<script type="text/javascript" src="/common/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/common/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/common/js/json2.js"></script>
+<script type="text/javascript" src="/common/js/big.js"></script>
+<script type="text/javascript" src="/common/js/dataMap.js"></script>
+<script type="text/javascript" src="/common/js/configData.js"></script>
+<script type="text/javascript" src="/common/js/label.js"></script>
+<script type="text/javascript" src="/common/lang/label-KR.js"></script>
+<script type="text/javascript" src="/common/lang/message-KR.js"></script>
+<script type="text/javascript" src="/common/js/site.js"></script>
+<script type="text/javascript" src="/common/js/commonUtil.js"></script>
+<script type="text/javascript" src="/common/theme/darkness/js/theme.js"></script>
+<script type="text/javascript" src="/common/js/dataBind.js"></script>
+<script type="text/javascript" src="/common/js/input.js"></script>
+<script type="text/javascript" src="/common/js/netUtil.js"></script>
+<script type="text/javascript" src="/common/js/ui.js"></script>
+<script type="text/javascript" src="/common/js/worker-ajax.js"></script>
+<script type="text/javascript" src="/common/js/bigdata.js"></script>
+<script type="text/javascript" src="/common/js/dataRequest.js"></script>
+<script type="text/javascript" src="/common/js/grid.js"></script>
+<script type="text/javascript" src="/common/js/layoutSave.js"></script>
+<script type="text/javascript" src="/common/js/validateUtil.js"></script>
+<script type="text/javascript" src="/common/js/page.js"></script>
+<script type="text/javascript" src="/wms/js/wms.js"></script>
+<script>
+//í­ ì¸ë±ì¤ ë³ê²½
+(function() {
+	$(function() {
+		var tab = $('.tab.type2')
+			, tabTrigger = tab.children('a');
+
+		tabTrigger.each(function(i) {
+
+			var zIndex = tabTrigger.length - i;
+
+			$(this).css('zIndex',zIndex);
+
+		});
+	});
+})();
+
+var topGridHeight = "160px";
+//ê·¸ë¦¬ë í¬ê¸° ì¡°ì 
+(function() {
+	$(function() {
+		var trigger = $('.fullSizer')
+		, target1 = $('.bottomSect.top')
+		, target1Height = target1.css('height')
+		, target2 = $('.bottomSect.bottom')
+		, target2OriginTop = target2.css('top');
+
+		if(target1.length > 0){
+			trigger.eq(0).on({
+				click : function() {
+					if ( trigger.eq(0).hasClass('folded') ) {
+						target1.css({ height : target1Height, bottom : 'auto' });
+						target2.css({ top : target2OriginTop, height : 'auto' });
+						trigger.eq(0).removeClass('folded');
+					} else {
+						target1.css({ height : 'auto', bottom : 10 });
+						target2.css({ height : 0, top : 'auto' });
+						trigger.eq(0).addClass('folded');
+					}
+				}
+			});
+
+			trigger.eq(1).on({
+				click : function() {
+					if ( trigger.eq(1).hasClass('folded') ) {
+						target1.css({ height : target1Height, bottom : 'auto' });
+						target2.css({ top : target2OriginTop, height : 'auto' });
+						trigger.eq(1).removeClass('folded');
+					} else {
+						target1.css({ height : 0 });
+						target2.css({ top : 8 });
+						trigger.eq(1).addClass('folded');
+					}
+				}
+			});
+		}else{
+			target2 = $('.bottomSect');
+			target2OriginTop = target2.css('top');
+			trigger.eq(0).on({
+				click : function() {
+					if ( trigger.eq(0).hasClass('folded') ) {
+						target2.css({ top : target2OriginTop, height : 'auto' });
+						trigger.eq(0).removeClass('folded');
+					} else {
+						target2.css({ top : 8 });
+						trigger.eq(0).addClass('folded');
+					}
+				}
+			});
+		}
+	});
+})();
+
+// jQuery í­ ê¸°ë¥
+(function() {
+	$(function() {
+		$('.tabs').tabs();
+	});
+})();
+
+
+// ê²ì íì
+(function() {
+	$(function() {
+		var trigger = $('#showPop')
+			, pop = $('.searchPop')
+			, closer = pop.find('.closer');
+
+		trigger.on({
+			click : function() {
+				pop.stop(true, true).fadeIn(150);
+			}
+		});
+
+		closer.on({
+			click : function() {
+				pop.stop(true, true).fadeOut(150);
+			}
+		});
+	});
+})();
+
+// íì´ë¸ ì¤í¬ë¡¤
+(function() {
+	$(function() {
+		var table = $('.table.type2');
+
+		table.each(function() {
+			var _this = $(this)
+				, header = _this.find('.tableHeader')
+				, body = _this.find('.tableBody');
+
+			body.on({
+				scroll : function(e) {
+					var scrollLeft = $(this).scrollLeft();
+
+					//console.log(scrollLeft);
+					header.css({
+						marginLeft : -scrollLeft
+					});
+				}
+			});
+		});
+	});
+})();
+
+//ë ì¸ì§ íì
+function rangePop() {
+
+	var	pop = $('.layerPopup')
+		, closer = pop.find('.closer');
+
+	pop.stop(true, true).fadeIn(150);
+	closer.on({
+		click : function() {
+			pop.stop(true, true).fadeOut(150);
+		}
+	});
+}
+
+function rangePopClose() {
+	var	pop = $('.layerPopup');
+	pop.stop(true, true).fadeOut(150);
+}
+
+// ê²½ê³ ì°½
+function alertMessage() {
+
+	var alert = $('.alertMessage')
+		, closer = alert.find('.closer');
+
+	alert.fadeIn(150);
+
+	closer.on({
+		click : function() {
+			alert.fadeOut(150);
+		}
+	});
+}
+
+// ë¡ë© ì´ê¸°
+function loadingOpen() {
+
+	var loader = $('<div class="contentLoading"></div>').appendTo('body');
+
+	loader.stop().animate({
+		top : '0px'
+	}, 30, function() {
+	});
+}
+
+var $contentLoading;
+//ë¡ë© ì´ê¸°
+function loadingOpen() {
+
+	$contentLoading.show();
+}
+
+//ë¡ë© ë«ê¸°
+function loadingClose() {
+
+	$contentLoading.hide();
+}
+
+function searchOpen(showType){
+	var pop = $('.searchPop');
+	if(!showType){
+		showType = false;
+	}
+	if (showType) {
+		pop.stop(true, true).fadeIn(150);
+	} else {
+		pop.stop(true, true).fadeOut(150);
+	}
+}
+
+function showLayoutSave(){
+	var loader = $('<div class="contentLayoutSave"></div>').appendTo('body');
+
+	loader.stop().animate({
+		top : '0px'
+	}, 30, function() {
+	});
+
+    $('#layoutSavePop').show();
+}
+
+function hideLayoutSave(){
+	 var loader = $('.contentLayoutSave');
+
+	loader.stop().animate({
+		top : '100%'
+	}, 30, function() {
+		loader.remove();
+	});
+
+	$('#layoutSavePop').hide();
+}
+
+function setTopSize(height){
+	$('.bottomSect.top').css("height",height+"px");
+	$('.bottomSect.bottom').css("top",(height+20)+"px");
+}
+
+configData.MENU_ID = 'gr23pop';
+
+function layoutSaveClose(){
+	var loader = $('.contentLayoutSave');
+
+	loader.stop().animate({
+		top : '100%'
+	}, 30, function() {
+		loader.remove();
+	});
+
+    $('#layoutSavePop').hide();
+}
+
+</script>
+<script type="text/javascript">
+	function openPop(target) {
+		 var documentWidth = document.documentElement.clientWidth;
+		 var documentHeight = document.documentElement.clientHeight;
+		 var targetPop = $(".layer_popup");
+		 var willLeft = (documentWidth / 2) - (targetPop.width() / 2 + 53);
+		 var willTop = (documentHeight / 2) - (targetPop.height() / 2 + 50);
+		 var targetPop = $(".layer_popup");
+
+		 willLeft = parseInt(willLeft);
+		 willTop = parseInt(willTop);
+		 targetPop.css({"left": willLeft, "top":willTop});
+		 targetPop.show();
+
+		 $("body").append("<div class='glayLayer'></div>");
+		 $(".glayLayer").show();
+	}
+	function closePop(target) {
+		 var targetPop = $(".layer_popup");
+		 targetPop.hide();
+		 $(".glayLayer").remove();
+	}
+
+	$(document).ready(function(){
+		try{
+			var searchParam = window.opener.page.getSearchParam();
+			if(searchParam){
+				dataBind.dataNameBind(searchParam, "searchArea");
+			}
+		}catch(e){}
+
+		$("body").hide();
+
+		$contentLoading = jQuery("#contentLoading");
+
+		$('.searchPop').stop(true, true).fadeIn(150);
+
+		uiList.UICheck();
+		//inputList.setCombo();
+		inputList.setInput();
+
+		gridScroll();
+
+		$("body").show();
+	});
+
+	window.moveTo(0,0);
+	var sWidth = window.screen.availWidth;
+	var sHeight = window.screen.availHeight;
+
+	$(window).resize(function(){
+		gridScroll();
+	});
+
+	window.resizeTo(sWidth,sHeight);
+
+	function checkBoxLoad(){
+		var body = gebtn(d,'body')[0];
+	    body.className = body.className && body.className != '' ? body.className + ' has-js' : 'has-js';
+
+	    if (!d.getElementById || !d.createTextNode) return;
+	    var ls = gebtn(d,'label');
+	    for (var i = 0; i < ls.length; i++) {
+	        var l = ls[i];
+	        if (l.className.indexOf('label_') == -1) continue;
+	        var inp = gebtn(l,'input')[0];
+	        if (l.className == 'label_check') {
+	            l.className = (safari && inp.checked == true || inp.checked) ? 'label_check c_on' : 'label_check c_off';
+	            l.onclick = check_it;
+	        };
+	        if (l.className == 'label_radio') {
+	            l.className = (safari && inp.checked == true || inp.checked) ? 'label_radio r_on' : 'label_radio r_off';
+	            l.onclick = turn_radio;
+	        };
+	    };
+	}
+
+	function gridScroll(){
+		var scrollObj = document.getElementById('scroll').offsetHeight;
+		var scrollTable = document.getElementById('scroll_t').offsetHeight;
+		if(scrollObj < scrollTable){
+			document.getElementById('scroll').style.right = 3 + "px";
+		}else{
+			document.getElementById('scroll').style.right = 20 + "px";
+		}
+	}
+</script>
+
+
+<script type="text/javascript">
+	var colrFlag = 1;
+
+	$(document).ready(function(){
+		gridList.setGrid({
+			id : "gridList",
+			editable : true,
+			module : "WmsInboundPop",
+			command : "GR23POP",
+			gridMobileType : true,
+			colorType : true,
+			emptyMsgType:false,
+			firstRowFocusType : false
+	    });
+		gridList.setReadOnly("gridList", true, ['QTYMON']);
+		//gridList.setReadOnly("gridList", true, ['CLMRSN']);
+		$("#SEARCHBOX").select();
+		PlaySound("s");
+	});
+
+	function searchList(){
+		$("#errorMsg").text("");
+		$("#SEARCHBOX2").val("");
+		$("#OPTION1").text("");
+		$("#OPTION2").text("");
+		$("#OPTION3").text("");
+		$("#CANCELTYPE").text("");
+		$("#REASONCODES").val("")
+		var param = inputList.setRangeParam("searchArea");
+
+		if($("#SEARCHBOX").val() == ""){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0223"));
+			return;
+		}
+		param.put("RTNRCVTY", $("#SELECT02").val());
+		param.put("ASNDKY", $("#SEARCHBOX").val());
+		param.put("ASNTTY", $("#SELECT01").val());
+		gridList.gridList({
+	    	id : "gridList",
+	    	param : param
+	    });
+		colrFlag = 0;
+		gridList.checkGridColor("gridList", 0);
+		gridScroll();
+	}
+
+	function gridListEventDataViewEnd(gridId, dataLength){
+		if(gridId == "gridList"){
+			gridScroll();
+		}
+	}
+
+	function gridListEventDataBindEnd(gridId, dataLength){
+		var list = gridList.getGridData("gridList");
+		var rowData;
+		var flag = true;
+		for(var i=0;i<list.length;i++){
+			rowData = list[i];
+			var length = lengthMsg(rowData.get("DESC01"));
+			var desc01 = rowData.get("DESC01");
+			if(length > 52){
+				gridList.setColValue("gridList", i, "DESC01", assertMsg(52 ,desc01));
+			}
+
+			if(rowData.get("ASKU01") == "Y"){
+				gridList.setReadOnly("gridList", false, ['QTYMON']);
+				//gridList.setReadOnly("gridList", true, ['CLMRSN']);
+			}
+			if(rowData.get("QTYASN") != rowData.get("QTCHEK")){
+				flag = false;
+			}
+		}
+		if(gridId == "gridList" && dataLength > 0){
+			PlaySound("s");
+			if ($("#CHECKREASONCODES").prop("checked")) {
+	        	$("#REASONCODES").select();
+		    }else{
+		    	if(flag == true){
+			    	$("#SEARCHBOX").select();
+		    	}else{
+		    		$("#SEARCHBOX2").select();
+		    	}
+		    }
+		}else{
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("VALID_M0005"));
+			$("#SEARCHBOX").select();
+		}
+	}
+
+	// 현재 메시지 바이트 수 계산
+	function lengthMsg(objMsg){
+		var nbytes = 0;
+		for (i=0; i<objMsg.length; i++){
+			var ch = objMsg.charAt(i);
+			if(escape(ch).length > 4){
+				nbytes += 2;
+			}else if (ch == '\n'){
+				if (objMsg.charAt(i-1) != '\r'){
+					nbytes += 1;
+				}
+			}else if (ch == '<' || ch == '>'){
+				nbytes += 4;
+			}else{
+				nbytes += 1;
+			}
+		}
+		return nbytes;
+	}
+
+	// 80 바이트 넘는 문자열 자르기
+    function assertMsg(intMax, objMsg){
+        var inc = 0;
+        var nbytes = 0;
+        var msg = "";
+        var msglen = objMsg.length;
+        for (i=0; i < msglen; i++){
+            var ch = objMsg.charAt(i);
+            if (escape(ch).length > 4){
+                inc = 2;
+            }else if (ch == '\n'){
+                if (objMsg.charAt(i-1) != '\r'){
+                    inc = 1;
+                }
+            }else if (ch == '<' || ch == '>'){
+                inc = 4;
+            }else{
+                inc = 1;
+            }
+            if ((nbytes + inc) > intMax){
+                break;
+            }
+            nbytes += inc;
+            msg += ch;
+        }
+        return msg;
+    }
+
+	function fn_closing(){
+		this.close();
+	}
+
+	function gridListEventRowDblclick(gridId, rowNum, colName, colValue){
+		$("#SUMQTY").val("");
+		$("#DATETYPE").val("");
+		$("#GRIDID").val(gridId);
+	    $("#ROWNUM").val(rowNum);
+	    $("#COLNAME").val(colName);
+	    $("#COLVALUE").val(colValue);
+		if(gridId == "gridList" && colName == "QTYASN" || colName == "QTYPTN"){
+			layer_open('layer1');
+		}else if(gridId == "gridList" && colName == "QTYMON"){
+			if(gridList.getColData(gridId, rowNum, "ASKU01") == "Y"){
+				/* if(colValue != " "){
+					if(ex_date(colValue) != false){
+						var yyyy = colValue.substring(0, 4);
+						var mm = colValue.substring(4, 6);
+						var dd = colValue.substring(6, 8);
+						var tmpValue = yyyy + "." + mm + "." +dd
+						$("#DATETYPE").val(tmpValue);
+					}
+				} */
+				if(ex_date(colValue) != false){
+					$("#DATETYPE").val(colValue);
+				}
+				layer_open('layer5');
+				$("#DATETYPE").focus();
+				$("#DATETYPE").select();
+			}
+		}
+	}
+
+	function ex_date(obj){
+		 var dateVal = obj
+		 var yy,mm,dd;
+		 var isNum = /^[0-9]+$/;
+		 var errCode = 0;
+		 var endDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+	    if (!dateVal) return false; //입력값이 없는 경우는 Pass
+	    //Validation Logic for Date..
+	    dateVal = dateVal.replace(/\./g, '');
+	    if(!isNum.test(dateVal)){
+    	/* PlaySound("e");
+		$("#errorMsg").text(commonUtil.getMsg("OUT_M0225")); */
+	     obj.value = "";
+	     return false;
+	    }else{
+	     yy = dateVal.substr(0,4);
+	     mm = dateVal.substr(4,2);
+	     dd = dateVal.substr(6,2);
+
+	     if (yy%1000 != 0 && yy%4 == 0) endDay[1] = 29;   // 윤년
+	        if (dd > endDay[mm-1] || dd < 1) errCode = 1;        // 날짜 체크
+	        if (mm < 1 || mm > 12) errCode = 1;          // 월 체크
+	        if (mm%1 != 0 || yy%1 != 0 || dd%1 != 0) errCode = 1;   // 정수 체크
+	    }
+
+	    dateVal = yy+"-"+mm+"-"+dd;
+	    if (errCode == 1 || dateVal.length != 10){
+	    	PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0225"));
+	     obj.value = "";
+	     return false;
+	    }
+	}
+
+	function gridListEventColValueChange(gridId, rowNum, colName, colValue){
+		var STATES = "";
+		if(colName == "QTYASN"){
+			if(gridList.getColData(gridId, rowNum, "QTYASN") < gridList.getColData(gridId, rowNum, "QTCHEK")+1){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0218"));
+				$("#SUMQTY").select();
+				return;
+			}
+			if(gridList.getColData(gridId, rowNum, "QTYASN") > gridList.getColData(gridId, rowNum, "QTCHEK")+1){
+				STATES = "검수중";
+				colrFlag = 1;
+				gridList.checkGridColor("gridList", rowNum);
+			}else if(gridList.getColData(gridId, rowNum, "QTYASN") == gridList.getColData(gridId, rowNum, "QTCHEK")+1){
+				STATES = "검수";
+				colrFlag = 2;
+				gridList.checkGridColor("gridList", rowNum);
+			}else{
+				STATES = "검수대기";
+				colrFlag = 3;
+				gridList.checkGridColor("gridList", rowNum);
+			}
+			gridList.setColValue(gridId, rowNum, "STATES", STATES );
+			gridList.setColValue(gridId, rowNum, "QTYPTN", colValue);
+		}else if(colName == "QTYMON" && colValue != ""){
+			ex_date(colValue);
+		}
+	}
+
+	function quantity(){
+		$("#errorMsg").text("");
+		$("#CANCELTYPE").text("");
+		var list = gridList.getGridData("gridList");
+		if(list.length == 0){
+			$("#errorMsg").text(commonUtil.getMsg("REPORT_M0001"));
+			return;
+		}
+		if($("#SEARCHBOX2").val() == ""){
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0223"));
+			return;
+		}
+		if($("#QUANTITY").prop("checked")){
+			var param = dataBind.paramData("searchArea");
+			$("#qtyInput").text("대량검수 수량입력");
+			layer_open('layer2');
+			$("#SUMQTYPOP3").select();
+		}else{
+			baCode("","");
+		}
+	}
+
+	function baCode(flog, sumQty){
+		$("#SEARCHBOX2").select();
+		var list = gridList.getGridData("gridList");
+		var rowData;
+		var cnt = 0;
+		var sumQtchek = 1;
+		if(flog == "POP3"){
+			sumQtchek = sumQty;
+		}
+		var sumQtyasn = 0;
+		for(var i=0;i<list.length;i++){
+			rowData = list[i];
+			sumQtyasn += new Number(rowData.get("QTYASN"));
+		}
+
+		for(var i=0;i<list.length;i++){
+			rowData = list[i];
+
+			var SKUKEY = new Number(rowData.get("SKUKEY"));
+			var EANCOD = new Number(rowData.get("EANCOD"));
+			var QTYASN = new Number(rowData.get("QTYASN"));
+			var QTCHEK = new Number(rowData.get("QTCHEK"));
+			var QTYPTN = new Number(rowData.get("QTYPTN"));
+			var UNLOAD = new Number(rowData.get("UNLOAD"));
+			var RFNDTY = rowData.get("RFNDTY");
+
+			if(UNLOAD == ""){
+				UNLOAD = QTYASN;
+			}else{
+				UNLOAD = 0;
+			}
+			if(SKUKEY == $("#SEARCHBOX2").val() || EANCOD == $("#SEARCHBOX2").val()){
+				var STATES = "";
+				if(sumQtyasn < sumQtchek || Number(QTYASN - QTCHEK) == 0 && Number(list.length-1) == i){
+					PlaySound("e");
+					$("#errorMsg").text(commonUtil.getMsg("OUT_M0218"));
+					return;
+				}
+				if(flog == "POP3"){
+					if(Number(QTYASN - QTCHEK) != 0 && sumQtchek != 0){
+						if(QTYASN > Number(QTCHEK+sumQty)){
+							STATES = "검수중";
+							colrFlag = 1;
+							gridList.checkGridColor("gridList", i);
+						}else if(QTYASN <= Number(QTCHEK+sumQty)){
+							STATES = "검수";
+							colrFlag = 2;
+							gridList.checkGridColor("gridList", i);
+						}else{
+							STATES = "검수대기";
+							colrFlag = 3;
+							gridList.checkGridColor("gridList", i);
+						}
+						if(Number(QTYASN - QTCHEK) > sumQty){
+							sumQtchek = 0 ;
+							gridList.setColValue("gridList", i, "QTCHEK", QTCHEK + Number(sumQty));
+							$("#OPTION2").text(QTCHEK + Number(sumQty));
+
+							gridList.setColValue("gridList", i, "STATES", STATES );
+							$("#OPTION1").text(QTYASN);
+							$("#OPTION3").text(UNLOAD);
+							$("#CANCELTYPE").text("환불유형:"+RFNDTY);
+						}else if(Number(QTYASN - QTCHEK) <= sumQty){
+							sumQtchek = Number(sumQty - (QTYASN - QTCHEK));
+							gridList.setColValue("gridList", i, "QTCHEK", QTYASN);
+							$("#OPTION2").text(QTYASN);
+							gridList.setColValue("gridList", i, "STATES", STATES );
+							$("#OPTION1").text(QTYASN);
+							$("#OPTION3").text(UNLOAD);
+							$("#CANCELTYPE").text("환불유형:"+RFNDTY);
+						}
+					}
+				}else{
+					if(Number(QTYASN - QTCHEK) != 0 && sumQtchek != 0){
+						if(QTYASN > Number(QTCHEK+1)){
+							STATES = "검수중";
+							colrFlag = 1;
+							gridList.checkGridColor("gridList", i);
+						}else if(QTYASN <= Number(QTCHEK+1)){
+							STATES = "검수";
+							colrFlag = 2;
+							gridList.checkGridColor("gridList", i);
+						}else{
+							STATES = "검수대기";
+							colrFlag = 3;
+							gridList.checkGridColor("gridList", i);
+						}
+						if(Number(QTYASN - QTCHEK) > 1){
+							sumQtchek = 0 ;
+							gridList.setColValue("gridList", i, "QTCHEK", Number(QTCHEK + 1));
+							$("#OPTION2").text(Number(QTCHEK + 1));
+
+							gridList.setColValue("gridList", i, "STATES", STATES );
+							$("#OPTION1").text(QTYASN);
+							$("#OPTION3").text(UNLOAD);
+							$("#CANCELTYPE").text("환불유형:"+RFNDTY);
+						}else if(Number(QTYASN - QTCHEK) <= 1){
+							sumQtchek = Number(1 - (QTYASN - QTCHEK));
+							gridList.setColValue("gridList", i, "QTCHEK", QTYASN);
+							$("#OPTION2").text(QTYASN);
+							gridList.setColValue("gridList", i, "STATES", STATES );
+							$("#OPTION1").text(QTYASN);
+							$("#OPTION3").text(UNLOAD);
+							$("#CANCELTYPE").text("환불유형:"+RFNDTY);
+						}
+					}
+				}
+				cnt++;
+			}
+		}
+		if(cnt == 0){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0224"));
+			return;
+		}
+		PlaySound("s");
+	}
+
+	function isNumberKey() {
+	   var key = event.keyCode;
+	   if(key == 8 || key == 9 || key == 13 || key == 46 || key == 144 || (key >= 48 && key <= 57 || key == 110 || key == 190)){
+	   }else{
+		   PlaySound("e");
+		   $("#errorMsg").text(commonUtil.getMsg("OUT_M0008"));
+		   event.returnValue = false;
+	   }
+	}
+
+	function saveConfirmPop(){
+		var list = gridList.getSelectData("gridList");
+		if(list.length == 0){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("VALID_M0006"));
+			return;
+		}
+		var rowData;
+		for(var i=0;i<list.length;i++){
+			rowData = list[i];
+			if(rowData.get("QTCHEK") == 0){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0260"));
+				return;
+			}
+			if(rowData.get("RSNCOD") == " "){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0227"));
+				return;
+			}
+			if(rowData.get("ASKU01") == "Y"){
+				if(rowData.get("QTYMON") == " "){
+					PlaySound("e");
+					$("#errorMsg").text(commonUtil.getMsg("OUT_M0226"));
+					return;
+				}
+
+			}
+			if(rowData.get("QTCHEK") == 0){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("IN_M0149"));
+				return;
+
+			}
+		}
+		layer_open('layer3');
+	}
+
+	function save(str){
+		var con = document.getElementById("layer3");
+        con.style.display = 'none';
+		if(str == "Y"){
+			var gridId = "gridList";
+			var list = gridList.getSelectData(gridId);
+			var headRowNum = gridList.getFocusRowNum(gridId);
+			var head = gridList.getRowData(gridId, headRowNum);
+
+			var param = new DataMap();
+			param.put("head",head);
+			param.put("list", list);
+			param.put("OWNRKY","EBAY");
+			param.put("WAREKY","WH02");
+			param.put("RTNRCVTY", $("#SELECT02").val());
+			param.put("ASNTTY", $("#SELECT01").val());
+		 	var json = netUtil.sendData({
+				url : "/wms/inboundPop/json/gr23POPSave.data",
+				param : param
+			});
+		 	if(json.data == "S"){
+		 		searchList();
+		 	}else if(json.data == "D"){
+		 		PlaySound("e");
+		 		$("#errorMsg").text(commonUtil.getMsg("OUT_M0252"));
+		 		$("#SEARCHBOX2").select();
+		 	}else{
+		 		PlaySound("e");
+		 		$("#errorMsg").text(commonUtil.getMsg("OUT_M0221"));
+		 		$("#SEARCHBOX2").select();
+		 	}
+		}
+	}
+
+	function PlaySound(soundObjectId) {
+		var sound = null;
+		if(soundObjectId == "s")
+			sound = new Audio("/beepsound/beep_success.mp3");
+		if(soundObjectId == "e")
+			sound = new Audio("/beepsound/beep_error.mp3");
+		if(soundObjectId == "v")
+			sound = new Audio("/beepsound/beep_vas.mp3");
+
+		if(sound){
+			sound.play();
+		}
+	}
+
+	function gridListRowBgColorChange(gridId, rowNum){
+		if(gridId == "gridList" && colrFlag == 1){
+			return configData.GRID_COLOR_BG_SKYBLUE_CLASS;
+		}else if(gridId == "gridList" && colrFlag == 2){
+			return configData.GRID_COLOR_BG_YELLOWGREEN_CLASS;
+		}else{
+			return configData.GRID_COLOR_BG_WHITE_CLASS;
+		}
+	}
+
+	function layer_open(el) {
+		var temp = $('#' + el); //레이어의 id를 temp변수에 저장
+		var bg = temp.prev().hasClass('bg'); //dimmed 레이어를 감지하기 위한 boolean 변수
+		if (bg) {
+			$('.layer').fadeIn();
+		} else {
+			temp.fadeIn(); //bg 클래스가 없으면 일반레이어로 실행한다.
+		}
+		if (temp.outerHeight() < $(document).height())
+			temp.css('margin-top', '-' + temp.outerHeight() / 2 + 'px');
+		else
+			temp.css('top', '0px');
+		if (temp.outerWidth() < $(document).width())
+			temp.css('margin-left', '-' + temp.outerWidth() / 2 + 'px');
+		else
+			temp.css('left', '0px');
+		temp.find('a.cbtn').click(function(e) {
+			if (bg) {
+				$('.layer').fadeOut();
+			} else {
+				temp.fadeOut(); //'닫기'버튼을 클릭하면 레이어가 사라진다.
+			}
+			e.preventDefault();
+		});
+		$('.layer .bg').click(function(e) {
+			$('.layer').fadeOut();
+			e.preventDefault();
+		});
+	}
+
+	function reasonCodes(){
+		var RSNCOD = $("#REASONCODES").val();
+		if(RSNCOD == ""){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0223"));
+			$("#REASONCODES").select();
+			return;
+		}
+
+		var param = new DataMap();
+		param.put("RSNCOD", RSNCOD);
+		var json = netUtil.sendData({
+			module : "WmsInboundPop",
+			command : "RSNCODKEYval",
+			sendType : "map",
+			param : param
+		});
+
+		if(json.data["CNT"] >= 1) {
+			PlaySound("s");
+			$("#SEARCHBOX2").select();
+			$("#errorMsg").text("");
+
+			var list = gridList.getGridData("gridList");
+			var rowData;
+			var cnt = 0;
+			for(var i=0;i<list.length;i++){
+				rowData = list[i];
+				gridList.setColValue("gridList", i, "RSNCOD", RSNCOD);
+			}
+		}else{
+			PlaySound("e");
+			$("#REASONCODES").select();
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0089", RSNCOD));
+		}
+	}
+
+	function savePop2(){
+		var data = inputList.setRangeParam("gr22Pop2");
+		var rowData = gridList.getRowData("gridList", $("#ROWNUM").val());
+		var STATES = "";
+		if($("#COLNAME").val() == "QTYPTN"){
+			gridList.setColValue($("#GRIDID").val(), $("#ROWNUM").val(), "QTYPTN", $("#SUMQTY").val());
+		}else{
+			if($("#SUMQTY").val() < rowData.get("QTCHEK")){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0218"));
+				$("#SUMQTY").select();
+				return;
+			}
+			if($("#SUMQTY").val() > rowData.get("QTCHEK")){
+				STATES = "검수중";
+				colrFlag = 1;
+				gridList.checkGridColor("gridList", $("#ROWNUM").val());
+			}else if($("#SUMQTY").val() == rowData.get("QTCHEK")){
+				STATES = "검수";
+				colrFlag = 2;
+				gridList.checkGridColor("gridList", $("#ROWNUM").val());
+			}else{
+				STATES = "검수대기";
+				colrFlag = 3;
+				gridList.checkGridColor("gridList", $("#ROWNUM").val());
+			}
+			gridList.setColValue("gridList", $("#ROWNUM").val(), "STATES", STATES );
+			gridList.setColValue($("#GRIDID").val(), $("#ROWNUM").val(), "QTYASN", $("#SUMQTY").val());
+			gridList.setColValue($("#GRIDID").val(), $("#ROWNUM").val(), "QTYPTN", $("#SUMQTY").val());
+		}
+		var con = document.getElementById("layer1");
+        con.style.display = 'none';
+	}
+	var sum = 0;
+	function btnPop2(res){
+		if($("#SUMQTY").val() == ""){
+			sum = res;
+		}else{
+			sum = sum + res;
+		}
+		$("#SUMQTY").val(sum);
+	}
+
+	function resetPop2(){
+		$("#SUMQTY").val("");
+	}
+
+	function closePop2(){
+		var con = document.getElementById("layer1");
+        con.style.display = 'none';
+	}
+
+	function savePop3(){
+		var con = document.getElementById("layer2");
+        con.style.display = 'none';
+		baCode("POP3", $("#SUMQTYPOP3").val());
+	}
+
+	function isNumberKey(res) {
+		var key = event.keyCode;
+		if(res != ""){
+			var name = "";
+			if(res == "POP3"){
+				name = $("#SUMQTYPOP3").val();
+			}else if(res == "POP4"){
+				name = $("#SUMQTYPOP4").val();
+			}
+			if(name == "" && key == 48){
+				PlaySound("e");
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0008"));
+				event.returnValue = false;
+				return;
+			}else{
+				$("#errorMsg").text(commonUtil.getMsg(""));
+			}
+		}
+		if(key == 8 || key == 9 || key == 13 || key == 144 || (key >= 48 && key <= 57 || key == 110 || key == 190)){
+			$("#errorMsg").text(commonUtil.getMsg(""));
+		}else{
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("OUT_M0008"));
+			event.returnValue = false;
+  		}
+	}
+
+	function boxIdQty(){
+		var list = gridList.getSelectData("gridList");
+		if (list.length == 0){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("VALID_M0006"));
+			$("#BOXIDQTY").prop("checked", false);
+			return;
+		}
+		$("#SUMQTYPOP4").select();
+		if($("#BOXIDQTY").prop("checked") == true){
+			layer_open('layer4');
+		}
+	}
+
+	function savePop4(){
+		var list = gridList.getSelectData("gridList");
+		var rowData;
+		var inndpt = $("#SUMQTYPOP4").val();
+		if(inndpt == ""){
+			inndpt = 1;
+		}
+		for(var i=0;i<list.length;i++){
+			rowData = list[i];
+			gridList.setColValue("gridList", i, "INNDPT", inndpt);
+		}
+		$("#BOXIDQTY").prop("checked", false);
+		var con = document.getElementById("layer4");
+        con.style.display = 'none';
+
+	}
+
+	function savePop5(){
+		$("#errorMsg").text("");
+		if(ex_date($("#DATETYPE").val()) != false){
+			if($(':radio[name="DATERADIO"]:checked').val() == 2){
+				var input1 = $("#DATETYPE").val();
+				var input2 = gridList.getColData("gridList", $("#ROWNUM").val(), "QTYDAY");
+				var dateinfo = input1.replace(/\./g, '');
+				var yyyy = dateinfo.substring(0, 4);
+				var mm = dateinfo.substring(4, 6);
+				var dd = dateinfo.substring(6, 8);
+				var src = new Date(yyyy, mm-1, dd);
+				src.setDate(src.getDate() + parseInt(input2));
+				var year = src.getFullYear();
+				var month = src.getMonth() + 1;
+				var date = src.getDate();
+				if(month<10) month = "0" + month;
+				if(date<10) date = "0" + date;
+				var result = year + "." + month + "." + date;
+				var result2 = yyyy + mm + dd;
+				if(result2 > "20170427"){
+					PlaySound("e");
+					$("#errorMsg").text(commonUtil.getMsg("VALID_M1607"));
+					return;
+				}
+				gridList.setColValue("gridList", $("#ROWNUM").val(), "QTYMON", result);
+			}else{
+				gridList.setColValue("gridList", $("#ROWNUM").val(), "QTYMON", $("#DATETYPE").val());
+			}
+			PlaySound("s");
+			var con = document.getElementById("layer5");
+	        con.style.display = 'none';
+		}
+	}
+
+	function reportPrint(opt){
+		var list = gridList.getSelectData("gridList");
+		if (list.length == 0){
+			PlaySound("e");
+			$("#errorMsg").text(commonUtil.getMsg("VALID_M0006"));
+			return;
+		}
+
+		var param = new DataMap();
+		param.put("list", list);
+		param.put("WAREKY","WH02");
+
+		 if(opt == "seller"){
+			param.put("PRTTYP", "IN02");
+		}else if(opt == "sku"){
+			param.put("PRTTYP", "IN01");
+		}
+
+		var json = netUtil.sendData({
+			url : "/wms/inboundPop/json/saveBarcodeGR23POP.data",
+			param : param
+		});
+
+		if(json.data > 0){
+	 		PlaySound("s");
+	 		if(opt == "seller"){
+	 			$("#errorMsg").text(commonUtil.getMsg("OUT_M0228"));
+			}else if(opt == "sku"){
+				$("#errorMsg").text(commonUtil.getMsg("OUT_M0230"));
+			}
+
+	 	}else{
+	 		PlaySound("e");
+	 		$("#errorMsg").text(commonUtil.getMsg("OUT_M0229"));
+	 	}
+ 	}
+
+	function radio(){
+		$("#DATETYPE").select();
+	}
+
+</script>
+</head>
+<body>
+<div class="layer_wrap">
+	<div class="header_wrap" id="searchArea" style="height:145px !important">
+		<fieldset>
+			<legend>search</legend>
+			<div class="search_box" style="margin-top:15px !important;">
+				<div class="first">
+					<label for="select01">오더유형</label>
+
+					<div class="select" style="width:300px">
+						<select id="SELECT01" style="width: 100%; height: 100%; font-size: 20px">
+
+								<b><option value='131'>[131]반품입고</option></b>
+
+						</select>
+					</div>
+				</div>
+				<div>
+					<label for="select02">검수유형</label>
+
+					<div class="select" style="width:300px">
+						<select id="SELECT02" style="width: 100%; height: 100%; font-size: 20px">
+
+								<option value='INVC'>[INVC]운송장번호</option>
+
+								<option value='ASND'>[ASND]입고예정번호</option>
+
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="input_box" style="margin-top:15px !important;">
+				<span class="bg_input_y" style="width:398px">
+					<span><input type="text" id="SEARCHBOX" style="font-size: 50px;" validate="required" onkeydown="javascript: if (event.keyCode == 13) { searchList(); return false; }"/></span>
+<!-- 					<span><input type="text" id="SEARCHBOX" style="font-size: 50px;" validate="required" onkeydown="javascript: if (event.keyCode == 13) { searchList(); return false; }" onkeypress="isNumberKey('');"/></span> -->
+				</span>
+			</div>
+			<div class="check_box" style="padding-left: 80px;margin-top:55px !important">
+				<label><input type="checkbox" name="CHECKREASONCODES" id="CHECKREASONCODES" style="width:15px;height:15px;pa"/>&nbsp;&nbsp;사유코드</label>
+			</div>
+			<div class="input_box" style="margin-left:20px;margin-top:15px !important;">
+				<span class="bg_input_y" style="width:207px">
+					<span><input type="text" name="REASONCODES" id="REASONCODES" style="font-size: 50px;" onkeydown="javascript: if (event.keyCode == 13) { reasonCodes(); return false; }"/></span>
+				</span>
+			</div>
+			<div class="f_r" style="margin-top:15px !important;">
+				<span class="btn_char" style="width:170px" onclick="saveConfirmPop();"><button>반품확정</button></span>
+				<span class="btn_char" style="width:170px" onclick="searchList();"><button style="background:red !important;">검수취소</button></span>
+			</div>
+		</fieldset>
+	</div>
+	<div class="content_wrap" style="top:146px !important;">
+		<div class="inner section">
+			<div class="table_list01 scroll_fix tableHeader">
+				<table>
+					<caption>검색결과 테이블</caption>
+					<colgroup>
+						<col style="width:3%" />
+						<col style="width:6%" />
+						<col style="width:5%" />
+						<col style="width:*" />
+						<col style="width:10%" />
+						<col style="width:3%" />
+						<col style="width:5%" />
+						<col style="width:5%" />
+						<col style="width:5%" />
+						<col style="width:8%" />
+						<col style="width:6%" />
+						<col style="width:7%" />
+						<col style="width:6%" />
+						<col style="width:7%" />
+					</colgroup>
+					<thead>
+					<tr>
+						<th GBtnCheck="true"></th>
+						<th CL='STD_STATES' style="border-left-color: white;">상태</th>
+						<th CL='STD_SKU' style="border-left-color: white;">SKU</th>
+						<th CL='STD_DESC01' style="border-left-color: white;">SKU명</th>
+						<th CL='STD_BARCOD' style="border-left-color: white;">바코드</th>
+						<th CL='STD_VRKME' style="border-left-color: white;">판매<br>단위</th>
+						<th CL='STD_QTPUOM_1' style="border-left-color: white;">입수량</th>
+						<th CL='STD_QTYASN' style="border-left-color: white;">예정량</th>
+						<th CL='STD_QTCTST' style="border-left-color: white;">검수량</th>
+						<th CL='STD_RTNRSNCD' style="border-left-color: white;">반품코드</th>
+						<th CL='STD_ASKU01' style="border-left-color: white;">유통기한 관리여부</th>
+						<th CL='STD_LOTA13' style="border-left-color: white;">유통기한</th>
+						<th CL='STD_LOTL01' style="border-left-color: white;">양품여부구분</th>
+						<th CL='STD_RTNLIMIT' style="border-left-color: white;"></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div id="scroll" class="table_list01 scroll tableBody" style="height:90% !important;">
+				<table id="scroll_t">
+					<caption>검색결과 테이블</caption>
+					<colgroup>
+						<col style="width:3%" />
+						<col style="width:6%" />
+						<col style="width:5%" />
+						<col style="width:*" />
+						<col style="width:10%" />
+						<col style="width:3%" />
+						<col style="width:5%" />
+						<col style="width:5%" />
+						<col style="width:5%" />
+						<col style="width:8%" />
+						<col style="width:6%" />
+						<col style="width:7%" />
+						<col style="width:6%" />
+						<col style="width:7%" />
+					</colgroup>
+					<tbody id="gridList">
+						<!-- 검수중 : testing, 검수 : test, 취소, 할당 : cancel -->
+						<tr class="testing" CGRow="true">
+							<td GCol="rowCheck"></td>
+							<td GCol="text,STATES"></td>
+							<td GCol="text,SKUKEY"></td>
+							<td GCol="text,DESC01"></td>
+							<td GCol="text,EANCOD"></td>
+							<td GCol="text,UOMKEY"></td>
+							<td GCol="text,QTYRCV" GF="N" ></td>
+							<td GCol="input,QTYASN" GF="N" style="background-color: #FBE5D6;"></td>
+							<td GCol="text,QTCHEK" GF="N"></td>
+							<td GCol="select,RSNCOD">
+								<select Combo="WmsInboundPop,GR23RSNCODCOMBO" class="select" style="background-color: #FBE5D6;" >
+									<option value=""></option>
+								</select>
+							</td>
+							<td GCol="text,ASKU01"></td>
+							<td GCol="input,QTYMON" GF="D" validate="required,MASTER_M0434" style="background-color: #FBE5D6;"></td>
+							<td GCol="text,LOTL01"></td>
+							<td GCol="text,RTNLIMIT"></td>
+
+							<input type="hidden" name="INNDPT" id="INNDPT" />
+							<input type="hidden" name="LOTA11" id="LOTA11" />
+							<input type="hidden" name="QTYDAY" id="QTYDAY" />
+							<input type="hidden" name="EANCOD" id="EANCOD" />
+							<input type="hidden" name="UNLOAD" id="UNLOAD" />
+							<input type="hidden" name="SAPSTS" id="SAPSTS" />
+							<input type="hidden" name="DRELIN" id="DRELIN" />
+							<input type="hidden" name="VEHINO" id="VEHINO" />
+							<input type="hidden" name="INSPTY" id="INSPTY" />
+							<input type="hidden" name="AWMSNO" id="AWMSNO" />
+							<input type="hidden" name="DESC01" id="DESC01" />
+							<input type="hidden" name="DESC02" id="DESC02" />
+							<input type="hidden" name="ASKU02" id="ASKU02" />
+							<input type="hidden" name="ASKU03" id="ASKU03" />
+							<input type="hidden" name="ASKU04" id="ASKU04" />
+							<input type="hidden" name="ASKU05" id="ASKU05" />
+							<input type="hidden" name="EANCOD" id="EANCOD" />
+							<input type="hidden" name="GTINCD" id="GTINCD" />
+							<input type="hidden" name="SKUG01" id="SKUG01" />
+							<input type="hidden" name="SKUG02" id="SKUG02" />
+							<input type="hidden" name="SKUG03" id="SKUG03" />
+							<input type="hidden" name="SKUG04" id="SKUG04" />
+							<input type="hidden" name="SKUG05" id="SKUG05" />
+							<input type="hidden" name="GRSWGT" id="GRSWGT" />
+							<input type="hidden" name="NETWGT" id="NETWGT" />
+							<input type="hidden" name="WGTUNT" id="WGTUNT" />
+							<input type="hidden" name="LENGTH" id="LENGTH" />
+							<input type="hidden" name="WIDTHW" id="WIDTHW" />
+							<input type="hidden" name="HEIGHT" id="HEIGHT" />
+							<input type="hidden" name="CUBICM" id="CUBICM" />
+							<input type="hidden" name="CAPACT" id="CAPACT" />
+							<input type="hidden" name="SMANDT" id="SMANDT" />
+							<input type="hidden" name="SEBELN" id="SEBELN" />
+							<input type="hidden" name="SEBELP" id="SEBELP" />
+							<input type="hidden" name="SZMBLNO" id="SZMBLNO" />
+							<input type="hidden" name="SZMIPNO" id="SZMIPNO" />
+							<input type="hidden" name="STRAID" id="STRAID" />
+							<input type="hidden" name="SVBELN" id="SVBELN" />
+							<input type="hidden" name="SPOSNR" id="SPOSNR" />
+							<input type="hidden" name="STKNUM" id="STKNUM" />
+							<input type="hidden" name="STPNUM" id="STPNUM" />
+							<input type="hidden" name="SWERKS" id="SWERKS" />
+							<input type="hidden" name="SLGORT" id="SLGORT" />
+							<input type="hidden" name="SDATBG" id="SDATBG" />
+							<input type="hidden" name="STDLNR" id="STDLNR" />
+							<input type="hidden" name="SSORNU" id="SSORNU" />
+							<input type="hidden" name="SSORIT" id="SSORIT" />
+							<input type="hidden" name="SMBLNR" id="SMBLNR" />
+							<input type="hidden" name="SZEILE" id="SZEILE" />
+							<input type="hidden" name="SMJAHR" id="SMJAHR" />
+							<input type="hidden" name="SXBLNR" id="SXBLNR" />
+							<input type="hidden" name="SBKTXT" id="SBKTXT" />
+							<input type="hidden" name="INVCNO" id="INVCNO" />
+							<input type="hidden" name="OINVNO" id="OINVNO" />
+							<input type="hidden" name="AREAKY" id="AREAKY" />
+							<input type="hidden" name="LOCAKY" id="LOCAKY" />
+							<input type="hidden" name="QTYLAB" id="QTYLAB" />
+							<input type="hidden" name="RFNDTY" id="RFNDTY" />
+							<input type="hidden" name="RCVLMT" id="RCVLMT" />
+							<input type="hidden" name="RTNLMT" id="RTNLMT" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="footer_wrap">
+		<div class="select_info" style="margin-bottom:0 !important">
+		    <div class="input_box">
+		      <input type="text" value="사유메세지">
+		    </div>
+			<div class="progress_box" style="margin-top:5px;">
+				<span>
+					<strong>
+						<span style="font-size: 75px;">바코드</span>
+						<input type="text" id="SEARCHBOX2" style="font-size: 50px; width: 950px; height: 84px; border: 4px solid #f5da6f;border-radius: 4px 4px;background-color: #fbed8a; padding-left: 18px;" onkeydown="javascript: if (event.keyCode == 13) { quantity(); return false; }">
+<!-- 						<input type="text" id="SEARCHBOX2" style="font-size: 50px; width: 950px; height: 84px; border: 4px solid #f5da6f;border-radius: 4px 4px;background-color: #fbed8a; padding-left: 18px;" onkeydown="javascript: if (event.keyCode == 13) { quantity(); return false; }" onkeypress="isNumberKey('');"> -->
+					</strong>
+				</span>
+				<div class="progress num3 yeonny">
+					<ul style="height:102px;">
+						<li class="first">
+							<span id="OPTION1""></span>
+							<strong>검수대상(예정량)</strong>
+						</li>
+						<li>
+							<span class="end" id="OPTION2";color:green;"></span>
+							<strong>검수완료</strong>
+						</li>
+						<li>
+							<span class="cancel" id="OPTION3"></span>
+							<strong>하차미진행</strong>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="right_box" style="margin-top:5px;">
+			<div style="margin-bottom: 10px">
+				<p class="error" style="height:90px;width:648px;margin-bottom: 10px;"><span id="errorMsg"></span></p>
+			</div>
+				<div class="div2">
+					<div class="list" style="height:150px">
+						<div class="first">
+							<label class="" style="width:250px;">
+								<input type="checkbox" name="BOXIDQTY" id="BOXIDQTY" style="width: 15px; height: 15px;" onchange="boxIdQty();"/>&nbsp;&nbsp;박스ID발행 수량
+							</label>
+							<span class="btn_char btn_s" style="width:228px"><button onclick="reportPrint('seller');">박스ID발행</button></span>
+						</div>
+						<div>
+							<label class="" style="width:250px;"><input type="checkbox" name="QUANTITY" id="QUANTITY" style="width: 15px; height: 15px;"/>&nbsp;&nbsp;대량검수 </label>
+							<span class="btn_char btn_s" style="width:228px"><button onclick="reportPrint('sku');">SKU라벨발행</button></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="pop-layer" id="layer1">
+	<div class="c_outer">
+		<input type="hidden" name="GRIDID" id="GRIDID"/>
+	    <input type="hidden" name="ROWNUM" id="ROWNUM"/>
+	    <input type="hidden" name="COLNAME" id="COLNAME"/>
+	    <input type="hidden" name="COLVALUE" id="COLVALUE"/>
+		<table >
+			<tr>
+				<td colspan="2" style="background :#FFEA77;"><input type="text" maxlength="4" style="font-size : 300%;" id="SUMQTY" readonly="readonly"></td>
+				<td style="background :#696969;"><input type="button" value="◀" style=" font-size : 300%; color :white" onclick="resetPop2();"></td>
+			</tr>
+
+			<tr>
+				<td style="background :#DCDCDC;"><input type="button" value="7" onclick="btnPop2('7');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="8" onclick="btnPop2('8');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="9" onclick="btnPop2('9');"/></td>
+			</tr>
+
+			<tr>
+				<td style="background :#DCDCDC;"><input type="button" value="4" onclick="btnPop2('4');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="5" onclick="btnPop2('5');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="6" onclick="btnPop2('6');"/></td>
+			</tr>
+
+			<tr>
+				<td style="background :#DCDCDC;"><input type="button" value="1" onclick="btnPop2('1');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="2" onclick="btnPop2('2');"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="3" onclick="btnPop2('3');"/></td>
+			</tr>
+
+						<tr>
+				<td style="background :#696969;"><input type="button" value="확인" style="color :white" onclick="savePop2();"/></td>
+				<td style="background :#DCDCDC;"><input type="button" value="0" onclick="btnPop2('0');"/></td>
+				<td style="background :#696969;"><input type="button" value="취소" style="color :white" onclick="closePop2();"/></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="pop-layer2" id="layer2">
+	<div class="searchInBox">
+		<div class="outer" style="margin:0 auto !important;">
+			<div class="text">대량검수 수량입력</div>
+			<div class="number" style="border: 1px solid gray;height:160px;"><input type="text" size="10" maxlength="4" id="SUMQTYPOP3" onkeydown="javascript: if (event.keyCode == 13) { savePop3(); return false; }" onkeypress="isNumberKey('POP3');"/></div>
+		</div>
+	</div>
+</div>
+
+<div class="pop-layer2" id="layer3">
+	<div class="searchInBox">
+		<div class="b_outer">
+			<div class="text">반품확정 하시겠습니까?</div>
+			<div class="button_inner">
+			<div class="button1">
+				<input type="button" value="확인" style="background-color:#22AA1D;" onclick="save('Y');"/>
+			</div>
+		 	<div class="button2">
+				<input type="button" value="취소" style="background-color:#FF443E;" onclick="save('N');"/>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="pop-layer2" id="layer4">
+	<div class="searchInBox">
+		<div class="outer">
+			<div class="text">BOXID라벨수량</div>
+			<div class="number"><input type="text" size="10" maxlength="4" id="SUMQTYPOP4" value="1" onkeydown="javascript: if (event.keyCode == 13) { savePop4(); return false; }" onkeypress="isNumberKey('POP4');"/></div>
+		</div>
+	</div>
+</div>
+
+<div class="pop-layer2" id="layer5">
+	<div class="searchInBox">
+		<div class="d_outer">
+			<div class="text"><span>유통기간 관리대상 상품</span></div>
+			<div class="text_1">
+			<input type="radio" value="1" name="DATERADIO" checked="checked" onclick="radio();"/>유통일자
+			<input type="radio" value="2" name="DATERADIO" onclick="radio();"/>제조일자<br />
+			<input type="text"  size="8" maxlength="8" style="border : none; margin-top : 10px; font-size : 200%; width : 100%; height : 100px; text-align : center; " id="DATETYPE" onkeydown="javascript: if (event.keyCode == 13) { savePop5(); return false; }"  />
+		</div>
+		</div>
+	</div>
+</div>
+
+
+<audio src="/beepsound/beep_success.mp3" id="s" />
+<audio src="/beepsound/beep_error.mp3" id="e" />
+<audio src="/beepsound/beep_vas.mp3" id="v" />
+</body>
+</html>

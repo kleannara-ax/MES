@@ -1,0 +1,24 @@
+grid.js
+ - check 컬럼에서 setColValue 한 이후 gridListEventColValueChange 이벤트 함수 타지 않는 오류 수정
+ - add 속성의 날자포멧 validate 체크 누락 오류 수정
+ - tree 펼침 기능 더블클릭으로 수정
+ - tree 행 삭제시 오류 개섬
+ - tree 데이터 처리 성능 개선
+ - thead, tbody>colgroup 설정없이 그리드 구성 가능한 기능 추가. demo/grid/default 참조
+   : GH="컬럼넓이" - <td GH="80" GCol="check,INDUPA"></td> - 그리드 해더 라벨은 GCol의 STD_colname기준으로 생성됨
+   : GH="컬럼넓이,라벨키" - <td GH="80,STD_INDUPANM" GCol="check,INDUPA"></td>
+   : tableUtil 생략시 크리드 공통 기능버튼 자동생성
+ - gridEventPageEnd 호출시 dataCount 오류 수정 
+ - check box 디자인 적용된 경우 html을 면경하기 위한 옵션 추가
+   : checkBoxHtml : "<span><input type='checkbox' class='GEditBack' /></span>"
+ - intput 입력시 기존 값 전체 선택된 상태로 입력 상태가 되는 기능 추가   
+
+grid input 포커스 인 아웃하는 경우 텍스트가 우측으로 붙는 현상 수정
+ - grid.js, configData.js
+
+모바일 환경에서 접속시 모바일 로그인으로 자동 전환되는 코드 추가
+ - index.jsp
+ - commonUtil.js
+ 
+grid 생성 html 값 이동
+ - configData.js, theme.js

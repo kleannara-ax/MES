@@ -1,0 +1,2 @@
+그리드 스크롤 이벤트에 의한 reload를 막는 기능 추가
+ - gridScrollType : false

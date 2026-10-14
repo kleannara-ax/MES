@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom.css" />
+<link rel="stylesheet" type="text/css" href="css/cubefw.ref.css" />
+<link rel="stylesheet" type="text/css" href="css/SyntaxHighlighter.css"/> 
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom.js"></script>
+<script type="text/javascript" src="js/cubefw.js"></script>
+    
+<!-- code for syntaxhighlight -->
+<script type="text/javascript" src="Scripts/shCore.js"></script>
+<script type="text/javascript" src="Scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="Scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="Scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="Scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="Scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="Scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="Scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="Scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="Scripts/shBrushRuby.js"></script>
+<script type="text/javascript" src="Scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="Scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="Scripts/shBrushXml.js"></script>
+<!-- code for syntaxhighlighter -->
+<script type="text/javascript">
+	jQuery(function(){	
+		cubeUI.typeCheck();	
+	});
+	function testMap(){
+		var map = new CubeMap();
+		map.put("data1","SMCube");
+		map.put("data2","Framework");
+		map.put("data3","Test Map");
+		return map;
+	}
+	function Test(){
+		var map = new CubeMap();
+		map.put("data",testMap());
+		alert(map.toString());
+	}
+</script>
+</head>
+<body class="cubeContentBody">
+	<div class="cubeTopMenu">
+		<span cubeDataType="button"><a href="/cubefw/reference/cubeReference.html">Reference</a></span>	
+	</div>
+	<div class="cubeTopLine"></div>	
+	<div class="cubeCenterCont">
+		<div class="cubeLeftMenu">
+		<div class="cubeSubMenu" cubeDataType="accordion">
+			<h1>
+				Reference
+			</h1>
+			<ul cubeDataType="menu">
+				<li><a href="/cubefw/reference/cubeMap.html">CubeMap</a></li>
+				<li><a href="/cubefw/reference/cubeConfig.html">CubeConfig</a></li>
+				<li><a href="/cubefw/reference/cubeCommon.html">CubeCommon</a></li>
+				<li><a href="/cubefw/reference/cubeGridRow.html">CubeGridRow</a></li>
+				<li><a href="/cubefw/reference/cubeNet.html">CubeNet</a></li>
+				<li><a href="/cubefw/reference/cubeBind.html">CubeBind</a></li>
+				<li><a href="/cubefw/reference/cubeUI.html">CubeUI</a></li>
+				<li><a href="/cubefw/reference/cubeBoard.html">CubeBoard</a></li>
+				<li><a href="/cubefw/reference/cubeValidate.html">CubeValidate</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="cubeRightCont">
+			<span class="cubeTitleNav">HOME &gt; Cubefw Reference &gt; CubeMap</span>
+			<div id="contents">
+				<ul class="referenceList">
+					<li class="refTit">
+						<h1>CubeMap.putMap(key, value)</h1>	
+					</li>
+					<li>
+						<h2>.putMap(key, value)</h2>
+						<p>
+							value가 CubeMap 형태인 경우 맴버필드인 map만 저장한다.
+						</p>
+					</li>
+					<li>
+						<h3>Example</h3>
+						<p>
+							버튼 클릭 시 CubeMap 에 CubeMap 데이터 형식를 key,value 형식으로 저장.
+						</p>
+						<textarea name="code" class="html"> 
+							<!DOCTYPE html>
+							<html>
+							<head>
+							<script type="text/javascript">
+								function testMap(){
+									var map = new CubeMap();
+									map.put("data1","SMCube");
+									map.put("data2","Framework");
+									map.put("data3","Test Map");
+									return map;
+								}
+								function Test(){
+									var map = new CubeMap();
+									map.put("data",testMap());
+									alert(map.toString());
+								}
+							</script>
+							</head>
+							<body>
+								<input type="button" value="Map확인" onClick="Test(); return false;"/>
+							</body>
+							</html>
+						</textarea>
+					</li>
+					<li>
+						<h3>Demo</h3>
+						<div class="box">
+							<input type="button" value="Map확인" onClick="Test(); return false;"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cubeFooterLine"></div>
+	<div class="cubeFooter">
+		<img src="/cubefw/images/cubefw.jpg" height="25" alt="SMCube" align="left"/>
+		152-743 서울시 구로구 구로3동 197-5 삼성IT밸리 1108호 (주)에스엠큐브 TEL:02)6465-8311 FAX:02)6465-8313<br/>
+		Copyright (c) 2011 SMCube Co.,Ltd All Rights Reserved. Contact Us
+	</div>
+</body>
+<script type="text/javascript">
+dp.SyntaxHighlighter.ClipboardSwf = "Scripts/clipboard.swf";
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+</html>

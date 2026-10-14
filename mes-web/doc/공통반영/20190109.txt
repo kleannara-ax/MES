@@ -1,0 +1,9 @@
+excel download 시 임시 파일 형태로 동작하는 module 추가
+ - excel download 속도는 xls 형태로 다운로드하는것이 빠름.
+ - memory 점유는 새로 추가된 기능 사용이 최적임.
+ - BaseController.java, ExcelSXView.java
+ - servlet-cube.xml
+ - setGrid 시 excelXType : true 옵션 사용하거나 grid.js의 this.excelXType = true로 변경하여 적용
+ 
+range row 자동 증가시 데이터 복사기능 제거
+ - grid.js

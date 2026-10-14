@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Quality">
+
+	<select id="INSP_LIST" parameterType="map" resultType="Datamap">
+		SELECT CMCDVL AS VALUE_COL, 
+		 	   CDESC1 AS TEXT_COL
+		  FROM CMCDV 
+		 WHERE CMCDKY='INSPCAT' 
+		   AND USARG1='HL 완제품'
+	</select>
+
+	<select id="QLT01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_QLT01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_WDOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT01_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_QLT01_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT01_POP02_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_QLT01_POP02_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT02_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT02_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT03_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT03_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT04_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT04_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT05_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT05_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT06_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT06_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT06_POP01_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT06_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT07_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT07_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT08_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT08_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT10_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT10_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT11_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT11_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT12_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT12_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT13_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT13_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WDOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT14_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT14_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT15_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT15_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT16_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT16_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="QLT05_POP01_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_QLT05_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SDOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_WDOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<!-- 20220809 여한진 재고테이블에서 부적합처리한 항목이 있는지 체크 -->
+	<select id="INV01_UCFMTYFLG_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(*)
+		  FROM TB_INV001
+		 WHERE WERKS = #{WERKS}
+		   AND MATNR = #{MATNR}
+		   AND IND_BCD = #{IND_BCD}
+		   AND NVL(UCFMTY_FLG, 'N') = 'Y'
+	</select>
+
+
+	<!--  2024/05/07 TB_QLT031 & TBL_QLT032 (선별일지) SELECT - 강지선  -->
+	<select id="QLT31_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT 
+			a.SEQ, 					
+			a.INSPR_DT, 			 			
+			SUBSTR(a.INSPR_TM, 0, 2) || ':' || SUBSTR(a.INSPR_TM, 3, 2) || '~' || SUBSTR(a.INSPR_TM, 5, 2) || ':' || SUBSTR(a.INSPR_TM, 7, 2) AS INSPR_TM,
+		    CASE 
+		        WHEN a.INSTD_CFG = 'Y' THEN a.INSPR_NM || ' (대근)'
+		        ELSE INSPR_NM
+		    END AS INSPR_NM,
+			a.INSTD_CFG,
+			a.MATNR, 
+			(SELECT MATNR_NM FROM TB_QLT030 WHERE MATNR = a.MATNR) AS MATNR_NM,
+			(SELECT BS_WGT FROM TB_QLT030 WHERE MATNR = a.MATNR) AS BS_WGT,
+			(SELECT CLSF_STCNT FROM TB_QLT030 WHERE MATNR = a.MATNR) AS CLSF_STCNT,
+			(SELECT CLSF_MCNT FROM TB_QLT030 WHERE MATNR = a.MATNR) AS CLSF_MCNT,
+			(SELECT CLSF_CTCNT FROM TB_QLT030 WHERE MATNR = a.MATNR) AS CLSF_CTCNT,
+			(SELECT CLSF_ROLL_CNT FROM TB_QLT030 WHERE MATNR = a.MATNR) AS CLSF_ROLL_CNT,
+			a.MACH_CD, 				
+			a.PART_DIV,
+			a.CREATEUSER,				
+			a.CREATEDATE as CLSF_INPUTDT,				
+			a.UPDATEUSER,			
+			a.UPDATEDATE as CLSF_MODDT,			
+			a.RMK1 AS A_RMK1,		
+			a.RMK2 AS A_RMK2,						
+			a.RMK3 AS A_RMK3,
+			b.P_SEQ,
+			b.CLSF_LARGE,  
+			b.CLSF_SMALL,
+			b.CLSF_RST_VAL,
+			b.RMK1 AS B_RMK1,
+			b.RMK2 AS B_RMK2,
+			b.RMK3 AS B_RMK3
+		FROM TB_QLT031 a, TB_QLT032 b
+		WHERE a.SEQ = b.P_SEQ
+		<if test='SCH_MATNR != null and SCH_MATNR != "" '>
+			AND a.MATNR = #{SCH_MATNR}
+ 		</if>
+		<if test='SCH_INSPR_NM != null and SCH_INSPR_NM != "" '>
+			AND a.INSPR_NM LIKE  '%' || #{SCH_INSPR_NM} || '%'
+ 		</if>
+		<if test='SCH_INSPR_TM != null and SCH_INSPR_TM != "" '>
+			AND INSPR_TM = #{SCH_INSPR_TM}
+ 		</if>
+		<if test='SCH_SDATE != null and SCH_SDATE != ""  and SCH_EDATE != null and SCH_EDATE != "" '>
+ 			AND a.INSPR_DT BETWEEN #{SCH_SDATE} AND #{SCH_EDATE}
+ 		</if>
+		<if test='INSPR_NM != null and INSPR_NM != "" '>
+			AND a.INSPR_NM = #{INSPR_NM}
+		</if>
+		<if test='SCH_MATNR != null and SCH_MATNR != "" '>
+			AND a.MATNR = #{SCH_MATNR}
+ 		</if>
+		<if test='SCH_INSPR_DT != null and SCH_INSPR_DT != "" '>
+			AND a.INSPR_DT = #{SCH_INSPR_DT}
+ 		</if>
+		<if test='SCH_INSPR_TM != null and SCH_INSPR_TM != "" '>
+			AND a.INSPR_TM = #{SCH_INSPR_TM}
+ 		</if>
+		<if test='SCH_INSPR_NM != null and SCH_INSPR_NM != "" '>
+			AND a.INSPR_NM LIKE  '%' || #{SCH_INSPR_NM} || '%'
+ 		</if>
+		<if test='SCH_MACH_CD != null and SCH_MACH_CD != "" '>
+			<if test='SCH_MACH_CD == "TRA04" or SCH_MACH_CD == "TRA05" '>
+				AND a.MACH_CD IN ( 'TRA04',  'TRA05')
+			</if>
+			<if test='SCH_MACH_CD != "TRA04" and SCH_MACH_CD != "TRA05" '>
+				AND a.MACH_CD = #{SCH_MACH_CD}
+			</if>			
+ 		</if>
+		<if test='SCH_PART_DIV != null and SCH_PART_DIV != "" '>
+			AND a.PART_DIV = #{SCH_PART_DIV}
+ 		</if>
+		<if test='CLSF_LARGE != null and CLSF_LARGE != "" '>
+			AND b.CLSF_LARGE = #{CLSF_LARGE}
+ 		</if>
+		<if test='QLT31_SEQ != null and QLT31_SEQ != "" '>
+			AND b.P_SEQ = #{QLT31_SEQ}
+ 		</if>
+		<if test='CHK_MATNR != null and CHK_MATNR != "" '>
+			AND a.MATNR = #{CHK_MATNR}
+ 		</if>
+		<if test='CHK_INSPR_DT != null and CHK_INSPR_DT != "" '>
+			AND a.INSPR_DT = #{CHK_INSPR_DT}
+ 		</if>
+		<if test='CHK_INSPR_TM != null and CHK_INSPR_TM != "" '>
+			AND a.INSPR_TM = #{CHK_INSPR_TM}
+ 		</if>
+		<if test='CHK_MACH_CD != null and CHK_MACH_CD != "" '>
+			<if test='CHK_MACH_CD == "TRA04" or CHK_MACH_CD == "TRA05" '>
+				AND a.MACH_CD IN ( 'TRA04',  'TRA05')
+			</if>
+			<if test='CHK_MACH_CD != "TRA04" and CHK_MACH_CD != "TRA05" '>
+				AND a.MACH_CD = #{CHK_MACH_CD}
+			</if>
+ 		</if>
+		<if test='CHK_PART_DIV != null and CHK_PART_DIV != "" '>
+			AND a.PART_DIV = #{CHK_PART_DIV}
+ 		</if>
+		ORDER BY b.SEQ ASC
+	</select>
+
+	<!--  2024/04/18 선별일지 자재코드별 Master SELECT - 강지선  -->
+	<select id="QLT18_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT 
+			MATNR, 								
+			MATNR_NM,
+			MACH_CD,
+			PART_DIV,							
+			BS_WGT, 							
+			CLSF_STCNT, 						
+			CLSF_MCNT,						 
+			CLSF_CTCNT, 					
+			CLSF_ROLL_CNT, 				
+			CREATEUSER, 
+			CREATEDATE, 
+			UPDATEUSER, 
+			UPDATEDATE, 
+			RMK1, 
+			RMK2, 
+			RMK3
+		FROM TB_QLT030
+		WHERE 1 = 1
+		<if test='SCH_MATNR != null and SCH_MATNR != "" '>
+			AND MATNR = #{SCH_MATNR}
+ 		</if>
+		<if test='SCH_MACH_CD != null and SCH_MACH_CD != "" '>
+			<if test='SCH_MACH_CD == "TRA04" or SCH_MACH_CD == "TRA05" '>
+				AND MACH_CD IN ( 'TRA04',  'TRA05')
+			</if>
+			<if test='SCH_MACH_CD != "TRA04" and SCH_MACH_CD != "TRA05" '>
+				AND MACH_CD = #{SCH_MACH_CD}
+			</if>
+ 		</if>
+		<if test='SCH_PART_DIV != null and SCH_PART_DIV != "" '>
+			AND PART_DIV = #{SCH_PART_DIV}
+ 		</if>
+		<if test='SEL_MATNR != null and SEL_MATNR != "" '>
+			AND MATNR = #{SEL_MATNR}
+ 		</if>
+		<if test='SEL_MACH_CD != null and SEL_MACH_CD != "" '>
+			AND MACH_CD = #{SEL_MACH_CD}
+			<!-- 
+			<if test='SEL_MACH_CD == "TRA04" or SEL_MACH_CD == "TRA05" '>
+				AND MACH_CD IN ( 'TRA04',  'TRA05')
+			</if>
+			<if test='SEL_MACH_CD != "TRA04" and SEL_MACH_CD != "TRA05" '>
+				AND MACH_CD = #{SEL_MACH_CD}
+			</if>
+			 -->
+ 		</if>
+		<if test='SEL_PART_DIV != null and SEL_PART_DIV != "" '>
+			AND PART_DIV = #{SEL_PART_DIV}
+ 		</if>
+
+		ORDER BY MATNR ASC
+	</select>
+
+	<!--  2024/04/30 선별일지 자재코드별 Master INSERT - 강지선  -->
+	<insert id="QLT18_INSERT_OLD" parameterType="hashmap">
+		INSERT INTO TB_QLT030 
+		(
+			MATNR, 
+			MATNR_NM,
+			MACH_CD,
+			PART_DIV,
+			BS_WGT,
+			CLSF_STCNT, 
+			CLSF_MCNT, 
+			CLSF_CTCNT, 
+			CLSF_ROLL_CNT, 
+			CREATEUSER
+		) VALUES (
+			#{MATNR},
+			#{MATNR_NM}, 
+			#{MACH_CD},
+			#{PART_DIV},  
+			#{BS_WGT}, 
+			#{CLSF_STCNT}, 
+			#{CLSF_MCNT}, 
+			#{CLSF_CTCNT}, 
+			#{CLSF_ROLL_CNT}, 
+			#{CREATEUSER}
+		)
+	</insert>
+
+	<!--  2024/04/30 선별일지 자재코드별 Master UPDATE - 강지선  -->
+	<update id="QLT18_UPDATE" parameterType="hashmap">
+		UPDATE TB_QLT030 SET CREATEUSER = CREATEUSER ,
+		<!-- 
+		<if test='MACH_CD != null' > 
+			MACH_CD = #{MACH_CD},
+ 		</if>
+		<if test='PART_DIV != null' > 
+			PART_DIV = #{PART_DIV},
+ 		</if>
+ 		//-->
+		<if test='MATNR_NM != null' > 
+			MATNR_NM = #{MATNR_NM},
+ 		</if>
+		<if test='BS_WGT != null' > 
+			BS_WGT = #{BS_WGT},
+ 		</if>
+		<if test='CLSF_STCNT != null' >
+			CLSF_STCNT = #{CLSF_STCNT},
+ 		</if>
+		<if test='CLSF_MCNT != null' >
+			CLSF_MCNT = #{CLSF_MCNT},
+ 		</if>
+		<if test='CLSF_CTCNT != null' >
+			CLSF_CTCNT = #{CLSF_CTCNT},
+ 		</if>
+		<if test='CLSF_ROLL_CNT != null' >
+			CLSF_ROLL_CNT = #{CLSF_ROLL_CNT},
+ 		</if>
+			UPDATEUSER = #{UPDATEUSER}, 
+			UPDATEDATE =  SYSDATE
+ 		WHERE MATNR = #{MATNR}
+	</update>
+	
+	<!--  2024/04/30 선별일지 자재코드별 Master DELETE - 강지선  -->
+	<delete id="QLT18_DELETE">
+		DELETE TB_QLT030 WHERE MATNR = #{MATNR}
+	</delete>
+
+	<!--  2024/07/25 선별일지 자재코드별 Master UPSERT - 강지선  -->
+	<select id="QLT18_MAP" parameterType="hashmap" statementType="CALLABLE">
+	{
+		CALL SP_QLT30_S01(
+			#{P_SEND_PARAM, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+			#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String}
+		)
+	}
+	</select>
+
+	<!--  2024/09/09 선별일지 목록 조회 - 강지선  -->
+	<select id="QLT31_SP_MAP" parameterType="hashmap" statementType="CALLABLE">
+	{
+		CALL SP_QLT31_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SEND_PARAM, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+		)
+	}
+	</select>
+
+	<!--  2024/05/21 선별일지 기록 > 자재코드 SELECT - 강지선  -->
+	<select id="QLT31_MATNR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			a.SEQ,  
+			a.MATNR, 
+			b.MATNR_NM,
+			b.MACH_CD,
+			b.PART_DIV,
+			a.INSPR_DT,
+			a.INSPR_TM,
+			a.INSPR_NM,
+			a.INSTD_CFG,
+			a.CREATEUSER, 
+			a.CREATEDATE, 
+			a.UPDATEUSER, 
+			a.UPDATEDATE
+		FROM TB_QLT031 a, TB_QLT030 b
+		WHERE a.MATNR = b.MATNR
+		<if test='SCH_MATNR != null and SCH_MATNR != "" '>
+			AND a.MATNR = #{SCH_MATNR}
+ 		</if>
+		<if test='SCH_INSPR_NM != null and SCH_INSPR_NM != "" '>
+			AND a.INSPR_NM LIKE '%' || #{SCH_INSPR_NM} || '%'	
+ 		</if>
+		<if test='SCH_PART_DIV != null and SCH_PART_DIV != "" '>
+			AND b.PART_DIV = #{SCH_PART_DIV}
+ 		</if>
+		<if test='SCH_MACH_CD != null and SCH_MACH_CD != "" '>
+			<if test='SCH_MACH_CD == "TRA04" or SCH_MACH_CD == "TRA05" '>
+				AND b.MACH_CD IN ( 'TRA04',  'TRA05')
+			</if>
+			<if test='SCH_MACH_CD != "TRA04" and SCH_MACH_CD != "TRA05" '>
+				AND b.MACH_CD = #{SCH_MACH_CD}
+			</if>
+ 		</if>
+		<if test='SCH_INSPR_TM != null and SCH_INSPR_TM != "" '>
+			AND b.INSPR_TM = #{SCH_INSPR_TM}
+ 		</if>
+		ORDER BY a.SEQ DESC
+	</select>
+	
+</mapper>

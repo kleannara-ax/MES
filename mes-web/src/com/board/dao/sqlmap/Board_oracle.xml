@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Board">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<select id="BOARDMASTER_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			ID,
+			NAME,
+			TEMP_PATH,
+			SQL_ID,
+			DELKEY,
+			CREDAT,
+			CRETIM,
+	    	CREUSR,
+		    LMODAT,
+			LMOTIM,
+			LMOUSR
+		FROM FWBDMA0010
+	</select>
+	
+	<select id="BM01_LIST" parameterClass="Map" resultClass="StringMap">
+		SELECT 
+			ID,
+			NAME,
+			TEMP_PATH,
+			SQL_ID,
+			DELKEY,
+			CREDAT,
+			CRETIM,
+	    	CREUSR,
+		    LMODAT,
+			LMOTIM,
+			LMOUSR
+		FROM FWBDMA0010
+		WHERE 1 = 1 
+		<isNotEmpty property="ID">
+			AND ID = #ID# 
+		</isNotEmpty>
+		<isEmpty property="all">
+			AND DELKEY = 'N'
+		</isEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="BM02_LIST" parameterClass="Map" resultClass="StringMap">
+		SELECT 
+			 ID,			 
+			 GID,
+			 MID,
+			 NAME,
+			 PRIORITY,
+			 ROLE,
+			 DELKEY,
+			 CREDAT,
+			 CRETIM,
+			 CREUSR,
+			 LMODAT,
+			 LMOTIM,
+			 LMOUSR
+		FROM  FWBDLI0010 
+		WHERE 1 = 1 
+		<isNotEmpty property="GID">
+			AND GID = #GID# 
+		</isNotEmpty>
+		<isEmpty property="all">
+			AND DELKEY = 'N'
+		</isEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY PRIORITY
+	</select>	
+	
+	<!-- ================================================================ -->
+	
+	<sql id="FWBDMA0010_TABLE">
+		SELECT 
+			MA.ID,
+			MA.NAME,
+			MA.TEMP_PATH,
+			MA.DELKEY 
+		FROM FWBDMA0010 MA 
+	</sql>
+	
+	<select id="FWBDMA0010_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDMA0010_TABLE"/>
+		WHERE 1=1 
+			AND MA.ID = #ID# 
+		<isEmpty property="all">
+			AND MA.DELKEY = 'N'
+		</isEmpty>
+	</select>
+	
+	 <select id="FWBDMA0010_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDMA0010_TABLE"/>
+		WHERE 1=1
+		<isEmpty property="all">
+			AND MA.DELKEY = 'N'
+		</isEmpty>
+	</select>
+	
+	<insert id="FWBDMA0010_INSERT" parameterClass="Map">
+		INSERT INTO FWBDMA0010 (ID,NAME,TEMP_PATH,
+		CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (SEQ_FWBDMA0010.NEXTVAL,#NAME#,#TEMP_PATH#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 		TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<update id="FWBDMA0010_UPDATE" parameterClass="Map">
+		UPDATE FWBDMA0010 SET 
+			NAME = #NAME# ,
+			TEMP_PATH = #TEMP_PATH# ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID# 
+		 WHERE 
+			 ID = #ID# 
+	</update>
+	
+	<delete id="FWBDMA0010_DELETE" parameterClass="Map">
+		UPDATE FWBDMA0010 SET 
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID# 
+		 WHERE 
+			 ID = #ID# 
+	</delete>
+	
+	<sql id="FWBDLG0010_TABLE">
+		SELECT 
+			 ID,
+			 NAME,
+			 NOTICE,
+			 PRIORITY,
+			 ROLE,
+			 DELKEY
+		 FROM FWBDLG0010
+	</sql>
+	
+	<select id="FWBDLG0010_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDLG0010_TABLE"/>
+		WHERE 1=1  
+		<isEmpty property="all">
+			AND DELKEY = 'N'
+		</isEmpty>
+	</select>
+	
+	<update id="FWBDLG0010_UPDATE" parameterClass="Map">
+		UPDATE FWBDLG0010 SET 
+			 NAME = #NAME# ,
+			 NOTICE = #NOTICE# ,
+			 ROLE = #ROLE# ,
+			 PRIORITY = #PRIORITY# ,
+			 LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			 LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			 LMOUSR = #SES_USER_ID# 
+		 WHERE ID = #ID# 
+	</update>
+	
+	<insert id="FWBDLG0010_INSERT" parameterClass="Map">
+		INSERT INTO FWBDLG0010 (ID,NAME,NOTICE,ROLE,PRIORITY,
+			CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (SEQ_FWBDLG0010.NEXTVAL,#NAME#,#NOTICE#,#ROLE#,#PRIORITY#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#) 
+	</insert>
+	
+	<delete id="FWBDLG0010_DELETE" parameterClass="Map">
+		UPDATE FWBDLG0010 SET 
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID# 
+		WHERE ID = #ID#
+	</delete>
+	
+	<sql id="FWBDLI0010_TABLE">
+		SELECT 
+			 ID,			 
+			 GID,
+			 MID,
+			 NAME,
+			 PRIORITY,
+			 ROLE,
+			 DELKEY
+		 FROM  FWBDLI0010 
+	</sql>
+	
+	<select id="FWBDLI0010_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDLI0010_TABLE"/>
+		WHERE 1=1 
+		<isNotEmpty property="GID">
+			AND GID=#GID# 
+		</isNotEmpty>
+		<isEmpty property="all">
+			AND DELKEY = 'N'
+		</isEmpty>
+		ORDER BY PRIORITY
+	</select>
+	
+	<insert id="FWBDLI0010_INSERT" parameterClass="Map">
+		<selectKey keyProperty="ID" resultClass="int">
+	    	SELECT SEQ_FWBDLI0010.NEXTVAL FROM DUAL
+	    </selectKey>
+		INSERT INTO FWBDLI0010 (ID,GID,MID,NAME,PRIORITY,ROLE,
+			CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#ID#,#GID#,#MID#,#NAME#,#PRIORITY#,#ROLE#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#) 		
+	</insert>
+	
+	<update id="FWBDLI0010_UPDATE" parameterClass="Map">
+		UPDATE FWBDLI0010 SET 
+			 GID = #GID# ,
+			 MID = #MID# ,
+			 NAME = #NAME# ,
+			 PRIORITY = #PRIORITY# ,
+			 ROLE = #ROLE# ,
+			 LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			 LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			 LMOUSR = #SES_USER_ID#
+		 WHERE 
+			 ID = #ID#
+	</update>
+	
+	<delete id="FWBDLI0010_DELETE" parameterClass="Map">
+		UPDATE FWBDLI0010 SET 
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE ID = #ID#
+	</delete>
+	
+	<sql id="FWBDCM0010_TABLE">
+		SELECT 
+			 CM.CONTENT_ID,
+			 CM.ID,
+			 CM.PID,
+			 CM.DEPT,
+			 CM.STEP,
+			 CM.VISIT,
+			 CM.TITLE,
+			 CM.AUTH,
+			 CM.NOTICE,
+			 CM.CREUSR,
+			 CM.CREDAT,
+			 (SELECT COUNT(*) FROM FWBDCM0013 FL WHERE FL.CONTENT_ID = CM.CONTENT_ID AND FL.DELKEY = 'N') AS FILE_COUNT
+		 FROM FWBDCM0010 CM  
+	</sql>
+	
+	<sql id="FWBDCM0010_WHERE">
+		<isEmpty property="all">
+			AND CM.DELKEY = 'N'
+		</isEmpty>
+		<isNotEmpty property="STYPE">
+			<isNotEmpty property="SVALUE">
+				<isNotEqual compareProperty="SVALUE" compareValue="">
+					AND $STYPE$ like '%$SVALUE$%' 
+				</isNotEqual>
+			</isNotEmpty>
+		</isNotEmpty>
+	</sql>
+	
+	<select id="FWBDCM0010_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDCM0010_TABLE"/>
+		WHERE CM.ID = #ID#
+		<isEqual property="NOTICE" compareValue="Y">
+			AND CM.NOTICE = 'Y'
+		</isEqual>
+		<include refid="FWBDCM0010_WHERE"/>
+		ORDER BY CM.PID DESC, CM.STEP ASC
+	</select>
+	
+	<select id="FWBDCM0010_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT COUNT(*) AS CNT FROM FWBDCM0010 CM WHERE CM.ID = #ID# 
+		<include refid="FWBDCM0010_WHERE"/>
+	</select>
+	
+	<select id="FWBDCM0010S_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 CONTENT_ID,
+			 ID, 
+			 TITLE,
+			 CREDAT  
+		 FROM FWBDCM0010 
+		 WHERE ID= #ID# AND DELKEY = 'N' 
+		 ORDER BY PID DESC, STEP ASC 
+	</select>
+	
+	<select id="FWBDCM0010_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDCM0010_TABLE"/>
+		WHERE CM.CONTENT_ID = #CONTENT_ID# 
+	</select>
+	
+	<resultMap id="FWBDCM0010_CONTENT" class="DataMap"> 
+		<result column="CONTENT" property="CONTENT" javaType="java.lang.String" jdbcType="CLOB" /> 
+	</resultMap>
+	
+	<select id="FWBDCM0010C_MAP" parameterClass="Map" resultMap="FWBDCM0010_CONTENT">
+		<![CDATA[
+			SELECT CONTENT FROM FWBDCM0010 WHERE CONTENT_ID = #CONTENT_ID# 
+		]]>
+	</select>
+	
+	<insert id="FWBDCM0010_INSERT" parameterClass="Map">
+		<selectKey keyProperty="CONTENT_ID" resultClass="int">
+	    	SELECT SEQ_FWBDCM0010.NEXTVAL FROM DUAL
+	    </selectKey>
+			INSERT INTO FWBDCM0010 (CONTENT_ID,ID,TITLE,CONTENT,PID,
+		<isNotEmpty property="NOTICE">
+			NOTICE,
+		</isNotEmpty>
+		<isNotEmpty property="NOTICE">
+			NOTICE,
+		</isNotEmpty>	
+			CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+			VALUES (#CONTENT_ID#,#ID#,#TITLE#,#CONTENT#,#CONTENT_ID#,
+		<isNotEmpty property="NOTICE">
+			#NOTICE#,
+		</isNotEmpty>
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<update id="FWBDCM0010P_UPDATE" parameterClass="Map">
+		UPDATE FWBDCM0010 SET 
+			 PID = CONTENT_ID 
+		WHERE CONTENT_ID = #CONTENT_ID#
+	</update>
+	
+	<update id="FWBDCM0010R_UPDATE" parameterClass="Map">
+		<![CDATA[
+		UPDATE FWBDCM0010 SET 
+			 STEP = STEP+1 
+		WHERE PID = #PID# AND CONTENT_ID <> PID AND STEP > #STEP#
+		]]>
+	</update>
+	
+	<insert id="FWBDCM0010R_INSERT" parameterClass="Map">
+		<selectKey keyProperty="CONTENT_ID" resultClass="int">
+	    	SELECT SEQ_FWBDCM0010.NEXTVAL FROM DUAL
+	    </selectKey>
+		INSERT INTO FWBDCM0010 (CONTENT_ID,ID,PID,DEPT,STEP,TITLE,CONTENT,
+			CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+		VALUES (#CONTENT_ID#,#ID#,#PID#,#DEPT#+1,#STEP#+1,#TITLE#,#CONTENT#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<select id="FWBDCM0010P_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT
+		    COUNT(*)
+		FROM FWBDCM0010 
+		WHERE PID != CONTENT_ID 
+		AND DELKEY != 'Y'
+		AND PID = #CONTENT_ID#
+	</select>
+	
+	<delete id="FWBDCM0010_DELETE" parameterClass="Map">
+		UPDATE FWBDCM0010 SET 
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE CONTENT_ID = #CONTENT_ID# 
+	</delete>
+	
+	<update id="FWBDCM0010_UPDATE" parameterClass="Map">
+		UPDATE FWBDCM0010 SET 
+			TITLE = #TITLE# ,
+			CONTENT = #CONTENT# ,
+			AUTH = #AUTH# ,
+			NOTICE = #NOTICE# ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		 WHERE CONTENT_ID = #CONTENT_ID#
+	</update>	
+	
+	<update id="FWBDCM0010V_UPDATE" parameterClass="Map">
+		UPDATE FWBDCM0010 SET 
+			 VISIT = VISIT+1  
+		 WHERE CONTENT_ID = #CONTENT_ID#
+	</update>
+	
+	<sql id="FWBDCM0013_TABLE">
+		SELECT 
+			 CM.CONTENT_ID,
+			 CM.UUID,
+			 CM.AUTH,
+			 CM.DELKEY,
+			 CM.CREUSR,
+			 CM.CREDAT, 
+			 FL.NAME,
+			 FL.RPATH,
+			 FL.FNAME 
+		 FROM FWBDCM0013 CM 
+		 JOIN FWCMFL0010 FL ON FL.UUID = CM.UUID  
+	</sql>
+	
+	<select id="FWBDCM0013_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDCM0013_TABLE"/>
+		WHERE CM.CONTENT_ID = #CONTENT_ID# 
+		<isEmpty property="all">
+			AND CM.DELKEY = 'N'
+		</isEmpty>
+	</select>
+	
+	<select id="FWBDCM0013_MAP" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDCM0013_TABLE"/>
+		WHERE CM.CONTENT_ID = #CONTENT_ID# 
+			  AND CM.PRIORITY = #PRIORITY#
+	</select>
+	
+	<insert id="FWBDCM0013_INSERT" parameterClass="Map">
+		INSERT INTO FWBDCM0013 (CONTENT_ID,UUID,AUTH,PRIORITY,
+			CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#CONTENT_ID#,#UUID#,#AUTH#,#PRIORITY#,
+			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#,
+ 			TO_CHAR(SYSDATE, 'YYYYMMDD'),TO_CHAR(SYSDATE, 'HH24MISS'),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="FWBDCM0013_DELETE" parameterClass="Map">
+		UPDATE FWBDCM0013 SET 
+			DELKEY = 'Y' ,
+			LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE 1=1 
+		<isNotEmpty property="CONTENT_ID">
+			AND CONTENT_ID = #CONTENT_ID# 
+		</isNotEmpty>
+		<isNotEmpty property="UUID">
+			AND UUID = #UUID# 
+		</isNotEmpty>
+	</delete>
+	
+	<select id="SCM1BOARD_LIST" parameterClass="Map" resultClass="DataMap">
+		<include refid="FWBDCM0010_TABLE"/>
+		WHERE CM.ID = #ID#
+		<isEqual property="NOTICE" compareValue="Y">
+			AND CM.NOTICE = 'Y'
+		</isEqual>
+		<include refid="FWBDCM0010_WHERE"/>
+		ORDER BY CM.PID DESC, CM.STEP ASC
+	</select>
+	
+	<select id="SCM1BOARD_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT COUNT(*) AS CNT FROM FWBDCM0010 CM WHERE CM.ID = #ID# 
+		<include refid="FWBDCM0010_WHERE"/>
+	</select>
+</sqlMap>

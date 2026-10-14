@@ -1,0 +1,13 @@
+grid.js
+ - col value 표현시 값 앞,뒤로 특정 문자 붙이는 기능 추가
+   : GCVT="LG_LK" - colvalue 뒤에 붙임
+   : GCVH="LG_LK" - colvalue 앞에 붙임
+ - add row 시 그리드 앞에 추가하는 기능 추가
+   : addRowAppendType : false
+ - bigdata가 아닌 경우 readOnly하고 add row를 싱행 후 readOnly를 해제하는 경우 적용되지 않는 오류 수정 
+   
+엑셀 다운로드시 날자포멧으로 지정된 컬럼은 포멧변환하여 다운로드함.
+combo데이터인 경우 combo의 text값이 출력됨.
+ - CommonConfig.java : VIEW_FORMAT_DATE 지정
+ - BaseController.java, ExcelView.java 
+ - configData.js, grid.js

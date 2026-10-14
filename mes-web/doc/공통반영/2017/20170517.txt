@@ -1,0 +1,21 @@
+grid input 동작 시 포멧에 적용된 값이 input에 그대로 표현되도록 변경
+number format decimal separator "," 사용 가능하도록 변경
+data format dd.mm.yyyy 사용가능하도록 변경
+ - configData.js, grid.js, input.js, site.js, ui.js
+ - configData.COMMON_DATE_TYPE -> site.COMMON_DATE_TYPE
+   configData.COMMON_DATE_TYPE_UI -> site.COMMON_DATE_TYPE_UI
+ 
+label js 생성시 값을 " 로 쌓도록 변경
+ - CommonService.java
+ 
+엑셀다운로드시 날자값이 유효하지 않은경우 데이터를 그대로 보여주도록 변경
+ - ExcelView.java
+ 
+ie상에서 grid내의 disable된 checkbox를 더블클릭하는 경우 데이터가 변경되는 현상 수정
+ - grid.js
+ 
+win10, ie11에서 web worker 동작하지 않아 조회가 않되는 오류 수정
+ - commonUtil.js, dataRequest.js
+ 
+grid sort 후 input 컬럼에서 커서 위아래 이동 오류 수정
+ - grid.js

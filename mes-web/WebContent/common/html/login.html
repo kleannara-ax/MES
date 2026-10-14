@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=1150">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/required.js"></script>
+<script src="js/design-select.js"></script>
+<script>
+(function() {
+	$(function() {
+		designSelect('.selectWrap > select');
+		// 셀렉트 option 내용이 바뀔 때 디자인 셀렉트를 갱신해주어야 한다.
+		// designSelect('.selectWrap > select'); 함수를 한 번 실행해주면 현재의 option에 맞추어 select 내용이 갱신된다.
+	});
+})();
+</script>
+</head>
+<body>
+<div class="bg"></div>
+<div class="loginWrap">
+	<h1 class="logo"><img src="images/login/logo.png" alt="SM CUBE" /></h1>
+	<div class="innerWrap">
+		<div class="input id"><input type="text" value="ID" /></div>
+		<div class="input pw"><input type="text" value="Password" /></div>
+		<div class="changePassword"><a href="#">비밀번호 변경<img src="images/login/ico_arrow.png" alt="" /></a></div>
+		<div class="selectWrap">
+			<select>
+				<option>거점을 선택하세요</option>
+				<option>선택1</option>
+				<option>선택2</option>
+				<option>선택3</option>
+			</select>
+		</div>
+		<div class="selectWrap">
+			<select>
+				<option>언어를 선택하세요</option>
+				<option>선택1</option>
+				<option>선택2</option>
+				<option>선택3</option>
+			</select>
+		</div>
+		<div class="btn login"><input type="submit" value="Login" /></div>
+	</div>
+	<div class="contact">
+		<h2 class="tit">System Manager Contact information</h2>
+		<ul class="list">
+			<li>成都, 杭州, 苘山 :  李  珝  (187-2137-7080)</li>
+			<li>成都, 杭州, 苘山 :  李  珝  (187-2137-7080)</li>
+			<li>成都, 杭州, 苘山 :  李  珝  (187-2137-7080)</li>
+			<li>成都, 杭州, 苘山 :  李  珝  (187-2137-7080)</li>
+		</ul>
+	</div>
+	<p class="copyright">Copyright © 2014 [SPC] Co., Ltd ALL RIGHTS RESERVED.</p>
+</div>
+</body>
+</html>

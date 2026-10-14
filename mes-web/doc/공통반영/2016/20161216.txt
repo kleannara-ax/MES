@@ -1,0 +1,2 @@
+grid.js
+ - getGridData 함수 수행시 removeRow 데이터를 가져오는 인자 추가 : removeRowType == true 인경우 포함

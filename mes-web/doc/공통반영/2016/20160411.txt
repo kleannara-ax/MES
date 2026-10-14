@@ -1,0 +1,6 @@
+ grid.js
+  - 레이아웃 세이브시 이동 더블클릭 스크립트 오류 수정
+  - readonly set(row, col, cell) 오류 해결 및 성능개선
+
+ input.js
+  - range에서 직접값 입력시 조회조건 오류 해결

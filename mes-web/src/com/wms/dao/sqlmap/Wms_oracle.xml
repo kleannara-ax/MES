@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Wms">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<insert id="DOCUSEQ_INSERT" parameterClass="Map">
+		<selectKey keyProperty="DOCSEQ" resultClass="String">
+	    	SELECT
+    			LPAD(NVL(MAX(TO_NUMBER(NUMBST)),1)+1,10,'0') AS DOCSEQ
+			FROM NMOBJ
+			WHERE NUMOBJ = (SELECT NUMOBJ FROM DOCTM WHERE DOCUTY = #DOCUTY#)
+	    </selectKey>
+		UPDATE NMOBJ SET 
+			NUMBST = #DOCSEQ#
+		WHERE NUMOBJ = (SELECT NUMOBJ FROM DOCTM WHERE DOCUTY = #DOCUTY#)	
+	</insert>
+	
+	<select id="RSNCD_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    RSNCOD AS VALUE_COL,
+		    SHORTX AS TEXT_COL
+		FROM RSNCD 
+		WHERE DOCUTY = #DOCUTY# 
+		  AND OWNRKY = #SES_OWNER#
+	</select>
+	
+	<select id="WAHMACOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME01 AS TEXT_COL
+		FROM WAHMA 
+		WHERE DELMAK = ' '
+		ORDER BY WAREKY 
+	</select>
+	
+	<select id="USERWAHCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY AS VALUE_COL
+		     , NAME01 AS TEXT_COL
+		  FROM WAHMA
+		 WHERE WAREKY IN (
+		                   SELECT WAREKY
+		                     FROM ROLCT
+		                    WHERE UROLKY IN (
+		                                      SELECT UROLKY
+		                                        FROM USRRA
+		                                       WHERE USERID = #SES_USER_ID#
+		                                    )
+		                 )
+		ORDER BY WAREKY
+	</select>
+	
+	<select id="LANGKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME02 AS TEXT_COL
+		FROM CMCDV 
+		WHERE CMCDKY = 'LANGKY' 
+		ORDER BY CMCDVL DESC 
+	</select>
+	
+	<select id="OWNER_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COMPKY AS OWNER
+		FROM WAHMA 
+		WHERE WAREKY = #WAREKY#
+	</select>
+	
+	<select id="USERINFO_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT DEPART ,
+	           USERG1 AS AREA , 
+	           USERG2 AS ZONE , 
+	           USERG3 AS LOCA , 
+	           USERG4 AS LOCA1 , 
+	           USERG5 AS ETC  
+		FROM USRMA
+		WHERE USERID = #SES_USER_ID#
+	</select>
+	
+	<select id="LOCMA_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT  COUNT(LM.LOCAKY) OVER() AS CNT
+		      , LM.LOCAKY
+		      , LM.MIXSKU
+		      , LM.MIXLOT
+		FROM    LOCMA LM
+		WHERE   1=1
+		AND     LM.WAREKY = #WAREKY#
+		AND     LM.LOCAKY = #LOCAKY#
+	</select>
+	
+	<select id="GETMESSAGE_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SZF_GetMessage(NVL(#LANGKY#,'KR'),#MESGGR#,#MESGKY# ) AS  MESSAGE
+		  FROM DUAL 
+	</select>		
+</sqlMap>

@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>onCreationComplete</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">BasicFileUploadMonitor</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Events</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>onCreationComplete</h2>
+            <p class="dscrpt">BasicFileUploadMonitor 객체 생성 완료 시 호출됩니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">onCreationComplete</span> ( )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname"></span></p>
+            <p class="paradsc"></p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Javascript</p>
+<pre class="scodedsc">
+<b>[namocrossuploader.js]</b>
+// Monitor 객체 생성 
+embedNamoCrossUploader(
+            monitorId,                                          // NamoCrossUploader의 Manager 객체 Id
+            "../../bin/BasicFileUploadMonitor.swf",             // NamoCrossUploader의 Manager 객체 파일(swf)의 URL 
+            flashContentMonitorId,                              // 플래쉬 컨텐트로 변경될 HTML 컨텐츠 Id
+            610,                                                // 가로 사이즈    
+            358,                                                // 세로 사이즈    
+            "#FFFFFF",                                          // NamoCrossUploader 컴포넌트 로딩 전 배경화면색
+            "transparent",                                      // 플래시 wmode 설정 (배경 투명, z-index의 영향을 받도록 설정)
+            <b>{onCreationComplete: "onCreationCompleteMntCu"}		// Javascript로 전송할 이벤트 함수 이름</b>
+            );
+
+<b>[UploadForm.html]</b>
+/**
+* NamoCrossUploader의 Monitor 객체 생성 완료 시 호출됩니다.
+*/
+var onCreationCompleteMntCu = function () {
+    cuManager.setMonitorResources(document.getElementById("crossUploadMonitor").getMonitorResources()); 
+}
+</pre>
+                <p class="dscrpt">
+                    &nbsp;</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>startUpload</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">FileUpload</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>startUpload</h2>
+            <p class="dscrpt">파일 업로드를 시작합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">startUpload</span> ()</pre>
+                <pre>void <span class="fname">startUpload</span> ( String <span class="paraname">saveDirPath</span> )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname">saveDirPath</span></p>
+            <p class="paradsc">[in] 임시 파일을 저장할 경로를 설정합니다. saveDirPath를 입력하지 않으면 시스템의 임시 경로로 파일 업로드를 시작합니다.</p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileUpload fileUpload = new FileUpload(request, response);
+try {	
+	fileUpload.setAutoMakeDirs(true);
+	String saveDirPath = request.getRealPath("/");
+	saveDirPath += ("UploadDir" + File.separator);
+	
+	// saveDirPath에 지정한 경로로 파일 업로드를 시작합니다.  
+	<b>fileUpload.startUpload(saveDirPath);</b> 	
+	
+	FileItem[] fileItems = fileUpload.getFileItems("files");
+	if(fileItems != null) { 
+	}
+}
+catch(CrossUploaderException ex) { 
+}
+catch(Exception ex) { 
+	fileUpload.deleteUploadedFiles(); 
+} 
+finally { 
+	fileUpload.clear(); 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,2 @@
+grid.js
+ - head item 구조에서 check시 select row 오류 수정

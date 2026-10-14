@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html xml:lang="ko" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>템플릿</title>
+<link type="text/css" rel="stylesheet" href="../css/sub.css" />
+<script type="text/javascript" src="../js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="../js/jquery-syaku.rolling.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../../../js/jquery.plugin.js"></script>
+<script type="text/javascript" src="../../../js/jquery.form.js"></script>
+<script type="text/javascript" src="../../../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../../../js/json2.js"></script>
+<script type="text/javascript" src="../../../js/big.js"></script>
+<script type="text/javascript" src="../../../js/dataMap.js"></script>
+<script type="text/javascript" src="../../../js/configData.js"></script>
+<script type="text/javascript" src="../../../js/commonUtil.js"></script>
+<script type="text/javascript" src="../../../js/dataBind.js"></script>
+<script type="text/javascript" src="../../../js/input.js"></script>
+<script type="text/javascript" src="../../../js/netUtil.js"></script>
+<script type="text/javascript" src="../../../js/ui.js"></script>
+<script type="text/javascript" src="../../../js/worker-ajax.js"></script>
+<script type="text/javascript" src="../../../js/bigdata.js"></script>
+<script type="text/javascript" src="../../../js/dataRequest.js"></script>
+<script type="text/javascript" src="../../../js/grid.js"></script>
+<script type="text/javascript" src="../../../js/layoutSave.js"></script>
+<script type="text/javascript" src="../../../js/validateUtil.js"></script>
+<script type="text/javascript" src="../../../js/page.js"></script>
+</head>
+<body>
+<!-- 레이어팝업1 시작 -->
+<div id="layer_pop1">            
+    <div class="pop_wrap">
+        <dl class="dl_row2">
+            <dt>영업</dt>
+            <dd>홍길동</dd>
+        </dl>
+        <p class="btn_s m_b_0">
+            <a href="#">SMS 보내기</a>
+            <a href="#">EMAIL 보내기</a>
+        </p>
+        <p class="close_btn">
+            <a class="pop_close1" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업1 끝 -->
+<!-- 레이어팝업2 시작 -->
+<div id="layer_pop2">            
+    <div class="pop_wrap">
+        <div class="pop_head">
+			<div class="title">VOC 요청 상세</div>        
+        </div>
+    	<div class="pop_body">
+            <dl class="dl_row v4">
+                <dt><span>접수번호</span></dt>
+                <dd>16051232</dd>
+                <dt><span>접수일시<em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <label for="date_s" class="skip">날짜</label>
+                        <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span>문의요청사구분<em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <label for="date_s" class="skip">날짜</label>
+                        <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span>문의요청사<em>*</em></span></dt>
+                <dd>
+                    <span class="calendar_box">
+                        <label for="date_s" class="skip">날짜</label>
+                        <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span>문의요청자부서</span></dt>
+                <dd>
+                    <select id="select_2" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span>문의요청자<em>*</em></span></dt>
+                <dd>
+                    <select id="select_2" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n2"><span>접수채널<em>*</em></span></dt>
+                <dd class="n2">
+                    <span class="check_box">
+                        <input id="check_1" name="" type="checkbox" value="">
+                        <label for="check_1">유형1</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="check_2" name="" type="checkbox" value="">
+                        <label for="check_2">유형2</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="check_3" name="" type="checkbox" value="">
+                        <label for="check_3">유형3</label>
+                    </span>
+                </dd>
+                <dt class="n3"><span>접수채널<em>*</em></span></dt>
+                <dd class="n3">
+                    <select id="select_2" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span>문의요청자<em>*</em></span></dt>
+                <dd>
+                    <select id="select_2" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n4"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+                <dd class="n4"><input id="txt_1" name="" type="text"></dd>
+                </dd>
+                <dt class="n2 line2"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+                <dd class="n2 line2"><textarea id="txt_1" name="" cols="" rows=""></textarea></dd>
+                <dt class="n2 line2"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+                <dd class="n2 line2"><textarea id="txt_1" name="" cols="" rows=""></textarea></dd>
+            </dl>
+            <div class="h4_wrap">
+            	<div class="title">
+                	<h4>요청 문의 목록</h4>
+                    <p class="btn_b">
+                        <span class="txt">접수일</span>
+                        <span class="calendar_box">
+                            <label for="date_s" class="skip">시작 날짜</label>
+                            <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="calendar_bar">~</span>
+                        <span class="calendar_box">
+                            <label for="date_e" class="skip">종료 날짜</label>
+                            <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="txt">주문일</span>
+                        <span class="calendar_box">
+                            <label for="date_s" class="skip">시작 날짜</label>
+                            <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <span class="calendar_bar">~</span>
+                        <span class="calendar_box">
+                            <label for="date_e" class="skip">종료 날짜</label>
+                            <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                        </span>
+                        <a href="#">검색</a>
+                    </p>
+                </div>
+                <div class="grid_scroll">
+                     <div class="grid_head">
+                         <table>
+                             <colgroup>
+                                 <col width="50" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                             </colgroup>
+                             <thead>
+                                 <tr>
+                                     <th scope="col">
+                                         <span class="check_box">
+                                             <input id="check_1" name="" type="checkbox" value="">
+                                             <label for="check_1" class="skip">전체선택</label>
+                                         </span>
+                                     </th>
+                                     <th scope="col">이름</th>
+                                     <th scope="col">전화번호</th>
+                                     <th scope="col">주소</th>
+                                     <th scope="col">기타</th>
+                                     <th scope="col">선택</th>
+                                 </tr>
+                              </thead>
+                         </table>
+                     </div>
+                     <div class="grid_body">
+                         <table>
+                             <colgroup>
+                                 <col width="50" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                                 <col width="500" />
+                             </colgroup>
+                             <tbody>
+                                 <tr>
+                                     <td>
+                                         <span class="check_box">
+                                             <input id="check_2" name="" type="checkbox" value="">
+                                             <label for="check_2" class="skip">선택</label>
+                                         </span>
+                                     </td>
+                                     <td>
+                                         <span class="calendar_box">
+                                             <label for="date_s" class="skip">시작 날짜</label>
+                                             <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                         <span class="calendar_bar">~</span>
+                                         <span class="calendar_box">
+                                             <label for="date_e" class="skip">종료 날짜</label>
+                                             <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                     </td>
+                                     <td>
+                                         <select id="select_1" name="">
+                                             <option>전체</option>
+                                         </select>
+                                     </td>
+                                     <td>
+                                         <span class="search_box">
+                                             <input id="search_1" name="" type="text"><a href="#" class="btn">달력</a>
+                                         </span>
+                                     </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td>160511</td>
+                                     <td>2016-05-20</td>
+                                     <td>고객사</td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                                 <tr>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                     <td> </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+
+            </div>
+            <p class="btn_b">
+                <a class="on" href="#">확인</a>
+                <a href="#">취소</a>
+            </p>
+        </div>
+        <p class="close_btn">
+            <a class="pop_close2" href="#">닫기</a>
+        </p>
+    </div>
+    <div class="pop_bg"></div>
+</div>
+<!-- 레이어팝업2 끝 -->
+<!-- 탑 시작 -->
+<div id="top_layout">
+	<div class="top_wrap">
+    	<div class="logo_wrap">
+        	<h1><a href="#"><img src="../images/inc/logo.gif" alt="Allen Care" /></a></h1>
+            <p>Healthcare Integrated System</p>
+        </div>
+        <div class="util_wrap">
+        	<ul class="info_wrap">
+            	<li class="company">
+                    <div class="drop_company drop_select">
+                        <div><a href="#">안연케어</a></div>
+                        <ul>
+                            <li><a href="#">안연케어</a></li>
+                            <li><a href="#">test</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="name">물류관리팀</li>
+            	<li class="company">
+                    <div class="drop_company drop_select">
+                        <div><a href="#">창고</a></div>
+                        <ul>
+                            <li><a href="#">창고1</a></li>
+                            <li><a href="#">창고2</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="name"><span>홍길동</span> 님</li>
+                <li class="logout"><a href="#">로그아웃</a></li>
+            </ul>
+            <div class="drop_lang drop_select">
+                <div><a href="#">Korean</a></div>
+                <ul>
+                    <li><a href="#">Korean1</a></li>
+                    <li><a href="#">Korean2</a></li>
+                    <li><a href="#">Korean3</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 탑 끝 -->
+
+<!-- 왼쪽메뉴 시작 -->
+<div id="left_layout">
+	<!-- 네비 시작 -->
+	<div class="left_navi">
+    	<ul class="count_wrap">
+        	<li class="count_box1"><span>메시지</span><a href="#">6</a></li>
+            <li class="count_box2"><span>결제함</span><a href="#">23</a></li>
+        </ul>
+        <ul class="navi_wrap depth1_ul">
+        	<li class="n1"><h2><a href="#">고객영업관리</a></h2></li>
+        	<li class="n2"><h2><a href="#">MySite판가관리</a></h2></li>
+        	<li class="n3"><h2><a href="#">MySite</a></h2></li>
+        	<li class="n4"><h2><a href="#">제안견적관리제안견적관리</a></h2>
+            	<ul class="depth2_ul">
+                	<li class="n1"><a href="#">잠재고객 견적진행현황</a></li>
+                	<li class="n2"><a href="#">잠재고객 견적</a></li>
+                	<li class="n3"><a href="#">신규품목 견적요청서등록견적요청서등록</a></li>
+                	<li class="n4"><a href="#">계약조건변경품의서</a>
+                    	<ul class="depth3_ul">
+                        	<li class="n1"><a href="#">잠재고객 견적</a></li>
+                        	<li class="n1"><a href="#">잠재고객</a></li>
+                        	<li class="n1"><a href="#">신규품목견적요청서</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        	<li class="n5"><h2><a href="#">정수보충</a></h2></li>
+        	<li class="n6"><h2><a href="#">주문관리</a></h2></li>
+        	<li class="n7"><h2><a href="#">반품관</a></h2></li>
+        	<li class="n8"><h2><a href="#">교환관리</a></h2></li>
+        	<li class="n9"><h2><a href="#">사후정산</a></h2></li>
+        </ul>
+        <div class="top_btn">
+        	<a href="#">TOP</a>
+        </div>
+    </div>
+	<!-- 네비 끝 -->
+    <!-- 메뉴컨트롤 시작 -->
+    <div class="left_control">
+    	<ul>
+        	<li class="btn_2depth left"><a href="#">작은메뉴</a></li>
+        	<li class="btn_1depth"><a href="#">메뉴숨기기</a></li>
+        	<li class="btn_2depth right" style="display:none;"><a href="#">작은메뉴</a></li>
+        	<li class="btn_3depth" style="display:none;"><a href="#">큰메뉴</a></li>
+        	<li class="btn_mymenu"><a href="#">나의메뉴</a></li>
+        </ul>
+    </div>
+    <!-- 메뉴컨트롤 끝 -->
+    <div class="left_bg">
+    </div>
+</div>
+<!-- 왼쪽메뉴 끝 -->
+
+<!-- 컨텐츠 시작 -->
+<div id="contents_layout">
+	<!-- 롤링 공지사항 시작 -->
+	<div class="notice_wrap">
+        <div id="srolling" class="rolling_wrap"></div>
+        <div id="txt_wrap" style="display:none;">
+            <div><a href="#"><strong>[1긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[2긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[3긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[4긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+            <div><a href="#"><strong>[5긴급공지]</strong>롤링 공지사항 입니다.</a><span>2016-05-31</span></div>
+        </div>﻿
+        <span id="p_click" class="btn prev"><a href="#">이전</a></span>
+        <span id="n_click" class="btn next"><a href="#">다음</a></span>
+    </div> 
+	<!-- 롤링 공지사항 끝 -->
+    <div class="contents_wrap">
+    	<!-- 타이틀 시작 -->
+		<div class="title_wrap">
+        	<ul id="lcation_menu" class="location">
+            	<li class="home"><a href="#">홈</a></li>
+            	<li><a href="#">공급업체관리</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            	<li><a href="#">등록평가현황</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            	<li class="last"><a href="#">평가결과등록</a>
+                    <div class="drop_menu">
+                        <ul>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">주문관리</a></li>
+                            <li class="on"><a href="#">평가결과등록</a></li>
+                            <li><a href="#">교환관리</a></li>
+                            <li><a href="#">고객영업관리</a></li>
+                            <li><a href="#">반품관</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <h3>VOC 요청 문의 관리<span class="icon"><a href="#" class="pageInfo">설명</a> <a href="#" class="myPage">마이페이지추가</a></span></h3>
+        </div>
+    	<!-- 타이틀 끝 -->
+        <!-- 본문 시작 -->
+        <p class="btn_b">
+        	<a href="#" class="search">btn1</a>
+        	<a href="#" class="on">btn2</a>
+        	<a href="#" class="reset">btn3</a>
+        	<a href="#">btn4</a>
+        </p>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+            &lt;p class=&quot;btn_b&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;search&quot;&gt;btn1&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;on&quot;&gt;btn2&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;reset&quot;&gt;btn3&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot;&gt;btn4&lt;/a&gt;<br />
+            &lt;/p&gt;<br />
+            </div>
+        </div>
+        <p class="btn_m">
+        	<span class="row_control">
+                <a href="#" class="add">추가</a>
+                <a href="#" class="del">삭제</a>
+                <a href="#" class="copy">복사</a>
+            </span>
+        	<a href="#" class="on">btn1</a>
+        	<a href="#">btn2</a>
+        	<a href="#" class="excel">btn3</a>
+        </p>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+            &lt;p class=&quot;btn_m&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;row_control&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;add&quot;&gt;추가&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;del&quot;&gt;삭제&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;copy&quot;&gt;복사&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;on&quot;&gt;btn1&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot;&gt;btn2&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;excel&quot;&gt;btn3&lt;/a&gt;<br />
+            &lt;/p&gt;<br />
+            </div>
+        </div>
+        <div class="divide_wrpa n2 n1_5_n2_5 m_b_8">
+            <div class="n1 bg_gray">화면 나누기 5:5</div>
+            <div class="n2 bg_sky">화면 나누기 5:5</div>
+        </div>
+        <div class="divide_wrpa n2 n1_3_n2_7 m_b_8">
+            <div class="n1 bg_sky">화면 나누기 3:7</div>
+            <div class="n2 bg_gray">화면 나누기 3:7</div>
+        </div>
+        <div class="divide_wrpa n2 n1_7_n2_3 m_b_8">
+            <div class="n1 bg_gray">화면 나누기 7:3</div>
+            <div class="n2 bg_sky">화면 나누기 7:3</div>
+        </div>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+            &lt;div class=&quot;divide_wrpa n2 n1_5_n2_5&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n1&quot;&gt;화면 나누기 5:5&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n2&quot;&gt;화면 나누기 5:5&lt;/div&gt;<br />
+            &lt;/div&gt;<br />
+            <br />
+            &lt;div class=&quot;divide_wrpa n2 n1_3_n2_7&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n1&quot;&gt;화면 나누기 3:7&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n2&quot;&gt;화면 나누기 3:7&lt;/div&gt;<br />
+            &lt;/div&gt;<br />
+            <br />
+            &lt;div class=&quot;divide_wrpa n2 n1_7_n2_3&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n1&quot;&gt;화면 나누기 7:3&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n2&quot;&gt;화면 나누기 7:3&lt;/div&gt;<br />
+            &lt;/div&gt;<br />
+            </div>
+        </div>
+        <div class="h4_wrap m_b_0">
+        	<div class="title m_b_8">
+            	<h4>요청문의 목록</h4>
+                <p class="btn_b">
+                	<span class="txt">접수일</span>
+                    <span class="calendar_box">
+                        <label for="date_s" class="skip">시작 날짜</label>
+                        <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box">
+                        <label for="date_e" class="skip">종료 날짜</label>
+                        <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                	<span class="txt">주문일</span>
+                    <span class="calendar_box">
+                        <label for="date_s" class="skip">시작 날짜</label>
+                        <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                    <span class="calendar_box">
+                        <label for="date_e" class="skip">종료 날짜</label>
+                        <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <a href="#">검색</a>
+                </p>
+            </div>
+        </div>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;div class=&quot;h4_wrap&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;title&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h4&gt;요청문의 목록&lt;/h4&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p class=&quot;btn_b&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;txt&quot;&gt;접수일&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;txt&quot;&gt;주문일&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot;&gt;검색&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/p&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &lt;/div&gt;<br />
+            </div>
+        </div>
+        <div class="search_wrap m_b_29">
+            <!-- 일반검색 시작 -->
+            <dl class="search_basics">
+                <dt><span>접수일</span></dt>
+                <dd>
+                	<span class="calendar_box">
+                    	<label for="date_s" class="skip">시작 날짜</label>
+	                	<input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                	<span class="calendar_box">
+                    	<label for="date_e" class="skip">종료 날짜</label>
+	                	<input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt class="n2"><span><label for="txt_1">문의유형</label></span></dt>
+                <dd class="n2">
+                	<input id="txt_1" name="" type="text">
+                </dd>
+                <dt><span><label for="search_1">고객사</label></span></dt>
+                <dd>
+                    <span class="check_box">
+                        <input id="check_1" name="" type="checkbox" value="">
+                        <label for="check_1">유형1</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="check_2" name="" type="checkbox" value="">
+                        <label for="check_2">유형2</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="check_3" name="" type="checkbox" value="">
+                        <label for="check_3">유형3</label>
+                    </span>
+                </dd>
+                <dt><span><label for="search_1">회원</label></span></dt>
+                <dd>
+                	<span class="search_box">
+	                	<input id="search_1" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                </dd>
+                <dt><span><label for="select_1">접수채널</label></span></dt>
+                <dd>
+                	<select id="select_1" class="w_auto" name="">
+                    	<option>전체</option>
+                    </select>
+                    <span class="txt red">(다채널 선택)</span>
+                </dd>
+                <dt><span>통보채널</span></dt>
+                <dd>
+                    <span class="check_box">
+                        <input id="radio_1_1" name="radio_1" type="radio" value="">
+                        <label for="radio_1_1">유형1</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="radio_1_2" name="radio_1" type="radio" value="">
+                        <label for="radio_1_2">유형2</label>
+                    </span>
+                    <span class="check_box">
+                        <input id="radio_1_3" name="radio_1" type="radio" value="">
+                        <label for="radio_1_3">유형3</label>
+                    </span>
+                </dd>
+                <dt><span><label for="select_2">지연여부</label></span></dt>
+                <dd>
+                	<select id="select_2" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt class="n3"><span>처리예정일기준</span></dt>
+                <dd class="n3">
+                	<div class="divide_wrpa n2 n1_3_n2_7">
+                    	<div class="n1">
+                            <select id="select_2" name="">
+                                <option>전체</option>
+                            </select>
+                        </div>
+                        <div class="n2">
+                            <span class="search_box">
+                                <input id="search_1" name="" type="text"><a href="#" class="btn">검색</a>
+                            </span>
+                        </div>
+                    </div>
+                </dd>
+                <dt><span>처리예정일기준</span></dt>
+                <dd>
+                	<span class="calendar_box">
+                    	<label for="date_s" class="skip">시작 날짜</label>
+	                	<input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                	<span class="calendar_box">
+                    	<label for="date_e" class="skip">종료 날짜</label>
+	                	<input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+            </dl>
+            <div class="btn more">
+            	<a href="#">more</a>
+            </div>
+            <!-- 일반검색 끝 -->
+            <!-- 상세검색 시작 -->
+            <dl class="search_skip">
+                <dt><span>접수일</span></dt>
+                <dd>
+                	<span class="calendar_box">
+                    	<label for="date_s" class="skip">시작 날짜</label>
+	                	<input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                	<span class="calendar_box">
+                    	<label for="date_e" class="skip">종료 날짜</label>
+	                	<input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="select_1">문의유형</label></span></dt>
+                <dd>
+                	<select id="select_1" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="search_1">고객사</label></span></dt>
+                <dd>
+                	<span class="search_box">
+	                	<input id="search_1" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span>회원</span></dt>
+                <dd>
+                	<span class="search_box">
+	                	<input id="search_1" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+                <dt><span><label for="select_2">접수채널</label></span></dt>
+                <dd>
+                	<select id="select_2" class="w_auto" name="">
+                    	<option>전체</option>
+                    </select>
+                    <span class="txt red">(다채널 선택)</span>
+                </dd>
+                <dt><span><label for="select_3">통보채널</label></span></dt>
+                <dd>
+                	<select id="select_3" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span><label for="select_4">지연여부</label></span></dt>
+                <dd>
+                	<select id="select_4" name="">
+                    	<option>전체</option>
+                    </select>
+                </dd>
+                <dt><span>처리예정일기준</span></dt>
+                <dd>
+                	<span class="calendar_box">
+                    	<label for="date_s" class="skip">시작 날짜</label>
+	                	<input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                    <span class="calendar_bar">~</span>
+                	<span class="calendar_box">
+                    	<label for="date_e" class="skip">종료 날짜</label>
+	                	<input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                    </span>
+                </dd>
+            </dl>
+            <div class="btn hide">
+            	<a href="#">hide</a>
+            </div>
+            <!-- 상세검색 끝 -->
+        </div>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+            &lt;div class=&quot;search_wrap&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 일반검색 시작 --&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;dl class=&quot;search_basics&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;접수일&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n2&quot;&gt;&lt;span&gt;&lt;label for=&quot;txt_1&quot;&gt;문의유형&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n2&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;txt_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;search_1&quot;&gt;고객사&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_1&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_1&quot;&gt;유형1&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_2&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_2&quot;&gt;유형2&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_3&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_3&quot;&gt;유형3&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;search_1&quot;&gt;회원&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;search_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;search_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;검색&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_1&quot;&gt;접수채널&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_1&quot; class=&quot;w_auto&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;txt red&quot;&gt;(다채널 선택)&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;통보채널&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;radio_1_1&quot; name=&quot;radio_1&quot; type=&quot;radio&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;radio_1_1&quot;&gt;유형1&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;radio_1_2&quot; name=&quot;radio_1&quot; type=&quot;radio&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;radio_1_2&quot;&gt;유형2&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;radio_1_3&quot; name=&quot;radio_1&quot; type=&quot;radio&quot; value=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;radio_1_3&quot;&gt;유형3&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_2&quot;&gt;지연여부&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n3&quot;&gt;&lt;span&gt;처리예정일기준&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n3&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;divide_wrpa n2 n1_3_n2_7&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n1&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;n2&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;search_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;search_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;검색&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;처리예정일기준&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dl&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;btn more&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot;&gt;more&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 일반검색 끝 --&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 상세검색 시작 --&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;dl class=&quot;search_skip&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;접수일&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_1&quot;&gt;문의유형&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_1&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;search_1&quot;&gt;고객사&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;search_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;search_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;회원&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;search_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;search_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_2&quot;&gt;접수채널&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; class=&quot;w_auto&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;txt red&quot;&gt;(다채널 선택)&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_3&quot;&gt;통보채널&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_3&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;&lt;label for=&quot;select_4&quot;&gt;지연여부&lt;/label&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_4&quot; name=&quot;&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;처리예정일기준&lt;/span&gt;&lt;/dt&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dl&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;btn hide&quot;&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href=&quot;#&quot;&gt;hide&lt;/a&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 상세검색 끝 --&gt;<br />
+            &lt;/div&gt;<br />
+            </div>
+        </div>
+        <div class="grid_scroll">
+        	<div class="grid_head">
+                <table>
+                    <colgroup>
+                        <col width="50" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                            	<span class="check_box">
+                                	<input id="check_1" name="" type="checkbox" value="">
+                                    <label for="check_1" class="skip">전체선택</label>
+                                </span>
+                            </th>
+                            <th scope="col">이름</th>
+                            <th scope="col">전화번호</th>
+                            <th scope="col">주소</th>
+                            <th scope="col">기타</th>
+                            <th scope="col">선택</th>
+                        </tr>
+                     </thead>
+                </table>
+            </div>
+            <div class="grid_body m_b_8">
+                <table>
+                    <colgroup>
+                        <col width="50" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                        <col width="500" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>
+                            	<span class="check_box">
+                                	<input id="check_2" name="" type="checkbox" value="">
+                                    <label for="check_2" class="skip">선택</label>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="calendar_box">
+                                    <label for="date_s" class="skip">시작 날짜</label>
+                                    <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                                </span>
+                                <span class="calendar_bar">~</span>
+                                <span class="calendar_box">
+                                    <label for="date_e" class="skip">종료 날짜</label>
+                                    <input id="date_e" name="" type="text"><a href="#" class="btn">달력</a>
+                                </span>
+                            </td>
+                            <td>
+                                <label for="select_1" class="skip">선택</label>
+                                <select id="select_1" name="">
+                                    <option>전체</option>
+                                </select>
+                            </td>
+                            <td>
+                                <span class="search_box">
+                                    <label for="search_1" class="skip">검색</label>
+                                    <input id="search_1" name="" type="text"><a href="#" class="btn">검색</a>
+                                </span>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>160511</td>
+                            <td>2016-05-20</td>
+                            <td>고객사</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><a class="pop_open1" href="#">레이어팝업1</a></td>
+                            <td><a class="pop_open2" href="#">레이어팝업2</a></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;div class=&quot;grid_scroll&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;grid_head&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;colgroup&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;50&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/colgroup&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;thead&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_1&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_1&quot; class=&quot;skip&quot;&gt;전체선택&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;이름&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;전화번호&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;주소&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;기타&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th scope=&quot;col&quot;&gt;선택&lt;/th&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/thead&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;grid_body&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;colgroup&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;50&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;col width=&quot;500&quot; /&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/colgroup&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_2&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_2&quot; class=&quot;skip&quot;&gt;선택&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;시작 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_bar&quot;&gt;~&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_e&quot; class=&quot;skip&quot;&gt;종료 날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_e&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_1&quot; name=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;search_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;search_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;160511&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;2016-05-20&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;고객사&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&nbsp;&lt;/td&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &lt;/div&gt;<br />
+            </div>
+        </div>
+        <div class="grid_control m_b_8">
+        	<div class="left_wrap">총 조회건수<span>9,999,999</span></div>
+            <div class="right_wrap">
+            	<div class="page_num"><span>9,999,999</span> / 9,999,999</div>
+                <div class="search_wrap">
+                    <span id="input_skipTitle" class="search_box">
+                        <label for="grid_search">검색어 입력</label>
+                        <input id="grid_search" name="" type="text"><a href="#" class="btn">검색</a>
+                    </span>
+                    <a class="prev" href="#">이전</a>
+                    <a class="next" href="#">다음</a>
+                </div>
+                <div class="util">
+                	<a class="btn1" href="#">새로고침</a>
+                	<a class="btn2" href="#">정렬</a>
+                	<a class="btn3" href="#">합계</a>
+                	<a class="btn4" href="#">다운로드</a>
+                </div>
+            </div>
+        </div>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;div class=&quot;grid_control&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;left_wrap&quot;&gt;총 조회건수&lt;span&gt;9,999,999&lt;/span&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;right_wrap&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;page_num&quot;&gt;&lt;span&gt;9,999,999&lt;/span&gt; / 9,999,999&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;search_wrap&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id=&quot;input_skipTitle&quot; class=&quot;search_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;grid_search&quot;&gt;검색어 입력&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;grid_search&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;검색&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;prev&quot; href=&quot;#&quot;&gt;이전&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;next&quot; href=&quot;#&quot;&gt;다음&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;util&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;btn1&quot; href=&quot;#&quot;&gt;새로고침&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;btn2&quot; href=&quot;#&quot;&gt;정렬&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;btn3&quot; href=&quot;#&quot;&gt;합계&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a class=&quot;btn4&quot; href=&quot;#&quot;&gt;다운로드&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &lt;/div&gt;<br />
+            </div>
+        </div>
+        <dl class="dl_row v4 m_b_8">
+            <dt><span>접수번호</span></dt>
+            <dd>16051232</dd>
+            <dt><span>접수일시<em>*</em></span></dt>
+            <dd>
+                <span class="calendar_box">
+                    <label for="date_s" class="skip">날짜</label>
+                    <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                </span>
+            </dd>
+            <dt><span>문의요청사구분<em>*</em></span></dt>
+            <dd>
+                <span class="calendar_box">
+                    <label for="date_s" class="skip">날짜</label>
+                    <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                </span>
+            </dd>
+            <dt><span>문의요청사<em>*</em></span></dt>
+            <dd>
+                <span class="calendar_box">
+                    <label for="date_s" class="skip">날짜</label>
+                    <input id="date_s" name="" type="text"><a href="#" class="btn">달력</a>
+                </span>
+            </dd>
+            <dt><span>문의요청자부서</span></dt>
+            <dd>
+                <select id="select_2" name="">
+                    <option>전체</option>
+                </select>
+            </dd>
+            <dt><span>문의요청자<em>*</em></span></dt>
+            <dd>
+                <select id="select_2" name="">
+                    <option>전체</option>
+                </select>
+            </dd>
+            <dt class="n2"><span>접수채널<em>*</em></span></dt>
+            <dd class="n2">
+                <span class="check_box">
+                    <input id="check_1" name="" type="checkbox" value="">
+                    <label for="check_1">유형1</label>
+                </span>
+                <span class="check_box">
+                    <input id="check_2" name="" type="checkbox" value="">
+                    <label for="check_2">유형2</label>
+                </span>
+                <span class="check_box">
+                    <input id="check_3" name="" type="checkbox" value="">
+                    <label for="check_3">유형3</label>
+                </span>
+            </dd>
+            <dt class="n3"><span>접수채널<em>*</em></span></dt>
+            <dd class="n3">
+                <select id="select_2" name="">
+                    <option>전체</option>
+                </select>
+            </dd>
+            <dt><span>문의요청자<em>*</em></span></dt>
+            <dd>
+                <select id="select_2" name="">
+                    <option>전체</option>
+                </select>
+            </dd>
+            <dt class="n4"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+            <dd class="n4"><input id="txt_1" name="" type="text"></dd>
+            </dd>
+            <dt class="n2 line2"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+            <dd class="n2 line2">aasf alasdkfj asdnf asldfk asdfn pwen nvknwpen sdn pwen sadn pwqen snv wqpen qwenf kadsnfakdsf;asdf;l asdfnasd nvqpw nsadnv nqen fsadnv ;qnwn asdfaasf alasdkfj asdnf asldfk asdfn pwen nvknwpen sdn pwen sadn pwqen snv wqpen qwenf kadsnfakdsf;asdf;l asdfnasd nvqpw nsadnv nqen fsadnv ;qnwn asdffakdsf;asdf;l asdfnasd nvqpw nsadnv nqen fsadnv ;qnwn asdf</dd>
+            <dt class="n2 line2"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+            <dd class="n2 line2"><textarea id="txt_1" name="" cols="" rows=""></textarea></dd>
+            <dt class="n4 line6"><span><label for="txt_1">접수채널</label><em>*</em></span></dt>
+            <dd class="n4 line6"><textarea id="txt_1" name="" cols="" rows=""></textarea></dd>
+        </dl>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;dl class=&quot;dl_row v4&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;접수번호&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;16051232&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;접수일시&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;문의요청사구분&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;문의요청사&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;calendar_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;date_s&quot; class=&quot;skip&quot;&gt;날짜&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;date_s&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;달력&lt;/a&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;문의요청자부서&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;문의요청자&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n2&quot;&gt;&lt;span&gt;접수채널&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n2&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_1&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_1&quot;&gt;유형1&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_2&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_2&quot;&gt;유형2&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class=&quot;check_box&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input id=&quot;check_3&quot; name=&quot;&quot; type=&quot;checkbox&quot; value=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label for=&quot;check_3&quot;&gt;유형3&lt;/label&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/span&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n3&quot;&gt;&lt;span&gt;접수채널&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n3&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt&gt;&lt;span&gt;문의요청자&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;select id=&quot;select_2&quot; name=&quot;&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;option&gt;전체&lt;/option&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/select&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n4&quot;&gt;&lt;span&gt;&lt;label for=&quot;txt_1&quot;&gt;접수채널&lt;/label&gt;&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n4&quot;&gt;&lt;input id=&quot;txt_1&quot; name=&quot;&quot; type=&quot;text&quot;&gt;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n2 line2&quot;&gt;&lt;span&gt;&lt;label for=&quot;txt_1&quot;&gt;접수채널&lt;/label&gt;&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n2 line2&quot;&gt;&lt;textarea id=&quot;txt_1&quot; name=&quot;&quot; cols=&quot;&quot; rows=&quot;&quot;&gt;&lt;/textarea&gt;&lt;/dd&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dt class=&quot;n2 line2&quot;&gt;&lt;span&gt;&lt;label for=&quot;txt_1&quot;&gt;접수채널&lt;/label&gt;&lt;em&gt;*&lt;/em&gt;&lt;/span&gt;&lt;/dt&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;dd class=&quot;n2 line2&quot;&gt;&lt;textarea id=&quot;txt_1&quot; name=&quot;&quot; cols=&quot;&quot; rows=&quot;&quot;&gt;&lt;/textarea&gt;&lt;/dd&gt;<br />
+                &lt;/dl&gt;<br />
+            </div>
+        </div>
+        <a class="pop_open1" href="#">레이어팝업1</a>
+        <a class="pop_open2" href="#">레이어팝업2</a>
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;a <b class="red">class=&quot;pop_open1&quot;</b> href=&quot;#&quot;&gt;레이어팝업1&lt;/a&gt;<br />
+                <br />
+                &lt;a <b class="red">class=&quot;pop_open2&quot;</b> href=&quot;#&quot;&gt;레이어팝업2&lt;/a&gt;<br />
+            </div>
+        </div>
+        <!-- 탭 시작 -->
+        <div class="tab_box v6 m_b_8">
+        	<!-- 탭1 시작 -->
+        	<div class="tab_wrap t1 on">
+            	<div class="tab_btn"><a href="#">탭1</a></div>
+                <div class="tab_con">
+                	내용1
+                </div>
+            </div>            
+        	<!-- 탭1 끝 -->
+        	<!-- 탭2 시작 -->
+        	<div class="tab_wrap t2">
+            	<div class="tab_btn"><a href="#">탭2</a></div>
+                <div class="tab_con">
+                	내용2
+                </div>
+            </div>   
+        	<!-- 탭2 끝 -->
+        	<!-- 탭3 시작 -->
+        	<div class="tab_wrap t3">
+            	<div class="tab_btn"><a href="#">탭3</a></div>
+                <div class="tab_con">
+                	내용3
+                </div>
+            </div>   
+        	<!-- 탭3 끝 -->
+        	<!-- 탭4 시작 -->
+        	<div class="tab_wrap t4">
+            	<div class="tab_btn"><a href="#">탭4</a></div>
+                <div class="tab_con">
+                	내용4
+                </div>
+            </div>   
+        	<!-- 탭4 끝 -->
+        	<!-- 탭5 시작 -->
+        	<div class="tab_wrap t5">
+            	<div class="tab_btn"><a href="#">탭5</a></div>
+                <div class="tab_con">
+                	내용5
+                </div>
+            </div>   
+        	<!-- 탭5 끝 -->
+        	<!-- 탭6 시작 -->
+        	<div class="tab_wrap t6">
+            	<div class="tab_btn"><a href="#">탭6</a></div>
+                <div class="tab_con">
+                	내용6
+                </div>
+            </div>   
+        	<!-- 탭6 끝 -->
+        </div>
+        <!-- 탭 끝 -->
+        <div class="code_view">
+        	<div class="code_view_btn">
+                <a class="btn_m" href="#">소스보기</a>
+                <a class="btn_h" href="#">소스감추기</a>
+            </div>
+            <div class="code">
+                &lt;!-- 탭 시작 --&gt;<br />
+                &lt;div class=&quot;tab_box v6&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭1 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t1 on&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭1&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용1<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭1 끝 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭2 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t2&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭2&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용2<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;   <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭2 끝 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭3 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t3&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭3&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용3<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;   <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭3 끝 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭4 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t4&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭4&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용4<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;   <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭4 끝 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭5 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t5&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭5&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용5<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;   <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭5 끝 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭6 시작 --&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_wrap t6&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_btn&quot;&gt;&lt;a href=&quot;#&quot;&gt;탭6&lt;/a&gt;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class=&quot;tab_con&quot;&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내용6<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;   <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 탭6 끝 --&gt;<br />
+                &lt;/div&gt;<br />
+                &lt;!-- 탭 끝 --&gt;<br />
+            </div>
+        </div>
+        <!-- 본문 끝 -->
+    </div>
+    <div class="foot_wrap">
+    	Copyright © 2016 Allen Care Co., Ltd All rights reserved. webmaster@allencare.co.kr
+    </div>
+</div>
+<!-- 컨텐츠 끝 -->
+</body>
+</html>

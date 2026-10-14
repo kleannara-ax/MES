@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=1150">
+<link rel="stylesheet" type="text/css" href="/common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/common/css/header.css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+<script>
+(function() {
+
+	$(function() {
+
+		var gnb = $('.gnb')
+			, trigger = gnb.find('.list').children('li')
+			, list = trigger.children('ul');
+
+		trigger.each(function() {
+			var _this = $(this)
+				, thisTrigger = _this.children('a')
+				, thisList = _this.children('ul');
+
+			thisTrigger.on({
+				click : function() {
+					list.hide();
+					thisList.show();
+
+					trigger.removeClass('active');
+					_this.addClass('active');
+				}
+			});
+		});
+	});
+
+})();
+</script>
+
+
+</head>
+<body>
+
+<!-- header -->
+<div class="header">
+	<div class="innerContainer">
+
+		<h1 class="logo"><a href="#"><img src="/common/images/logo.png" alt="SM CUBE" /></a></h1>
+
+		<div class="gnb">
+			<ul class="list">
+				<li>
+					<a href="#">마스터관리</a>
+					<ul>
+						<li><a href="#">메뉴1</a></li>
+						<li><a href="#">메뉴2</a></li>
+						<li><a href="#">메뉴3</a></li>
+						<li><a href="#">메뉴4</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">입하관리</a>
+					<ul>
+						<li><a href="#">메뉴11</a></li>
+						<li><a href="#">메뉴21</a></li>
+						<li><a href="#">메뉴31</a></li>
+						<li><a href="#">메뉴41</a></li>
+						<li><a href="#">메뉴11</a></li>
+						<li><a href="#">메뉴21</a></li>
+						<li><a href="#">메뉴31</a></li>
+						<li><a href="#">메뉴41</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">출하관리</a>
+					<ul>
+						<li><a href="#">메뉴12</a></li>
+						<li><a href="#">메뉴22</a></li>
+						<li><a href="#">메뉴33</a></li>
+						<li><a href="#">메뉴44</a></li>
+						<li><a href="#">메뉴33</a></li>
+						<li><a href="#">메뉴44</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">재고관리</a>
+					<ul>
+						<li><a href="#">메뉴1</a></li>
+						<li><a href="#">메뉴2</a></li>
+						<li><a href="#">메뉴3</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">보고서</a>
+					<ul>
+						<li><a href="#">메뉴1</a></li>
+						<li><a href="#">메뉴2</a></li>
+						<li><a href="#">메뉴3</a></li>
+						<li><a href="#">메뉴4</a></li>
+						<li><a href="#">메뉴1</a></li>
+						<li><a href="#">메뉴2</a></li>
+						<li><a href="#">메뉴3</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">즐겨찾기</a>
+					<ul>
+						<li><a href="#">메뉴1</a></li>
+						<li><a href="#">메뉴2</a></li>
+						<li><a href="#">메뉴3</a></li>
+						<li><a href="#">메뉴4</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="rightArea">
+			<div class="util">
+				<p class="user">송성일님</p>
+				<button class="logOut" type="button">注销</button>
+				<button class="setting" type="button">설정</button>
+			</div>
+
+			<div class="selection">
+				<select>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+					<option value="">수화물</option>
+				</select>
+				<select>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+					<option value="">창고1</option>
+				</select>
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- //header -->
+
+</body>
+</html>

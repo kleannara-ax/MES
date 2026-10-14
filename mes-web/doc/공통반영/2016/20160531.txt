@@ -1,0 +1,3 @@
+grid.js
+ - head item grid 연계시 head grid 데이터 수정시 row check 되더라도 item grid 전체 체크되지 않도록 변경
+ - head item grid 설정시 itemSearch : true 옵션을 주면 head grid 조회 후 자동으로 item grid 조회 되는 옵션 추가

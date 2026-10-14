@@ -1,0 +1,16 @@
+grid data text download 기능 추가
+ - CommonConfig.java, BaseController.java, ExcelCsvView.java, ExcelTextView.java
+ - configData.js, grid.js
+ - servlet-default.xml
+ - gridList.setGrid 옵션
+ - txt 파일형태로 다운로드 : excelTextType : true
+ - 컬럼 구분자 정의 가능(default ",") : excelTextDelimiter : " "
+ - 첫행의 컬럼 라벨 제거 가능(txt, csv 형태에서 사용가능) : excelLabelView : false 
+ 
+grid.js
+ - gridSave시 modifyType이 "M"인 경우 empty value 적용 않되는 오류 수정
+ - excel download grid에 있는 데이터를 그대로 다운로드 하도록 옵션 변경 : excelRequestGridData : true
+ - 마지막 행 focus에서 로우 복사되는 오류 수정
+
+layout save 의 그리드에서 선택 컬럼 위, 아래 이동시 정상동작 하지 않는 오류 수정
+ - grid.js, layoutSave.js

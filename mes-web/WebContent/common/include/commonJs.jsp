@@ -1,0 +1,16 @@
+<script type="text/javascript" src="/common/js/jquery.plugin.js"></script>
+<script type="text/javascript" src="/common/js/jquery.form.js"></script>
+<script type="text/javascript" src="/common/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/common/js/json2.js"></script>
+<script type="text/javascript" src="/common/js/dataMap.js"></script>
+<script type="text/javascript" src="/common/js/configData.js"></script>
+<script type="text/javascript" src="/common/js/commonUtil.js"></script>
+<script type="text/javascript" src="/common/js/dataBind.js"></script>
+<script type="text/javascript" src="/common/js/input.js"></script>
+<script type="text/javascript" src="/common/js/netUtil.js"></script>
+<script type="text/javascript" src="/common/js/ui.js"></script>
+<script type="text/javascript" src="/common/js/worker-ajax.js"></script>
+<script type="text/javascript" src="/common/js/bigdata.js"></script>
+<script type="text/javascript" src="/common/js/grid.js"></script>
+<script type="text/javascript" src="/common/js/layoutSave.js"></script>
+<script type="text/javascript" src="/common/js/validateUtil.js"></script>

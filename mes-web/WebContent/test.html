@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+	function cutZero(str){
+		if(str.indexOf(".") != -1 && str.lastIndexOf("0") == str.length-1){
+			str = str.substring(0, str.length-1);
+			return cutZero(str);
+		}else if(str.lastIndexOf(".") == str.length-1){
+			str = str.substring(0, str.length-1);
+		}
+		return str;
+	}
+	
+	var num1 = new Number(1/10000000000);
+	var numStr1 = num1.toFixed(20);
+	numStr1 = cutZero(numStr1);
+	alert(numStr1);
+</script>
+</body>
+</html>

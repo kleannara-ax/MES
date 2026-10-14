@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsMobileInventoryPhysicalCount">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<select id="PHYIKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT DISTINCT 
+		       PH.PHYIKY AS VALUE_COL
+		     , '' AS TEXT_COL
+		  FROM PHYDH PH
+		       INNER JOIN PHYDI PI ON PH.PHYIKY = PI.PHYIKY
+		 WHERE WAREKY = #SES_WAREKY#
+		   <isNotEmpty property="DOCDAT">
+		       AND DOCDAT = REPLACE(#DOCDAT#,'.','')
+		   </isNotEmpty> 
+		   AND (PI.QTSIWH != PI.QTYPDA OR  PI.REFCAT = ' ')
+	</select>
+	
+	<select id="PDMV46_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT PI.PHYIKY
+		     , PH.WAREKY
+		     , PI.OWNRKY
+		     , PI.LOCAKY
+		     , PI.SKUKEY
+		     , PI.DESC01
+<!-- 		     , SUM(PI.QTSIWH) AS QTSIWH  
+		     , SUM(PI.QTSIWH-GREATEST(PI.QTSALO, PI.QTSPMO) - PI.QTSPMO) AS USEQTY
+		     , SUM(PI.QTSALO) AS QTSALO -->
+		     , SM.SKUG05
+		     , SM.EANCOD
+		     , SM.DUOMKY AS UOMKEY
+		     , NVL(MI.QTPUOM,0) AS QTIPSU
+		     , PI.QTYPDA AS QTYPDA
+		     , PI.LOTA13
+		     , PI.LOTA11
+		  FROM PHYDI PI
+		       INNER JOIN PHYDH PH ON PH.PHYIKY = PI.PHYIKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = PI.OWNRKY AND SM.SKUKEY = PI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = PH.WAREKY AND SW.OWNRKY = PI.OWNRKY AND SW.SKUKEY = PI.SKUKEY
+		       LEFT OUTER JOIN MEASI MI ON MI.WAREKY = PH.WAREKY AND MI.MEASKY = SW.MEASKY AND MI.UOMKEY = 'BOX'
+		 WHERE 1 = 1
+		   AND PI.PHYIIT = (SELECT MAX(SX.PHYIIT) 
+                              FROM PHYDI SX 
+                             WHERE SX.PHYIKY = PI.PHYIKY 
+                               AND SX.PHYIIT LIKE SUBSTR(PI.PHYIIT,1,4)||'%')
+		<isNotEmpty property="DOCDAT">
+		   AND PH.DOCDAT = #DOCDAT#
+		</isNotEmpty>
+		<isNotEmpty property="PHYIKY">
+		   AND PH.PHYIKY = #PHYIKY#
+		</isNotEmpty>
+		<isNotEmpty property="LOCAKY">
+		   AND PI.LOCAKY = #LOCAKY#
+		</isNotEmpty>
+		<isEqual property="PDARDO" compareValue="1">
+		   AND PI.REFCAT = ' '
+		</isEqual>
+		<isEqual property="PDARDO" compareValue="2">
+		   AND PI.QTSIWH != PI.QTYPDA
+		</isEqual>
+		<!--  GROUP BY PI.PHYIKY, PH.WAREKY, PI.OWNRKY, PI.LOCAKY, PI.SKUKEY, PI.DESC01, SM.SKUG05, SM.EANCOD, SM.DUOMKY, MI.QTPUOM, PI.QTYPDA, PI.LOTA13, PI.LOTA11 -->
+		 ORDER BY PI.LOCAKY
+	</select>
+	
+	<select id="PDMV47_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT PI.PHYIKY
+		     , PI.PHYIIT
+		     , PH.WAREKY
+		     , PI.OWNRKY
+		     , PI.LOCAKY
+		     , PI.SKUKEY
+		     , PI.DESC01
+		     , PI.QTSIWH  
+		     , PI.QTSIWH-GREATEST(PI.QTSALO, PI.QTSPMO) - PI.QTSPMO AS USEQTY
+		     , PI.QTSALO  
+		     , SM.SKUG05
+             , SM.DUOMKY AS UOMKEY
+             , NVL(MI.QTPUOM,0) AS QTIPSU
+             , 0 AS QTYPDA
+             , PI.LOTA13
+		  FROM PHYDI PI
+		       INNER JOIN PHYDH PH ON PH.PHYIKY = PI.PHYIKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = PI.OWNRKY AND SM.SKUKEY = PI.SKUKEY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = PH.WAREKY AND SW.OWNRKY = PI.OWNRKY AND SW.SKUKEY = PI.SKUKEY
+		       LEFT OUTER JOIN MEASI MI ON MI.WAREKY = PH.WAREKY AND MI.MEASKY = SW.MEASKY AND MI.UOMKEY = 'BOX'
+		 WHERE 1 = 1
+		   AND PI.PHYIIT = (SELECT MAX(SX.PHYIIT) 
+                              FROM PHYDI SX 
+                             WHERE SX.PHYIKY = PI.PHYIKY 
+                               AND SX.PHYIIT LIKE SUBSTR(PI.PHYIIT,1,4)||'%')
+		   AND PI.SKUKEY = #SKUKEY#
+		<isNotEmpty property="DOCDAT">
+		   AND PH.DOCDAT = #DOCDAT#
+		</isNotEmpty>
+		<isNotEmpty property="PHYIKY">
+		   AND PH.PHYIKY = #PHYIKY#
+		</isNotEmpty>
+		<isNotEmpty property="LOCAKY">
+		   AND PI.LOCAKY = #LOCAKY#
+		</isNotEmpty>	
+		<isNotEmpty property="LOTA13">
+		   AND PI.LOTA13 = #LOTA13#
+		</isNotEmpty>
+		<isEqual property="PDARDO" compareValue="1">
+		   AND PI.REFCAT = ' '
+		 </isEqual>
+		 <isEqual property="PDARDO" compareValue="2">
+		   AND PI.QTSIWH != PI.QTYPDA
+		 </isEqual>
+	</select>
+	
+	<update id="PDMV47_UPDATE" parameterClass="Map">
+		UPDATE PHYDI
+		   SET QTYPDA = #QTYPDA#
+		     , REFCAT = 'V'
+		WHERE PHYIKY = #PHYIKY#
+		   AND PHYIIT LIKE SUBSTR(#PHYIIT#,1,4) || '%'
+	</update>
+	
+	<select id="BARCODCHK_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(1) AS CNT
+		  FROM PHYDI PI
+		       INNER JOIN PHYDH PH ON PH.PHYIKY = PI.PHYIKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = PI.OWNRKY AND SM.SKUKEY = PI.SKUKEY
+         WHERE 1 = 1
+		   AND PI.PHYIIT = (SELECT MAX(SX.PHYIIT) 
+                              FROM PHYDI SX 
+                             WHERE SX.PHYIKY = PI.PHYIKY 
+                               AND SX.PHYIIT LIKE SUBSTR(PI.PHYIIT,1,4)||'%')
+		   AND PI.SKUKEY = #SKUKEY#
+		   AND (PI.SKUKEY = #BARCOD# OR SM.EANCOD = #BARCOD# OR  SM.GTINCD = #BARCOD# OR SM.ASKU05 = #BARCOD#)
+		<isNotEmpty property="DOCDAT">
+		   AND PH.DOCDAT = #DOCDAT#
+		</isNotEmpty>
+		<isNotEmpty property="PHYIKY">
+		   AND PH.PHYIKY = #PHYIKY#
+		</isNotEmpty>
+		<isNotEmpty property="LOCAKY">
+		   AND PI.LOCAKY = #LOCAKY#
+		</isNotEmpty>	
+		<isNotEmpty property="LOTA13">
+		   AND PI.LOTA13 = #LOTA13#
+		</isNotEmpty>
+	</select>
+</sqlMap>

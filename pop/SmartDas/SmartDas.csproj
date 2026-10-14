@@ -1,0 +1,1277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FCF3AA47-4BC7-4D83-894B-F2C96E74EEB1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartDas</RootNamespace>
+    <AssemblyName>SmartDas</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>http://localhost/SmartDas/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>KNMESKEY.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Shared.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.Misc.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinCalcManager.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.UltraWinChart.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.UltraWinEditors.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.UltraWinEditors.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.UltraWinGrid.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinSchedule.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.UltraWinSchedule.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinTabControl.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.UltraWinTabControl.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinToolbars.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.UltraWinToolbars.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v11.1, Version=11.1.20111.2071, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Infragistics2.Win.v11.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="sapnco, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\sapnco.dll</HintPath>
+    </Reference>
+    <Reference Include="sapnco_utils, Version=3.0.0.42, Culture=neutral, PublicKeyToken=50436dca5c7f7d23, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLL\sapnco_utils.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ThoughtWorks.QRCode, Version=1.0.2774.19990, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Components\DLL\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder">
+      <HintPath>..\packages\QRCoder.1.7.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BARCODE.cs" />
+    <Compile Include="clsDB.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Components\ButtonData.cs" />
+    <Compile Include="Components\ButtonBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ButtonBox.Designer.cs">
+      <DependentUpon>ButtonBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\DesignGroup.cs" />
+    <Compile Include="Components\FormInfor.cs" />
+    <Compile Include="Components\MESButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESButton.Designer.cs">
+      <DependentUpon>MESButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MESButton_Top.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESButton_Top.Designer.cs">
+      <DependentUpon>MESButton_Top.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MESButton_Bottom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESButton_Bottom.Designer.cs">
+      <DependentUpon>MESButton_Bottom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MESDateTimePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\MESMarqueeLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESMarqueeLabel.Designer.cs">
+      <DependentUpon>MESMarqueeLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MESGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESGrid.Designer.cs">
+      <DependentUpon>MESGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MESMonthCalendar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\MESRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\SetSystemTime.cs" />
+    <Compile Include="Components\MESLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MESLabel.Designer.cs">
+      <DependentUpon>MESLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\DASMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\DASMain.designer.cs">
+      <DependentUpon>DASMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\DASOper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\DASOper.Designer.cs">
+      <DependentUpon>DASOper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\DAS_Notice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\DAS_Notice.Designer.cs">
+      <DependentUpon>DAS_Notice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\DA0000[메인화면].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\DA0000[메인화면].designer.cs">
+      <DependentUpon>DA0000[메인화면].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV07[강제사용처리].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV07[강제사용처리].designer.cs">
+      <DependentUpon>POP_INV07[강제사용처리].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV91[자재투입현황].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV91[자재투입현황].designer.cs">
+      <DependentUpon>POP_INV91[자재투입현황].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK31[라벨병합-PS].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK31[라벨병합-PS].designer.cs">
+      <DependentUpon>POP_WRK31[라벨병합-PS].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK36[폐품등록-점보롤].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK36[폐품등록-점보롤].designer.cs">
+      <DependentUpon>POP_WRK36[폐품등록-점보롤].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK24[점보롤].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK24[점보롤].designer.cs">
+      <DependentUpon>POP_WRK24[점보롤].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK25[밀롤].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK25[밀롤].designer.cs">
+      <DependentUpon>POP_WRK25[밀롤].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK26[재단].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK26[재단].designer.cs">
+      <DependentUpon>POP_WRK26[재단].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK29[수재단].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK29[수재단].designer.cs">
+      <DependentUpon>POP_WRK29[수재단].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK27[포장].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK27[포장].designer.cs">
+      <DependentUpon>POP_WRK27[포장].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK12[실적등록-합지기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK12[실적등록-합지기].designer.cs">
+      <DependentUpon>POP_WRK12[실적등록-합지기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK08[합지기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK08[합지기].designer.cs">
+      <DependentUpon>POP_WRK08[합지기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK05[작업자선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK05[작업자선택].designer.cs">
+      <DependentUpon>POP_WRK05[작업자선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK07[지시선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK07[지시선택].designer.cs">
+      <DependentUpon>POP_WRK07[지시선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK02[설비호기선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK02[설비호기선택].designer.cs">
+      <DependentUpon>POP_WRK02[설비호기선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK09[화장지-가공기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK09[화장지-가공기].designer.cs">
+      <DependentUpon>POP_WRK09[화장지-가공기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK14[실적등록-화장지].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK14[실적등록-화장지].designer.cs">
+      <DependentUpon>POP_WRK14[실적등록-화장지].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK04[공정체크].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK04[공정체크].designer.cs">
+      <DependentUpon>POP_WRK04[공정체크].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV01[불출요청].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV01[불출요청].designer.cs">
+      <DependentUpon>POP_INV01[불출요청].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV02[자재투입이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV02[자재투입이력].designer.cs">
+      <DependentUpon>POP_INV02[자재투입이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK03[비가동등록].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK03[비가동등록].designer.cs">
+      <DependentUpon>POP_WRK03[비가동등록].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK01[공정투입].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK01[공정투입].designer.cs">
+      <DependentUpon>POP_WRK01[공정투입].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK28[슬리터].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK28[슬리터].designer.cs">
+      <DependentUpon>POP_WRK28[슬리터].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV03[불출이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV03[불출이력].designer.cs">
+      <DependentUpon>POP_INV03[불출이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK39[비가동이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK39[비가동이력].designer.cs">
+      <DependentUpon>POP_WRK39[비가동이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK10[생리대-가공기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK10[생리대-가공기].designer.cs">
+      <DependentUpon>POP_WRK10[생리대-가공기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK16[실적등록-생리대].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK16[실적등록-생리대].designer.cs">
+      <DependentUpon>POP_WRK16[실적등록-생리대].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK11[기저귀-가공기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK11[기저귀-가공기].designer.cs">
+      <DependentUpon>POP_WRK11[기저귀-가공기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK18[실적등록-기저귀].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK18[실적등록-기저귀].designer.cs">
+      <DependentUpon>POP_WRK18[실적등록-기저귀].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK40[작업지시변경PS].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK40[작업지시변경PS].designer.cs">
+      <DependentUpon>POP_WRK40[작업지시변경PS].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV04[재단대기창고].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV04[재단대기창고].designer.cs">
+      <DependentUpon>POP_INV04[재단대기창고].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK37[등급변경].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK37[등급변경].designer.cs">
+      <DependentUpon>POP_WRK37[등급변경].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK21[화장지-포장기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK21[화장지-포장기].designer.cs">
+      <DependentUpon>POP_WRK21[화장지-포장기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK22[생리대-포장기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK22[생리대-포장기].designer.cs">
+      <DependentUpon>POP_WRK22[생리대-포장기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK23[기저귀-포장기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK23[기저귀-포장기].designer.cs">
+      <DependentUpon>POP_WRK23[기저귀-포장기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV05[자재반납요청].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV05[자재반납요청].designer.cs">
+      <DependentUpon>POP_INV05[자재반납요청].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_INV06[자재반납이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_INV06[자재반납이력].designer.cs">
+      <DependentUpon>POP_INV06[자재반납이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK30[실적현황-PS].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK30[실적현황-PS].designer.cs">
+      <DependentUpon>POP_WRK30[실적현황-PS].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK20[실적현황-HL].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK20[실적현황-HL].designer.cs">
+      <DependentUpon>POP_WRK20[실적현황-HL].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK19[실적현황-HL합지기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK19[실적현황-HL합지기].designer.cs">
+      <DependentUpon>POP_WRK19[실적현황-HL합지기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK35[폐품사유선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK35[폐품사유선택].designer.cs">
+      <DependentUpon>POP_WRK35[폐품사유선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK41[작업지시변경HL].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK41[작업지시변경HL].designer.cs">
+      <DependentUpon>POP_WRK41[작업지시변경HL].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK42[공정투입이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK42[공정투입이력].designer.cs">
+      <DependentUpon>POP_WRK42[공정투입이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK43[폐품등록-합지기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK43[폐품등록-합지기].designer.cs">
+      <DependentUpon>POP_WRK43[폐품등록-합지기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK44[생리대-예외생산].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK44[생리대-예외생산].designer.cs">
+      <DependentUpon>POP_WRK44[생리대-예외생산].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK45[실적등록-예외생산].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK45[실적등록-예외생산].designer.cs">
+      <DependentUpon>POP_WRK45[실적등록-예외생산].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK51[판매용원단].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK51[판매용원단].designer.cs">
+      <DependentUpon>POP_WRK51[판매용원단].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK52[판매용원단지시선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK52[판매용원단지시선택].designer.cs">
+      <DependentUpon>POP_WRK52[판매용원단지시선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK53[폐품등록-판매용].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK53[폐품등록-판매용].designer.cs">
+      <DependentUpon>POP_WRK53[폐품등록-판매용].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK54[실적현황-HL판매용].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK54[실적현황-HL판매용].designer.cs">
+      <DependentUpon>POP_WRK54[실적현황-HL판매용].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_003[라미네이팅_지시선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_003[라미네이팅_지시선택].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_003[라미네이팅_지시선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_004[라미네이팅_비가동등록].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_004[라미네이팅_비가동등록].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_004[라미네이팅_비가동등록].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_005[라미네이팅_비가동이력].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_005[라미네이팅_비가동이력].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_005[라미네이팅_비가동이력].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_008[라미네이팅_원지인쇄].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_008[라미네이팅_원지인쇄].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_008[라미네이팅_원지인쇄].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_006[라미네이팅_실적현황].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_006[라미네이팅_실적현황].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_006[라미네이팅_실적현황].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_007[라미네이팅_공정투입].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_007[라미네이팅_공정투입].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_007[라미네이팅_공정투입].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_PC_001[라미네이팅_인쇄-코팅].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_PC_001[라미네이팅_인쇄-코팅].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_PC_001[라미네이팅_인쇄-코팅].cs</DependentUpon>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_SL_002[라미네이팅_슬리팅].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DA\POP_WRK_LAMI_SL_002[라미네이팅_슬리팅].designer.cs">
+      <DependentUpon>POP_WRK_LAMI_SL_002[라미네이팅_슬리팅].cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogFile.cs" />
+    <Compile Include="MSComm.cs" />
+    <Compile Include="POPUP\BaseProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\BaseProgressForm.designer.cs">
+      <DependentUpon>BaseProgressForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\CircularProgressControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="POPUP\CircularProgressControl.designer.cs">
+      <DependentUpon>CircularProgressControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultQty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultQty.designer.cs">
+      <DependentUpon>DAResultQty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\MessageForm_ERR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\MessageForm_ERR.designer.cs">
+      <DependentUpon>MessageForm_ERR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\PopItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\PopItem.designer.cs">
+      <DependentUpon>PopItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POPQty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POPQty.Designer.cs">
+      <DependentUpon>POPQty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DA9200.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DA9200.Designer.cs">
+      <DependentUpon>DA9200.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\PopOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\PopOrder.designer.cs">
+      <DependentUpon>PopOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\MessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\MessageForm.Designer.cs">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\ImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\ImageForm.Designer.cs">
+      <DependentUpon>ImageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultType.Designer.cs">
+      <DependentUpon>DAResultType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DA0310_POP[불량선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DA0310_POP[불량선택].Designer.cs">
+      <DependentUpon>DA0310_POP[불량선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultNum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultNum.designer.cs">
+      <DependentUpon>DAResultNum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DA0000_POPCnf[설정변경].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DA0000_POPCnf[설정변경].designer.cs">
+      <DependentUpon>DA0000_POPCnf[설정변경].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POPCombo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POPCombo.Designer.cs">
+      <DependentUpon>POPCombo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_Login[관리자로그인].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_Login[관리자로그인].Designer.cs">
+      <DependentUpon>POP_Login[관리자로그인].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_Printer[프린트설정].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_Printer[프린트설정].designer.cs">
+      <DependentUpon>POP_Printer[프린트설정].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK80[자재코드선택].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK80[자재코드선택].designer.cs">
+      <DependentUpon>POP_WRK80[자재코드선택].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK81[재단투입].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK81[재단투입].designer.cs">
+      <DependentUpon>POP_WRK81[재단투입].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK82[잔량처리].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK82[잔량처리].designer.cs">
+      <DependentUpon>POP_WRK82[잔량처리].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK83[여유생산].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK83[여유생산].designer.cs">
+      <DependentUpon>POP_WRK83[여유생산].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK84[상세정보].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK84[상세정보].Designer.cs">
+      <DependentUpon>POP_WRK84[상세정보].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK85[비고수정].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK85[비고수정].Designer.cs">
+      <DependentUpon>POP_WRK85[비고수정].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultTime.designer.cs">
+      <DependentUpon>DAResultTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultDate.designer.cs">
+      <DependentUpon>DAResultDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\DAResultText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\DAResultText.Designer.cs">
+      <DependentUpon>DAResultText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK86[부분폐품].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK86[부분폐품].designer.cs">
+      <DependentUpon>POP_WRK86[부분폐품].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK87[밀롤수정].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK87[밀롤수정].designer.cs">
+      <DependentUpon>POP_WRK87[밀롤수정].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK88[포장실적미리보기].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK88[포장실적미리보기].designer.cs">
+      <DependentUpon>POP_WRK88[포장실적미리보기].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK92[로그파일 전송].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK92[로그파일 전송].designer.cs">
+      <DependentUpon>POP_WRK92[로그파일 전송].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK91[재수신].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK91[재수신].designer.cs">
+      <DependentUpon>POP_WRK91[재수신].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK89[재전송].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK89[재전송].designer.cs">
+      <DependentUpon>POP_WRK89[재전송].cs</DependentUpon>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK90[입고재요청].cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="POPUP\POP_WRK90[입고재요청].designer.cs">
+      <DependentUpon>POP_WRK90[입고재요청].cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrinterManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REPORT.cs" />
+    <Compile Include="SAPHelper.cs" />
+    <Compile Include="temp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="temp.Designer.cs">
+      <DependentUpon>temp.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Components\ButtonBox.resx">
+      <DependentUpon>ButtonBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESButton.resx">
+      <DependentUpon>MESButton.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESButton_Top.resx">
+      <DependentUpon>MESButton_Top.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESButton_Bottom.resx">
+      <DependentUpon>MESButton_Bottom.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESGrid.resx">
+      <DependentUpon>MESGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESLabel.resx">
+      <DependentUpon>MESLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MESMarqueeLabel.resx">
+      <DependentUpon>MESMarqueeLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\DASMain.resx">
+      <DependentUpon>DASMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\DASOper.resx">
+      <DependentUpon>DASOper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\DAS_Notice.resx">
+      <DependentUpon>DAS_Notice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\DA0000[메인화면].resx">
+      <DependentUpon>DA0000[메인화면].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV07[강제사용처리].resx">
+      <DependentUpon>POP_INV07[강제사용처리].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV91[자재투입현황].resx">
+      <DependentUpon>POP_INV91[자재투입현황].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK31[라벨병합-PS].resx">
+      <DependentUpon>POP_WRK31[라벨병합-PS].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK36[폐품등록-점보롤].resx">
+      <DependentUpon>POP_WRK36[폐품등록-점보롤].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK24[점보롤].resx">
+      <DependentUpon>POP_WRK24[점보롤].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK25[밀롤].resx">
+      <DependentUpon>POP_WRK25[밀롤].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK26[재단].resx">
+      <DependentUpon>POP_WRK26[재단].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK29[수재단].resx">
+      <DependentUpon>POP_WRK29[수재단].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK27[포장].resx">
+      <DependentUpon>POP_WRK27[포장].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK12[실적등록-합지기].resx">
+      <DependentUpon>POP_WRK12[실적등록-합지기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK08[합지기].resx">
+      <DependentUpon>POP_WRK08[합지기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK05[작업자선택].resx">
+      <DependentUpon>POP_WRK05[작업자선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK07[지시선택].resx">
+      <DependentUpon>POP_WRK07[지시선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK02[설비호기선택].resx">
+      <DependentUpon>POP_WRK02[설비호기선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK09[화장지-가공기].resx">
+      <DependentUpon>POP_WRK09[화장지-가공기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK14[실적등록-화장지].resx">
+      <DependentUpon>POP_WRK14[실적등록-화장지].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK04[공정체크].resx">
+      <DependentUpon>POP_WRK04[공정체크].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV01[불출요청].resx">
+      <DependentUpon>POP_INV01[불출요청].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV02[자재투입이력].resx">
+      <DependentUpon>POP_INV02[자재투입이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK03[비가동등록].resx">
+      <DependentUpon>POP_WRK03[비가동등록].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK01[공정투입].resx">
+      <DependentUpon>POP_WRK01[공정투입].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK28[슬리터].resx">
+      <DependentUpon>POP_WRK28[슬리터].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV03[불출이력].resx">
+      <DependentUpon>POP_INV03[불출이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK39[비가동이력].resx">
+      <DependentUpon>POP_WRK39[비가동이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK10[생리대-가공기].resx">
+      <DependentUpon>POP_WRK10[생리대-가공기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK16[실적등록-생리대].resx">
+      <DependentUpon>POP_WRK16[실적등록-생리대].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK11[기저귀-가공기].resx">
+      <DependentUpon>POP_WRK11[기저귀-가공기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK18[실적등록-기저귀].resx">
+      <DependentUpon>POP_WRK18[실적등록-기저귀].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK40[작업지시변경PS].resx">
+      <DependentUpon>POP_WRK40[작업지시변경PS].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV04[재단대기창고].resx">
+      <DependentUpon>POP_INV04[재단대기창고].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK37[등급변경].resx">
+      <DependentUpon>POP_WRK37[등급변경].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK21[화장지-포장기].resx">
+      <DependentUpon>POP_WRK21[화장지-포장기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK22[생리대-포장기].resx">
+      <DependentUpon>POP_WRK22[생리대-포장기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK23[기저귀-포장기].resx">
+      <DependentUpon>POP_WRK23[기저귀-포장기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV05[자재반납요청].resx">
+      <DependentUpon>POP_INV05[자재반납요청].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_INV06[자재반납이력].resx">
+      <DependentUpon>POP_INV06[자재반납이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK30[실적현황-PS].resx">
+      <DependentUpon>POP_WRK30[실적현황-PS].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK20[실적현황-HL].resx">
+      <DependentUpon>POP_WRK20[실적현황-HL].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK19[실적현황-HL합지기].resx">
+      <DependentUpon>POP_WRK19[실적현황-HL합지기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK35[폐품사유선택].resx">
+      <DependentUpon>POP_WRK35[폐품사유선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK41[작업지시변경HL].resx">
+      <DependentUpon>POP_WRK41[작업지시변경HL].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK42[공정투입이력].resx">
+      <DependentUpon>POP_WRK42[공정투입이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK43[폐품등록-합지기].resx">
+      <DependentUpon>POP_WRK43[폐품등록-합지기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK44[생리대-예외생산].resx">
+      <DependentUpon>POP_WRK44[생리대-예외생산].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK45[실적등록-예외생산].resx">
+      <DependentUpon>POP_WRK45[실적등록-예외생산].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK51[판매용원단].resx">
+      <DependentUpon>POP_WRK51[판매용원단].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK52[판매용원단지시선택].resx">
+      <DependentUpon>POP_WRK52[판매용원단지시선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK53[폐품등록-판매용].resx">
+      <DependentUpon>POP_WRK53[폐품등록-판매용].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK54[실적현황-HL판매용].resx">
+      <DependentUpon>POP_WRK54[실적현황-HL판매용].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_003[라미네이팅_지시선택].resx">
+      <DependentUpon>POP_WRK_LAMI_003[라미네이팅_지시선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_004[라미네이팅_비가동등록].resx">
+      <DependentUpon>POP_WRK_LAMI_004[라미네이팅_비가동등록].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_005[라미네이팅_비가동이력].resx">
+      <DependentUpon>POP_WRK_LAMI_005[라미네이팅_비가동이력].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_008[라미네이팅_원지인쇄].resx">
+      <DependentUpon>POP_WRK_LAMI_008[라미네이팅_원지인쇄].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_006[라미네이팅_실적현황].resx">
+      <DependentUpon>POP_WRK_LAMI_006[라미네이팅_실적현황].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_007[라미네이팅_공정투입].resx">
+      <DependentUpon>POP_WRK_LAMI_007[라미네이팅_공정투입].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_PC_001[라미네이팅_인쇄-코팅].resx">
+      <DependentUpon>POP_WRK_LAMI_PC_001[라미네이팅_인쇄-코팅].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DA\POP_WRK_LAMI_SL_002[라미네이팅_슬리팅].resx">
+      <DependentUpon>POP_WRK_LAMI_SL_002[라미네이팅_슬리팅].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultQty.resx">
+      <DependentUpon>DAResultQty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\MessageForm_ERR.resx">
+      <DependentUpon>MessageForm_ERR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\PopItem.resx">
+      <DependentUpon>PopItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POPQty.resx">
+      <DependentUpon>POPQty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DA9200.resx">
+      <DependentUpon>DA9200.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\PopOrder.resx">
+      <DependentUpon>PopOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\MessageForm.resx">
+      <DependentUpon>MessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\ImageForm.resx">
+      <DependentUpon>ImageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultType.resx">
+      <DependentUpon>DAResultType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DA0310_POP[불량선택].resx">
+      <DependentUpon>DA0310_POP[불량선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultNum.resx">
+      <DependentUpon>DAResultNum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DA0000_POPCnf[설정변경].resx">
+      <DependentUpon>DA0000_POPCnf[설정변경].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POPCombo.resx">
+      <DependentUpon>POPCombo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_Login[관리자로그인].resx">
+      <DependentUpon>POP_Login[관리자로그인].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_Printer[프린트설정].resx">
+      <DependentUpon>POP_Printer[프린트설정].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK80[자재코드선택].resx">
+      <DependentUpon>POP_WRK80[자재코드선택].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK81[재단투입].resx">
+      <DependentUpon>POP_WRK81[재단투입].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK82[잔량처리].resx">
+      <DependentUpon>POP_WRK82[잔량처리].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK83[여유생산].resx">
+      <DependentUpon>POP_WRK83[여유생산].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK84[상세정보].resx">
+      <DependentUpon>POP_WRK84[상세정보].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK85[비고수정].resx">
+      <DependentUpon>POP_WRK85[비고수정].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultTime.resx">
+      <DependentUpon>DAResultTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultDate.resx">
+      <DependentUpon>DAResultDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\DAResultText.resx">
+      <DependentUpon>DAResultText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK86[부분폐품].resx">
+      <DependentUpon>POP_WRK86[부분폐품].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK87[밀롤수정].resx">
+      <DependentUpon>POP_WRK87[밀롤수정].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK88[포장실적미리보기].resx">
+      <DependentUpon>POP_WRK88[포장실적미리보기].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK92[로그파일 전송].resx">
+      <DependentUpon>POP_WRK92[로그파일 전송].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK91[재수신].resx">
+      <DependentUpon>POP_WRK91[재수신].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK89[재전송].resx">
+      <DependentUpon>POP_WRK89[재전송].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="POPUP\POP_WRK90[입고재요청].resx">
+      <DependentUpon>POP_WRK90[입고재요청].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="temp.resx">
+      <DependentUpon>temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="KNMESKEY.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="XLSX\HL.xlsx" />
+    <None Include="XLSX\PS.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>6</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4%28x86 및 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DA\resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+    <Content Include="Components\DLL\ThoughtWorks.QRCode.dll" />
+    <None Include="Resources\back.jpg" />
+    <Content Include="DLL\msvcr100.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\btnL.jpg" />
+    <Content Include="Resources\btnR.jpg" />
+    <Content Include="Resources\button_main_bg02.jpg" />
+    <None Include="Resources\Calendar.png" />
+    <None Include="Resources\GradientR_11.jpg" />
+    <None Include="Resources\KNRALogo.png" />
+    <Content Include="Resources\line_bg01.jpg" />
+    <Content Include="Resources\line_bg02.jpg" />
+    <None Include="Resources\Top_Image.jpg" />
+    <None Include="Resources\Warning.png" />
+    <Content Include="Resources\네트워크상태2.jpg" />
+    <Content Include="Resources\버튼00.png" />
+    <Content Include="Resources\버튼01.png" />
+    <Content Include="Resources\버튼02.png" />
+    <Content Include="Resources\버튼03.png" />
+    <Content Include="Resources\버튼031.png" />
+    <Content Include="Resources\버튼04.png" />
+    <Content Include="Resources\버튼051.png" />
+    <Content Include="Resources\알림.jpg" />
+    <Content Include="Resources\알림2.jpg" />
+    <None Include="Resources\아래버튼.png" />
+    <None Include="Resources\위로버튼.png" />
+    <None Include="Resources\기본버튼02.png" />
+    <None Include="Resources\기본버튼01.png" />
+    <None Include="Resources\라인00.png" />
+    <None Include="Resources\메뉴00.bmp" />
+    <None Include="Resources\상단오른쪽01.png" />
+    <None Include="Resources\상단왼쪽01.png" />
+    <None Include="Resources\버튼08.png" />
+    <None Include="Resources\버튼_09.png" />
+    <None Include="Resources\버튼_08.png" />
+    <None Include="Resources\알림_01.png" />
+    <None Include="Resources\버튼07.png" />
+    <None Include="Resources\네트워크상태_01.png" />
+    <None Include="Resources\네트워크상태_02.png" />
+    <None Include="Resources\btn_bg03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SAMMI\SAMMI.csproj">
+      <Project>{65d34abb-64ed-4315-8542-2c4be47f8e00}</Project>
+      <Name>SAMMI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(SolutionDir)\DAS\$(OutDir)$(TargetFileName)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

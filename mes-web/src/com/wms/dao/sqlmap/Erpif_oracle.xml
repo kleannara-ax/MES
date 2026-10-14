@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Erpif">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+<select id="IF01TAB01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.MATNR AS MATNR,
+		       A.WERKS AS WERKS,
+		       NVL(WN.CDESC1,' ') AS WERKSNM,
+		       A.LGORT AS LGORT,
+		       A.MAKTX_K AS MAKTX_K,
+		       A.MAKTX_E AS MAKTX_E,
+		       A.MAKTX_C AS MAKTX_C,
+		       A.MTART AS MTART,
+		       A.MTBEZ AS MTBEZ,
+		       A.MEINS AS MEINS,
+		       A.MATKL AS MATKL,
+		       A.GROES AS GROES,
+		       A.NTGEW AS NTGEW,
+		       A.BRGEW AS BRGEW,
+		       A.GEWEI AS GEWEI,
+		       A.MVGR2 AS MVGR2,
+		       A.BEZEI2 AS BEZEI2,
+		       A.MVGR3 AS MVGR3,
+		       A.BEZEI3 AS BEZEI3,
+		       A.UMREZ AS UMREZ,
+		       A.LVORM AS LVORM,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.EANCOD AS EANCOD,
+		       A.GTINCD AS GTINCD,
+		       A.NETPR AS NETPR,
+		       A.MHDHB AS MHDHB
+		  FROM IFWMS001 A
+		       LEFT OUTER JOIN CMCDV WN
+		               ON WN.CMCDKY = 'WERKSNM'
+		              AND WN.CMCDVL = A.WERKS
+		 WHERE 1 = 1
+		 AND A.WERKS = 'CMAS'
+		 AND SEQNO BETWEEN 114000 AND 115000
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="IF01TAB02_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.ZCLASSIFIER AS ZCLASSIFIER,
+		       NVL(PT.CDESC1,' ') AS ZCLASSIFIERNM,
+		       A.ZCODE AS ZCODE,
+		       A.NAME1 AS NAME1,
+		       A.PSTLZ AS PSTLZ,
+		       A.LAND1 AS LAND1,
+		       A.TELF1 AS TELF1,
+		       A.TELF2 AS TELF2,
+		       A.TELFX AS TELFX,
+		       A.SMTP_ADDR AS SMTP_ADDR,
+		       A.STCD2 AS STCD2,
+		       A.J_1KFREPRE AS J_1KFREPRE,
+		       A.ERDAT AS ERDAT,
+		       A.AEDAT AS AEDAT,
+		       A.LOEVM AS LOEVM,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.ADDR AS ADDR,
+		       A.ADDR2 AS ADDR2,
+		       A.ADDR3 AS ADDR3,
+		       A.ADDR4 AS ADDR4,
+		       A.ADDR5 AS ADDR5,
+		       A.STRAS AS STRAS,
+		       A.ORT01 AS ORT01,
+		       A.CNAME AS CNAME,
+		       A.CPHON AS CPHON,
+		       A.BNAME AS BNAME,
+		       A.BPHON AS BPHON,
+		       A.WERKS AS WERKS,
+		       NVL(WN.CDESC1,' ') AS WERKSNM
+		  FROM IFWMS002 A
+		       LEFT OUTER JOIN CMCDV PT
+		               ON PT.CMCDKY = 'ZCLASSI'
+		              AND PT.CMCDVL = A.ZCLASSIFIER
+		       LEFT OUTER JOIN CMCDV WN
+		               ON WN.CMCDKY = 'WERKSNM'
+		              AND WN.CMCDVL = A.WERKS
+		 WHERE 1 = 1
+		   AND A.WERKS = 'CMAS'
+		   AND SEQNO BETWEEN 162000 AND 162999
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		 ORDER BY A.SEQNO
+	</select>
+	
+		<select id="IF01TAB03_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.ZCLASSIFIER AS ZCLASSIFIER,
+		       NVL(PT.CDESC1,' ') AS ZCLASSIFIERNM,
+		       A.ZCODE AS ZCODE,
+		       A.ZCODE_1 AS ZCODE_1,
+		       A.NAME1 AS NAME1,
+		       A.DTGPC AS DTGPC,
+		       A.DTGPN AS DTGPN,
+		       A.LVORM AS LVORM,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.ADDR AS ADDR,
+		       A.STATUS AS STATUS,
+		       A.WERKS AS WERKS,
+		       NVL(WN.CDESC1,' ') AS WERKSNM
+		  FROM IFWMS003 A
+		       LEFT OUTER JOIN CMCDV PT
+		               ON PT.CMCDKY = 'ZCLASSI'
+		              AND PT.CMCDVL = A.ZCLASSIFIER
+		       LEFT OUTER JOIN CMCDV WN
+		               ON WN.CMCDKY = 'WERKSNM'
+		              AND WN.CMCDVL = A.WERKS
+		 WHERE A.MANDT = '110'
+		   AND A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		 ORDER BY A.SEQNO
+	</select>
+	
+	<select id="IF01TAB04_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.EBELN AS EBELN,
+		       A.EBELP AS EBELP,
+		       A.LIFNR AS LIFNR,
+		       A.BWART AS BWART,
+		       A.BEDAT AS BEDAT,
+		       A.ZEKKO_AEDAT AS ZEKKO_AEDAT,
+		       A.LOEKZ AS LOEKZ,
+		       A.MATNR AS MATNR,
+		       A.MAKTX_K AS MAKTX_K,
+		       A.MAKTX_E AS MAKTX_E,
+		       A.MAKTX_C AS MAKTX_C,
+		       A.MENGE AS MENGE,
+		       A.MEINS AS MEINS,
+		       A.WERKS AS WERKS,
+		       A.LGORT AS LGORT,
+		       A.EINDT AS EINDT,
+		       A.ZEKPO_AEDAT AS ZEKPO_AEDAT,
+		       A.MENGE_B AS MENGE_B,
+		       A.MENGE_R AS MENGE_R,
+		       A.BWTAR AS BWTAR,
+		       A.VGBEL AS VGBEL,
+		       A.VGPOS AS VGPOS,
+		       A.VGDAT AS VGDAT,
+		       A.ELIKZ AS ELIKZ,
+		       A.STATUS AS STATUS,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.WAREKY AS WAREKY,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.USRID1 AS USRID1,
+		       A.DEPTID1 AS DEPTID1,
+		       A.USRID2 AS USRID2,
+		       A.DEPTID2 AS DEPTID2,
+		       A.USRID3 AS USRID3,
+		       A.DEPTID3 AS DEPTID3,
+		       A.USRID4 AS USRID4,
+		       A.DEPTID4 AS DEPTID4,
+		       A.MBLNO AS MBLNO,
+		       A.MIPNO AS MIPNO,
+		       A.C00101 AS C00101,
+		       A.C00102 AS C00102,
+		       A.C00103 AS C00103,
+		       A.C00104 AS C00104,
+		       A.C00105 AS C00105,
+		       A.N00101 AS N00101,
+		       A.N00102 AS N00102
+		  FROM IFWMS103 A
+		 WHERE A.MANDT = '110'
+		   AND A.WAREKY = 'PMS0'
+		   AND A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		 ORDER BY A.EBELN
+	</select>
+	
+	<select id="IF01TAB05_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.VBELN AS VBELN,
+		       A.POSNR AS POSNR,
+		       A.BWART AS BWART,
+		       A.PSTYV AS PSTYV,
+		       A.ZLIKP_ERDAT AS ZLIKP_ERDAT,
+		       A.ZLIKP_ERZET AS ZLIKP_ERZET,
+		       A.ZLIKP_AEDAT AS ZLIKP_AEDAT,
+		       A.VSTEL AS VSTEL,
+		       A.LFART AS LFART,
+		       A.WADAT AS WADAT,
+		       A.KUNNR AS KUNNR,
+		       A.KUNAG AS KUNAG,
+		       A.WERKS AS WERKS,
+		       A.LGORT AS LGORT,
+		       A.MATNR AS MATNR,
+		       A.LFIMG AS LFIMG,
+		       A.QTSHP AS QTSHP,
+		       A.MEINS AS MEINS,
+		       A.NETPR AS NETPR,
+		       A.NETWR AS NETWR,
+		       A.MWSBP AS MWSBP,
+		       A.MWSDC AS MWSDC,
+		       A.WAERK AS WAERK,
+		       A.BWTAR AS BWTAR,
+		       A.VGBEL AS VGBEL,
+		       A.VGPOS AS VGPOS,
+		       A.VGDAT AS VGDAT,
+		       A.STKNUM AS STKNUM,
+		       A.SDATBG AS SDATBG,
+		       A.STATUS AS STATUS,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.RETRY AS RETRY,
+		       A.ERCOD AS ERCOD,
+		       A.ERTXT AS ERTXT,
+		       A.CUSRID AS CUSRID,
+		       A.CUNAME AS CUNAME,
+		       A.CPSTLZ AS CPSTLZ,
+		       A.LAND1 AS LAND1,
+		       A.TELF1 AS TELF1,
+		       A.TELE2 AS TELE2,
+		       A.SMTP_ADDR AS SMTP_ADDR,
+		       A.KUKLA AS KUKLA,
+		       A.VTEXT AS VTEXT,
+		       A.ADDR AS ADDR,
+		       A.CNAME AS CNAME,
+		       A.CPHON AS CPHON,
+		       A.BNAME AS BNAME,
+		       A.BPHON AS BPHON,
+		       A.WAREKY AS WAREKY,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.USRID1 AS USRID1,
+		       A.DEPTID1 AS DEPTID1,
+		       A.USRID2 AS USRID2,
+		       A.DEPTID2 AS DEPTID2,
+		       A.USRID3 AS USRID3,
+		       A.DEPTID3 AS DEPTID3,
+		       A.USRID4 AS USRID4,
+		       A.DEPTID4 AS DEPTID4,
+		       A.C00101 AS C00101,
+		       A.C00102 AS C00102,
+		       A.C00103 AS C00103,
+		       A.C00104 AS C00104,
+		       A.C00105 AS C00105,
+		       A.N00101 AS N00101,
+		       A.N00102 AS N00102
+		  FROM IFWMS113 A
+		 WHERE A.MANDT = '110'
+		   AND A.WAREKY = 'PMS0'
+		   AND A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		 ORDER BY A.VBELN
+	</select>
+	
+	<select id="IF01TAB06_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+	       A.SEQNO AS SEQNO,
+	       A.EBELN AS EBELN,
+	       A.EBELP AS EBELP,
+	       A.LIFNR AS LIFNR,
+	       A.BWART AS BWART,
+	       A.BEDAT AS BEDAT,
+	       A.ZEKKO_AEDAT AS ZEKKO_AEDAT,
+	       A.LOEKZ AS LOEKZ,
+	       A.MATNR AS MATNR,
+	       A.MAKTX_K AS MAKTX_K,
+	       A.MAKTX_E AS MAKTX_E,
+	       A.MAKTX_C AS MAKTX_C,
+	       A.MENGE AS MENGE,
+	       A.MEINS AS MEINS,
+	       A.WERKS AS WERKS,
+	       A.LGORT AS LGORT,
+	       A.EINDT AS EINDT,
+	       A.ZEKPO_AEDAT AS ZEKPO_AEDAT,
+	       A.MENGE_B AS MENGE_B,
+	       A.MENGE_R AS MENGE_R,
+	       A.BWTAR AS BWTAR,
+	       A.VGBEL AS VGBEL,
+	       A.VGPOS AS VGPOS,
+	       A.VGDAT AS VGDAT,
+	       A.ELIKZ AS ELIKZ,
+	       A.STATUS AS STATUS,
+	       A.TDATE AS TDATE,
+	       A.CDATE AS CDATE,
+	       A.IFFLG AS IFFLG,
+	       A.ERTXT AS ERTXT,
+	       A.WAREKY AS WAREKY,
+	       A.SKUKEY AS SKUKEY,
+	       A.DESC01 AS DESC01,
+	       A.DESC02 AS DESC02,
+	       A.USRID1 AS USRID1,
+	       A.DEPTID1 AS DEPTID1,
+	       A.USRID2 AS USRID2,
+	       A.DEPTID2 AS DEPTID2,
+	       A.USRID3 AS USRID3,
+	       A.DEPTID3 AS DEPTID3,
+	       A.USRID4 AS USRID4,
+	       A.DEPTID4 AS DEPTID4,
+	       A.ZDOC_NO AS ZDOC_NO,
+	       A.ZDOC_ITEM AS ZDOC_ITEM,
+	       A.ZWADAT AS ZWADAT,
+	       A.SEQITEM AS SEQITEM,
+	       A.QTYRCV AS QTYRCV,
+	       A.DRELIN AS DRELIN,
+	       A.DRELIN_ITEM AS DRELIN_ITEM,
+	       A.C00101 AS C00101,
+	       A.C00102 AS C00102,
+	       A.C00103 AS C00103,
+	       A.C00104 AS C00104,
+	       A.C00105 AS C00105,
+	       A.N00101 AS N00101,
+	       A.N00102 AS N00102
+	  FROM IFWMS203 A
+	 WHERE A.MANDT = '110'
+	   AND A.WAREKY = 'PMS0'
+	   AND A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="IF01TAB07_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS ANDT,
+		       A.SEQNO AS SEQNO,
+		       A.VBELN AS VBELN,
+		       A.POSNR AS POSNR,
+		       A.BWART AS BWART,
+		       A.PSTYV AS PSTYV,
+		       A.ZLIKP_ERDAT AS ZLIKP_ERDAT,
+		       A.ZLIKP_ERZET AS ZLIKP_ERZET,
+		       A.ZLIKP_AEDAT AS ZLIKP_AEDAT,
+		       A.VSTEL AS VSTEL,
+		       A.LFART AS LFART,
+		       A.WADAT AS WADAT,
+		       A.KUNNR AS KUNNR,
+		       A.KUNAG AS KUNAG,
+		       A.WERKS AS WERKS,
+		       A.LGORT AS LGORT,
+		       A.MATNR AS MATNR,
+		       A.LFIMG AS LFIMG,
+		       A.MEINS AS MEINS,
+		       A.NETPR AS NETPR,
+		       A.NETWR AS NETWR,
+		       A.MWSBP AS MWSBP,
+		       A.MWSDC AS MWSDC,
+		       A.WAERK AS WAERK,
+		       A.BWTAR AS BWTAR,
+		       A.VGBEL AS VGBEL,
+		       A.VGPOS AS VGPOS,
+		       A.VGDAT AS VGDAT,
+		       A.STKNUM AS STKNUM,
+		       A.SDATBG AS SDATBG,
+		       A.STATUS AS STATUS,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.CUSRID AS CUSRID,
+		       A.CUNAME AS CUNAME,
+		       A.CPSTLZ AS CPSTLZ,
+		       A.LAND1 AS LAND1,
+		       A.TELF1 AS TELF1,
+		       A.TELE2 AS TELE2,
+		       A.SMTP_ADDR AS SMTP_ADDR,
+		       A.KUKLA AS KUKLA,
+		       A.VTEXT AS VTEXT,
+		       A.ADDR AS ADDR,
+		       A.CNAME AS CNAME,
+		       A.CPHON AS CPHON,
+		       A.BNAME AS BNAME,
+		       A.BPHON AS BPHON,
+		       A.WAREKY AS WAREKY,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.USRID1 AS USRID1,
+		       A.DEPTID1 AS DEPTID1,
+		       A.USRID2 AS USRID2,
+		       A.DEPTID2 AS DEPTID2,
+		       A.USRID3 AS USRID3,
+		       A.DEPTID3 AS DEPTID3,
+		       A.USRID4 AS USRID4,
+		       A.DEPTID4 AS DEPTID4,
+		       A.ZDOC_NO AS ZDOC_NO,
+		       A.ZDOC_ITEM AS ZDOC_ITEM,
+		       A.SEQITEM AS SEQITEM,
+		       A.ZQTSACT AS ZQTSACT,
+		       A.ZWADAT AS ZWADAT,
+		       A.ESHPKY AS ESHPKY,
+		       A.ESHPKY_ITEM AS ESHPKY_ITEM,
+		       A.C00101 AS C00101,
+		       A.C00102 AS C00102,
+		       A.C00103 AS C00103,
+		       A.C00104 AS C00104,
+		       A.C00105 AS C00105,
+		       A.N00101 AS N00101,
+		       A.N00102 AS N00102
+		FROM   IFWMS213 A
+		WHERE  A.MANDT = '110'
+		AND    A.WAREKY = 'PMS0'
+		AND    A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY A.SEQNO
+	</select>
+	
+	<select id="IF01TAB08_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.ZDOC_NO AS ZDOC_NO,
+		       A.ZDOC_ITEM AS ZDOC_ITEM,
+		       A.ZDOC_TYPE AS ZDOC_TYPE,
+		       A.ZMOVE_TYPE AS ZMOVE_TYPE,
+		       A.BWART AS BWART,
+		       A.BUDAT AS BUDAT,
+		       A.LIFNR AS LIFNR,
+		       A.AUFNR AS AUFNR,
+		       A.AUFNI AS AUFNI,
+		       A.MATNR AS MATNR,
+		       A.MAKTX_K AS MAKTX_K,
+		       A.MAKTX_E AS MAKTX_E,
+		       A.MAKTX_C AS MAKTX_C,
+		       A.WERKS AS WERKS,
+		       A.LGORT AS LGORT,
+		       A.BWTAR AS BWTAR,
+		       A.MENGE AS MENGE,
+		       A.MEINS AS MEINS,
+		       A.UMMAT AS UMMAT,
+		       A.UMMAT_K AS UMMAT_K,
+		       A.UNMAT_E AS UNMAT_E,
+		       A.UMMAT_C AS UMMAT_C,
+		       A.UMWRK AS UMWRK,
+		       A.UMLGO AS UMLGO,
+		       A.UMBAR AS UMBAR,
+		       A.GRUND AS GRUND,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.WAREKY AS WAREKY,
+		       A.WARETG AS WARETG,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.USRID1 AS USRID1,
+		       A.DEPTID1 AS DEPTID1,
+		       A.USRID2 AS USRID2,
+		       A.DEPTID2 AS DEPTID2,
+		       A.USRID3 AS USRID3,
+		       A.DEPTID3 AS DEPTID3,
+		       A.USRID4 AS USRID4,
+		       A.DEPTID4 AS DEPTID4,
+		       A.EDOCKY AS EDOCKY,
+		       A.EDOCKY_ITEM AS EDOCKY_ITEM,
+		       A.C00101 AS C00101,
+		       A.C00102 AS C00102,
+		       A.C00103 AS C00103,
+		       A.C00104 AS C00104,
+		       A.C00105 AS C00105,
+		       A.N00101 AS N00101,
+		       A.N00102 AS N00102,
+		       ' ' AS LOGMSG
+		  FROM IFWMS301 A WHERE A.MANDT = '110'
+		   AND A.WAREKY = 'PMS0'
+		   AND A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<select id="IF01TAB09_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT A.MANDT AS MANDT,
+		       A.SEQNO AS SEQNO,
+		       A.VBELN AS VBELN,
+		       A.POSNR AS POSNR,
+		       A.BWART AS BWART,
+		       A.PSTYV AS PSTYV,
+		       A.ZLIKP_ERDAT AS ZLIKP_ERDAT,
+		       A.ZLIKP_ERZET AS ZLIKP_ERZET,
+		       A.ZLIKP_AEDAT AS ZLIKP_AEDAT,
+		       A.VSTEL AS VSTEL,
+		       A.LFART AS LFART,
+		       A.WADAT AS WADAT,
+		       A.KUNNR AS KUNNR,
+		       A.KUNAG AS KUNAG,
+		       A.WERKS AS WERKS,
+		       A.LGORT AS LGORT,
+		       A.MATNR AS MATNR,
+		       A.LFIMG AS LFIMG,
+		       A.MEINS AS MEINS,
+		       A.NETPR AS NETPR,
+		       A.NETWR AS NETWR,
+		       A.MWSBP AS MWSBP,
+		       A.MWSDC AS MWSDC,
+		       A.WAERK AS WAERK,
+		       A.BWTAR AS BWTAR,
+		       A.VGBEL AS VGBEL,
+		       A.VGPOS AS VGPOS,
+		       A.VGDAT AS VGDAT,
+		       A.STKNUM AS STKNUM,
+		       A.SDATBG AS SDATBG,
+		       A.STATUS AS STATUS,
+		       A.TDATE AS TDATE,
+		       A.CDATE AS CDATE,
+		       A.IFFLG AS IFFLG,
+		       A.ERTXT AS ERTXT,
+		       A.CUSRID AS CUSRID,
+		       A.CUNAME AS CUNAME,
+		       A.CPSTLZ AS CPSTLZ,
+		       A.LAND1 AS LAND1,
+		       A.TELF1 AS TELF1,
+		       A.TELE2 AS TELE2,
+		       A.SMTP_ADDR AS SMTP_ADDR,
+		       A.KUKLA AS KUKLA,
+		       A.VTEXT AS VTEXT,
+		       A.ADDR AS ADDR,
+		       A.CNAME AS CNAME,
+		       A.CPHON AS CPHON,
+		       A.BNAME AS BNAME,
+		       A.BPHON AS BPHON,
+		       A.WAREKY AS WAREKY,
+		       A.SKUKEY AS SKUKEY,
+		       A.DESC01 AS DESC01,
+		       A.DESC02 AS DESC02,
+		       A.USRID1 AS USRID1,
+		       A.DEPTID1 AS DEPTID1,
+		       A.USRID2 AS USRID2,
+		       A.DEPTID2 AS DEPTID2,
+		       A.USRID3 AS USRID3,
+		       A.DEPTID3 AS DEPTID3,
+		       A.USRID4 AS USRID4,
+		       A.DEPTID4 AS DEPTID4,
+		<!-- A.CONFRM AS CONFIRM, -->
+		       A.C00101 AS C00101,
+		       A.C00102 AS C00102,
+		       A.C00103 AS C00103,
+		       A.C00104 AS C00104,
+		       A.C00105 AS C00105,
+		       A.N00101 AS N00101,
+		       A.N00102 AS N00102
+		FROM   IFWMS313 A
+		WHERE  A.MANDT = '110'
+		AND    A.WAREKY = 'PMS0'
+		AND    A.WERKS = 'CMAS'
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		ORDER BY A.VBELN
+	</select>
+	
+	<select id="IF01TAB_01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 'SKU Master I/F' AS IFTYPE
+		     , 'IFWMS001' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS001
+		 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+		UNION ALL
+		SELECT 'Partner Master I/F' AS IFTYPE
+		     , 'IFWMS002' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS002
+		 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+/*		UNION ALL
+		SELECT 'Buyer Mapping SKU I/F' AS IFTYPE
+		     , 'IFWMS005' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS005
+		 WHERE TDATE LIKE REPLACE('$CREDAT$%','.','') */
+		UNION ALL
+		SELECT 'Receive Inbound Order I/F' AS IFTYPE
+		     , 'IFWMS103' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS002
+		 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+		UNION ALL
+		SELECT 'Send Inbound Order Result I/F' AS IFTYPE
+		     , 'IFWMS203' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS203
+		 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+		 UNION ALL
+		SELECT 'Send Outbound Order I/F' AS IFTYPE
+		     , 'IFWMS213' AS IFTABL
+		     , COUNT(*) AS CNTTOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'N' THEN 1 ELSE 0 END),0) AS CNTNOT
+		     , NVL(SUM(CASE WHEN IFFLG = 'Y' THEN 1 ELSE 0 END),0) AS CNTCMP
+		     , NVL(SUM(CASE WHEN IFFLG = '1' THEN 1 ELSE 0 END),0) AS CNTING
+		     , NVL(SUM(CASE WHEN IFFLG = 'E' THEN 1 ELSE 0 END),0) AS CNTERR
+		  FROM IFWMS213
+		 WHERE CDATE = REPLACE(#CREDAT#,'.','')
+		 
+	</select>	
+	
+	<update id="IF01_01_UPDATE" parameterClass="Map">
+		UPDATE IFWMS001 SET IFFLG = 'N' WHERE CREDAT = #CREDAT# AND IFFLG = 'E'
+	</update>
+	
+	<update id="IF01_02_UPDATE" parameterClass="Map">
+		UPDATE IFWMS002 SET IFFLG = 'N' WHERE CREDAT = #CREDAT# AND IFFLG = 'E'
+	</update>
+	
+	<update id="IF01_03_UPDATE" parameterClass="Map">
+		UPDATE IFWMS005 SET IFFLG = 'N' WHERE TDATE LIKE '$CREDAT$%'  AND IFFLG = 'E'
+	</update>
+	
+	<update id="IF01_04_UPDATE" parameterClass="Map">
+		UPDATE IFWMS103 SET IFFLG = 'N' WHERE CREDAT = #CREDAT# AND IFFLG = 'E'
+	</update>
+
+	<select id="IF01CHK_01_LIST" parameterClass="Map">
+		SELECT  
+			  MANDT
+			, SEQNO
+			, MATNR
+			, WERKS
+			, LGORT
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, MTART
+			, MTBEZ
+			, MEINS
+			, MATKL
+			, GROES
+			, NTGEW
+			, BRGEW
+			, GEWEI
+			, MVGR2
+			, BEZEI2
+			, MVGR3
+			, BEZEI3
+			, UMREZ
+			, LVORM
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, SKUKEY
+			, DESC01
+			, DESC02
+			, EANCOD
+			, GTINCD
+			, NETPR
+			, MHDHB
+			, CREDAT
+			, CRETIM
+			, LMODAT
+			, LMOTIM
+			<!-- , ORDTRM
+			, LEADTM
+			, SEPRGB
+			, SNPTYP
+			, USER_NAME
+			, CELL_PHONE_NO
+			, TEL_NO
+			, EMAIL_NO1
+			, EMAIL_NO2
+			, ERCNT   -->
+		FROM IFWMS001 WHERE CREDAT = REPLACE(#CREDAT#,'.','') AND IFFLG = 'E'
+	</select>
+	
+	<select id="IF01CHK_02_LIST" parameterClass="Map">
+		SELECT   
+			  MANDT      
+			, SEQNO      
+			, ZCLASSIFIER
+			, ZCODE      
+			, NAME1      
+			, PSTLZ      
+			, LAND1      
+			, TELF1      
+			, TELF2      
+			, TELFX      
+			, SMTP_ADDR  
+			, STCD2      
+			, J_1KFREPRE 
+			, ERDAT      
+			, AEDAT      
+			, LOEVM      
+			, TDATE      
+			, CDATE      
+			, IFFLG      
+			, ERTXT      
+			, ADDR       
+			, ADDR2      
+			, ADDR3      
+			, ADDR4      
+			, ADDR5      
+			, STRAS      
+			, ORT01      
+			, CNAME      
+			, CPHON      
+			, BNAME      
+			, BPHON      
+			, CREDAT     
+			, CRETIM     
+			, LMODAT     
+			, LMOTIM     
+			, WERKS      
+			<!-- , ORT02      
+			, ORT03      
+			, ERCNT  -->     
+ 		FROM IFWMS002 WHERE CREDAT = REPLACE(#CREDAT#,'.','') AND IFFLG = 'E'
+	</select>
+	
+	<select id="IF01CHK_03_LIST" parameterClass="Map">
+		SELECT 
+			  MANDT
+			, SEQNO
+			, MATNR
+			, WERKS
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, BEZEI2
+			, LVORM
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, SKUKEY
+			, COMPY
+			, PLANT
+			, ERCNT 
+		FROM IFWMS005 WHERE TDATE LIKE REPLACE('$CREDAT$%','.','') AND IFFLG = 'E'
+	</select>
+	
+	<select id="IF01CHK_04_LIST" parameterClass="Map">
+		SELECT 
+			 MANDT
+			, SEQNO
+			, EBELN
+			, EBELP
+			, LIFNR
+			, BWART
+			, BEDAT
+			, ZEKKO_AEDAT
+			, LOEKZ
+			, MATNR
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, MENGE
+			, MEINS
+			, WERKS
+			, LGORT
+			, EINDT
+			, ZEKPO_AEDAT
+			, MENGE_B
+			, MENGE_R
+			, BWTAR
+			, VGBEL
+			, VGPOS
+			, VGDAT
+			, ELIKZ
+			, STATUS
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, WAREKY
+			, SKUKEY
+			, DESC01
+			, DESC02
+			, USRID1
+			, DEPTID1
+			, USRID2
+			, DEPTID2
+			, USRID3
+			, DEPTID3
+			, USRID4
+			, DEPTID4
+			, CREDAT
+			, CRETIM
+			, LMODAT
+			, LMOTIM
+			, MBLNO
+			, MIPNO
+			, ' ' C00101
+			, ' ' C00102
+			, ' ' C00103
+			, ' '  C00104
+			, ' '  C00105
+			, ' '  C00106
+			, ' '  C00107
+			, ' '  C00108
+			, ' '  C00109
+			, ' '  C00110
+			, N00101
+			, 0 N00102
+			, 0 N00103
+			, 0 N00104
+			, 0 N00105
+			, 0 N00106
+			, 0 N00107
+			, 0 N00108
+			, 0 N00109
+			, 0 N00110
+			, ' ' TRANS_DIV
+			, ' ' GR_DLV_CNTR_CODE
+			, ' ' GI_DLV_CNTR_CODE
+			, ' ' BUYER_NAME
+			, ' ' BUYER_PLANT_NAME
+			, ' ' BUYER_DIVISION
+			, ' ' BUYER_DIVISION_NAME
+			, ' ' BUYER_DEPT
+			, ' ' BUYER_DEPT_NAME
+			, ' ' BUYER_CHRG_ID
+			, ' ' BUYER_CHRG_NAME
+			, ' ' CELL_PHONE_NO
+			, ' ' TEL_NO
+			, ' ' TOV_CHRG_ID
+			, ' ' TOV_CHRG_NAME
+			, ' ' TOV_CHRG_TEL_NO
+			, ' ' TOV_CHRG_CELL_PHONE_NO
+			, ' ' TRANSPORT_TYPE
+			, ' ' BOX_CNT
+			, ' ' WAYBILL_ID
+			, ' ' REQ_CONT
+			, ' ' INVOICE_DESCRIPTION
+			, ' ' BOX_NO
+			, ' ' ERCNT FROM IFWMS103 WHERE CREDAT = REPLACE(#CREDAT#,'.','') AND IFFLG = 'E'
+	</select>
+	
+	<select id="IFWMS001_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			 MANDT
+			, SEQNO
+			, EBELN
+			, EBELP
+			, LIFNR
+			, BWART
+			, BEDAT
+			, ZEKKO_AEDAT
+			, LOEKZ
+			, MATNR
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, MENGE
+			, MEINS
+			, WERKS
+			, LGORT
+			, EINDT
+			, ZEKPO_AEDAT
+			, MENGE_B
+			, MENGE_R
+			, BWTAR
+			, VGBEL
+			, VGPOS
+			, VGDAT
+			, ELIKZ
+			, STATUS
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, WAREKY
+			, SKUKEY
+			, DESC01
+			, DESC02
+			, USRID1
+			, DEPTID1
+			, USRID2
+			, DEPTID2
+			, USRID3
+			, DEPTID3
+			, USRID4
+			, DEPTID4
+			, CREDAT
+			, CRETIM
+			, LMODAT
+			, LMOTIM
+			, MBLNO
+			, MIPNO
+			, ' ' C00101
+			, ' ' C00102
+			, ' ' C00103
+			, ' '  C00104
+			, ' '  C00105
+			, ' '  C00106
+			, ' '  C00107
+			, ' '  C00108
+			, ' '  C00109
+			, ' '  C00110
+			, N00101
+			, 0 N00102
+			, 0 N00103
+			, 0 N00104
+			, 0 N00105
+			, 0 N00106
+			, 0 N00107
+			, 0 N00108
+			, 0 N00109
+			, 0 N00110
+			, ' ' TRANS_DIV
+			, ' ' GR_DLV_CNTR_CODE
+			, ' ' GI_DLV_CNTR_CODE
+			, ' ' BUYER_NAME
+			, ' ' BUYER_PLANT_NAME
+			, ' ' BUYER_DIVISION
+			, ' ' BUYER_DIVISION_NAME
+			, ' ' BUYER_DEPT
+			, ' ' BUYER_DEPT_NAME
+			, ' ' BUYER_CHRG_ID
+			, ' ' BUYER_CHRG_NAME
+			, ' ' CELL_PHONE_NO
+			, ' ' TEL_NO
+			, ' ' TOV_CHRG_ID
+			, ' ' TOV_CHRG_NAME
+			, ' ' TOV_CHRG_TEL_NO
+			, ' ' TOV_CHRG_CELL_PHONE_NO
+			, ' ' TRANSPORT_TYPE
+			, ' ' BOX_CNT
+			, ' ' WAYBILL_ID
+			, ' ' REQ_CONT
+			, ' ' INVOICE_DESCRIPTION
+			, ' ' BOX_NO
+			, ' ' ERCNT  
+		FROM IFWMS001 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+	</select>	
+	
+	<select id="IFWMS002_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT   
+			MANDT      
+		  , SEQNO      
+		  , ZCLASSIFIER
+		  , ZCODE      
+		  , NAME1      
+		  , PSTLZ      
+		  , LAND1      
+		  , TELF1      
+		  , TELF2      
+		  , TELFX      
+		  , SMTP_ADDR  
+		  , STCD2      
+		  , J_1KFREPRE 
+		  , ERDAT      
+		  , AEDAT      
+		  , LOEVM      
+		  , TDATE      
+		  , CDATE      
+		  , IFFLG      
+		  , ERTXT      
+		  , ADDR       
+		  , ADDR2      
+		  , ADDR3      
+		  , ADDR4      
+		  , ADDR5      
+		  , STRAS      
+		  , ORT01      
+		  , CNAME      
+		  , CPHON      
+		  , BNAME      
+		  , BPHON      
+		  , CREDAT     
+		  , CRETIM     
+		  , LMODAT     
+		  , LMOTIM     
+		  , WERKS      
+		  , ORT02      
+		  , ORT03      
+		  , ERCNT  
+		FROM IFWMS002 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+	</select>	
+	
+	<select id="IFWMS005_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  	
+			  MANDT
+			, SEQNO
+			, MATNR
+			, WERKS
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, BEZEI2
+			, LVORM
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, SKUKEY
+			, COMPY
+			, PLANT
+			, ERCNT  
+		FROM IFWMS005 WHERE TDATE LIKE REPLACE('$CREDAT$%','.','')
+	</select>	
+	
+	<select id="IFWMS103_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			  MANDT
+			, SEQNO
+			, EBELN
+			, EBELP
+			, LIFNR
+			, BWART
+			, BEDAT
+			, ZEKKO_AEDAT
+			, LOEKZ
+			, MATNR
+			, MAKTX_K
+			, MAKTX_E
+			, MAKTX_C
+			, MENGE
+			, MEINS
+			, WERKS
+			, LGORT
+			, EINDT
+			, ZEKPO_AEDAT
+			, MENGE_B
+			, MENGE_R
+			, BWTAR
+			, VGBEL
+			, VGPOS
+			, VGDAT
+			, ELIKZ
+			, STATUS
+			, TDATE
+			, CDATE
+			, IFFLG
+			, ERTXT
+			, WAREKY
+			, SKUKEY
+			, DESC01
+			, DESC02
+			, USRID1
+			, DEPTID1
+			, USRID2
+			, DEPTID2
+			, USRID3
+			, DEPTID3
+			, USRID4
+			, DEPTID4
+			, CREDAT
+			, CRETIM
+			, LMODAT
+			, LMOTIM
+			, MBLNO
+			, MIPNO
+			, C00101
+			, C00102
+			, C00103
+			, C00104
+			, C00105
+			, C00106
+			, C00107
+			, C00108
+			, C00109
+			, C00110
+			, N00101
+			, N00102
+			, N00103
+			, N00104
+			, N00105
+			, N00106
+			, N00107
+			, N00108
+			, N00109
+			, N00110
+			, TRANS_DIV
+			, GR_DLV_CNTR_CODE
+			, GI_DLV_CNTR_CODE
+			, BUYER_NAME
+			, BUYER_PLANT_NAME
+			, BUYER_DIVISION
+			, BUYER_DIVISION_NAME
+			, BUYER_DEPT
+			, BUYER_DEPT_NAME
+			, BUYER_CHRG_ID
+			, BUYER_CHRG_NAME
+			, CELL_PHONE_NO
+			, TEL_NO
+			, TOV_CHRG_ID
+			, TOV_CHRG_NAME
+			, TOV_CHRG_TEL_NO
+			, TOV_CHRG_CELL_PHONE_NO
+			, TRANSPORT_TYPE
+			, BOX_CNT
+			, WAYBILL_ID
+			, REQ_CONT
+			, INVOICE_DESCRIPTION
+			, BOX_NO
+			, ERCNT
+		FROM IFWMS103 WHERE CREDAT = REPLACE(#CREDAT#,'.','')
+	</select>	
+	
+</sqlMap>

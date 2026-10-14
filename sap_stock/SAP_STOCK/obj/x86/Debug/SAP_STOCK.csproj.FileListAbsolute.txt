@@ -1,0 +1,22 @@
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\SAP_STOCK.exe.config
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\SAP_STOCK.exe
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\SAP_STOCK.pdb
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\sapnco.dll
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\bin\Debug\sapnco_utils.dll
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.Form1.resources
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.Properties.Resources.resources
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.csproj.GenerateResource.Cache
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.exe
+C:\Users\User\Documents\Visual Studio 2010\Projects\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.pdb
+D:\20.깨끗한나라\1.소스코드\SAP_STOCK\SAP_STOCK\bin\Debug\SAP_STOCK.exe.config
+D:\20.깨끗한나라\1.소스코드\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.exe
+D:\20.깨끗한나라\1.소스코드\SAP_STOCK\SAP_STOCK\obj\x86\Debug\SAP_STOCK.pdb
+D:\_Kleannara\sap_stock\SAP_STOCK\bin\Debug\SAP_STOCK.exe.config
+D:\_Kleannara\sap_stock\SAP_STOCK\bin\Debug\SAP_STOCK.exe
+D:\_Kleannara\sap_stock\SAP_STOCK\bin\Debug\SAP_STOCK.pdb
+D:\_Kleannara\sap_stock\SAP_STOCK\obj\x86\Debug\SAP_STOCK.Form1.resources
+D:\_Kleannara\sap_stock\SAP_STOCK\obj\x86\Debug\SAP_STOCK.Properties.Resources.resources
+D:\_Kleannara\sap_stock\SAP_STOCK\obj\x86\Debug\SAP_STOCK.csproj.GenerateResource.Cache
+D:\_Kleannara\sap_stock\SAP_STOCK\obj\x86\Debug\SAP_STOCK.exe
+D:\_Kleannara\sap_stock\SAP_STOCK\obj\x86\Debug\SAP_STOCK.pdb

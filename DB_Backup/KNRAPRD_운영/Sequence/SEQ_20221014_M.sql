@@ -1,0 +1,5 @@
+--------------------------------------------------------
+--  DDL for Sequence SEQ_20221014_M
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "KNRAMES"."SEQ_20221014_M"  MINVALUE 1 MAXVALUE 9999 INCREMENT BY 1 START WITH 843 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;

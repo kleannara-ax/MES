@@ -1,0 +1,20 @@
+ grid.js
+ - 그리드 find시 탭키와 위아래 버튼 이동시 포커스 이동 오류 수정
+ - 엑셀 다운로드시 파일 열림 충돌방지를 위헤 파일명에 번호 추가
+ - 그리드에서 휠 사용시 이벤트 누적에 의한 동작 지연 개성 : jquery.mousewheel.js 추가
+ - ie에서 trim함수 호출 오류 방생 버그 개선
+ 
+그리드 subtotal기능 추가
+ - <button type="button" GBtn="subTotal"></button>
+ 
+그리드 필터기능 추가
+ - <button type="button" GBtn="filter"></button>
+ 
+틀고정 기능 추가
+ - <button type="button" GBtn="colFix"></button>
+ 
+그리드 로우, 커럼 색상 바로 적용하기 위한 함수 추가 
+ - grid.js : checkGridColor color변경 이벤트 호출
+ 
+조회조건 레이어로 전환하는 단축키 추가
+ - head.js, configData.js : W

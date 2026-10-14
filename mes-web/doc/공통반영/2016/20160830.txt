@@ -1,0 +1,3 @@
+grid.js
+ - column value att처리로 인한 오류 방지를 위해 getColValue함수로 대치.
+ - column head check 인경우 label 잘못 나오는 오류 수정

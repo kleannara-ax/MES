@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+
+	<select id="DEPTCOMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DEPTID AS VALUE_COL
+		     , DEPTNAME AS TEXT_COL
+		  FROM WEBDEK.MSTDEPT
+		WHERE PDEPTID = 'HIMART'
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="DEPTUSERCOMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DEPTID AS VALUE_COL
+		     , DEPTNAME AS TEXT_COL
+		  FROM WEBDEK.MSTDEPT
+		WHERE 1=1
+		<if test="PDEPTID != null and PDEPTID != ''"> 
+	    	AND PDEPTID = #{PDEPTID}
+	    </if>
+	    ORDER BY SORTORDER
+	</select>
+	
+	<select id="MSTUSER_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT M.USERID
+		     , M.USERNAME
+		     , ' ' AS TELNUM
+		     , ' ' AS ADDRESS
+		     , (SELECT DEPTNAME FROM MSTDEPT WHERE DEPTID = T.PDEPTID) AS PDEPTNAME
+		     , ' ' AS MANAGER
+		     , ' ' AS ALLTID
+		  FROM WEBDEK.MSTUSER M
+		  LEFT OUTER JOIN MSTDEPT T ON M.DEPTID = T.DEPTID
+	</select>
+	
+	<select id="MSTUSER_M_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT 
+			D.DEPTID AS USERID,			
+			A.NAME,
+			A.TELN,
+			A.ADDRDESC,
+			P.DEPTNAME AS PDEPT_NAME,
+			A.PNAME,
+			A.DONG,
+			A.EMAIL,
+			A.WGS_LON,
+			A.WGS_LAT
+		FROM WEBDEK.MSTDEPT D
+		LEFT OUTER JOIN WEBDEK.COMADDR A ON A.ADDRID = D.DEPTID
+		LEFT OUTER JOIN WEBDEK.MSTDEPT P ON P.DEPTID = D.PDEPTID
+		WHERE 1=1 
+		  <if test="PDEPTID != null and PDEPTID != ''">
+			AND D.PDEPTID = #{PDEPTID}
+		  </if>
+		  <if test="DEPTID != null and DEPTID != ''">
+			AND D.DEPTID = #{DEPTID}
+		  </if>
+		  <if test="NAME != null and NAME != ''">
+			AND A.NAME LIKE CONCAT('%',#{NAME},'%')
+		  </if>
+		ORDER BY D.SORTORDER
+	</select>
+	
+	<select id="MSTUSER_OOO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT M.USERID
+		     , M.USERNAME
+		     , C.TELN AS TELNUM
+		     , C.ADDRDESC AS ADDRESS
+		     , (SELECT DEPTNAME FROM MSTDEPT WHERE DEPTID = T.PDEPTID) AS PDEPTNAME
+		     , C.CHARGE_NAME AS MANAGER
+		     , ' ' AS ALLTID
+		     , USERG2 AS LOCKFLG
+		  FROM WEBDEK.MSTUSER M
+		 	   INNER JOIN WEBDEK.COMADDR C ON M.USERNAME = C.NAME
+		  	   LEFT OUTER JOIN MSTDEPT T ON M.DEPTID = T.DEPTID
+		  WHERE 1=1 
+		  <if test="PDEPTID != null and PDEPTID != ''">
+			AND T.PDEPTID = #{PDEPTID}
+		  </if>
+		  <if test="DEPTID != null and DEPTID != ''">
+			AND T.DEPTID = #{DEPTID}
+		  </if>
+	</select>
+</mapper>

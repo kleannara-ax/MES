@@ -1,0 +1,67 @@
+.acpopup{
+	width: 100%;
+}
+.acpopup-top {
+	position: relative;
+	width: 100%;
+	background: #F03;
+	height: 38px;
+	color: #ffffff;
+	font-size: 1em;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+}
+.acpopup-top h3{
+	color: #ffffff;
+	font-size: 1em;
+	text-indent: 0.5em;
+	line-height: 2em;
+	font-weight: bold;
+}
+.acpopup-close{
+	position: absolute;
+	right: 1%;
+	top: 0.1%;
+	cursor: pointer;
+}
+.acpopup-close:before{
+	position: relative;
+	content:'✕';
+	color: #ffffff;
+	font-size: 1.2em;
+	top: 3px;
+	right: 5px;
+}
+
+/* 투명테이블스타일 */
+.acpopup-non-tbl{
+	margin: 10px 0;
+	width: 100%;
+	border-collapse: collapse;
+	background: #f4f5f7;
+}
+.acpopup-non-tbl th {
+	color:#333;
+	font-size: 14px;
+	text-align: right;
+	padding: 10px 5px 10px 3px; 
+	font-weight: bold;
+	background: #f4f5f7;  
+}
+.acpopup-non-tbl td {
+	color:#666;
+	font-size: 12px;
+	text-align:right;
+	padding: 10px 3px 10px 3px;  
+	background: #ffffff;
+}
+.acpopup-bottom{
+	position: relative;
+	float: right;
+}
+.acpopup-bottom li{
+	position: relative;
+	float: left;
+	padding: 2px;
+}

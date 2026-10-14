@@ -1,0 +1,1622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="System">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	
+	<!--  VALIDATION  -->
+	
+	<select id="USER_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT CASE 
+		            WHEN RF.UROLKY IS NULL
+		                 THEN concat('SYSTEM_M0086',' ', STD.UROLKY)  
+		            WHEN MF.MENUKY IS NULL
+		                THEN concat('SYSTEM_M0090',' ', STD.MENUKY) 
+		
+		            ELSE 'OK'
+		        END AS MSG
+		FROM 
+          		(         
+				   $VALIDATION_SQL$
+		 		 ) STD 
+       LEFT OUTER JOIN ROLDF  RF
+	   		ON RF.UROLKY = STD.UROLKY
+	   LEFT OUTER JOIN MNUDF  MF
+	   		ON MF.MENUKY = STD.MENUKY
+	   WHERE RF.UROLKY IS NULL 
+	 		 OR MF.MENUKY IS NULL 
+	</select>
+	
+	<select id="UR01WK_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		       CASE
+		         WHEN WH.WAREKY IS NULL THEN concat('VALID_M0401',' ', STD.WAREKY) 
+		         ELSE 'OK'
+		       END AS MSG
+		FROM   
+			( $VALIDATION_SQL$ ) STD 
+		LEFT OUTER JOIN WAHMA WH
+		    ON WH.WAREKY = STD.WAREKY 
+		WHERE  WH.WAREKY IS NULL
+	</select>
+	
+	<select id="UR01PG_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		       CASE
+		         WHEN PG.PROGID IS NULL THEN concat('MASTER_M0033',' ', STD.PROGID)   
+		         ELSE 'OK'
+		       END AS MSG
+		FROM   
+			( $VALIDATION_SQL$ ) STD 
+		LEFT OUTER JOIN PROGM PG 
+		    ON PG.PROGID = STD.PROGID 
+		WHERE  PG.PROGID IS NULL
+	</select>
+	
+	<select id="UR01US_VALIDATION" parameterClass="Map" resultClass="DataMap">
+		SELECT
+		       CASE
+		         WHEN US.USERID IS NULL THEN concat('MASTER_M0003',' ', STD.USERID) 
+		         ELSE 'OK'
+		       END AS MSG
+		FROM   
+			( $VALIDATION_SQL$ ) STD 
+		LEFT OUTER JOIN USRMA US 
+		    ON US.USERID = STD.USERID 
+		WHERE  US.USERID IS NULL
+	</select>
+	
+	<!--  ComboBox   -->
+	
+	<select id="WAREKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 거점 Combo -->
+		SELECT
+		    WAREKY AS VALUE_COL,
+		    NAME02 AS TEXT_COL
+		FROM WAHMA 
+	</select>
+	
+	<select id="NATNKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 국가 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+  			   , CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'NATNKY'
+	</select>
+	
+	<select id="LANGKYCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 언어 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     , CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'LANGKY'
+	</select>
+	
+	<select id="DATEFMCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 일자포맷 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     , CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'DATEFM'
+	</select>
+	
+	<select id="DATEDLCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 일자 구분자 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     , CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'DATEDL'
+	</select>
+	
+	<select id="DECPFMCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 소수점 표시방법 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     ,  CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'DECPFM'
+	</select>
+	
+	<select id="CURRFMCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 화폐 유형 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     , CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'CURRFM'
+	</select>
+	
+	<select id="DATFTYCOMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 데이터 타입 Combo -->
+		SELECT CMCDVL AS VALUE_COL
+		     ,  CDESC1 AS TEXT_COL
+		FROM CMCDV
+		WHERE CMCDKY = 'DATFTY'
+	</select>
+		 
+	<!-- UI01 : 사용자 -->
+	<select id="UROval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+		  FROM ROLDF
+		   WHERE UROLKY = #UROLKY#
+	</select>
+	<select id="USERval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+		  FROM USRMA
+		   WHERE USERID = #USERID#
+	</select>
+	
+	<select id="USER_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  U.USERID AS USERID
+		       ,PASSWD 
+		       ,NMLAST 
+		       ,R.UROLKY AS UROLKY
+		       ,NMFIRS 
+		       ,ADDR01 
+		       ,ADDR02 
+		       ,ADDR03 
+		       ,ADDR04 
+		       ,ADDR05 
+		       ,CITY01 
+		       ,REGN01 
+		       ,POSTCD 
+		       ,NATNKY 
+		       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'NATNKY' AND C.CMCDVL = U.NATNKY) AS NATNKYT
+		       ,TELN01 
+		       ,TELN02 
+		       ,TELN03 
+		       ,TLEXT1 
+		       ,FAXTL1 
+		       ,FAXTL2 
+		       ,POBOX1 
+		       ,POBPC1 
+		       ,EMAIL1 
+		       ,EMAIL2 
+		       ,COMPKY 
+		       ,DEPART 
+		       ,EMPLID 
+		       ,USERG1 
+		       ,USERG2 
+		       ,USERG3 
+		       ,USERG4 
+		       ,USERG5 
+		       ,LANGKY 
+		       ,DATEFM 
+		       ,DATEDL 
+		       ,DECPFM 
+		       ,LLOGID 
+		       ,LLOGIT 
+		       ,LLOGOD 
+		       ,LLOGOT 
+		       ,MENUKY 
+		       ,LLOGWH 
+		       ,TIMFMT 
+		       ,CURRFM 
+		       ,RECNTF 
+		       ,DELMAK 
+		       ,PGSIZE 
+		       ,U.CREDAT AS CREDAT
+		       ,U.CRETIM AS CRETIM
+		       ,U.CREUSR AS CREUSR
+		       ,(SELECT TOP 1 A.NMFIRS FROM USRMA A WHERE A.USERID = U.CREUSR ) AS CUSRNM
+		       ,U.LMODAT AS LMODAT
+		       ,U.LMOTIM AS LMOTIM
+		       ,U.LMOUSR AS LMOUSR
+		       ,(SELECT TOP 1 A.NMFIRS FROM USRMA A WHERE A.USERID = U.LMOUSR ) AS LUSRNM
+		       ,U.INDBZL AS INDBZL
+		       ,U.INDARC AS INDARC
+		       ,U.UPDCHK AS UPDCHK
+		FROM USRMA U
+			LEFT OUTER JOIN USRRA R 
+			ON U.USERID = R.USERID
+		WHERE 1 = 1
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<update id="USER_UPDATE" parameterClass="Map">
+		UPDATE USRMA SET 
+		<isNotEmpty property="PASSWD">
+			PASSWD = #PASSWD#,
+		</isNotEmpty>
+		<isNotEmpty property="DELMAK">
+			DELMAK = #DELMAK#,
+		</isNotEmpty>
+		<!-- <isNotEmpty property="UPDCHK">
+			UPDCHK = #UPDCHK#, 
+		</isNotEmpty> -->
+		<isNotEmpty property="NMLAST">
+			NMLAST = #NMLAST#,
+		</isNotEmpty>
+		<isNotEmpty property="NMFIRS">
+			NMFIRS = #NMFIRS#,
+		</isNotEmpty>
+		<isNotEmpty property="ADDR01">
+			ADDR01 = #ADDR01#,
+		</isNotEmpty>
+		<isNotEmpty property="ADDR02">
+			ADDR02 = #ADDR02#,
+		</isNotEmpty>
+		<isNotEmpty property="ADDR03">
+			ADDR03 = #ADDR03#,
+		</isNotEmpty>
+		<isNotEmpty property="ADDR04">
+			ADDR04 = #ADDR04#,
+		</isNotEmpty>
+		<isNotEmpty property="ADDR05">
+			ADDR05 = #ADDR05#,
+		</isNotEmpty>
+		<isNotEmpty property="CITY01">
+			CITY01 = #CITY01#,
+		</isNotEmpty>
+		<isNotEmpty property="REGN01">
+			REGN01 = #REGN01#,
+		</isNotEmpty>
+		<isNotEmpty property="POSTCD">
+			POSTCD = #POSTCD#,
+		</isNotEmpty>
+		<isNotEmpty property="NATNKY">
+			NATNKY = #NATNKY#,
+		</isNotEmpty>
+		<isNotEmpty property="TELN01">
+			TELN01 = #TELN01#,
+		</isNotEmpty>
+		<isNotEmpty property="TELN02">
+			TELN02 = #TELN02#,
+		</isNotEmpty>
+		<isNotEmpty property="TELN03">
+			TELN03 = #TELN03#,
+		</isNotEmpty>
+		<isNotEmpty property="TLEXT1">
+			TLEXT1 = #TLEXT1#,
+		</isNotEmpty>
+		<isNotEmpty property="FAXTL1">
+			FAXTL1 = #FAXTL1#,
+		</isNotEmpty>
+		<isNotEmpty property="FAXTL2">
+			FAXTL2 = #FAXTL2#,
+		</isNotEmpty>
+		<isNotEmpty property="POBOX1">
+			POBOX1 = #POBOX1#,
+		</isNotEmpty>
+		<isNotEmpty property="POBPC1">
+			POBPC1 = #POBPC1#,
+		</isNotEmpty>
+		<isNotEmpty property="EMAIL1">
+			EMAIL1 = #EMAIL1#,
+		</isNotEmpty>
+		<isNotEmpty property="EMAIL2">
+			EMAIL2 = #EMAIL2#, 
+		</isNotEmpty>
+		<isNotEmpty property="COMPKY">
+			COMPKY = #COMPKY#,
+		</isNotEmpty>
+		<isNotEmpty property="DEPART">
+			DEPART = #DEPART#,
+		</isNotEmpty>
+		<isNotEmpty property="EMPLID">
+			EMPLID = #EMPLID#,
+		</isNotEmpty>
+		<isNotEmpty property="USERG1">
+			USERG1 = #USERG1#,
+		</isNotEmpty>
+		<isNotEmpty property="USERG2">
+			USERG2 = #USERG2#,
+		</isNotEmpty>
+		<isNotEmpty property="USERG3">
+			USERG3 = #USERG3#,
+		</isNotEmpty>
+		<isNotEmpty property="USERG4">
+			USERG4 = #USERG4#,
+		</isNotEmpty>
+		<isNotEmpty property="USERG5">
+			USERG5 = #USERG5#,
+		</isNotEmpty>
+		<isNotEmpty property="LANGKY">
+			LANGKY = #LANGKY#,
+		</isNotEmpty>
+		<isNotEmpty property="DATEFM">
+			DATEFM = #DATEFM#,
+		</isNotEmpty>
+		<isNotEmpty property="DATEDL">
+			DATEDL = #DATEDL#,
+		</isNotEmpty>
+		<isNotEmpty property="DECPFM">
+			DECPFM = #DECPFM#,
+		</isNotEmpty>
+		<isNotEmpty property="LLOGID">
+			LLOGID = #LLOGID#,
+		</isNotEmpty>
+		<isNotEmpty property="LLOGIT">
+			LLOGIT = #LLOGIT#,
+		</isNotEmpty>
+		<isNotEmpty property="LLOGOD">
+			LLOGOD = #LLOGOD#,
+		</isNotEmpty>
+		<isNotEmpty property="LLOGOT">
+			LLOGOT = #LLOGOT#,
+		</isNotEmpty>
+		<isNotEmpty property="MENUKY">
+			MENUKY = UPPER(#MENUKY#),
+		</isNotEmpty>
+		<isNotEmpty property="LLOGWH">
+			LLOGWH = #LLOGWH#,
+		</isNotEmpty>
+		<isNotEmpty property="TIMFMT">
+			TIMFMT = #TIMFMT#,
+		</isNotEmpty>
+		<isNotEmpty property="CURRFM">
+			CURRFM = #CURRFM#,
+		</isNotEmpty>
+		<isNotEmpty property="RECNTF">
+			RECNTF = #RECNTF#,
+		</isNotEmpty>
+		<isNotEmpty property="PGSIZE">
+			PGSIZE = #PGSIZE#,
+		</isNotEmpty>
+		<isNotEmpty property="FTNAME">
+			FTNAME = #FTNAME#,
+		</isNotEmpty>
+		<isNotEmpty property="FTSIZE">
+			FTSIZE = #FTSIZE#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			INDARC = #INDARC#,
+		</isNotEmpty>
+			LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE 1 = 1
+			AND USERID = #USERID#
+	</update>
+	
+	<insert id="USER_INSERT" parameterClass="Map">
+		INSERT
+		INTO   USRMA 
+		(USERID, PASSWD, NMLAST, NMFIRS, ADDR01, ADDR02, ADDR03, ADDR04, ADDR05, CITY01, REGN01, POSTCD, NATNKY, TELN01, TELN02, TELN03, TLEXT1, FAXTL1, FAXTL2, POBOX1, POBPC1, EMAIL1, EMAIL2, COMPKY, DEPART, EMPLID, USERG1, USERG2, USERG3, USERG4, USERG5, LANGKY, DATEFM, DATEDL, DECPFM, LLOGID, LLOGIT, LLOGOD, LLOGOT, MENUKY, PDAMKY, LLOGWH, TIMFMT, CURRFM, RECNTF, DELMAK, PGSIZE, FTNAME, FTSIZE, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK)
+		VALUES (
+			   #USERID#,
+               #PASSWD#,
+               #NMLAST#,
+               #NMFIRS#,
+               #ADDR01#,
+               #ADDR02#,
+               #ADDR03#,
+               #ADDR04#,
+               #ADDR05#,
+               #CITY01#,
+               #REGN01#,
+               #POSTCD#, 
+               'KR',
+               #TELN01#,
+               #TELN02#,
+               #TELN03#,
+               #TLEXT1#,
+               #FAXTL1#,
+               #FAXTL2#,
+               #POBOX1#,
+               #POBPC1#,
+               #EMAIL1#,
+               #EMAIL2#,
+               #COMPKY#,
+               #DEPART#,
+               #EMPLID#,
+               #USERG1#,
+               #USERG2#,
+               #USERG3#,
+               #USERG4#,
+               #USERG5#,
+				<isEmpty property="SES_LANGUAGE">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="SES_LANGUAGE">
+               ISNULL(#SES_LANGUAGE#, ' '),
+				</isNotEmpty>
+               '01',
+               '20',
+               '01',
+               #LLOGID#,
+               ISNULL(#LLOGIT#, ' '),
+               #LLOGOD#,
+               #LLOGOT#,
+               UPPER(#MENUKY#), 
+				<isEmpty property="PDAMKY">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="PDAMKY">
+		           ISNULL(#PDAMKY#, ' '),
+				</isNotEmpty>
+				<isEmpty property="LLOGWH">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="LLOGWH">
+		           ISNULL(#LLOGWH#, ' '),
+				</isNotEmpty>
+				<isEmpty property="TIMFMT">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="TIMFMT">
+		           ISNULL(#TIMFMT#, ' '),
+				</isNotEmpty> 
+               '10',
+				<isEmpty property="RECNTF">
+		          0,
+				</isEmpty>
+				<isNotEmpty property="RECNTF">
+               CAST(ISNULL(RTRIM(#RECNTF#), 0) AS int),
+				</isNotEmpty>
+               #DELMAK#,
+				<isEmpty property="PGSIZE">
+		          0,
+				</isEmpty>
+				<isNotEmpty property="PGSIZE">
+               CAST(ISNULL(RTRIM(#PGSIZE#), 0) AS int),
+				</isNotEmpty> 
+				<isEmpty property="FTNAME">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="FTNAME">
+               ISNULL(#FTNAME#,' '),
+				</isNotEmpty> 
+				<isEmpty property="FTSIZE">
+		          NULL,
+				</isEmpty>
+				<isNotEmpty property="FTSIZE">
+               CAST(ISNULL(RTRIM(#FTSIZE#), 0) AS int),
+				</isNotEmpty>
+               CONVERT(CHAR(10),GETDATE(),112),
+               REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+               'DEV',
+ 			   CONVERT(CHAR(10),GETDATE(),112),
+               REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+ 			   'DEV', 
+				<isEmpty property="INDBZL">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="INDBZL">
+               ISNULL(#INDBZL#, ' '),
+				</isNotEmpty>  
+				<isEmpty property="INDARC">
+		          ' ',
+				</isEmpty>
+				<isNotEmpty property="INDARC">
+		           ISNULL(#INDARC#, ' '),
+				</isNotEmpty>  
+				<isEmpty property="UPDCHK">
+		          ' ' 
+				</isEmpty>
+				<isNotEmpty property="UPDCHK">
+                  CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+				</isNotEmpty>  
+               )
+	</insert>
+	
+	<insert id="USSRA1_UPDATE" parameterClass="Map">
+		INSERT
+		INTO   USRRA
+		(UROLKY, USERID, CREDAT, CRETIM ,CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL ,INDARC, UPDCHK )
+		VALUES (
+			   #UROLKY#,
+               #USERID#,
+               CONVERT(CHAR(10),GETDATE(),112),
+               REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+               'DEV',
+ 			   CONVERT(CHAR(10),GETDATE(),112),
+               REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+ 			   'DEV',
+               ISNULL(#INDBZL#, ' '),
+               ISNULL(#INDARC#, ' '),
+               CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+               )
+	</insert>
+	
+	<delete id="USSRA1_DELETE" parameterClass="Map">
+		DELETE USRRA WHERE USERID = #USERID# 
+	</delete>
+	
+	<!-- YL01 : 라벨 -->
+	
+	<select id="LABEL_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  LANGKY
+		       ,LABLGR
+		       ,LABLKY
+		       ,LBLTXS
+		       ,LBLTXM
+		       ,LBLTXL
+		       ,CREDAT
+		       ,CRETIM
+		       ,CREUSR
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR
+		       ,INDBZL
+		       ,INDARC
+		       ,UPDCHK
+		FROM JLBLM
+		WHERE 1 = 1
+		<isNotEmpty property="LANGKY">
+			AND LANGKY = #LANGKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<update id="LABEL_UPDATE" parameterClass="Map">
+		UPDATE JLBLM SET 
+		<isNotEmpty property="LBLTXS">			
+			 LBLTXS = #LBLTXS#,
+		</isNotEmpty> 
+		<isNotEmpty property="LBLTXM">			
+			 LBLTXM = #LBLTXM#,
+		</isNotEmpty> 
+		<isNotEmpty property="LBLTXL">			
+			 LBLTXL = #LBLTXL#,
+		</isNotEmpty>
+			LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE 1 = 1
+			AND LANGKY = #LANGKY#
+			AND LABLGR = #LABLGR#
+			AND LABLKY = #LABLKY#
+	</update>
+	
+	<insert id="LABEL_INSERT" parameterClass="Map">
+		INSERT
+			INTO JLBLM 
+			(LBLTXS, LBLTXM, LBLTXL, INDBZL, INDARC, UPDCHK, LANGKY, LABLGR, LABLKY,  CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR)
+			VALUES 
+			(
+				#LBLTXS#, 
+				#LBLTXM#,
+				#LBLTXL#,
+				ISNULL(#INDBZL#, ' '),
+				ISNULL(#INDARC#, ' '),
+				CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int),
+				#LANGKY#, 
+				#LABLGR#, 
+				#LABLKY#,
+			    CONVERT(CHAR(10),GETDATE(),112),
+                REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+                #SES_USER_ID#,
+ 			    CONVERT(CHAR(10),GETDATE(),112),
+                REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+ 			    #SES_USER_ID#
+			)
+				
+	</insert>
+	
+	<delete id="LABEL_DELETE" parameterClass="Map">
+		DELETE FROM JLBLM 
+		WHERE LANGKY = #LANGKY# 
+			AND LABLGR = #LABLGR# 
+			AND LABLKY = #LABLKY#
+	</delete>
+	
+	<!-- YD01 : 데이터 사전 -->
+
+	<select id="DATADIC_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  DDICKY 
+		       ,DATFTY 
+		       ,SHORTX 
+		       ,DBFILD 
+		       ,PDATTY 
+		       ,OBJETY 
+		       ,DBLENG 
+		       ,DBDECP 
+		       ,OUTLEN 
+		       ,SHLPKY 
+		       ,FLDALN 
+		       ,LABLGR 
+		       ,LABLKY 
+		       ,LBTXTY 
+		       ,UCASOL 
+		       ,CREDAT 
+		       ,CRETIM 
+		       ,CREUSR 
+		       ,(SELECT TOP 1 NMLAST FROM USRMA WHERE USRMA .USERID = DFDIC.CREUSR ) AS "CUSRNM"
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR
+		       ,(SELECT TOP 1 NMLAST FROM USRMA WHERE USRMA .USERID = DFDIC.LMOUSR ) AS "LUSRNM"
+		       ,INDBZL
+		       ,INDARC
+		       ,UPDCHK
+		FROM DFDIC
+		WHERE 1 = 1
+			AND DATFTY = #DATFTY#
+		<isNotEmpty property="DDICKY">
+			AND DDICKY = #DDICKY#
+		</isNotEmpty>
+	</select>
+
+    <update id="DATADIC_UPDATE" parameterClass="Map">
+		UPDATE DFDIC SET 
+		<isNotEmpty property="DATFTY">
+			 DATFTY = #DATFTY#,
+		</isNotEmpty>
+		<isNotEmpty property="SHORTX">
+			 SHORTX = #SHORTX#,
+		</isNotEmpty>
+		<isNotEmpty property="DBFILD">
+			 DBFILD = #DBFILD#,
+		</isNotEmpty>
+		<isNotEmpty property="PDATTY">
+			 PDATTY = #PDATTY#,
+		</isNotEmpty>
+		<isNotEmpty property="OBJETY">
+			 OBJETY = #OBJETY#,
+		</isNotEmpty>
+		<isNotEmpty property="DBLENG">
+			 DBLENG = #DBLENG#,
+		</isNotEmpty>
+		<isNotEmpty property="DBDECP">
+			 DBDECP = #DBDECP#,
+		</isNotEmpty>
+		<isNotEmpty property="OUTLEN">
+			 OUTLEN = #OUTLEN#,
+		</isNotEmpty>
+		<isNotEmpty property="SHLPKY">
+			 SHLPKY = #SHLPKY#,
+		</isNotEmpty>
+		<isNotEmpty property="FLDALN">
+			 FLDALN = #FLDALN#,
+		</isNotEmpty>
+		<isNotEmpty property="LABLGR">
+			 LABLGR = #LABLGR#,
+		</isNotEmpty>
+		<isNotEmpty property="LABLKY">
+			 LABLKY = #LABLKY#,
+		</isNotEmpty>
+		<isNotEmpty property="LBTXTY">
+			 LBTXTY = #LBTXTY#,
+		</isNotEmpty>
+		<isNotEmpty property="UCASOL">
+			 UCASOL = #UCASOL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+			LMODAT = CONVERT(VARCHAR,GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(VARCHAR,GETDATE(),108),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE 1 = 1
+			AND DDICKY = #DDICKY#
+	</update>
+	
+	<insert id="DATADIC_INSERT" parameterClass="Map">
+		INSERT
+			INTO   DFDIC 
+			(DATFTY, SHORTX, DBFILD, PDATTY, OBJETY, DBLENG, DBDECP, OUTLEN, SHLPKY, FLDALN, LABLGR, LABLKY, LBTXTY, UCASOL, INDBZL, INDARC, UPDCHK, DDICKY, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR)
+			VALUES (       
+						#DATFTY#,
+		                #SHORTX#,
+		                #DBFILD#,
+		                #PDATTY#,
+		                #OBJETY#,
+		                CAST(ISNULL(RTRIM(#DBLENG#), 0) AS int),
+		                CAST(ISNULL(RTRIM(#DBDECP#), 0) AS int),
+		                CAST(ISNULL(RTRIM(#OUTLEN#), 0) AS int),
+		                #SHLPKY#,
+		                #FLDALN#,
+		                #LABLGR#,
+		                #LABLKY#,
+		                #LBTXTY#,
+		                #UCASOL#,
+		                ISNULL(#INDBZL#, ' '),
+		                ISNULL(#INDARC#, ' '),
+		                CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int),
+		                #DDICKY#, 
+		                CONVERT(CHAR(10),GETDATE(),112),
+                        REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		                #SES_USER_ID#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+                        REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		 			    #SES_USER_ID#
+		                )
+				               
+	</insert>
+	
+	<delete id="DATADIC_DELETE" parameterClass="Map">
+		DELETE FROM DFDIC WHERE DDICKY = #DDICKY#
+	</delete>
+	
+	<!-- YM01 : 메시지 -->
+	
+	<select id="MESSAGE_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  LANGKY
+		       ,MESGGR
+		       ,MESGKY
+		       ,MESGTX
+		       ,CREDAT
+		       ,CRETIM
+		       ,CREUSR
+		       ,LMODAT
+		       ,LMOTIM
+		       ,LMOUSR
+		       ,INDBZL
+		       ,INDARC
+		       ,UPDCHK
+		FROM JMSGM
+		WHERE 1 = 1
+		<isNotEmpty property="LANGKY">
+			AND LANGKY = #LANGKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	
+	<delete id="MESSAGE_DELETE" parameterClass="Map">
+		DELETE JMSGM 
+		WHERE 
+			LANGKY = #LANGKY#
+			AND    MESGGR = #MESGGR#
+			AND    MESGKY = #MESGKY#
+	</delete>
+	
+	<update id="MESSAGE_UPDATE" parameterClass="Map">
+		UPDATE JMSGM SET
+		<isNotEmpty property="MESGTX">
+			 MESGTX = #MESGTX#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE  
+			LANGKY = #LANGKY#
+			AND    MESGGR = #MESGGR#
+			AND    MESGKY = #MESGKY#
+	</update>
+	
+	<insert id="MESSAGE_INSERT" parameterClass="Map">
+		INSERT INTO JMSGM 
+				( 	LANGKY,MESGGR,MESGKY,MESGTX,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR,INDBZL,INDARC,UPDCHK )
+		VALUES	(
+					#LANGKY#, 
+					#MESGGR#,
+					#MESGKY#,
+					#MESGTX#, 
+					CONVERT(CHAR(10),GETDATE(),112),
+			 		REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	                'DEV',
+					CONVERT(CHAR(10),GETDATE(),112),
+			 		REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	 			    'DEV',
+					ISNULL(#INDBZL#, ' '), 
+					ISNULL(#INDARC#, ' '),
+					CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+				)
+	</insert>
+	
+	<!-- YH01 : 서치헬프 -->
+	
+	<select id="SHLPH_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT SHLPKY 
+		      ,SHORTX
+		      ,STARGO
+		      ,EXECTY
+		      ,WIDTHW
+		      ,HEIGHT
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK 
+		FROM   SHLPH 
+		WHERE  SHLPKY= #SHLPKY#
+	</select>
+	
+	<select id="SHLPH02_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT #SHLPKY# AS SHLPKY, 0 AS WIDTHW, 0 AS HEIGHT 
+	</select>
+	
+	<select id="SHLPKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+        FROM   
+        	SHLPH 
+		WHERE  
+			SHLPKY = #SHLPKY#
+	</select>
+	
+	<select id="SHLPI_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		       SHLPKY
+		      ,DBFILD
+		      ,SHLPKY
+		      ,DBFILD
+		      ,DDICKY
+		      ,INDUSO
+		      ,POSSOS
+		      ,INDNED
+		      ,RQFLDS
+		      ,INDULS
+		      ,POSLIS
+		      ,INDRVL
+		      ,DFVSOS
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK
+		FROM   
+			  SHLPI
+		WHERE  
+			  SHLPKY = #SHLPKY#
+	</select> 
+	
+	<select id="SHLPI22_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		       SHLPKY
+		      ,DBFILD
+		      ,SHLPKY
+		      ,DBFILD
+		      ,DDICKY
+		      ,INDUSO
+		      ,POSSOS
+		      ,INDNED
+		      ,RQFLDS
+		      ,INDULS
+		      ,POSLIS
+		      ,INDRVL
+		      ,DFVSOS
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK
+		FROM   
+			  SHLPI
+	</select>
+	
+	<insert id="SHLPHI_UPDATE" parameterClass="Map">
+		INSERT INTO SHLPH 
+				( 	SHLPKY, SHORTX, STARGO, EXECTY, WIDTHW, HEIGHT, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+		VALUES	(
+					#SHLPKY#, 
+					ISNULL(#SHORTX#, ' '),
+					ISNULL(#STARGO#, ' '),
+					'S', 
+					CAST(ISNULL(RTRIM(#WIDTHW#), 0) AS REAL),
+					CAST(ISNULL(RTRIM(#HEIGHT#), 0) AS REAL),
+	                CONVERT(CHAR(10),GETDATE(),112),
+                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	                'DEV',
+	                CONVERT(CHAR(10),GETDATE(),112),
+                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	 			    'DEV',
+					ISNULL(#INDBZL#, ' '), 
+					ISNULL(#INDARC#, ' '),
+					CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+				)
+	</insert>
+	
+	<insert id="SHLPI_INSERT" parameterClass="Map">
+		INSERT INTO SHLPI 
+				(   SHLPKY, DBFILD, DDICKY, INDUSO, POSSOS, INDNED, RQFLDS, INDULS, POSLIS, INDRVL, DFVSOS, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK ) 
+		VALUES	(
+					#SHLPKY#, 
+					#DBFILD#,
+					#DDICKY#, 
+					#INDUSO#, 
+					#POSSOS#, 
+					#INDNED#, 
+					#RQFLDS#, 
+					#INDULS#, 
+					#POSLIS#, 
+					#INDRVL#, 
+					#DFVSOS#, 
+	                CONVERT(CHAR(10),GETDATE(),112),
+                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	                #SES_USER_ID#,
+	                CONVERT(CHAR(10),GETDATE(),112),
+                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+	 			    #SES_USER_ID#,
+					ISNULL(#INDBZL#, ' '), 
+					ISNULL(#INDARC#, ' '),
+					CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+				)
+	</insert>
+	
+	<delete id="SHLPI_DELETE" parameterClass="Map">
+		DELETE SHLPI 
+		WHERE 
+			SHLPKY = #SHLPKY#
+	    AND DBFILD = #DBFILD#
+	</delete>
+	
+	<update id="SHLPHU_UPDATE" parameterClass="Map">
+		UPDATE SHLPH SET
+		<isNotEmpty property="SHORTX">
+			 SHORTX = #SHORTX#,
+		</isNotEmpty>
+		<isNotEmpty property="STARGO">
+			 STARGO = #STARGO#,
+		</isNotEmpty>
+		<isNotEmpty property="EXECTY">
+			 EXECTY = #EXECTY#,
+		</isNotEmpty>
+		<isNotEmpty property="WIDTHW">
+			 WIDTHW = #WIDTHW#,
+		</isNotEmpty>
+		<isNotEmpty property="HEIGHT">
+			 HEIGHT = #HEIGHT#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = 'DEV'
+		WHERE  
+			 SHLPKY = #SHLPKY# 
+	</update>
+	
+	<update id="SHLPI_UPDATE" parameterClass="Map">
+		UPDATE SHLPI SET
+		<isNotEmpty property="DDICKY">
+			 DDICKY = #DDICKY#,
+		</isNotEmpty>
+		<isNotEmpty property="INDUSO">
+			 INDUSO = #INDUSO#,
+		</isNotEmpty>
+		<isNotEmpty property="POSSOS">
+			 POSSOS = #POSSOS#,
+		</isNotEmpty>
+		<isNotEmpty property="INDNED">
+			 INDNED = #INDNED#,
+		</isNotEmpty>
+		<isNotEmpty property="RQFLDS">
+			 RQFLDS = #RQFLDS#,
+		</isNotEmpty>
+		<isNotEmpty property="INDULS">
+			 INDULS = #INDULS#,
+		</isNotEmpty>
+		<isNotEmpty property="POSLIS">
+			 POSLIS = #POSLIS#,
+		</isNotEmpty>
+		<isNotEmpty property="INDRVL">
+			 INDRVL = #INDRVL#,
+		</isNotEmpty>
+		<isNotEmpty property="DFVSOS">
+			 DFVSOS = #DFVSOS#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE  
+			 SHLPKY = #SHLPKY# 
+			 AND DBFILD = #DBFILD#
+	</update>
+	
+	<!-- YP01 : 프로그램 -->
+	
+	<select id="PRG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT PROGID
+		      ,SHORTX
+		      ,PGPATH
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK 
+		FROM   PROGM
+		WHERE 1 = 1
+	</select>
+	
+	<insert id="PRG_INSERT" parameterClass="Map">
+		INSERT
+			INTO PROGM 
+			( PROGID, SHORTX, PGPATH, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+			VALUES (       
+						#PROGID#,
+		                #SHORTX#,
+		                #PGPATH#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		                'DEV',
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		 			    'DEV',
+		                ISNULL(#INDBZL#, ' '),
+		                ISNULL(#INDARC#, ' '),
+		                CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+			       ) 
+	</insert>
+	
+	<update id="PRG_UPDATE" parameterClass="Map">
+		UPDATE PROGM SET
+		<isNotEmpty property="SHORTX">
+			 SHORTX = #SHORTX#,
+		</isNotEmpty>
+		<isNotEmpty property="PGPATH">
+			 PGPATH = #PGPATH#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE  
+			PROGID = #PROGID#
+	</update>
+	
+	<delete id="PRG_DELETE" parameterClass="Map">
+		DELETE FROM PROGM 
+			WHERE PROGID = #PROGID#
+	</delete>
+	
+	<!--UM01 : 메뉴 -->
+	
+	<select id="MENUTOP_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT  MENUKY 
+		       ,SHORTX 
+		       ,CREDAT 
+		       ,CRETIM 
+		       ,CREUSR 
+		       ,(SELECT TOP 1 NMLAST FROM USRMA WHERE USRMA .USERID = MNUDF.CREUSR ) AS CUSRNM
+		       ,LMODAT 
+		       ,LMOTIM 
+		       ,LMOUSR 
+		       ,(SELECT TOP 1 NMLAST FROM USRMA WHERE USRMA .USERID = MNUDF.LMOUSR ) AS LUSRNM
+		       ,INDBZL  
+		       ,INDARC  
+		       ,UPDCHK  
+		FROM MNUDF
+		WHERE MENUKY = #MENUKY#
+	</select>
+	
+	<select id="MENU_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			   A.AMNUID AS AMNUID, 
+		       A.MENUID AS MENUID, 
+		       (SELECT ISNULL(MAX(B.LBLTXL), A.LABLKY) 
+		          FROM JLBLM B 
+		         WHERE A.LABLGR = B.LABLGR
+		           AND A.LABLKY = B.LABLKY
+		           AND B.LANGKY = #SES_LANGUAGE#) AS LBLTXL, 
+		       ' ' AS "PGPATH", 
+		       ISNULL(A.PROGID, ' ') AS PROGID,
+		       A.MENUKY AS MENUKY,
+		       A.INDMUK AS INDMUK,
+		       A.SORTSQ AS SORTSQ,       
+		       A.MENULV AS MENULV,
+		       A.LABLGR AS LABLGR,
+		       A.LABLKY AS LABLKY,
+		       A.CREDAT AS CREDAT,
+		       A.CRETIM AS CRETIM,
+		       A.CREUSR AS CREUSR,
+		       A.LMODAT AS LMODAT,
+		       A.LMOTIM AS LMOTIM,
+		       A.LMOUSR AS LMOUSR,
+		       A.INDBZL AS INDBZL,
+		       A.INDARC AS INDARC         
+		 FROM
+		 	MNUDT A
+		 WHERE 
+		 	MENUKY = #MENUKY# 
+		ORDER BY SORTSQ 
+	</select>
+	
+	
+	<select id="UM01LABEL_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT TOP 1 LBLTXL AS LBLTXL 
+	  	  FROM JLBLM 
+	  	  WHERE 1 = 1 
+	  	    AND LABLGR = #LABLGR#
+		    AND LABLKY = #LABLKY#
+		    AND LANGKY = #SES_LANGUAGE# 
+	</select>
+	
+	<select id="UM01PROG_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT PGPATH AS PGPATH 
+	  	  FROM PROGM 
+	  	  WHERE 1 = 1 
+	  	    AND PROGID = #PROGID#
+	</select>
+	
+	<select id="UM01MENU_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT A.MENUID AS MENUID, 
+		       (SELECT ISNULL(MAX(B.LBLTXL), A.LABLKY) 
+		          FROM JLBLM B 
+		         WHERE A.LABLGR = B.LABLGR
+		           AND A.LABLKY = B.LABLKY
+		           AND B.LANGKY = #SES_LANGUAGE#) AS LBLTXL, 
+		       ISNULL(B.PGPATH, ' ') AS PGPATH, 
+		       ISNULL(A.PROGID, ' ') AS PROGID,
+		       A.MENUKY AS MENUKY,
+		       A.INDMUK AS INDMUK,
+		       A.SORTSQ AS SORTSQ,       
+		       A.MENULV AS MENULV,
+		       A.LABLGR AS LABLGR,
+		       A.LABLKY AS LABLKY,
+		       A.CREDAT AS CREDAT,
+		       A.CRETIM AS CRETIM,
+		       A.CREUSR AS CREUSR,
+		       A.LMODAT AS LMODAT,
+		       A.LMOTIM AS LMOTIM,
+		       A.LMOUSR AS LMOUSR,
+		       A.INDBZL AS INDBZL,
+		       A.INDARC AS INDARC         
+		 FROM MNUDT A LEFT OUTER JOIN  PROGM B ON A.PROGID = B.PROGID     
+		WHERE MENUKY = #MENUKY# 
+		  AND MENUID = #MENUID#
+	</select>
+	
+	<select id="UM01MENUval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+		  FROM MNUDT
+		   WHERE MENUKY = #MENUKY# 
+		     AND MENUID = #MENUID#
+	</select>
+	
+	<update id="MENU_UPDATE" parameterClass="Map">
+		UPDATE MNUDT SET  
+		<isNotEmpty property="INDMUK">			
+			 INDMUK = #INDMUK#,
+		</isNotEmpty>
+		<isNotEmpty property="SORTSQ">			
+			 SORTSQ = #SORTSQ#,
+		</isNotEmpty> 
+		<isNotEmpty property="PROGID">			
+			 PROGID = #PROGID#,
+		</isNotEmpty>
+		<isNotEmpty property="MENULV">			
+			 MENULV = #MENULV#,
+		</isNotEmpty>
+		<isNotEmpty property="AMNUID">			
+			 AMNUID = #AMNUID#,
+		</isNotEmpty>
+		<isNotEmpty property="LABLGR">			
+			 LABLGR = #LABLGR#,
+		</isNotEmpty>
+		<isNotEmpty property="LABLKY">			
+			 LABLKY = #LABLKY#,
+		</isNotEmpty>
+			LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+	 		LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID# 
+		WHERE 1 = 1
+		  AND MENUKY = #MENUKY# 
+		  AND MENUID = #MENUID#
+	</update>
+	
+	<insert id="MENU_INSERT" parameterClass="Map">
+		INSERT
+			INTO MNUDT 
+			(MENUKY, MENUID, INDMUK, SORTSQ, PROGID, MENULV, AMNUID, LABLGR, LABLKY,  CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+			VALUES 
+			(
+				#MENUKY#, 
+				#MENUID#,
+				#INDMUK#,
+				#SORTSQ#,  
+				ISNULL(#PROGID#, ' '),
+				#MENULV#,
+				#AMNUID#,
+				#LABLGR#, 
+				#LABLKY#, 
+				CONVERT(CHAR(10),GETDATE(),112),
+		 		REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+                #SES_USER_ID#, 
+				CONVERT(CHAR(10),GETDATE(),112),
+		 		REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+ 			    #SES_USER_ID#,		   
+				ISNULL(#INDBZL#, ' '),
+				ISNULL(#INDARC#, ' '), 
+			<isNotEmpty property="UPDCHK">		
+				CAST(ISNULL(TRIM(#UPDCHK#), 0) AS int)
+			</isNotEmpty>
+			<isEmpty property="UPDCHK">		
+				0
+			</isEmpty> 
+			)
+				
+	</insert>
+	
+	<delete id="MENU_DELETE" parameterClass="Map">
+		DELETE FROM MNUDT 
+		 WHERE MENUKY = #MENUKY# 
+		   AND MENUID = #MENUID#
+	</delete>
+	
+	<!-- UR01 : 권한 -->
+	
+	<select id="UR01TOP_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT UROLKY
+		      ,SHORTX
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK
+		FROM   ROLDF
+		WHERE  UROLKY = #UROLKY#
+	</select>
+	
+	<update id="UR01TOP_UPDATE" parameterClass="Map">
+		UPDATE ROLDF SET  
+		<isNotEmpty property="SHORTX">
+			 SHORTX = #SHORTX#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = 'DEV'
+		WHERE  
+			UROLKY = #UROLKY#
+	</update> 
+	
+	
+	<select id="UR01PG_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  UROLKY , 
+      		    PROGID 
+		FROM ROLPG
+		WHERE UROLKY = #UROLKY#
+		GROUP BY UROLKY, PROGID
+	</select>
+	
+	<delete id="UR01PG_DELETE" parameterClass="Map">
+		DELETE ROLPG 
+		WHERE 
+			PROGID = #PROGID#
+	    AND UROLKY = #UROLKY#
+	</delete>
+	
+	<insert id="UR01PG_INSERT" parameterClass="Map">
+		INSERT
+			INTO   ROLPG
+			(UROLKY, PROGID, WAREKY, INDACR, INDACH, INDADL, INDADS, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+			VALUES (       
+						#UROLKY#,
+		                #PROGID#,
+		                'WCD1',
+		                ISNULL(#INDACR#, ' '),
+		                ISNULL(#INDACH#, ' '),
+		                ISNULL(#INDADL#, ' '),
+		                ISNULL(#INDADS#, ' '),
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		                #SES_USER_ID#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		 			    #SES_USER_ID#,
+		 			    ISNULL(#INDBZL#, ' '),
+		 			    ISNULL(#INDARC#, ' '),
+		                CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+		           )
+	</insert>
+	
+		
+	<select id="UR01US_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			B.UROLKY AS UROLKY,
+	        B.USERID AS USERID,
+	        A.NMLAST AS NMLAST,
+	        A.NMFIRS AS NMFIRS,
+	        B.UPDCHK AS UPDCHK
+	    FROM 
+	    	USRMA A, 
+	       	USRRA B
+		WHERE 
+			A.USERID = B.USERID
+	        AND UROLKY = #UROLKY#
+	</select>
+	
+	<insert id="UR01US_INSERT" parameterClass="Map">
+		 INSERT
+			INTO USRRA
+			(UROLKY, USERID, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+			VALUES (       
+						#UROLKY#,
+		                #USERID#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		                #SES_USER_ID#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		 			    #SES_USER_ID#,
+		                ISNULL(#INDBZL#, ' '),
+		                ISNULL(#INDARC#, ' '),
+		                CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int)
+		           ) 
+	</insert>
+	
+	<!-- userid 유무 확인 -->
+	
+	<select id="USERIDval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+        FROM   
+        	USRMA 
+		WHERE  
+			USERID = #USERID#
+	</select>
+	
+	<!-- USERID 입력 시 NMLAST 자동 입력 -->
+	<select id="NMLAST_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT NMLAST
+	  	FROM 
+	  		USRMA 
+	  	WHERE  
+	  	    USERID = #USERID# 
+	</select>
+	
+	<!-- USERID 입력 시 NMLAST 자동 입력 -->
+	<select id="NMFIRS_MAP" parameterClass="Map" resultClass="DataMap">
+	  	SELECT NMFIRS
+	  	FROM 
+	  		USRMA 
+	  	WHERE  
+	  	    USERID = #USERID# 
+	</select>
+	
+	
+<!-- 	<update id="UR01US_UPDATE" parameterClass="Map">
+		UPDATE USRRA SET  
+		<isNotEmpty property="USERID">
+			 USERID = #USERID#,
+		</isNotEmpty>
+		<isNotEmpty property="
+">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD'),
+			LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS'),
+			LMOUSR = #SES_USER_ID#
+		WHERE  
+			UROLKY = #UROLKY#
+			AND WAREKY = #USERID#
+	</update> 
+-->
+
+	<delete id="UR01US_DELETE" parameterClass="Map">
+		DELETE USRRA 
+		WHERE 
+			USERID = #USERID#
+	    AND UROLKY = #UROLKY#
+	</delete>
+	
+	<select id="UR01WK_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT UROLKY
+		      ,WAREKY
+		      ,ACTVAT
+		      ,CREDOC
+		      ,CREDAT
+		      ,CRETIM
+		      ,CREUSR
+		      ,LMODAT
+		      ,LMOTIM
+		      ,LMOUSR
+		      ,INDBZL
+		      ,INDARC
+		      ,UPDCHK
+		FROM   ROLCT
+		WHERE  UROLKY = #UROLKY#
+	</select>
+	
+ 	<update id="UR01WK_UPDATE" parameterClass="Map">
+		UPDATE ROLCT SET  
+		<isNotEmpty property="ACTVAT">
+			 ACTVAT = #ACTVAT#,
+		</isNotEmpty>
+		<isNotEmpty property="CREDOC">
+			 CREDOC = #CREDOC#,
+		</isNotEmpty>
+		<isNotEmpty property="INDBZL">
+			 INDBZL = #INDBZL#,
+		</isNotEmpty>
+		<isNotEmpty property="INDARC">
+			 INDARC = #INDARC#,
+		</isNotEmpty>
+		<isNotEmpty property="UPDCHK">
+			 UPDCHK = #UPDCHK#,
+		</isNotEmpty>
+		    LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE  
+			UROLKY = #UROLKY#
+			AND WAREKY = #WAREKY#
+	</update> 
+	
+	<delete id="UR01WK_DELETE" parameterClass="Map">
+		DELETE ROLCT 
+		WHERE  
+			UROLKY = #UROLKY#
+			AND WAREKY = #WAREKY#
+	</delete>
+	
+	<insert id="UR01WK_INSERT" parameterClass="Map">
+		INSERT
+			INTO   ROLCT 
+			(UROLKY, WAREKY,  ACTVAT,  INDBZL, INDARC, UPDCHK, CREDOC, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR)
+			VALUES (       
+						#UROLKY#,
+		                #WAREKY#,
+		                ISNULL(#ACTVAT#, ' '),
+		                ISNULL(#INDBZL#, ' '),
+		                ISNULL(#INDARC#, ' '),
+		                CAST(ISNULL(RTRIM(#UPDCHK#), 0) AS int),
+		                ISNULL(#CREDOC#, ' '),
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		                #SES_USER_ID#,
+		                CONVERT(CHAR(10),GETDATE(),112),
+	                    REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+		 			    #SES_USER_ID#
+		           )
+	</insert>
+
+	<select id="SQLKEYCnt_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*) CNT
+          FROM JQMAP
+		 WHERE SQLKEY = #SQLKEY#
+	</select>
+	
+	
+	<resultMap id="SQLKEY_SQLSTA" class="DataMap"> 
+		<result column="SQLKEY" property="SQLKEY" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="SQLTYP" property="SQLTYP" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="DBMSTY" property="DBMSTY" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="SQLSTA" property="SQLSTA" javaType="java.lang.String" jdbcType="CLOB" /> 
+		<result column="SQLDSC" property="SQLDSC" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="CREDAT" property="CREDAT" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="CRETIM" property="CRETIM" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="CREUSR" property="CREUSR" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="LMODAT" property="LMODAT" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="LMOTIM" property="LMOTIM" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+		<result column="LMOUSR" property="LMOUSR" javaType="java.lang.String" jdbcType="VARCHAR" /> 
+	</resultMap>
+	
+	<select id="YS01_MAP" parameterClass="Map" resultMap="SQLKEY_SQLSTA">
+		SELECT SQLKEY
+		     , SQLTYP
+		     , DBMSTY
+		     , SQLSTA
+		     , SQLDSC
+		     , CREDAT
+		     , CRETIM
+		     , CREUSR
+		     , LMODAT
+		     , LMOTIM
+		     , LMOUSR
+		  FROM JQMAP
+		 WHERE SQLKEY = #SQLKEY#
+	</select>
+	
+	<update id="JQMAPI_UPDATE" parameterClass="Map">
+		 INSERT INTO JQMAP
+		 (SQLKEY, SQLTYP, DBMSTY, SQLSTA, SQLDSC, CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL, INDARC, UPDCHK )
+		  VALUES 
+			(       
+				#SQLKEY#,
+                #SQLTYP#,
+                #DBMSTY#,
+                #SQLSTA#,
+                #SQLDSC#,
+                CONVERT(CHAR(10),GETDATE(),112),
+                REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+                #SES_USER_ID#,
+	            CONVERT(CHAR(10),GETDATE(),112),
+	            REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+ 			    #SES_USER_ID#,
+                ISNULL(#INDBZL#, ' '),
+                ISNULL(#INDARC#, ' '),
+			<isNotEmpty property="UPDCHK">		
+				CAST(ISNULL(TRIM(#UPDCHK#), 0) AS int)
+			</isNotEmpty>
+			<isEmpty property="UPDCHK">		
+				0
+			</isEmpty> 
+		     ) 
+	</update>
+	
+	
+	<update id="JQMAPU_UPDATE" parameterClass="Map">
+		UPDATE JQMAP
+		   SET LMODAT = CONVERT(CHAR(10),GETDATE(),112)
+		     , LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':','')
+		     , LMOUSR = #SES_USER_ID#
+		    <isNotEmpty property="SQLTYP">			
+			 , SQLTYP = #SQLTYP#
+			</isNotEmpty>
+			<isNotEmpty property="DBMSTY">			
+			 , DBMSTY = #DBMSTY#
+			</isNotEmpty> 
+			<isNotEmpty property="SQLSTA">			
+			 , SQLSTA = #SQLSTA#
+			</isNotEmpty>
+			<isNotEmpty property="SQLDSC">			
+			, SQLDSC = #SQLDSC#
+			</isNotEmpty>
+		WHERE 1 = 1 
+		  AND SQLKEY = #SQLKEY#
+	</update>
+	
+	<delete id="JQMAP_DELETE" parameterClass="Map">
+		DELETE JQMAP
+		WHERE 1 = 1
+		  AND SQLKEY = #SQLKEY#
+	</delete>
+	
+	<delete id="SHLPHAD_DELETE" parameterClass="Map">
+		DELETE SHLPH
+		WHERE 1 = 1
+		  AND SHLPKY = #SHLPKY#
+	</delete>
+	
+	<delete id="SHLPIAD_DELETE" parameterClass="Map">
+		DELETE SHLPI
+		WHERE 1 = 1
+		  AND SHLPKY = #SHLPKY#
+	</delete>
+	
+	<select id="DDICKYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT  COUNT(*) CNT
+		FROM	DFDIC
+		WHERE	1 = 1
+		AND		DDICKY = #DDICKY#
+	</select>
+		
+</sqlMap>

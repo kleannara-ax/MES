@@ -1,0 +1,4 @@
+grid 좌우 배치하는 경우 좌우 dragg 크기 변경 기능 추가
+ - content_body.css
+ - head-h.js
+ - grid2-2.jsp, grid2-3.jsp

@@ -1,0 +1,5 @@
+@import url(common.css);
+@import url(layout.css);
+@import url(template.css);
+@import url(contents.css);
+body{ min-width:auto;}

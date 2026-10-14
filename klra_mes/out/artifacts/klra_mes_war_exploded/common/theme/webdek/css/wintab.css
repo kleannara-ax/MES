@@ -1,0 +1,76 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "system_red.css"; /* color CSS */
+
+.content_top{position:relative;width:100%;height:32px;}
+
+/* .content_top{background: url(/common/theme/webdek/images/bg_full.png) no-repeat; background-position: -280px -80px;  background-size:calc(100% + 280px)} */
+.content_top.bigger{background-size:100%; background-position: 0 -100px;}
+
+.tab_style_wrap{position:absolute;left:28px;right:200px;overflow:hidden}
+.tab_style01:after{content:" ";display:block;height:0;clear:both}
+.tab_style01 li.selected{z-index:10;padding:0}
+.tab_style01 li{position:relative;float:left;height:30px;margin:5px 10px;}
+.tab_style01 li.selected .btn_refresh,
+.tab_style01 li:before{content:" ";position:absolute;left:-10px;top:0;width:10px;height:30px;border-radius:3px 0 0 3px;}
+.tab_style01 li:after{content:" ";position:absolute;z-index:10;right:-5px;top:0;width:5px;height:30px; border-radius:0 3px 3px 0;}
+
+/*2022.08.16 이범준, 안상현 적용
+.tab_style01 li a 
+width: 110px; -> min-width: 110px; 변경
+ 
+ 원본 : .tab_style01 li a{color:#b8bdc9; width: 110px; text-overflow: ellipsis; height: 30px;line-height:30px; white-space: nowrap; overflow: hidden;} 
+*/
+.tab_style01 li a{color:#b8bdc9; min-width: 110px; text-overflow: ellipsis; height: 30px;line-height:30px; white-space: nowrap; overflow: hidden;} /* width: 110px; */
+
+.tab_style01 li.selected a{color:#777; outline:none;}
+.tab_style01 li a{display:inline-block;font-size:12px;vertical-align:top}
+.tab_style01 li{background-color:#d5dade}
+
+.tab_style01 li, 
+.tab_style01 li:before, 
+.tab_style01 li:after{background-color: rgba(255,255,255,0.3); }
+
+.tab_style01 li.selected, 
+.tab_style01 li.selected:before, 
+.tab_style01 li.selected:after{background-color: rgba(255,255,255,0.7); }
+
+
+.btn{background:url("/common/theme/webdek/images/icon.png") no-repeat}
+.btn{display:inline-block;width:26px;height:24px;vertical-align:top}
+.btn span{display:inline-block;text-align:left;text-indent:-5000px;overflow:hidden}
+
+.btn_top{float:right;padding:4px 11px 0 15px}
+.btn-1{width:22px;height:22px;vertical-align:top;border-radius: 2px 0 0 2px}
+.btn-2{margin-left:-3px;width:22px;height:22px;vertical-align:top;border-radius: 0 2px 2px 0}
+.btn-3,
+.btn-4,
+.btn-5,
+.btn-6{margin-left:4px;width:22px;height:22px;vertical-align:top}
+.btn-3{margin-left:6px}
+.btn_fav_before{background:url("/common/theme/webdek/images/icon_fav_before.png") no-repeat 6px 2px;background-size: 17px auto; float: left; cursor: pointer;}
+.btn_fav_after{background:url("/common/theme/webdek/images/icon_fav_after.png") no-repeat 6px 2px;background-size: 17px auto; float: left; cursor: pointer;}
+
+/* top */
+.btn-1{background-position:0 -330px;background-color:#555b72}
+.btn-2{background-position:-24px -330px;background-color:#555b72}
+
+.btn-1:hover,
+.btn-2:hover{background-color:#4c78ea}
+
+.btn-3{background:url("/common/theme/webdek/images/refresh.png") no-repeat 2px 4px; background-size: 14px 16px;}
+.btn-4{background-position:-72px -330px}
+.btn-5{background-position:-96px -330px}
+.btn-6{background-position:-120px -330px}
+
+.btn_tab_del{position:relative;z-index:20;width:20px;height:100%;margin-right:-5px;vertical-align:middle;background:url("/common/theme/webdek/images/close.png") no-repeat center center; background-size:10px;}/* btn tab del */
+.btn_tab_del span{width:20px;height:22px}/* btn tab del */
+
+/* 이름 클릭시 나타나는 팝업 시작 */
+.content_top .usr_set {border-top: 1px solid #d9d9d9;padding: 10px 15px 12px 15px; z-index: 4; position: absolute; right: 170px; height: 29px; width: 150px; background-color: #ffffff; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9; border-bottom: 1px solid #d9d9d9;}
+.content_top .usr_set ul:first-of-type{border-bottom: 1px solid #d9d9d9; padding-bottom: 20px;}
+.content_top .usr_set ul li {line-height: 180%;}
+.content_top .usr_set ul li h3 {color: #a6a6a6; font-weight: bold; padding-bottom: 15px;}
+/* 이름 클릭시 나타나는 팝업 끝 */
+
+.btn_bigger{background:url("/common/theme/webdek/images/icon_wintab_bigger_navy.png") no-repeat center center;background-size: 15px auto; float: left; cursor: pointer; width: 20px; height: 20px; margin-top: 10px;margin-left: 5px;}

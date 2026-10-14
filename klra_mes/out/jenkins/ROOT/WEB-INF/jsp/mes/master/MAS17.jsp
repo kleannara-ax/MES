@@ -1,0 +1,191 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MES</title>
+<%@ include file="/common/include/webdek/head.jsp" %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		gridList.setGrid({
+	    	id : "gridList",
+			url : "/mes/Master/MAS17/json/datalist.data",
+			bigdata : false,
+			selectRowDeleteType : true
+	    });
+	});
+	
+	function searchList(){
+		if(validate.check("searchArea")){
+			var param = inputList.setRangeParam("searchArea");
+			
+			param.put("P_TYPE", "LIST");
+			
+			gridList.gridList({
+				id : "gridList",
+				param : param
+			});
+		}
+	}
+	
+	function searchHelpEventOpenBefore(searchCode, gridType, $inputObj, rowNum){
+		var param = new DataMap();
+		
+		if(searchCode == "OP" || searchCode == "STOP"){
+			if(gridType == false){
+				var werks = gridList.getColData("gridList", rowNum, "WERKS");
+				param.put("WERKS", werks);
+			}
+		}
+		return param;
+	}
+	
+	function saveData(){
+		if(gridList.getModifyRowCount("gridList") == 0 ){
+			commonUtil.msgBox("MASTER_M0545");
+			
+			return;
+		}
+		if(!commonUtil.msgConfirm(configData.MSG_MASTER_SAVE_CONFIRM)){
+			return;
+		}
+		if(gridList.validationCheck("gridList", "data")){
+			var list = gridList.getModifyList("gridList", "A");
+
+			var param = new DataMap();
+
+			param.put("P_TYPE","SAVE");
+			param.put("list", list);
+
+			var json = netUtil.sendData({
+				url : "/mes/Master/MAS17/json/datalist.data",
+				param : param
+			});
+			
+			if(json){
+				if(json.data){
+					searchList();
+				}
+			}
+			
+			
+		}
+	}
+	
+	function commonBtnClick(btnName){
+		if(btnName == "Search"){
+			var param = new DataMap();
+	        param.put("PROGID", "<%= menuId%>");
+	        param.put("LGTYPE", "SEARCH");
+	        var json = netUtil.sendData({
+	            url: "/mes/system/json/saveLog.data",
+	            param : param
+	        });
+			
+			searchList();
+		}else if(btnName == "Save"){
+			saveData();
+		}
+	}
+</script>
+</head>
+<body>
+<%@ include file="/common/include/webdek/layout.jsp" %>
+<!-- content -->
+<div class="content_wrap">
+	<div class="content_inner">
+		<%@ include file="/common/include/webdek/title.jsp" %>
+		<div class="content_serch" id="searchArea">
+			<div class="btn_wrap">
+				<div class="fl_l">
+				</div>
+				<div class="fl_r">
+					<input type="button" id="button-0-1" CB="Search SEARCH BTN_SEARCH" />
+					<input type="button" id="button-0-2" CB="Save SAVE BTN_SAVE" />
+				</div>
+			</div>
+			<div class="search_inner">
+				<div class="search_wrap ">
+					<dl>
+						<dt CL="STD_PLANT">플랜트</dt>
+						<dd>
+							<input type="text" id="WERKS" name="WERKS" validate="required" UIInput="SR,PLANT" UIFormat="U"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt CL="STD_PROC_CD">공정</dt>
+						<dd>
+							<input type="text" name="PROC_CD" UIInput="SR,OP" UIFormat="U"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt CL="STD_ABN_CD">비가동항목</dt>
+						<dd>
+							<input type="text" name="ABN_CD" UIInput="SR,STOP" UIFormat="U"/>
+						</dd>
+					</dl>
+					<dl>
+						<dt CL="STD_ABN_NM">비가동항목명</dt>
+						<dd>
+							<input type="text" class="input" name="ABN_NM" UIInput="SR"/>
+						</dd>
+					</dl>
+				</div>
+				<div class="btn_tab">
+					<input type="button" class="btn_more" value="more" onclick="searchMore()"/>
+				</div>
+			</div>
+		</div>
+        <div class="search_next_wrap">
+			<div class="content_layout tabs">
+				<ul class="tab tab_style02">
+					<li><a href="#tab1-1"><span CL="STD_GENERAL"></span></a></li>
+					<li class="btn_zoom_wrap">
+						<ul>
+							<!-- <li><button class="btn btn_smaller"><span>축소</span></button></li> -->
+							<li><button class="btn btn_bigger"><span>확대</span></button></li>
+						</ul>
+					</li>
+				</ul>
+				<div class="table_box section" id="tab1-1">
+					<div class="table_list01">
+						<div class="scroll">
+							<table class="table_c">
+								<tbody id="gridList">
+									<tr CGRow="true">
+										<td GH="40" GCol="rownum">1</td>
+										<td GH="40" GCol="rowCheck"></td>
+										<td GH="100" GCol="add,WERKS,PLANT" validate="required" style="text-align:center;">플랜트</td>
+										<td GH="100" GCol="add,PROC_CD,OP" validate="required" style="text-align:center;">공정코드</td>
+										<td GH="120" GCol="text,PROC_NM">공정명</td>
+										<td GH="100" GCol="add,ABN_CD,STOP" validate="required" style="text-align:center;">비가동항목코드</td>
+										<td GH="160" GCol="text,ABN_NM">비가동항목명</td>
+										<td GH="100" GCol="text,RUN_STA_NM">운전상태</td>
+										<td GH="120" GCol="select,USE_YN">
+											<select name="USE_YN" CommonCombo="USEYN">사용여부
+												<option value=""></option>
+											</select></td>
+										<td GH="140" GCol="text,REGDATE" style="text-align:center;">등록일시</td>
+										<td GH="100" GCol="text,REGNM">등록자</td>
+										<td GH="100" GCol="text,UPDDATE" style="text-align:center;">수정일시</td>
+										<td GH="100" GCol="text,UPDNM">수정자</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<jsp:include page="/WEB-INF/jsp/common/commonBtnAuth.jsp">
+						<jsp:param name="authCd" value="1" />
+						<jsp:param name="showAuthCd" value="1,2,3,4,5,6,9,10" />
+					</jsp:include>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- // content -->
+<%@ include file="/common/include/webdek/bottom.jsp" %>
+</body>
+</html>

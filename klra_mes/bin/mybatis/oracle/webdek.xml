@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="webdek">
+
+	<select id="PARTCOMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			'TEMP' AS VALUE_COL,
+		    'TEMP' AS TEXT_COL
+		FROM DUAL
+	</select>
+	
+	<select id="COMCOMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE COMMONID = #{CODE} 
+		ORDER BY SORTORDER
+	</select>
+	
+	<resultMap type="project.common.bean.BaseUser" id="UserMap">
+		<result property="userid" column="USERID"></result>
+		<result property="password" column="PASSWORD"></result>
+		<result property="username" column="USERNAME"></result>
+		<result property="compid" column="COMPID"></result>
+		<result property="deptid" column="DEPTID"></result>
+		<result property="menugid" column="MENUGID"></result>
+		<result property="rootgid" column="ROOTGID"></result>
+		<result property="logindate" column="LOGINDATE"></result>
+		<result property="logoutdate" column="LOGOUTDATE"></result>
+	</resultMap>
+	
+	<select id="LOGIN_OBJECT" parameterType="hashmap" resultMap="UserMap">
+		SELECT	
+			USERID,
+			PASSWORD,
+			USERNAME,
+			COMPID,
+			MENUGID,
+			ROOTGID,
+			DEPTID,
+			USERTYPE,
+			TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') AS LOGINDATE,
+			TO_CHAR(LOGOUTDATE, 'YYYYMMDDHH24MISS') AS LOGOUTDATE
+		FROM MSTUSER U
+		WHERE U.USERID = #{USERID}
+			AND U.PASSWORD = #{PASSWD}
+			AND U.DELETEYN != 'Y'
+	</select>
+	
+	<select id="USERCHECK_OBJECT" parameterType="hashmap" resultMap="UserMap">
+		SELECT	
+			USERID,
+			PASSWORD,
+			USERNAME,
+			COMPID,
+			MENUGID,
+			ROOTGID,
+			DEPTID,
+			USERTYPE,
+			TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') AS LOGINDATE,
+			TO_CHAR(LOGOUTDATE, 'YYYYMMDDHH24MISS') AS LOGOUTDATE
+		FROM MSTUSER U
+		WHERE U.USERID = #{USERID}
+			AND U.DELETEYN != 'Y'
+	</select>	
+	
+	<select id="PASSWORD_MAP"  parameterType="hashmap" resultType="DataMap">
+		SELECT 
+			 USERID 
+		 FROM MSTUSER 
+		 WHERE USERID = #{USERID} 
+		 AND PASSWORD = #{PASSWD}
+	</select>
+	
+	<update id="LOGOUT_UPDATE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			LOGOUTDATE = SYSDATE
+		 WHERE 
+			USERID = #{SES_USER_ID}
+	</update>
+	
+	<update id="LOGIN_UPDATE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			LOGINDATE = SYSDATE
+		  , FAILCNT = 0
+          , LOCKCHECK = ''
+		 WHERE 
+			USERID = #{USERID} 
+	</update>
+	
+    <update id="LOGIN_FAIL_UPDATE" parameterType="hashmap">
+        UPDATE MSTUSER SET 
+            UPDATEDATE = SYSDATE
+          , FAILCNT = NVL(FAILCNT,0) + 1
+         WHERE 
+            USERID = #{USERID} 
+    </update>
+    
+    <update id="LOGIN_LOCK_UPDATE" parameterType="hashmap">
+        UPDATE MSTUSER SET
+            UPDATEDATE = SYSDATE
+          , LOCKCHECK = 'Y'
+          , LOCK_DATE = SYSDATE
+          , FAILCNT = 0
+         WHERE 
+            USERID = #{USERID} 
+    </update>
+</mapper>

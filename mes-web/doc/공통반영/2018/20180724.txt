@@ -1,0 +1,2 @@
+theme.js
+ - GH 선언시 GCol이 check인 경우 head에 전체 체크되는 기능을  radio로 선언되는 경우 자동 생성 되지 않도록 변경

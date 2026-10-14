@@ -1,0 +1,3609 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Feb 23 09:49:03 KST 2022-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Erpif">
+
+<!-- IFWMSLOG 통신로그 -->
+<select id="IFWMSLOGSEQNO_MAP" parameterType="Map" resultType="DataMap">
+	SELECT 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS LOGSEQNO FROM DUAL FOR UPDATE
+</select>
+
+<select id="IFMA_MAP" parameterType="Map" resultType="DataMap">
+	SELECT * FROM TB_ITFMA WHERE IFID = #{IFID}
+</select>
+
+<update id="updateTableLog_UPDATE">
+	UPDATE ${TBL} SET SEND_YN = 'Y' WHERE NVL(SEND_YN, 'N') = 'N'
+	AND MDOCNO = #{MDOCNO}
+	AND MDOCSEQ = #{MDOCSEQ}
+</update>
+
+<update id="updateTableLog1_UPDATE">
+	UPDATE ${TBL} SET SEND_YN = 'Y' WHERE NVL(SEND_YN, 'N') = 'N'
+	AND DOC_NO = #{DOC_NO}
+	AND DOC_SEQNO = #{DOC_SEQNO}
+</update>
+
+<update id="IFMESTIME_UPDATE">
+	<if test='TYPE == "S"'>
+		UPDATE TB_ITFMA SET STARTDATE = SYSDATE,LASTDATE = null  WHERE IFID = #{IFID}
+	</if>
+	<if test='TYPE == "E"'>
+		UPDATE TB_ITFMA SET LASTDATE = SYSDATE  WHERE IFID = #{IFID}
+	</if>
+</update>
+<update id="IFMESFLG_UPDATE">
+	UPDATE TB_ITFMA SET LASTLOG = #{SEQNO} WHERE IFID = #{IFID}
+</update>
+
+<select id="IFMALOGCOUNT_MAP" resultType="DataMap">
+	SELECT COUNT(1)CNT FROM TB_ITFMAPLNT WHERE IFID = #{IFID} ORDER BY LOGID
+</select>
+<insert id="ITFRCVWMSLOG_INSERT">
+	INSERT INTO TB_ITFRCVWMSLOG(IFID,JSONDATA,LOGNO)
+	VALUES(#{IFID}, #{JSONDATA}, #{LOGNO})
+</insert>
+<update id="ITFRCVWMSLOG_UPDATE">
+	UPDATE TB_ITFRCVWMSLOG SET SAVEYN = 'Y'
+	WHERE LOGNO = #{LOGNO}
+</update>
+<insert id="IFMALOG_INSERT">
+	INSERT INTO TB_ITFMAPLNT(IFID,PLANT,LOGID)
+	VALUES(#{IFID}, #{PLANT}, #{LOGID})
+</insert>
+<update id="IFMACOUNT_UPDATE">
+	UPDATE TB_ITFMA SET LASTCNT = #{COUNT} WHERE IFID = #{IFID} AND LASTLOG = #{LOGNO}
+</update>
+<update id="IFMASUMCOUNT_UPDATE">
+	UPDATE TB_ITFMA SET LASTCNT = #{COUNT} WHERE IFID = #{IFID}
+</update>
+<update id="IFMACOUNTPLANT_UPDATE">
+	UPDATE TB_ITFMAPLNT SET CNT = #{COUNT} WHERE IFID = #{IFID} AND LOGID = #{LOGNO}
+</update>
+<select id="IFMACOUNTPLANTSUM_COUNT" resultType="Integer">
+	SELECT SUM(NVL(CNT,0))CNT FROM TB_ITFMAPLNT WHERE IFID = #{IFID}
+</select>
+<update id="IFMALOG_UPDATE">
+	UPDATE 	TB_ITFMAPLNT SET
+		LOGID = #{LOGID}
+	WHERE IFID = #{IFID}
+	  AND PLANT = #{PLANT}
+</update>
+
+<insert id="IFWMSLOG_INSERT" parameterType="Map">
+	<selectKey resultType="string" keyProperty="SEQNO" order="BEFORE">
+		SELECT #{SEQ_GB} || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) FROM DUAL FOR UPDATE
+	</selectKey>
+	INSERT INTO TB_ITFMESLOG
+	( SEQNO
+	, IFID
+	, COMSTAT
+	, ERRTXT
+	, CREDAT
+	, CRETIM
+	, CDATE
+	, CREUSR
+	, REMARK
+	)
+	SELECT #{SEQNO}
+	, #{IFID}
+	, NVL(#{COMSTAT},' ')
+	, #{ERRTXT}
+	, TO_CHAR(SYSDATE, 'YYYYMMDD')
+	, TO_CHAR(SYSDATE, 'HH24MISS')
+	, SYSDATE
+	, NVL(TRIM(#{SES_USER_ID}),#{IFID})
+	, #{REMARK}
+	FROM DUAL
+</insert>
+
+<insert id="IFWMSLOG_RESULT_INSERT" parameterType="Map">
+	INSERT INTO TB_ITFMESLOG
+	( SEQNO
+	, IFID
+	, COMSTAT
+	, CREDAT
+	, CRETIM
+	, CDATE
+	, CREUSR
+	, REMARK
+	)
+	SELECT #{SEQNO}
+		 , #{IFID}
+		 , NVL(#{COMSTAT},' ')
+		 , TO_CHAR(SYSDATE, 'YYYYMMDD')
+		 , TO_CHAR(SYSDATE, 'HH24MISS')
+		 , SYSDATE
+		 , NVL(TRIM(#{SES_USER_ID}),#{IFID})
+		 , #{REMARK}
+	FROM DUAL
+</insert>
+
+<update id="IFWMSLOG_UPDATE" parameterType="Map">
+	UPDATE TB_ITFMESLOG
+	SET COMSTAT = NVL(#{COMSTAT},' ')
+	  , ERRTXT  = SUBSTR(NVL(#{ERRTXT},' '),1,4000)
+	WHERE SEQNO = #{SEQNO}
+</update>
+
+<update id="IFWMSLOG_INERR_UPDATE" parameterType="Map">
+	UPDATE TB_ITFMESLOG
+	SET INERRAT  = 'E'
+	  , INERRTXT = SUBSTR(NVL(#{ERRTXT},' '),1,4000)
+	WHERE SEQNO = #{SEQNO}
+</update>
+
+<select id="IFWMSLOG_LIST" parameterType="Map" resultType="DataMap">
+    SELECT * FROM (
+	SELECT
+	A.*
+	,B.IFKNM
+	,B.IFTBL
+	,B.SYSFR
+	,B.SYSTO
+	, DECODE(NVL(A.REMARK,'') ,'','','Y') RESENDYN
+	, (SELECT CMCDVL || ' ' || CDESC1 FROM CMCDV WHERE CMCDKY = 'COMSTAT' AND CMCDVL = A.COMSTAT) AS COMSTATNM
+	FROM TB_ITFMESLOG A
+    	JOIN TB_ITFMA B ON A.IFID = B.IFID
+	WHERE 1=1
+	<if test="RANGE_SQL != null and RANGE_SQL != ' '.toString() and RANGE_SQL != ''.toString()">
+		${RANGE_SQL}
+	</if>
+	ORDER BY A.SEQNO DESC
+	)
+	WHERE 1 = 1
+	<if test="PAGESIZE!=null and PAGESIZE!='' and PAGESIZE != 'ALL'">
+		AND ROWNUM &lt;= ${PAGESIZE}
+	</if>
+</select>
+<update id="LOGTBL_UPDATE" parameterType="hashmap">
+	update ${IFTBL} set IF_MES_KEY = #{IF_MES_KEY}
+	    <if test="TYPE == '실적' and KEY !='MDOCNO' and KEY != 'MDOCSEQ'">
+			, ${KEY} = #{VAL}
+		</if>
+		<if test="TYPE == 'WMS' and KEY != 'DOC_NO' and KEY !='DOC_SEQNO'">
+			, ${KEY} = #{VAL}
+		</if>
+	WHERE IF_MES_KEY = #{IF_MES_KEY}
+	<if test="TYPE == '실적'">
+		/*AND AUFNR = {AUFNR}*/
+		AND MDOCNO = #{MDOCNO}
+		AND MDOCSEQ = #{MDOCSEQ}
+	</if>
+	<if test="TYPE == 'WMS'">
+		AND DOC_NO = #{DOC_NO}
+		AND DOC_SEQNO = #{DOC_SEQNO}
+	</if>
+</update>
+<select id="IFTLOGTBL_LIST" resultType="DataMap">
+	SELECT A.*
+	FROM ${IFTBL} A
+	WHERE 1 = 1
+	AND IF_MES_KEY = #{PLOGSEQNO}
+	<if test='ERRSAP!=null and ERRSAP!=""'>
+	AND ZRESULT = #{ERRSAP}
+	</if>
+	<if test='ERRWMS=null and ERRWMS!=""'>
+	AND IF_STATUS= #{ERRWMS}
+	</if>
+</select>
+<select id="IFWMSLOGDETAIL_LIST" parameterType="Map" resultType="DataMap">
+	<choose>
+		<when test="IFTBL == 'TB_IFR012' or IFTBL == 'TB_IFR023'">
+			SELECT A.*
+			FROM ${IFTBL} A
+			WHERE 1 = 1
+			  AND IF_MES_KEY = #{LOGSEQNO}
+			ORDER BY IF_DATE DESC,  NEXTHR_IF_SEQ DESC
+		</when>
+		<when test="IFTBL == 'PULPIN'">
+			SELECT A.*
+			FROM ${IFTBL} A
+			WHERE 1 = 1
+			AND IF_MES_KEY = #{LOGSEQNO}
+			ORDER BY IF_SEQ DESC
+		</when>
+		<when test='IFSWM == "Y"'>
+			SELECT A.*
+			FROM ${IFTBL} A
+			WHERE 1 = 1
+			/*AND IF_MES_KEY = {LOGSEQNO}*/
+		</when>
+		<otherwise>
+			SELECT A.*, IF_MES_KEY LOGSEQNO
+			FROM ${IFTBL} A
+			WHERE 1 = 1
+			AND IF_MES_KEY = #{LOGSEQNO}
+			/*ORDER BY IF_IFR_NO DESC*/
+		</otherwise>
+	</choose>
+</select>
+
+<select id="IFMAP_LIST" parameterType="Map" resultType="DataMap">
+	SELECT A.*,B.IFKNM, B.SYSFR,B.SYSTO
+	FROM TB_ITFFLDMAP A JOIN TB_ITFMA B ON A.IFID = B.IFID
+	WHERE 1=1 AND A.IFID = #{IFID}
+	ORDER BY A.ORD ASC
+</select>
+<delete id="IFMAP_DELETE" parameterType="Map">
+	DELETE FROM TB_ITFFLDMAP WHERE SEQNO = #{SEQNO}
+</delete>
+<update id="IFMAP_UPDATE" parameterType="Map">
+	UPDATE TB_ITFFLDMAP SET
+	        MESFLD = #{MESFLD}
+			, TARFLD = #{TARFLD}
+			, SLEN = #{SLEN}
+			, ORD = #{ORD}
+			, USEYN = NVL(#{USEYN}, 'Y')
+			, BIGDECYN = NVL(#{BIGDECYN}, 'N')
+			, MESFLDNM = #{MESFLDNM}
+			, TARFLDNM =#{TARFLDNM}
+			, DATELEN = #{DATELEN}
+			, DFVAL = #{DFVAL}
+	WHERE SEQNO = #{SEQNO}
+</update>
+<insert id="IFMAP_INSERT" parameterType="Map">
+	INSERT INTO TB_ITFFLDMAP  (
+	    IFID
+		 , MESFLD
+		 , TARFLD
+		 , SLEN
+		 , ORD
+		 , USEYN
+		 , BIGDECYN
+		 , MESFLDNM
+		 , TARFLDNM
+		 , DATELEN
+		 , DFVAL
+		 )
+	VALUES ( #{IFID}
+		   , #{MESFLD}
+		   , #{TARFLD}
+		   , #{SLEN}
+		   , #{ORD}
+		   , NVL(#{USEYN}, 'Y')
+		   , NVL(#{BIGDECYN}, 'N')
+		   , #{MESFLDNM}
+		   , #{TARFLDNM}
+		   , #{DATELEN}
+		   , #{DFVAL}
+		   )
+</insert>
+
+
+<select id="IFSENDDETAIL_LIST" parameterType="Map" resultType="DataMap">
+	<choose>
+	<when test='IFSWM == "Y"'>
+		SELECT A.*, IF_MES_KEY LOGSEQNO
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		AND IF_MES_KEY = #{LOGSEQNO}
+	</when>
+	<when test='IFSWM == "WCS"'>
+		SELECT A.*
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		AND IF_MES_KEY = #{LOGSEQNO}
+	</when>
+	<otherwise>
+		SELECT A.*
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		AND IF_MES_KEY = #{LOGSEQNO}
+		ORDER BY A.MAKE_DATE DESC
+	</otherwise>
+	</choose>
+</select>
+
+<!-- 인터페이스 COMBO -->
+<select id="IFTBLCOMBO_LIST" parameterType="Map" resultType="DataMap">
+	SELECT IFTBL AS VALUE_COL
+		 , IFTBL AS TEXT_COL
+	FROM TB_ITFMA
+	WHERE NVL(IFTBL,'') != ' '
+	ORDER BY IFTBL
+</select>
+<select id="IFCOMBO_LIST" parameterType="Map" resultType="DataMap">
+	SELECT IFID AS VALUE_COL
+	     , IFKNM AS TEXT_COL
+	  FROM TB_ITFMA
+	 ORDER BY SEQNO
+</select>
+<select id="IFGRPCD_LIST" resultType="DataMap">
+	SELECT
+		IF_GRP_CD AS VALUE_COL
+		, IF_GRP_NM AS TEXT_COL
+	FROM TB_ITFMAGRP
+	WHERE 1 = 1
+	ORDER BY PRORTY ASC
+</select>
+<select id="IFTABLE_LIST" parameterType="Map" resultType="DataMap">
+	SELECT CDESC1 AS VALUE_COL
+	     , CDESC2 AS TEXT_COL
+	  FROM CMCDV
+	 WHERE CMCDKY = 'IFTABLE'
+	 ORDER BY CMCDVL
+</select>
+<select id="IFSYSFR_LIST" parameterType="Map" resultType="DataMap">
+	SELECT DISTINCT
+	       SYSFR AS VALUE_COL
+	     , SYSFR AS TEXT_COL
+	  FROM TB_ITFMA
+	 ORDER BY SYSFR
+</select>
+<select id="IFSYSTO_LIST" parameterType="Map" resultType="DataMap">
+	SELECT DISTINCT
+	       SYSTO AS VALUE_COL
+	     , SYSTO AS TEXT_COL
+	  FROM TB_ITFMA
+	 ORDER BY SYSTO
+</select>
+
+<!-- RFC INFO -->
+<select id="RFCINFO_MAP" parameterType="Map" resultType="DataMap">
+	SELECT RFCFN
+	     , RFCTBL
+	     , RFCP1
+	     , RFCP2
+	  FROM TB_ITFMA
+	 WHERE IFID = #{IFID}
+</select>
+
+<select id="IP_MAP" resultType="DataMap">
+	SELECT COUNT(1) CNT FROM TB_ITFMASCHD WHERE ACCESS_IP = #{IP} AND USEYN = 'Y'
+</select>
+
+<!-- 인터페이스 배치목록 : 우선순위순 -->
+<select id="IF_LIST" parameterType="Map" resultType="DataMap">
+SELECT A.* FROM TB_ITFMA A
+	WHERE 1 = 1
+		AND A.IFID NOT IN ('MES_IF_206')
+	  	<if test="GRP_CD!=null and GRP_CD != ''">
+		AND A.GRP_CD = #{GRP_CD}
+		</if>
+	 ORDER BY A.PRORTY
+</select>
+
+<!-- 인터페이스 실행/중지 -->
+<update id="IF_UPDATE" parameterType="Map">
+	UPDATE TB_ITFMA SET IFSTAT = #{IFSTAT} WHERE IFID = #{IFID}
+</update>
+
+<!-- 인터페이스 저장 : 실행주기,시간,SAP정보 -->
+<update id="IFSTAT_UPDATE" parameterType="Map">
+	UPDATE TB_ITFMA SET POLLTY = #{POLLTY}, POLLTM = #{POLLTM}, PRORTY = #{PRORTY}
+	     , RFCFN = #{RFCFN}, RFCTBL = #{RFCTBL}, RFCP1 = #{RFCP1}, RFCP2 = #{RFCP2}
+		 , IFSTAT = #{IFSTAT}
+	     , COMTYP = #{COMTYP}
+		 , PROCNM= #{PROCNM}
+		 , PLANTYN= #{PLANTYN}
+		 , GRP_CD= #{GRP_CD}
+	 WHERE IFID = #{IFID}
+</update>
+
+<!-- 인터페이스 목록 -->
+<select id="ITFMA_LIST" parameterType="Map" resultType="DataMap">
+	SELECT
+	  	A.*
+		, DECODE(A.FIN_CD,'R','실행중','E','종료', A.FIN_CD) FIN_NM
+		, FN_CD_VAL('IFSTAT', A.IFSTAT) AS IFSTATNM
+		, B.CNT AS NCNT
+	FROM TB_ITFMA A
+	LEFT JOIN TB_ITFMAGRP C ON A.GRP_CD = C.IF_GRP_CD
+	LEFT JOIN (
+	SELECT 'TB_IFS014' AS TBL, COUNT(1) AS CNT FROM TB_IFS014 WHERE NVL(ZRESULT,'N') IN ('N')  UNION ALL
+	SELECT 'TB_IFS019' AS TBL, COUNT(1) AS CNT FROM TB_IFS019 WHERE NVL(ZRESULT,'N') IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM001' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM001 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM001' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM001 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM002' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM002 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM002' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM002 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM003' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM003 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM003' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM003 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM004' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM004 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM004' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM004 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM005' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM005 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM006' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM006 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM007' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM007 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM006' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM006 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFSWM007' AS TBL, COUNT(1) AS CNT FROM TB_IFSWM007 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFRWM008' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM008 WHERE IF_STATUS IN ('N')  UNION ALL
+	/*     SELECT 'TB_IFRWM009' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM009 WHERE IF_STATUS IN ('N')  UNION ALL*/
+	SELECT 'TB_IFRWM005' AS TBL, COUNT(1) AS CNT FROM TB_IFRWM005 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFS022' AS TBL, COUNT(1) AS CNT FROM TB_IFS022 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS023' AS TBL, COUNT(1) AS CNT FROM TB_IFS023 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFR001' AS TBL, COUNT(1) AS CNT FROM TB_IFR001 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR002' AS TBL, COUNT(1) AS CNT FROM TB_IFR002 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR003' AS TBL, COUNT(1) AS CNT FROM TB_IFR003 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR005' AS TBL, COUNT(1) AS CNT FROM TB_IFR005 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR006' AS TBL, COUNT(1) AS CNT FROM TB_IFR006 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR007' AS TBL, COUNT(1) AS CNT FROM TB_IFR007 WHERE IF_STATUS IN ('N')  UNION ALL
+	/*     SELECT 'TB_IFR012' AS TBL, COUNT(1) AS CNT FROM TB_IFR012 WHERE RECV_FLAG = ('S') UNION ALL*/
+	/*     SELECT 'TB_IFR023' AS TBL, COUNT(1) AS CNT FROM TB_IFR023 WHERE RECV_FLAG IN ('S') UNION ALL*/
+	SELECT 'TB_IFR008' AS TBL, COUNT(1) AS CNT FROM TB_IFR008 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR009' AS TBL, COUNT(1) AS CNT FROM TB_IFR009 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR010' AS TBL, COUNT(1) AS CNT FROM TB_IFR010 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR011' AS TBL, COUNT(1) AS CNT FROM TB_IFR011 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR014' AS TBL, COUNT(1) AS CNT FROM TB_IFR014 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR015' AS TBL, COUNT(1) AS CNT FROM TB_IFR015 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR016' AS TBL, COUNT(1) AS CNT FROM TB_IFR016 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR017' AS TBL, COUNT(1) AS CNT FROM TB_IFR017 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR018' AS TBL, COUNT(1) AS CNT FROM TB_IFR018 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR019' AS TBL, COUNT(1) AS CNT FROM TB_IFR019 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR020' AS TBL, COUNT(1) AS CNT FROM TB_IFR020 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR021' AS TBL, COUNT(1) AS CNT FROM TB_IFR021 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFR022' AS TBL, COUNT(1) AS CNT FROM TB_IFR022 WHERE IF_STATUS IN ('N')  UNION ALL
+    SELECT 'TB_LAMI_PC_IFR015' AS TBL, COUNT(1) AS CNT FROM TB_LAMI_PC_IFR015 WHERE IF_STATUS IN ('N')  UNION ALL
+    SELECT 'TB_LAMI_SL_IFR016' AS TBL, COUNT(1) AS CNT FROM TB_LAMI_SL_IFR016 WHERE IF_STATUS IN ('N')  UNION ALL
+	SELECT 'TB_IFS001' AS TBL, COUNT(1) AS CNT FROM TB_IFS001 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS002' AS TBL, COUNT(1) AS CNT FROM TB_IFS002 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS003' AS TBL, COUNT(1) AS CNT FROM TB_IFS003 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS004' AS TBL, COUNT(1) AS CNT FROM TB_IFS004 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS005' AS TBL, COUNT(1) AS CNT FROM TB_IFS005 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS006' AS TBL, COUNT(1) AS CNT FROM TB_IFS006 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS007' AS TBL, COUNT(1) AS CNT FROM TB_IFS007 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS008' AS TBL, COUNT(1) AS CNT FROM TB_IFS008 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS009' AS TBL, COUNT(1) AS CNT FROM TB_IFS009 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS010' AS TBL, COUNT(1) AS CNT FROM TB_IFS010 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS011' AS TBL, COUNT(1) AS CNT FROM TB_IFS011 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS012' AS TBL, COUNT(1) AS CNT FROM TB_IFS012 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS015' AS TBL, COUNT(1) AS CNT FROM TB_IFS015 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS013' AS TBL, COUNT(1) AS CNT FROM TB_IFS013 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS017' AS TBL, COUNT(1) AS CNT FROM TB_IFS017 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS018' AS TBL, COUNT(1) AS CNT FROM TB_IFS018 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS021' AS TBL, COUNT(1) AS CNT FROM TB_IFS021 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS020' AS TBL, COUNT(1) AS CNT FROM TB_IFS020 WHERE ZRESULT IN ('N')  UNION ALL
+	SELECT 'TB_IFS016' AS TBL, COUNT(1) AS CNT FROM TB_IFS016 WHERE ZRESULT IN ('N')
+	/*     SELECT 'PULPIN' AS TBL, COUNT(1) AS CNT FROM PULPIN WHERE IF_STATUS IN ('N')*/
+	)B ON A.IFTBL = B.TBL
+	WHERE 1=1
+		AND A.IFID NOT IN ('MES_IF_206')
+	<if test="RANGE_SQL != null and RANGE_SQL != ' '.toString()">
+		${RANGE_SQL}
+	</if>
+	ORDER BY A.IFID, NVL(C.PRORTY,9999) , NVL(A.PRORTY,9999)
+</select>
+
+<select id="IFDETAIL_LIST" parameterType="Map" resultType="DataMap">
+	SELECT *
+	  FROM ${IFTBL}
+	 WHERE TO_CHAR(IF_GET_DATE,'YYYYMMDD') = #{LASTDAT}
+		/* AND ROWNUM &lt; 1000 */
+	 ORDER BY IF_IFR_NO DESC
+</select>
+
+<!-- 수신데이터 조회이전 금일 MAX SEQNO -->
+<select id="IFRCVMAXPREVSEQ_MAP" parameterType="Map" resultType="DataMap">
+	<choose>
+		<when test="IFTBL == 'TB_IFR050'">
+			SELECT NVL(MAX(IF_RCV_MES_KEY), 1) AS LOGSEQNO
+			  FROM ${IFTBL}
+			 WHERE 1 = 1
+			   /* TO_CHAR(IF_GET_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD') */
+			   /*AND WERKS = NVL({OWNRKY}, 'KN')*/
+			   /*AND IF_MES_ID = {IFID}*/
+		</when>
+		<otherwise>
+			SELECT MAX(IF_MES_KEY) AS LOGSEQNO
+			  FROM ${IFTBL}
+			 WHERE 1 = 1
+			   /* TO_CHAR(IF_GET_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD') */
+			   /*AND WERKS = NVL({OWNRKY}, 'KN')*/
+			   /*AND IF_MES_ID = {IFID}*/
+		</otherwise>
+	</choose>
+	
+</select>
+
+<!-- 수신데이터 조회 -->
+<select id="IFRECEIVE_LIST" parameterType="Map" resultType="DataMap">
+	<choose>
+	 <when test="IFTBL == 'TB_IFR012' or IFTBL == 'TB_IFR023'">
+	SELECT A.*
+		 FROM ${IFTBL} A
+		 WHERE 1 = 1
+		ORDER BY IF_DATE DESC,  NEXTHR_IF_SEQ DESC
+	 </when>
+	<when test="IFTBL == 'TB_IFRWC001'">
+		SELECT A.*
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		ORDER BY IF_SEQ DESC
+	</when>
+	<when test="IFTBL == 'PULPIN'">
+		SELECT A.*
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		ORDER BY IF_SEQ DESC
+	</when>
+	<otherwise>
+		SELECT A.* , IF_MES_KEY LOGSEQNO
+		FROM ${IFTBL} A
+		WHERE 1 = 1
+		/*AND TO_CHAR(IF_GET_DATE,'YYYYMMDD') = TO_CHAR(SYSDATE, 'YYYYMMDD')*/
+		/*AND WERKS = NVL({OWNRKY}, 'KN')*/
+		/*AND IFID = {IFID}*/
+		  AND IF_MES_KEY > NVL(#{PLOGSEQNO}, 0)
+		    <!-- /*
+			OR IF_MES_KEY IN (
+			SELECT LOGID FROM TB_ITFMAPLNT WHERE IFID = {IFID}
+			)
+		    */
+
+			OR IF_MES_KEY IN (
+				SELECT LOGID FROM TB_ITFMAPLNT WHERE IFID = (
+					select IFID FROM TB_ITFMAPLNT WHERE  LOGID = #{PREVSEQNO}
+				)
+			) -->
+		ORDER BY IF_IFR_NO DESC
+	</otherwise>
+	</choose>
+</select>
+
+
+
+<resultMap id="IFWMS001" type="DataMap"></resultMap>
+<select id="SP_MAS_GET_IFR_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+	{
+		CALL SP_MAS_GET_IFR(
+			#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+			#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+		)
+		}
+</select>
+	<select id="SP_SCH_GET_IFR_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000"> 
+		{
+			CALL SP_SCH_GET_IFR(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+			)
+		}
+	</select>
+	
+	   <select id="SP_SCH_GET_IFR_LAMI_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000"> 
+        {
+            CALL SP_SCH_GET_IFR_LAMI(
+                #{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+                #{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+            )
+        }
+    </select>
+    
+    <select id="SP_SCH_GET_IFR_SL_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000"> 
+        {
+            CALL SP_SCH_GET_IFR_SL(
+                #{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+                #{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+            )
+        }
+    </select>
+
+	<select id="INTERFACE_MAP" parameterType="hashmap" statementType="CALLABLE" timeout="2000">
+		{
+			CALL SP_MAS_GET_IFR(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String },
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String }
+			)
+			}
+	</select>
+
+
+	<insert id="MES_IF_101_MULTI_INSERT" parameterType="hashmap">
+			insert into TB_IFR001 (
+			MATNR
+			,WERKS
+			,MAKTX
+			,MAKTG
+			,GROES
+			,MTART
+			,MTBEZ
+			,MATKL
+			,WGBEZ
+			,SPART
+			,VTEXT
+			,MEINS
+			,BSTME
+			,AUSME
+			,FRTME
+			,LGFSB
+			,LGPRO
+			,BESKZ
+			,XCHAR
+			,BISMT
+			,MMSTA
+			,MMSTATXT
+			,PRDHA
+			,SOBSL
+			,MSTAE
+			,MSTAETXT
+			,BSTMI
+			,BSTMA
+			,BSTFE
+			,EISBE
+			,DISLS
+			,MATTYPE
+			,MATTPTXT
+			,DIVISION
+			,DVTXT
+			,PCODE
+			,PCODETXT
+			,WEIGHT
+			,TSPEED
+			,INSP_MATNR
+			,KZAUS
+			,MSTDE
+			,BRAND_ID
+			,BRAND_DESCR
+			,LVORM
+			,STRGR
+			,IF_STATUS
+			,IF_GET_DATE
+			,IF_SET_DATE
+			,IF_ERR_MESS
+			,IF_MES_ID
+			,IF_MES_KEY
+			,ZQRTAYN
+			,MHDHB
+			,EAN11
+			,WLEN
+			,VLEN
+			,MTYPE
+			)
+			<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+				SELECT
+				NVL(#{i.MATNR},'-') as MATNR
+				,NVL(#{i.WERKS},'-') as WERKS
+				,#{i.MAKTX} as MAKTX
+				,#{i.MAKTG} as MAKTG
+				,#{i.GROES} as GROES
+				,#{i.MTART} as MTART
+				,#{i.MTBEZ} as MTBEZ
+				,#{i.MATKL} as MATKL
+				,#{i.WGBEZ} as WGBEZ
+				,#{i.SPART} as SPART
+				,#{i.VTEXT} as VTEXT
+				,#{i.MEINS} as MEINS
+				,#{i.BSTME} as BSTME
+				,#{i.AUSME} as AUSME
+				,#{i.FRTME} as FRTME
+				,#{i.LGFSB} as LGFSB
+				,#{i.LGPRO} as LGPRO
+				,#{i.BESKZ} as BESKZ
+				,#{i.XCHAR} as XCHAR
+				,#{i.BISMT} as BISMT
+				,#{i.MMSTA} as MMSTA
+				,#{i.MMSTATXT} as MMSTATXT
+				,#{i.PRDHA} as PRDHA
+				,#{i.SOBSL} as SOBSL
+				,#{i.MSTAE} as MSTAE
+				,#{i.MSTAETXT} as MSTAETXT
+				,#{i.BSTMI} as BSTMI
+				,#{i.BSTMA} as BSTMA
+				,#{i.BSTFE} as BSTFE
+				,#{i.EISBE} as EISBE
+				,#{i.DISLS} as DISLS
+				,#{i.MATTYPE} as MATTYPE
+				,#{i.MATTPTXT} as MATTPTXT
+				,#{i.DIVISION} as DIVISION
+				,#{i.DVTXT} as DVTXT
+				,#{i.PCODE} as PCODE
+				,#{i.PCODETXT} as PCODETXT
+				,#{i.WEIGHT} as WEIGHT
+				,#{i.TSPEED} as TSPEED
+				,#{i.INSP_MATNR} as INSP_MATNR
+				,#{i.KZAUS} as KZAUS
+				,TO_CHAR(#{i.MSTDE},'YYYYMMDD') as MSTDE
+				,#{i.BRAND_ID} as BRAND_ID
+				,#{i.BRAND_DESCR} as BRAND_DESCR
+				,#{i.LVORM} as LVORM
+				,#{i.STRGR} as STRGR
+				,'N' as IF_STATUS
+				,SYSDATE as IF_GET_DATE
+				,null as IF_SET_DATE
+				,null as IF_ERR_MESS
+				,#{i.IF_MES_ID} as IF_MES_ID
+				,#{i.IF_MES_KEY} as IF_MES_KEY
+				,#{i.ZQRTAYN} as ZQRTAYN
+				,#{i.MHDHB} as MHDHB
+				,#{i.EAN11} as EAN11
+				,#{i.WLEN} as WLEN
+				,#{i.VLEN} as VLEN
+				,#{i.MTYPE} as MTYPE
+				from DUAL
+			</foreach>
+	</insert>
+
+
+	<insert id="MES_IF_102_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR002 (
+		WERKS
+		, NAME1
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.WERKS},'-') as WERKS
+			, NVL(#{i.NAME1},'-') as NAME1
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, null as IF_SET_DATE
+			, null as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_103_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR003 (
+		WERKS
+		, LGORT
+		, LGOBE
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.WERKS},'-') as WERKS
+			, NVL(#{i.LGORT},'-') as LGORT
+			, NVL(#{i.LGOBE},'-') as LGOBE
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, null as IF_SET_DATE
+			, null as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_105_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR005 (
+		MATNR
+		, MSEHI
+		, UMREZ
+		, UMREN
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.MATNR},'-') as MATNR
+			, NVL(#{i.MEINH},'-') as MSEHI
+			, NVL(#{i.UMREZ},0) as UMREZ
+			, NVL(#{i.UMREN},0) as UMREN
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, null as IF_SET_DATE
+			, null as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+
+	<insert id="MES_IF_106_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR006 (
+		WERKS
+		, ARBPL
+		, KTEXT
+		, LVORM
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.WERKS},'-') as WERKS
+			, NVL(#{i.ARBPL},'-') as ARBPL
+			, NVL(#{i.KTEXT},'-') as KTEXT
+			, NVL(#{i.LVORM},'-') as LVORM
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+
+	<insert id="MES_IF_107_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR007 (
+		MATNR
+		, WERKS
+		, VERID
+		, TEXT1
+		, STLAN
+		, STLAL
+		, LVORM
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+		SELECT
+			NVL(#{i.MATNR},'-') as MATNR
+			, NVL(#{i.WERKS},'-') as WERKS
+			, NVL(#{i.VERID},'-') as VERID
+			, NVL(#{i.TEXT1},'-') as TEXT1
+			, NVL(#{i.STLAN},'-') as STLAN
+			, NVL(#{i.STLAL},'-') as STLAL
+			, NVL(#{i.LVORM},'-') as LVORM
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+		FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_110_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR008 (
+		WERKS
+		, MATNR
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, POSNR
+		, IDNRK
+		, MENGE
+		, MEINS
+		, AUSCH
+		, ITSOB
+		, LKENZ
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.WERKS}, '-') as WERKS
+			, NVL(#{i.MATNR}, '-') as MATNR
+			, NVL(#{i.STLNR}, '-') as STLNR
+			, NVL(#{i.STLAL}, '-') as STLAL
+			, NVL(#{i.BMENG}, '0') as BMENG
+			, #{i.BMEIN} as BMEIN
+			, NVL(#{i.POSNR}, '-') as POSNR
+			, NVL(#{i.IDNRK}, '-') as IDNRK
+			, NVL(#{i.MENGE}, '0') as MENGE
+			, #{i.MEINS} as MEINS
+			, #{i.AUSCH} as AUSCH
+			, #{i.ITSOB} as ITSOB
+			, #{i.LKENZ} as LKENZ
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_111_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR009 (
+			KUNWE
+			, KUNWET
+			, PSTLZ
+			, LAND1
+			, TELF1
+			, TELF2
+			, TELFX
+			, SMTP_ADDR
+			, STCD2
+			, J_1KFREPRE
+			, ORT01
+			, STRAS
+			, KUNNR
+			, KUNNRT
+			, KUNZP
+			, KUNZPT
+			, TELFZP
+			, J_1KFTIND
+			, J_1KFTBUS
+			, LOEVM
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				NVL(#{i.KUNWE}, '-') AS KUNWE
+				, NVL(#{i.KUNWET}, '-') AS KUNWET
+				, NVL(#{i.PSTLZ}, '-') AS PSTLZ
+				, NVL(#{i.LAND1}, '-') AS LAND1
+				, NVL(#{i.TELF1}, '-') AS TELF1
+				, NVL(#{i.TELF2}, '-') AS TELF2
+				, NVL(#{i.TELFX}, '-') AS TELFX
+				, NVL(#{i.SMTP_ADDR}, '-') AS SMTP_ADDR
+				, NVL(#{i.STCD2}, '-') AS STCD2
+				, NVL(#{i.J_1KFREPRE}, '-') AS J_1KFREPRE
+				, NVL(#{i.ORT01}, '-') AS ORT01
+				, NVL(#{i.STRAS}, '-') AS STRAS
+				, NVL(#{i.KUNNR}, '-') AS KUNNR
+				, NVL(#{i.KUNNRT}, '-') AS KUNNRT
+				, NVL(#{i.KUNZP}, '-') AS KUNZP
+				, NVL(#{i.KUNZPT}, '-') AS KUNZPT
+				, NVL(#{i.TELFZP}, '-') AS TELFZP
+				, NVL(#{i.J_1KFTIND}, '-') AS J_1KFTIND
+				, NVL(#{i.J_1KFTBUS}, '-') AS J_1KFTBUS
+				, NVL(#{i.LOEVM}, '-') AS LOEVM
+				, 'N' as IF_STATUS
+				, SYSDATE as IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_112_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR010 (
+		ZCODE
+		, NAME1
+		, PSTLZ
+		, LAND1
+		, TELF1
+		, TELF2
+		, TELFX
+		, SMTP_ADDR
+		, STCD2
+		, J_1KFREPRE
+		, ADDR1
+		, ADDR2
+		, CNAME
+		, CPHON
+		, PTNG01
+		, PTNL01
+		, PTNL03
+		, PTNL04
+		, LOEVM
+		, REGIO
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.LIFNR},'-') AS ZCODE
+			, NVL(#{i.NAME1},'-') AS NAME1
+			, NVL(#{i.PSTLZ},'-') AS PSTLZ
+			, NVL(#{i.LAND1},'-') AS LAND1
+			, NVL(#{i.TELF1},'-') AS TELF1
+			, NVL(#{i.TELF2},'-') AS TELF2
+			, NVL(#{i.TELFX},'-') AS TELFX
+			, '-' AS SMTP_ADDR
+			, NVL(#{i.STCD2},'-') AS STCD2
+			, NVL(#{i.J_1KFREPRE},'-') AS J_1KFREPRE
+			, NVL(#{i.ORT01},'-') AS ADDR1
+			, NVL(#{i.STRAS},'-') AS ADDR2
+			, '-' AS CNAME
+			, '-' AS CPHON
+			, '-' AS PTNG01
+			, '-' AS PTNL01
+			, '-' AS PTNL03
+			, NVL(#{i.J_1KFTBUS},'-') AS PTNL04
+			, NVL(#{i.LOEVM},'-') AS LOEVM
+			, NVL(#{i.REGIO},'-') AS REGIO
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_113_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR011 (
+		WERKS
+		, YYMM
+		, YMCHK
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.WERKS}, '-') as WERKS
+			, NVL(CONCAT(#{i.LFGJA},#{i.LFMON}), '-') as YYMM
+			, NVL(#{i.YMCHK}, '-') as YMCHK
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="MES_IF_114_MULTI_INSERT" parameterType="hashmap">
+		INSERT /*+ APPEND PARALLEL(TB_IFR014, 4) */ INTO TB_IFR014 (
+		AUFNR
+		, POSNR
+		, MATNR
+		, BDMNG
+		, MEINS
+		, CHARG
+		, LGORT
+		, XLOEK
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT /*+ NO_MERGE */
+			NVL(#{i.AUFNR}, '-') as AUFNR
+			, NVL(#{i.POSNR}, '-') as POSNR
+			, #{i.MATNR} as MATNR
+			, #{i.BDMNG} as BDMNG
+			, #{i.MEINS} as MEINS
+			, #{i.CHARG} as CHARG
+			, #{i.LGORT} as LGORT
+			, #{i.XLOEK} as XLOEK
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+    <insert id="MES_IF_971_MULTI_INSERT" parameterType="hashmap">
+        INSERT INTO TB_LAMI_PC_IFR015 (
+        AUFNR
+        , WERKS
+        , GSTRP
+        , GLTRP
+        , AUART
+        , AUARTXT
+        , MATNR
+        , FQTY
+        , MEINS
+        , ARBPL
+        , AENAM
+        , PRCMC
+        , PRCMCTXT
+        , MACHINE
+        , MACHINETXT
+        , STLNR
+        , STLAL
+        , BMENG
+        , BMEIN
+        , FTRMI
+        , VBELN
+        , POSNR
+        , SPEC1
+        , WDTH1
+        , PUPOS
+        , PUPNM
+        , LMNGA
+        , MEINS2
+        , BUDAT
+        , REMRK
+        , DLFL
+        , REM
+        , IF_STATUS
+        , IF_GET_DATE
+        , IF_SET_DATE
+        , IF_ERR_MESS
+        , IF_MES_ID
+        , IF_MES_KEY
+        , SEQ
+        , OPTYPE
+        )
+        <foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+        SELECT
+            NVL(#{i.AUFNR}, '-') AS AUFNR
+            , #{i.WERKS} AS WERKS
+            , TO_CHAR(#{i.PRDDT}, 'YYYYMMDD') AS GSTRP
+            , TO_CHAR(#{i.PRDDT}, 'YYYYMMDD') AS GLTRP
+            , #{i.AUART} AS AUART
+            , #{i.AUARTXT} AS AUARTXT
+            , #{i.MATNR} As MATNR
+            , #{i.FQTY} AS FQTY
+            , #{i.MEINS} AS MEINS
+            , #{i.ARBPL} AS ARBPL
+            , #{i.AENAM} AS AENAM
+            , #{i.PRCMC} AS PRCMC
+            , #{i.PRCMCTXT} AS PRCMCTXT
+            , #{i.MACHINE} AS MACHINE
+            , #{i.MACHINETXT} AS MACHINETXT
+            , #{i.STLNR} AS STLNR
+            , #{i.STLAL} AS STLAL
+            , #{i.BMENG} AS BMENG
+            , #{i.BMEIN} AS BMEIN
+            , TO_CHAR(#{i.FTRMI},'YYYYMMDD') AS FTRMI
+            , #{i.VBELN} AS VBELN
+            , #{i.POSNR} AS POSNR
+            , #{i.SPEC1} AS SPEC1
+            , #{i.WDTH1} AS WDTH1
+            , #{i.PUPOS} AS PUPOS
+            , #{i.PUPNM} AS PUPNM
+            , #{i.LMNGA} AS LMNGA
+            , #{i.MEINS2} AS MEINS2
+            , TO_CHAR(#{i.PRDDT},'YYYYMMDD') AS BUDAT
+            , #{i.REMRK} AS REMRK
+            , NVL(#{i.DLFL},'N') AS DLFL
+            , #{i.REM} AS REM
+            , 'N' as IF_STATUS
+            , SYSDATE as IF_GET_DATE
+            , NULL as IF_SET_DATE
+            , NULL as IF_ERR_MESS
+            , #{i.IF_MES_ID} as IF_MES_ID
+            , #{i.IF_MES_KEY} as IF_MES_KEY
+            , #{i.SEQ} AS SEQ
+            , 'L' AS OPTYPE
+            FROM DUAL
+        </foreach>
+    </insert>
+    <insert id="MES_IF_973_MULTI_INSERT" parameterType="hashmap">
+        INSERT INTO TB_LAMI_SL_IFR016 (
+        AUFNR
+        , WERKS
+        , PRDDT
+        , AUART
+        , AUARTXT
+        , MATNR
+        , FQTY
+        , MEINS
+        , ARBPL
+        , AENAM
+        , PRCMC
+        , STLNR
+        , STLAL
+        , BMENG
+        , BMEIN
+        , FTRMI
+        , SEQ
+        , DLFL
+        , IF_STATUS
+        , IF_GET_DATE
+        , IF_SET_DATE
+        , IF_ERR_MESS
+        , IF_MES_ID
+        , IF_MES_KEY
+        , REMRK
+        )
+        <foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+            SELECT
+            NVL(#{i.AUFNR}, '-') AS AUFNR
+            , NVL(#{i.WERKS}, '-') AS WERKS
+            , TO_CHAR(#{i.PRDDT}, 'YYYYMMDD') AS PRDDT
+            , NVL(#{i.AUART} ,'-') AS AUART
+            , NVL(#{i.AUARTTXT},'-') AS AUARTXT
+            , NVL(#{i.MATNR},'-') AS MATNR
+            , NVL(#{i.FQTY},0.000) AS FQTY
+            , NVL(#{i.MEINS},'-') AS MEINS
+            , NVL(#{i.ARBPL},'-') AS ARBPL
+            , NVL(#{i.AENAM},'-') AS AENAM
+            , NVL(#{i.PRCMC},'-') AS PRCMC
+            , NVL(#{i.STLNR},'-') AS STLNR
+            , NVL(#{i.STLAL},'-') AS STLAL
+            , NVL(#{i.BMENG},0.000) AS BMENG
+            , NVL(#{i.BMEIN},'-') AS BMEIN
+            , TO_CHAR(#{i.FTRMI}, 'YYYYMMDD') AS FTRMI
+            , NVL(#{i.SEQ},'-') AS SEQ
+            , NVL(#{i.DLFL},'N') AS DLFL
+            , 'N' as IF_STATUS
+            , SYSDATE as IF_GET_DATE
+            , NULL as IF_SET_DATE
+            , NULL as IF_ERR_MESS
+            , #{i.IF_MES_ID} as IF_MES_ID
+            , #{i.IF_MES_KEY} as IF_MES_KEY
+            , #{i.REMRK} AS REMRK
+            FROM DUAL
+        </foreach>
+    </insert>
+	<insert id="MES_IF_115_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR015 (
+		AUFNR
+		, WERKS
+		, GSTRP
+		, GLTRP
+		, AUART
+		, AUARTXT
+		, MATNR
+		, FQTY
+		, MEINS
+		, ARBPL
+		, AENAM
+		, PRCMC
+		, PRCMCTXT
+		, MACHINE
+		, MACHINETXT
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, FTRMI
+		, VBELN
+		, POSNR
+		, SPEC1
+		, WDTH1
+		, PUPOS
+		, PUPNM
+		, LMNGA
+		, MEINS2
+		, BUDAT
+		, REMRK
+		, DLFL
+		, REM
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, SEQ
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+		SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, #{i.WERKS} AS WERKS
+			, TO_CHAR(#{i.PRDDT}, 'YYYYMMDD') AS GSTRP
+			, TO_CHAR(#{i.GLTRP}, 'YYYYMMDD') AS GLTRP
+			, #{i.AUART} AS AUART
+			, #{i.AUARTXT} AS AUARTXT
+			, #{i.MATNR} As MATNR
+			, #{i.FQTY} AS FQTY
+			, #{i.MEINS} AS MEINS
+			, #{i.ARBPL} AS ARBPL
+			, #{i.AENAM} AS AENAM
+			, #{i.PRCMC} AS PRCMC
+			, #{i.PRCMCTXT} AS PRCMCTXT
+			, #{i.MACHINE} AS MACHINE
+			, #{i.MACHINETXT} AS MACHINETXT
+			, #{i.STLNR} AS STLNR
+			, #{i.STLAL} AS STLAL
+			, #{i.BMENG} AS BMENG
+			, #{i.BMEIN} AS BMEIN
+			, TO_CHAR(#{i.FTRMI},'YYYYMMDD') AS FTRMI
+			, #{i.VBELN} AS VBELN
+			, #{i.POSNR} AS POSNR
+			, #{i.SPEC1} AS SPEC1
+			, #{i.WDTH1} AS WDTH1
+			, #{i.PUPOS} AS PUPOS
+			, #{i.PUPNM} AS PUPNM
+			, #{i.LMNGA} AS LMNGA
+			, #{i.MEINS2} AS MEINS2
+			, TO_CHAR(#{i.BUDAT},'YYYYMMDD') AS BUDAT
+			, #{i.REMRK} AS REMRK
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, #{i.REM} AS REM
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.SEQ} AS SEQ
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_116_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR016 (
+		AUFNR
+		, WERKS
+		, PRDDT
+		, AUART
+		, AUARTXT
+		, MATNR
+		, FQTY
+		, MEINS
+		, ARBPL
+		, AENAM
+		, PRCMC
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, FTRMI
+		, SEQ
+		, DLFL
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, REMRK
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, NVL(#{i.WERKS}, '-') AS WERKS
+			, TO_CHAR(#{i.PRDDT}, 'YYYYMMDD') AS PRDDT
+			, NVL(#{i.AUART} ,'-') AS AUART
+			, NVL(#{i.AUARTTXT},'-') AS AUARTXT
+			, NVL(#{i.MATNR},'-') AS MATNR
+			, NVL(#{i.FQTY},0.000) AS FQTY
+			, NVL(#{i.MEINS},'-') AS MEINS
+			, NVL(#{i.ARBPL},'-') AS ARBPL
+			, NVL(#{i.AENAM},'-') AS AENAM
+			, NVL(#{i.PRCMC},'-') AS PRCMC
+			, NVL(#{i.STLNR},'-') AS STLNR
+			, NVL(#{i.STLAL},'-') AS STLAL
+			, NVL(#{i.BMENG},0.000) AS BMENG
+			, NVL(#{i.BMEIN},'-') AS BMEIN
+			, TO_CHAR(#{i.FTRMI}, 'YYYYMMDD') AS FTRMI
+			, NVL(#{i.SEQ},'-') AS SEQ
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.REMRK} AS REMRK
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_117_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR017 (
+		AUFNR
+		, WERKS
+		, SDATE
+		, AUART
+		, AUARTXT
+		, MATNR
+		, FQTY
+		, MEINS
+		, ARBPL
+		, AENAM
+		, PRCMC
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, FTRMI
+		, SEQ
+		, EDATE
+		, DLFL
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, REMRK
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, #{i.WERKS} AS WERKS
+			, TO_CHAR(#{i.SDATE},'YYYYMMDD') AS SDATE
+			, #{i.AUART} AS AUART
+			, #{i.AUARTTXT} AS AUARTXT
+			, #{i.MATNR} AS MATNR
+			, #{i.FQTY} AS FQTY
+			, #{i.MEINS} AS MEINS
+			, #{i.ARBPL} AS ARBPL
+			, #{i.AENAM} AS AENAM
+			, #{i.PRCMC} AS PRCMC
+			, #{i.STLNR} AS STLNR
+			, #{i.STLAL} AS STLAL
+			, #{i.BMENG} AS BMENG
+			, #{i.BMEIN} AS BMEIN
+			, TO_CHAR(#{i.FTRMI},'YYYYMMDD') AS FTRMI
+			, #{i.SEQ} AS SEQ
+			, TO_CHAR(#{i.EDATE},'YYYYMMDD') AS EDATE
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.REMRK} AS REMRK
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_118_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR018 (
+		AUFNR
+		, WERKS
+		, BUDAT
+		, PRDTYPE
+		, PRDTYPETXT
+		, MATNR
+		, PCODE
+		, WEIGHT
+		, JWIDTH
+		, JROLLCNT
+		, JBRGEW
+		, JRCNT
+		, MEINS
+		, SHEET
+		, AENAM
+		, MACHINE
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, NAUFNR
+		, DLFL
+		, REM
+		, ROUTE
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, MACHINETXT
+		, TOMACHINE
+		, TOMACHINETXT
+		, ZMEMO
+		, ARBPL
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, #{i.WERKS} AS WERKS
+			, NVL(TO_CHAR(#{i.BUDAT},'YYYYMMDD'),'-') AS BUDAT
+			, #{i.PRDTYPE} AS PRDTYPE
+			, #{i.PRDTYPETXT} AS PRDTYPETXT
+			, #{i.MATNR} AS MATNR
+			, #{i.PCODE} AS PCODE
+			, #{i.WEIGHT} AS WEIGHT
+			, #{i.JWIDTH} AS JWIDTH
+			, #{i.JROLLCNT} AS JROLLCNT
+			, #{i.JBRGEW} AS JBRGEW
+			, #{i.JRCNT} AS JRCNT
+			, #{i.MEINS} AS MEINS
+			, #{i.SHEET} AS SHEET
+			, #{i.AENAM} AS AENAM
+			, #{i.MACHINE} AS MACHINE
+			, #{i.STLNR} AS STLNR
+			, #{i.STLAL} AS STLAL
+			, #{i.BMENG} AS BMENG
+			, #{i.BMEIN} AS BMEIN
+			, #{i.NAUFNR} AS NAUFNR
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, #{i.REM} AS REM
+			, #{i.ROUTE} AS ROUTE
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.MACHINETXT} AS MACHINETXT
+			, #{i.TOMACHINE} AS TOMACHINE
+			, #{i.TOMACHINETXT} AS TOMACHINETXT
+			, #{i.ZMEMO} AS ZMEMO
+			, #{i.ARBPL} AS ARBPL
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_119_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR019 (
+		AUFNR
+		, JRPO
+		, WERKS
+		, ORDER_NUM
+		, ORDER_SEQ
+		, BUDAT
+		, AUART
+		, AUARTXT
+		, PRDTYPE
+		, PRDTYPETXT
+		, MVERID
+		, MVERIDTXT
+		, MMATNR
+		, VERID
+		, VERIDTXT
+		, MATNR
+		, PCODE
+		, WEIGHT
+		, MWIDTH
+		, MWIDTH_INPUT
+		, MWIDTH_SLITER
+		, MROLLCNT
+		, MRCNT
+		, MBRGEW
+		, MGEWEI
+		, JRCNT
+		, OVBELN
+		, OPOSNR
+		, OAUART
+		, OAUARTXT
+		, VBELN
+		, POSNR
+		, VDATU
+		, SAUART
+		, SAUARTXT
+		, REMARK
+		, SHEET
+		, SLITER_SET
+		, MRLDCK
+		, CUTTER
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, MRPO
+		, ROUTE
+		, DLFL
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, MACHINE
+		, MACHINETXT
+		, TOMACHINE
+		, TOMACHINETXT
+		, KUNNR
+		, NAME1
+		, SLITER
+		, FRAUFNR
+		, ZSIZE
+		, ZCAP
+		, ZBOX
+		, ZPACK
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, NVL(#{i.JRPO}, '-') AS JRPO
+			, NVL(#{i.WERKS}, '-') AS WERKS
+			, NVL(#{i.ORDER_NUM}, '0') AS ORDER_NUM
+			, NVL(#{i.ORDER_SEQ}, '0') AS ORDER_SEQ
+			, NVL(TO_CHAR(#{i.BUDAT},'YYYYMMDD'),'-') AS BUDAT
+			, NVL(#{i.AUART},'-') AS AUART
+			, NVL(#{i.AUARTTXT},'-') AS AUARTXT
+			, NVL(#{i.PRDTYPE},'-') AS PRDTYPE
+			, NVL(#{i.PRDTYPETXT},'-') AS PRDTYPETXT
+			, NVL(#{i.MVERID},'-') AS MVERID
+			, NVL(#{i.MVERIDTXT},'-') AS MVERIDTXT
+			, NVL(#{i.MMATNR},'-') AS MMATNR
+			, NVL(#{i.VERID},'-') AS VERID
+			, NVL(#{i.VERIDTXT},'-') AS VERIDTXT
+			, NVL(#{i.MATNR},'-') AS MATNR
+			, NVL(#{i.PCODE},'-') AS PCODE
+			, NVL(#{i.WEIGHT},'0') AS WEIGHT
+			, NVL(#{i.MWIDTH},'0') AS MWIDTH
+			, NVL(#{i.MWIDTH_INPUT},'0') AS MWIDTH_INPUT
+			, NVL(#{i.MWIDTH_SLITER},'0') AS MWIDTH_SLITER
+			, NVL(#{i.MROLLCNT},'0') AS MROLLCNT
+			, NVL(#{i.MRCNT},'0') AS MRCNT
+			, NVL(#{i.MBRGEW},'0') AS MBRGEW
+			, NVL(#{i.MGEWEI},'-') AS MGEWEI
+			, NVL(#{i.JRCNT},'0') AS JRCNT
+			, NVL(#{i.OVBELN},'-') AS OVBELN
+			, NVL(#{i.OPOSNR},'-') AS OPOSNR
+			, NVL(#{i.OAUART},'-') AS OAUART
+			, NVL(#{i.OAUARTTXT},'-') AS OAUARTXT
+			, NVL(#{i.VBELN},'-') AS VBELN
+			, NVL(#{i.POSNR},'-') AS POSNR
+			, NVL(TO_CHAR(#{i.VDATU},'YYYYMMDD'),'-') AS VDATU
+			, NVL(#{i.SAUART},'-') AS SAUART
+			, NVL(#{i.SAUARTTXT},'-') AS SAUARTXT
+			, NVL(#{i.REMARK},'-') AS REMARK
+			, NVL(#{i.SHEET},'-') AS SHEET
+			, NVL(#{i.SLITER_SET},'-') AS SLITER_SET
+			, NVL(#{i.MRLDCK},'-') AS MRLDCK
+			, NVL(#{i.CUTTER},'-') AS CUTTER
+			, NVL(#{i.STLNR},'-') AS STLNR
+			, NVL(#{i.STLAL},'-') AS STLAL
+			, NVL(#{i.BMENG},'0') AS BMENG
+			, NVL(#{i.BMEIN},'-') AS BMEIN
+			, NVL(#{i.MRPO},'-') AS MRPO
+			, NVL(#{i.ROUTE},'-') AS ROUTE
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.MACHINE} AS MACHINE
+			, #{i.MACHINETXT} AS MACHINETXT
+			, #{i.TOMACHINE} AS TOMACHINE
+			, #{i.TOMACHINETXT} AS TOMACHINETXT
+			, #{i.KUNNR} AS KUNNR
+			, #{i.NAME1} AS NAME1
+			, #{i.SLITER} AS SLITER
+			, #{i.FRAUFNR} AS FRAUFNR
+			, #{i.ZSIZE} AS ZSIZE
+			, #{i.ZCAP} AS ZCAP
+			, #{i.ZBOX} AS ZBOX
+			, #{i.ZPACK} AS ZPACK
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_120_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR020 (
+		AUFNR
+		, MRPO
+		, WERKS
+		, BUDAT
+		, AUART
+		, AUARTXT
+		, MACHINE
+		, MACHINETXT
+		, TOMACHINE
+		, TOMACHINETXT
+		, CVERID
+		, PVERIDTXT
+		, CMATNR
+		, PCODE
+		, WEIGHT
+		, WLEN
+		, VLEN
+		, CTCNT
+		, CNT
+		, CGEWEW
+		, CGEWEI
+		, ZZATT1
+		, ZZATT2
+		, DOUBLEFLAG
+		, VBELN
+		, POSNR
+		, SAUART
+		, SAUARTXT
+		, OVBELN
+		, OPOSNR
+		, OAUART
+		, OAUARTXT
+		, CUTTER
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, DLFL
+		, ROUTE
+		, ZCOR
+		, REMARK
+		, KUNNR
+		, NAME1
+		, MAUFNR
+		, PTIM
+		, PSEQ
+		, WORKGROUP
+		, MMATNR
+		, MROLLCNT
+		, MBRGEW
+		, MGEWEI
+		, CORESIZE
+		, PACKTYPE
+		, FRAUFNR
+		, MRLOT
+		, MWIDTH_INPUT
+		, MRCNT
+		, SCNT
+		, CONTYPE
+		, SIZE_VAL
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, NVL(#{i.MRPO}, '-') AS MRPO
+			, NVL(#{i.WERKS}, '-') AS WERKS
+			, NVL(TO_CHAR(#{i.BUDAT},'YYYYMMDD'), '-') AS BUDAT
+			, NVL(#{i.AUART}, '-') AS AUART
+			, NVL(#{i.AUARTTXT}, '-') AS AUARTXT
+			, NVL(#{i.MACHINE}, '-') AS MACHINE
+			, NVL(#{i.MACHINETXT}, '-') AS MACHINETXT
+			, NVL(#{i.TOMACHINE}, '-') AS TOMACHINE
+			, NVL(#{i.TOMACHINETXT}, '-') AS TOMACHINETXT
+			, NVL(#{i.CVERID}, '-') AS CVERID
+			, NVL(#{i.PVERIDTXT}, '-') AS PVERIDTXT
+			, NVL(#{i.CMATNR}, '-') AS CMATNR
+			, NVL(#{i.PCODE}, '-') AS PCODE
+			, NVL(#{i.WEIGHT}, '0') AS WEIGHT
+			, NVL(#{i.WLEN}, '0') AS WLEN
+			, NVL(#{i.VLEN}, '0') AS VLEN
+			, NVL(#{i.CTCNT}, '0') AS CTCNT
+			, NVL(#{i.CNT}, '0') AS CNT
+			, NVL(#{i.CBRGEW}, '0') AS CGEWEW
+			, NVL(#{i.CGEWEI}, '-') AS CGEWEI
+			, NVL(#{i.ZZATT1}, '0') AS ZZATT1
+			, NVL(#{i.ZZATT2}, '0') AS ZZATT2
+			, NVL(#{i.DOUBLEFLAG}, '-') AS DOUBLEFLAG
+			, NVL(#{i.VBELN}, '-') AS VBELN
+			, NVL(#{i.POSNR}, '-') AS POSNR
+			, NVL(#{i.SAUART}, '-') AS SAUART
+			, NVL(#{i.SAUARTTXT}, '-') AS SAUARTXT
+			, NVL(#{i.OVBELN}, '-') AS OVBELN
+			, NVL(#{i.OPOSNR}, '-') AS OPOSNR
+			, NVL(#{i.OAUART}, '-') AS OAUART
+			, NVL(#{i.OAUARTTXT}, '-') AS OAUARTXT
+			, NVL(#{i.CUTTER}, '0') AS CUTTER
+			, NVL(#{i.STLNR}, '-') AS STLNR
+			, NVL(#{i.STLAL}, '-') AS STLAL
+			, NVL(#{i.BMENG}, '0') AS BMENG
+			, NVL(#{i.BMEIN}, '-') AS BMEIN
+			, NVL(#{i.DLFL}, 'N') AS DLFL
+			, NVL(#{i.ROUTE}, '-') AS ROUTE
+			, #{i.ZCOR} AS ZCOR
+			, #{i.REMARK} AS REMARK
+			, #{i.KUNNR} AS KUNNR
+			, #{i.NAME1} AS NAME1
+			, #{i.MAUFNR} AS MAUFNR
+			, #{i.PTIM} AS PTIM
+			, #{i.PSEQ} AS PSEQ
+			, #{i.WORKGROUP} AS WORKGROUP
+			, #{i.MMATNR} AS MMATNR
+			, #{i.MROLLCNT} AS MROLLCNT
+			, #{i.MBRGEW} AS MBRGEW
+			, #{i.MGEWEI} AS MGEWEI
+			, #{i.CORESIZE} AS CORESIZE
+			, #{i.PACKTYPE} AS PACKTYPE
+			, #{i.FRAUFNR} AS FRAUFNR
+			, #{i.MRLOT} AS MRLOT
+			, #{i.MWIDTH_INPUT} AS MWIDTH_INPUT
+			, #{i.MRCNT} AS MRCNT
+			, #{i.SCNT} AS SCNT
+			, #{i.CONTYPE}	AS CONTYPE
+			, #{i.SIZE}	AS SIZE_VAL
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_121_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR021 (
+		AUFNR
+		, PACKSEQ
+		, CTPO
+		, WERKS
+		, BUDAT
+		, AUART
+		, AUARTXT
+		, MACHINE
+		, MACHINETXT
+		, TOMACHINE
+		, TOMACHINETXT
+		, PVERID
+		, PVERIDTXT
+		, PMATNR
+		, PCODE
+		, WEIGHT
+		, WLEN
+		, VLEN
+		, PTCNT
+		, PCNT
+		, PGEWEW
+		, PGEWEI
+		, ZZATT1
+		, ZZATT2
+		, DOUBLEFLAG
+		, PALETTECNT
+		, CONTYPE
+		, PACKTYPE
+		, VBELN
+		, POSNR
+		, SAUART
+		, SAUARTXT
+		, OVBELN
+		, OPOSNR
+		, OAUART
+		, OAUARTXT
+		, KUNNR
+		, REMARK
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, DLFL
+		, ROUTE
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, PKCNT
+		, MCNT
+		, SCNT
+		, NAME1
+		, FRAUFNR
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, NVL(#{i.PACKSEQ}, '-') AS PACKSEQ
+			, NVL(#{i.CTPO}, '-') AS CTPO
+			, NVL(#{i.WERKS}, '-') AS WERKS
+			, NVL(TO_CHAR(#{i.BUDAT}, 'YYYYMMDD'), '-') AS BUDAT
+			, NVL(#{i.AUART}, '-') AS AUART
+			, NVL(#{i.AUARTTXT}, '-') AS AUARTXT
+			, NVL(#{i.MACHINE}, '-') AS MACHINE
+			, NVL(#{i.MACHINETXT}, '-') AS MACHINETXT
+			, NVL(#{i.TOMACHINE}, '-') AS TOMACHINE
+			, NVL(#{i.TOMACHINETXT}, '-') AS TOMACHINETXT
+			, NVL(#{i.PVERID}, '-') AS PVERID
+			, NVL(#{i.PVERIDTXT}, '-') AS PVERIDTXT
+			, NVL(#{i.PMATNR}, '-') AS PMATNR
+			, NVL(#{i.PCODE}, '-') AS PCODE
+			, NVL(#{i.WEIGHT}, '0') AS WEIGHT
+			, NVL(#{i.CWLEN}, '0') AS WLEN
+			, NVL(#{i.CVLEN}, '0') AS VLEN
+			, NVL(#{i.PTCNT}, '0') AS PTCNT
+			, NVL(#{i.PCNT}, '0') AS PCNT
+			, NVL(#{i.PBRGEW}, '0') AS PGEWEW
+			, NVL(#{i.PGEWEI}, '-') AS PGEWEI
+			, NVL(#{i.ZZATT1}, '0') AS ZZATT1
+			, NVL(#{i.ZZATT2}, '0') AS ZZATT2
+			, NVL(#{i.DOUBLEFLAG}, '-') AS DOUBLEFLAG
+			, NVL(#{i.PALETTECNT}, '0') AS PALETTECNT
+			, NVL(#{i.CONTYPE}, '0') AS CONTYPE
+			, NVL(#{i.PACKTYPE}, '-') AS PACKTYPE
+			, NVL(#{i.VBELN}, '-') AS VBELN
+			, NVL(#{i.POSNR}, '-') AS POSNR
+			, NVL(#{i.SAUART}, '-') AS SAUART
+			, NVL(#{i.SAUARTTXT}, '-') AS SAUARTXT
+			, NVL(#{i.OVBELN}, '-') AS OVBELN
+			, NVL(#{i.OPOSNR}, '-') AS OPOSNR
+			, NVL(#{i.OAUART}, '-') AS OAUART
+			, NVL(#{i.OAUARTTXT}, '-') AS OAUARTXT
+			, NVL(#{i.KUNNR}, '-') AS KUNNR
+			, NVL(#{i.REMARK}, '-') AS REMARK
+			, NVL(#{i.STLNR}, '-') AS STLNR
+			, NVL(#{i.STLAL}, '-') AS STLAL
+			, NVL(#{i.BMENG}, '0') AS BMENG
+			, NVL(#{i.BMEIN}, '-') AS BMEIN
+			, NVL(#{i.DLFL}, 'N') AS DLFL
+			, NVL(#{i.ROUTE}, '-') AS ROUTE
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.PKCNT} AS PKCNT
+			, #{i.MCNT} AS MCNT
+			, #{i.SCNT} AS SCNT
+			, #{i.NAME1} AS NAME1
+			, #{i.FRAUFNR} AS FRAUFNR
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="MES_IF_122_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR022 (
+		AUFNR
+		, WERKS
+		, GSTRS
+		, AUART
+		, AUARTXT
+		, MATNR
+		, GAMNG
+		, GMEIN
+		, ARBPL
+		, VERID
+		, STLNR
+		, STLAL
+		, BMENG
+		, BMEIN
+		, FTRMI
+		, VBELN
+		, POSNR
+		, DLFL
+		, PCODE
+		, WEIGHT
+		, WLEN
+		, VLEN
+		, ZZATT1
+		, ZZATT2
+		, PACKTYPE
+		, MCNT
+		, SCNT
+		, KUNNR
+		, NAME1
+		, IF_STATUS
+		, IF_GET_DATE
+		, IF_SET_DATE
+		, IF_ERR_MESS
+		, IF_MES_ID
+		, IF_MES_KEY
+		, ZSIZE
+		, ZCAP
+		, ZBOX
+		, ZPACK
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			NVL(#{i.AUFNR}, '-') AS AUFNR
+			, #{i.WERKS} AS WERKS
+			, TO_CHAR(#{i.GSTRS},'YYYYMMDD') AS GSTRS
+			, #{i.AUART} AS AUART
+			, #{i.AUARTTXT} AS AUARTXT
+			, #{i.MATNR} AS MATNR
+			, #{i.GAMNG} AS GAMNG
+			, #{i.GMEIN} AS GMEIN
+			, #{i.ARBPL} AS ARBPL
+			, #{i.VERID} AS VERID
+			, #{i.STLNR} AS STLNR
+			, #{i.STLAL} AS STLAL
+			, #{i.BMENG} AS BMENG
+			, #{i.BMEIN} AS BMEIN
+			, TO_CHAR(#{i.FTRMI},'YYYYMMDD') AS FTRMI
+			, #{i.VBELN} AS VBELN
+			, #{i.POSNR} AS POSNR
+			, NVL(#{i.DLFL},'N') AS DLFL
+			, #{i.PCODE} AS PCODE
+			, #{i.WEIGHT} AS WEIGHT
+			, #{i.WLEN} AS WLEN
+			, #{i.VLEN} AS VLEN
+			, #{i.ZZATT1} AS ZZATT1
+			, #{i.ZZATT2} AS ZZATT2
+			, #{i.PACKTYPE} AS PACKTYPE
+			, #{i.MCNT} AS MCNT
+			, #{i.SCNT} AS SCNT
+			, #{i.KUNNR} AS KUNNR
+			, #{i.NAME1} AS NAME1
+			, 'N' as IF_STATUS
+			, SYSDATE as IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			, #{i.ZSIZE} AS ZSIZE
+			, #{i.ZCAP} AS ZCAP
+			, #{i.ZBOX} AS ZBOX
+			, #{i.ZPACK} AS ZPACK
+			FROM DUAL
+		</foreach>
+	</insert>
+	
+	<delete id="IFR050_DELETE" parameterType="hashmap">
+		TRUNCATE TABLE TB_IFR050 
+	</delete>
+	
+	<insert id="MES_IF_907_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFR050
+			(
+				WKDT
+			  , WERKS
+			  , LGORT
+			  , MATNR
+			  , CHARG
+			  , SOBKZ
+			  , KDAUF
+			  , KDPOS
+			  , KUNNR
+			  , LIFNR
+			  , STQTY
+			  , SPEME
+			  , MEINS
+			  , IF_STATUS
+			  , IF_GET_DATE
+			  , IF_ERR_MESS
+			  , IF_MES_ID
+			  , IF_RCV_MES_KEY
+	       )
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+  			 VALUES 
+  			 (
+  			 	#{i.WKDT}
+  			  , #{i.WERKS}
+  			  , #{i.LGORT}
+  			  , #{i.MATNR}
+  			  , NVL(#{i.CHARG}, '-')
+  			  , NVL(#{i.SOBKZ}, '-')
+  			  , #{i.KDAUF}
+  			  , #{i.KDPOS}
+  			  , #{i.KUNNR}
+  			  , #{i.LIFNR}
+  			  , #{i.STQTY}
+  			  , #{i.SPEME}
+  			  , #{i.MEINS}
+  			  , 'S'
+  			  , SYSDATE
+  			  , NULL
+  			  , #{i.IF_MES_ID}
+  			  , #{i.IF_MES_KEY}
+	      	 )
+  		</foreach>
+	</insert>
+
+	<select id="ITFMAGRP_MAP" resultType="DataMap">
+		SELECT COUNT(1) CNT FROM TB_ITFMAGRP WHERE IF_GRP_CD = #{IF_GRP_CD} AND NVL(RSTAT, 'E')  = 'R'
+	</select>
+	<select id="IFGRPALL_LIST" resultType="DataMap">
+		SELECT  *  FROM TB_ITFMAGRP WHERE USE_YN = 'Y' AND NVL(RSTAT,'E') = 'E'
+	</select>
+	<select id="IFGRP_LIST" resultType="DataMap">
+		SELECT  *  FROM TB_ITFMAGRP WHERE USE_YN = 'Y'
+		AND IF_GRP_CD != 'A'
+		<if test='IF_GRP_CD !=null and IF_GRP_CD != ""'>
+			AND IF_GRP_CD = #{IF_GRP_CD}
+		</if>
+		<if test='IF_ASYNC_YN !=null and IF_ASYNC_YN != ""'>
+		AND IF_ASYNC_YN = #{IF_ASYNC_YN}
+		</if>
+		<if test='NOT_GRP_CD !=null and NOT_GRP_CD!= ""'>
+			AND IF_GRP_CD != #{NOT_GRP_CD}
+		</if>
+		ORDER BY PRORTY
+	</select>
+	<update id="INITMES_UPDATE">
+		UPDATE TB_ITFMA SET FIN_CD = 'E'
+			, STARTDATE = null
+			, LASTDATE = null
+		WHERE 1 = 1
+	</update>
+	<update id="INITMESGRP_UPDATE">
+		UPDATE TB_ITFMAGRP SET RSTAT = 'E'
+			, STR_DTM = null
+			, END_DTM = null
+		WHERE 1 = 1
+	</update>
+	<select id="ITFMAENDGRP_MAP" resultType="DataMap">
+		SELECT COUNT(1) CNT FROM TB_ITFMA
+		WHERE GRP_CD = #{IF_GRP_CD}
+		<if test='FINCD!=null and FINCD!=""'>
+			AND FIN_CD = #{FINCD}
+		</if>
+	</select>
+	<update id="ITFMAGRP_UPDATE">
+		UPDATE TB_ITFMAGRP SET
+		RSTAT = #{type}
+		<if test='type != null and type == "R"'>
+			, STR_DTM = sysdate
+			, END_DTM = null
+		</if>
+		<if test='type != null and type == "E"'>
+			, END_DTM = sysdate
+	    </if>
+		WHERE IF_GRP_CD = #{IF_GRP_CD}
+	</update>
+
+	<delete id="MES_IF_101_DELETE">
+		DELETE FROM TB_IFR001 WHERE 1 = 1 AND MATNR = #{MATNR} AND WERKS = #{WERKS}
+	</delete>
+
+	<update id="IFMAS_UPDATE">
+		update TB_ITFMA SET
+			FIN_CD = #{FIN_CD}
+			<if test='FIN_CD != null and FIN_CD == "R"'>
+			,STARTDATE= SYSDATE
+			,LASTDATE = null
+			</if>
+			<if test='FIN_CD != null and FIN_CD == "E"'>
+			,LASTDATE = SYSDATE
+			</if>
+		WHERE IFID = #{IFID}
+	</update>
+
+	<update id="SAPMSG_UPDATE">
+		UPDATE ${TBL}
+		SET ZRESULT = 'E',
+			ZRESULT_DATE = SYSDATE,
+		    ZMESSAGE = #{MSG},
+			IF_MES_KEY = #{IF_MES_KEY}
+		WHERE MDOCNO = #{MDOCNO}
+	</update>
+
+	<!--실적-->
+	<select id="SP_IF_PUT_IFS001_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS001(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS002_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS002(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS003_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS003(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_NAUFNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS004_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS004(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS005_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS005(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS006_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS006(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS007_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS007(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS008_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS008(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS009_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS009(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS010_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS010(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS011_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS011(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_PAUFNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS012_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS012(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS013_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS013(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS014_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS014(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS015_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS015(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS016_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS016(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS017_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS017(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_IFR_NO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS018_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS018(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_IFR_NO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+	}
+	</select>
+	<select id="SP_IF_PUT_IFS019_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS019(
+			  #{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+			  #{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+			  #{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS020_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS020(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFS021_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS021(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RUECK,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RMZHL,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS022_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS022(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_AUFNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFS023_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFS023(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCNO,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MDOCSEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<select id="SP_IF_GET_IFRWC001_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_GET_IFRWC001(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_SEQ,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MBLNR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MJAHR,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZRESULT,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IF_MES_KEY,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ZMESSAGE,mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS,mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+		}
+	</select>
+	<insert id="MES_IF_107_INSERT">
+		<selectKey resultType="string" keyProperty="IF_IFR_NO" order="BEFORE">
+			SELECT SEQ_GET_IFR_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into TB_IFR007 (
+			IF_IFR_NO
+				,MATNR
+				,WERKS
+				,VERID
+				,TEXT1
+				,STLAN
+				,STLAL
+				,LVORM
+				,IF_STATUS
+				,IF_ERR_MESS
+				,IF_MES_ID
+				,IF_MES_KEY
+				,IF_GET_DATE
+				,IF_SET_DATE
+		) values (
+				#{IF_IFR_NO}
+				,#{MATNR}
+				,#{WERKS}
+				,#{VERID}
+				,#{TEXT1}
+				,#{STLAN}
+				,#{STLAL}
+				,#{LVORM}
+				,'N'
+				,#{IF_ERR_MESS}
+				,#{IF_MES_ID}
+				,#{IF_MES_KEY}
+				,sysdate  date1
+				,null
+		)
+	</insert>
+	<select id="IFRKEY_OBJECT" parameterType="hashmap" resultType="DataMap">
+		SELECT FN_COM_GET_IFR_KEY() IFR_SEQ FROM DUAL
+	</select>
+	<select id="SP_IF_GET_MAS017_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_GET_MAS017(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<select id="SP_IF_GET_MAS018_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_GET_MAS018(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<select id="SP_IF_GET_MAS022_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_GET_MAS022(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<insert id="TB_IFRWM001_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM001 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, ORDER_NO
+			, ORDER_SEQNO
+			, SUPY_CD
+			, MATNR
+			, QTY
+			, UNIT
+			, STOK_KY
+			, LOT_NUM
+			, STOR_LOC
+			, WERKS
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, IN_DT
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+		SELECT
+			#{i.VGBEL} AS VGBEL
+			 , #{i.VGPOS} AS VGPOS
+			 , #{i.DLFL} AS DLFL
+			 , #{i.ORDER_NO} AS ORDER_NO
+			 , #{i.ORDER_SEQNO} AS ORDER_SEQNO
+			 , #{i.SUPY_CD} AS SUPY_CD
+			 , #{i.MATNR} AS MATNR
+			 , #{i.QTY} AS QTY
+			 , #{i.UNIT} AS UNIT
+			 , #{i.STOK_KY} AS STOK_KY
+			 , #{i.LOT_NUM} AS LOT_NUM
+			 , #{i.STOR_LOC} AS STOR_LOC
+			 , #{i.WERKS} AS WERKS
+			 , #{i.LOTA03} AS LOTA03
+			 , #{i.LOTA04} AS LOTA04
+			 , #{i.LOTA05} AS LOTA05
+			 , #{i.STCK_STA} AS STCK_STA
+			 , #{i.LOTA07} AS LOTA07
+			 , #{i.NTN_CD} AS NTN_CD
+			 , #{i.CRSPD_CD} AS CRSPD_CD
+			 , #{i.LOTA10} AS LOTA10
+			 , #{i.PRDC_DT} AS PRDC_DT
+			 , #{i.RCVGDS_DT} AS RCVGDS_DT
+			 , #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+			 , #{i.IND_BCD} AS IND_BCD
+			 , #{i.LOT_NO} AS LOT_NO
+			 , #{i.LOTA16} AS LOTA16
+			 , #{i.LOTA17} AS LOTA17
+			 , #{i.LOTA18} AS LOTA18
+			 , #{i.LOTA19} AS LOTA19
+			 , #{i.LOTA20} AS LOTA20
+			 , #{i.IN_DT} AS IN_DT
+			 , 'N' AS IF_STATUS
+			 , SYSDATE AS IF_GET_DATE
+			 , NULL as IF_SET_DATE
+			 , NULL as IF_ERR_MESS
+			 , #{i.IF_MES_ID} as IF_MES_ID
+			 , #{i.IF_MES_KEY} as IF_MES_KEY
+		FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM002_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM002 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQNO
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, ORDER_NO
+			, ORDER_SEQNO
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			#{i.VGBEL} AS VGBEL
+			, #{i.VGPOS} AS VGPOS
+			, #{i.DLFL} AS DLFL
+			, #{i.DOC_NO} AS DOC_NO
+			, #{i.DOC_SEQNO} AS DOC_SEQ
+			, #{i.WERKS} AS WERKS
+			, #{i.MATNR} AS MATNR
+			, #{i.QTY} AS QTY
+			, #{i.UNIT} AS UNIT
+			, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+			, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+			, #{i.SUPY_CD} AS SUPY_CD
+			, #{i.LOTA01} AS LOTA01
+			, #{i.LOTA02} AS LOTA02
+			, #{i.LOTA03} AS LOTA03
+			, #{i.LOTA04} AS LOTA04
+			, #{i.LOTA05} AS LOTA05
+			, #{i.STCK_STA} AS STCK_STA
+			, #{i.LOTA07} AS LOTA07
+			, #{i.NTN_CD} AS NTN_CD
+			, #{i.CRSPD_CD} AS CRSPD_CD
+			, #{i.LOTA10} AS LOTA10
+			, #{i.PRDC_DT} AS PRDC_DT
+			, #{i.RCVGDS_DT} AS RCVGDS_DT
+			, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+			, #{i.IND_BCD} AS IND_BCD
+			, #{i.LOT_NO} AS LOT_NO
+			, #{i.LOTA16} AS LOTA16
+			, #{i.LOTA17} AS LOTA17
+			, #{i.LOTA18} AS LOTA18
+			, #{i.LOTA19} AS LOTA19
+			, #{i.LOTA20} AS LOTA20
+			, #{i.STOK_KY} AS STOK_KY
+			, #{i.LOT_NUM} AS LOT_NUM
+			, #{i.WRK_ORDR_NO} AS ORDER_NO
+			, #{i.WRK_ORDR_SEQNO} AS ORDER_SEQNO
+			, 'N' AS IF_STATUS
+			, SYSDATE AS IF_GET_DATE
+			, NULL as IF_SET_DATE
+			, NULL as IF_ERR_MESS
+			, #{i.IF_MES_ID} as IF_MES_ID
+			, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM003_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM003 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQ
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.DOC_NO} AS DOC_NO
+				, #{i.DOC_SEQ} AS DOC_SEQ
+				, #{i.WERKS} AS WERKS
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+				, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.LOTA01} AS LOTA01
+				, #{i.LOTA02} AS LOTA02
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} AS LOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM004_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM004 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQNO
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.DOC_NO} AS DOC_NO
+				, #{i.DOC_SEQNO} AS DOC_SEQNO
+				, #{i.WERKS} AS WERKS
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+				, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.LOTA01} AS LOTA01
+				, #{i.LOTA02} AS LOTA02
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} ASLOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM005_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM005 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQNO
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.DOC_NO} AS DOC_NO
+				, #{i.DOC_SEQNO} AS DOC_SEQNO
+				, #{i.WERKS} AS WERKS
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+				, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.LOTA01} AS LOTA01
+				, #{i.LOTA02} AS LOTA02
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} AS LOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="TB_IFRWM006_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM006 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQNO
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.DOC_NO} AS DOC_NO
+				, #{i.DOC_SEQNO} AS DOC_SEQNO
+				, #{i.WERKS} AS WERKS
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+				, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.LOTA01} AS LOTA01
+				, #{i.LOTA02} AS LOTA02
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} AS LOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+	<insert id="TB_IFRWM007_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM007 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, ORDER_NO
+			, ORDER_SEQNO
+			, SUPY_CD
+			, MATNR
+			, QTY
+			, UNIT
+			, STOK_KY
+			, LOT_NUM
+			, STOR_LOC
+			, WERKS
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, IN_DT
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.ORDER_NO} AS ORDER_NO
+				, #{i.ORDER_SEQNO} AS ORDER_SEQNO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, #{i.STOR_LOC} AS STOR_LOC
+				, #{i.WERKS} AS WERKS
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} AS LOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.IN_DT} AS IN_DT
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM008_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM008 (
+			VGBEL
+			, VGPOS
+			, DLFL
+			, DOC_NO
+			, DOC_SEQNO
+			, WERKS
+			, MATNR
+			, QTY
+			, UNIT
+			, STOR_LOC_FROM
+			, STOR_LOC_TO
+			, SUPY_CD
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, STCK_STA
+			, LOTA07
+			, NTN_CD
+			, CRSPD_CD
+			, LOTA10
+			, PRDC_DT
+			, RCVGDS_DT
+			, DSTBT_DDLIN
+			, IND_BCD
+			, LOT_NO
+			, LOTA16
+			, LOTA17
+			, LOTA18
+			, LOTA19
+			, LOTA20
+			, STOK_KY
+			, LOT_NUM
+			, PTNRKY
+			, CONTNO
+			, BARCNO
+			, ZFBLNO
+			, ROLLID
+			, MRGSM
+			, LENGTH
+			, NETWT
+			, WGTMUL
+			, COREDI
+			, KUNIT
+			, CPCOD
+			, TBRGEW
+			, RBRGEW
+			, LUNIT
+			, DESCRI
+			, WEIGHT
+			, RMK1
+			, RMK2
+			, RMK3
+			, RMK4
+			, RMK5
+			, IN_DT
+			, STO_DOC_NO
+			, IF_STATUS
+			, IF_GET_DATE
+			, IF_SET_DATE
+			, IF_ERR_MESS
+			, IF_MES_ID
+			, IF_MES_KEY
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+				#{i.VGBEL} AS VGBEL
+				, #{i.VGPOS} AS VGPOS
+				, #{i.DLFL} AS DLFL
+				, #{i.DOC_NO} AS DOC_NO
+				, #{i.DOC_SEQNO} AS DOC_SEQNO
+				, #{i.WERKS} AS WERKS
+				, #{i.MATNR} AS MATNR
+				, #{i.QTY} AS QTY
+				, #{i.UNIT} AS UNIT
+				, #{i.STOR_LOC_FROM} AS STOR_LOC_FROM
+				, #{i.STOR_LOC_TO} AS STOR_LOC_TO
+				, #{i.SUPY_CD} AS SUPY_CD
+				, #{i.LOTA01} AS LOTA01
+				, #{i.LOTA02} AS LOTA02
+				, #{i.LOTA03} AS LOTA03
+				, #{i.LOTA04} AS LOTA04
+				, #{i.LOTA05} AS LOTA05
+				, #{i.STCK_STA} AS STCK_STA
+				, #{i.LOTA07} AS LOTA07
+				, #{i.NTN_CD} AS NTN_CD
+				, #{i.CRSPD_CD} AS CRSPD_CD
+				, #{i.LOTA10} AS LOTA10
+				, #{i.PRDC_DT} AS PRDC_DT
+				, #{i.RCVGDS_DT} AS RCVGDS_DT
+				, #{i.DSTBT_DDLIN} AS DSTBT_DDLIN
+				, #{i.IND_BCD} AS IND_BCD
+				, #{i.LOT_NO} AS LOT_NO
+				, #{i.LOTA16} AS LOTA16
+				, #{i.LOTA17} AS LOTA17
+				, #{i.LOTA18} AS LOTA18
+				, #{i.LOTA19} AS LOTA19
+				, #{i.LOTA20} AS LOTA20
+				, #{i.STOK_KY} AS STOK_KY
+				, #{i.LOT_NUM} AS LOT_NUM
+				, #{i.PTNRKY} AS PTNRKY
+				, #{i.CONTNO} AS CONTNO
+				, #{i.BARCNO} AS BARCNO
+				, #{i.ZFBLNO} AS ZFBLNO
+				, #{i.ROLLID} AS ROLLID
+				, #{i.MRGSM} AS MRGSM
+				, #{i.LENGTH} AS LENGTH
+				, #{i.NETWT} AS NETWT
+				, #{i.WGTMUL} AS WGTMUL
+				, #{i.COREDI} AS COREDI
+				, #{i.KUNIT} AS KUNIT
+				, #{i.CPCOD} AS CPCOD
+				, #{i.TBRGEW} AS TBRGEW
+				, #{i.RBRGEW} AS RBRGEW
+				, #{i.LUNIT} AS LUNIT
+				, #{i.DESCRI} AS DESCRI
+				, #{i.WEIGHT} AS WEIGHT
+				, #{i.RMK1} AS RMK1
+				, #{i.RMK2} AS RMK2
+				, #{i.RMK3} AS RMK3
+				, #{i.RMK4} AS RMK4
+				, #{i.RMK5} AS RMK5
+				, #{i.IN_DT} AS IN_DT
+				, #{i.STO_DOC_NO} AS STO_DOC_NO
+				, 'N' AS IF_STATUS
+				, SYSDATE AS IF_GET_DATE
+				, NULL as IF_SET_DATE
+				, NULL as IF_ERR_MESS
+				, #{i.IF_MES_ID} as IF_MES_ID
+				, #{i.IF_MES_KEY} as IF_MES_KEY
+			FROM DUAL
+		</foreach>
+	</insert>
+
+	<insert id="TB_IFRWM009_MULTI_INSERT" parameterType="hashmap">
+		INSERT INTO TB_IFRWM009 (
+		)
+		<foreach item="i" index="index" collection="list" open=" " separator=" UNION ALL " close="">
+			SELECT
+			FROM DUAL
+		</foreach>
+	</insert>
+
+
+	<select id="SP_IF_GET_IFRWM00X_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL ${PROCNM}(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+
+	<select id="SP_IF_PUT_IFSWM00X_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL ${PROCNM}(
+			#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_DOCNO, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_DOCSEQ, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_IF_STATUS, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_IF_ERR_MESS, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+			#{P_RS_LIST,mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=IFWMS001}
+			)
+			}
+	</select>
+
+
+	<select id="SP_IF_PUT_IFSWC004_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFSWC004(
+			#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+			#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+	    }
+	</select>
+	<select id="SP_IF_PUT_IFSWC005_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFSWC005(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFSWC006_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFSWC006(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFSWC007_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFSWC007(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+			}
+	</select>
+	<select id="SP_IF_PUT_IFSWC003_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_IF_PUT_IFSWC003(
+				#{i_IF_MES_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{i_IF_MES_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_code, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{o_msg_msg, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	<select id="SP_IF_PUT_IFSWC007_LIST" resultType="DataMap">
+		SELECT * FROM TB_IFSWC007 WHERE NVL(IF_STATUS,'N') = 'N'
+	</select>
+	<select id="SP_IF_PUT_IFSWC006_LIST" resultType="DataMap">
+		SELECT * FROM TB_IFSWC006 WHERE NVL(IF_STATUS,'N') = 'N'
+	</select>
+	<select id="SP_IF_PUT_IFSWC005_LIST" resultType="DataMap">
+		SELECT * FROM TB_IFSWC005 WHERE NVL(IF_STATUS,'N') = 'N'
+	</select>
+	<select id="SP_IF_PUT_IFSWC004_LIST" resultType="DataMap">
+		SELECT * FROM TB_IFSWC004 WHERE NVL(IF_STATUS,'N') = 'N'
+	</select>
+	<select id="SP_IF_PUT_IFSWC003_LIST" resultType="DataMap">
+		SELECT * FROM TB_IFSWC003 WHERE NVL(IF_STATUS,'N') = 'N'
+	</select>
+
+	<update id="HRTBLKEY_UPDATE">
+		UPDATE ${IFTBL} SET IF_MES_KEY = #{IF_MES_KEY}
+		WHERE   NVL(RECV_FLAG,'N')  in  ( 'N','E' )
+	</update>
+	<select id="FLDMAP_LIST" resultType="DataMap">
+		SELECT A.*,B.IFKNM, B.SYSFR,B.SYSTO
+		FROM TB_ITFFLDMAP A JOIN TB_ITFMA B ON A.IFID = B.IFID
+		WHERE 1=1 AND A.IFID = #{IFID} AND USEYN = 'Y'
+		ORDER BY ORD
+	</select>
+	<select id="MES_IF_XXX_LIST" resultType="DataMap">
+		SELECT *
+		 FROM ${TBL}
+		WHERE 1 = 1
+		  AND DOC_NO = #{DOC_NO}
+		  <!-- 2022-12-27(화요일) 안상현, MES <-> WMS 인터페이스(입고요청, 입고요청취소)를 쿼리 수정 AND NVL(IF_STATUS,'N') IN('N','E') -->
+		  AND NVL(IF_STATUS,'N') IN('N')
+	      FOR UPDATE
+	</select>
+	<insert id="IFRUNLOG_INSERT">
+		INSERT INTO TB_ITFRUNLOG (IFID ,LOGNO, STEP)
+		VALUES (#{IFID}, #{LOGNO},#{STEP})
+	</insert>
+	<update id="IFRUNLOG_UPDATE">
+		UPDATE TB_ITFRUNLOG SET
+			UDATE = SYSDATE
+		<if test='ERRTXT!=null and ERRTXT != ""'>
+			, ERRTXT =#{ERRTXT}
+		</if>
+		<if test='STEP!=null and STEP != ""'>
+			, STEP = #{STEP}
+		</if>
+		<if test='PCNT!=null and PCNT != ""'>
+			, PCNT = #{PCNT}
+		</if>
+		WHERE LOGNO = #{LOGNO} AND NVL(ERRTXT,'-') = '-'
+	</update>
+	
+	
+	<select id="ITFMAGRP_LIST" resultType="DataMap">
+		SELECT
+			  IF_GRP_CD   AS IFGRP_ID
+			, IF_GRP_NM   AS IFGRP_KNM
+			, IF_ASYNC_YN AS ASYNC_YN
+			, PRORTY
+			, RSTAT
+			, TO_CHAR(STR_DTM, 'YYYY-MM-DD HH24:MI:SS') RN_STR_TM
+			, TO_CHAR(END_DTM, 'YYYY-MM-DD HH24:MI:SS') RN_END_TM
+			, POLLTY
+			, POLLTM
+			, USE_YN      AS USE_YN
+			, IF_GRP_CD   AS ORGN_IFGRP_ID
+			, IF_GRP_NM   AS ORGN_IFGRP_KNM
+			, IF_ASYNC_YN AS ORGN_ASYNC_YN
+			, PRORTY      AS ORGN_PRORTY
+			, RSTAT       AS ORGN_RSTAT
+			, POLLTY      AS ORGN_POLLTY
+			, POLLTM      AS ORGN_POLLTM
+			, USE_YN      AS ORGN_USE_YN
+		FROM TB_ITFMAGRP
+		WHERE 1=1
+		 <if test='IFGRP_KNM != null and IFGRP_KNM != ""'>
+		  AND IF_GRP_NM LIKE '%' || #{IFGRP_KNM} || '%'
+		 </if>
+		--  AND USE_YN = 'Y'
+	</select>
+	
+	<insert id="ITFMAGRP_AT_DSP_INSERT" parameterType="Map">
+		INSERT INTO TB_ITFMAGRP (
+			    IF_GRP_CD
+			  , IF_GRP_NM
+			  , IF_ASYNC_YN
+			  , PRORTY
+			  , RSTAT
+	<!-- 		  , STR_DTM -->
+	<!-- 		  , END_DTM -->
+			  , POLLTY
+			  , POLLTM
+			  , USE_YN
+		)
+		SELECT
+			   #{IFGRP_ID}
+			 , #{IFGRP_KNM}
+			 , #{ASYNC_YN}
+			 , #{PRORTY}
+			 , #{RSTAT}
+			 , #{POLLTY}
+			 , #{POLLTM}
+			 , 'Y'
+		 FROM DUAL
+		WHERE NOT EXISTS (
+			SELECT 1 FROM TB_ITFMAGRP
+			WHERE IF_GRP_CD = #{IFGRP_ID}  
+		      AND IF_GRP_NM = #{IFGRP_KNM}
+<!-- 		      AND IF_ASYNC_YN = #{ASYNC_YN} -->
+<!-- 		      AND PRORTY = #{PRORTY}        -->
+<!-- 		      AND RSTAT = #{RSTAT}          -->
+<!-- 		      AND POLLTY = #{POLLTY}        -->
+<!-- 		      AND POLLTM = #{POLLTM}    -->
+		)
+	</insert>
+	
+	<update id="ITFMAGRP_AT_DSP_UPDATE">
+		UPDATE TB_ITFMAGRP SET
+			   IF_GRP_CD = #{IFGRP_ID}
+			 , IF_GRP_NM = #{IFGRP_KNM}
+			 , IF_ASYNC_YN = #{ASYNC_YN}
+			 , PRORTY = #{PRORTY}
+			 , RSTAT = #{RSTAT}
+			 , POLLTY = #{POLLTY}
+			 , POLLTM = #{POLLTM}
+			 , USE_YN = #{USE_YN}
+		 WHERE 1=1
+		   AND IF_GRP_CD = #{ORGN_IFGRP_ID}  
+		   AND IF_GRP_NM = #{ORGN_IFGRP_KNM} 
+		   AND IF_ASYNC_YN = #{ORGN_ASYNC_YN}
+		   AND PRORTY = #{ORGN_PRORTY}       
+		   AND RSTAT = #{ORGN_RSTAT}         
+		   AND POLLTY = #{ORGN_POLLTY}       
+		   AND POLLTM = #{ORGN_POLLTM}       
+		   AND USE_YN = #{ORGN_USE_YN}       
+	</update>
+	
+	<delete id="ITFMAGRP_AT_DSP_DELETE" parameterType="Map">
+		DELETE FROM TB_ITFMAGRP
+		WHERE 1=1
+		  AND IF_GRP_CD = #{ORGN_IFGRP_ID}
+		  AND IF_GRP_NM = #{ORGN_IFGRP_KNM}
+		  AND IF_ASYNC_YN = #{ORGN_ASYNC_YN}
+		  AND PRORTY = #{ORGN_PRORTY}
+		  AND RSTAT = #{ORGN_RSTAT}
+		  AND POLLTY = #{ORGN_POLLTY}
+		  AND POLLTM = #{ORGN_POLLTM}    
+		  AND USE_YN = #{ORGN_USE_YN}  
+	</delete>
+	<!-- 20221101 여한진 생산오더 미처리건수 처리하기  위해 조회-->
+	<select id='UnProcess_LIST' resultType='Map'>
+		SELECT IF_MES_ID	IFID
+		     , IF_MES_KEY
+		     , COUNT(*) 	CNT
+		  FROM ${IFTBL}
+		 WHERE IF_STATUS = 'N'
+         GROUP BY IF_MES_ID, IF_MES_KEY
+	</select>
+	
+</mapper>

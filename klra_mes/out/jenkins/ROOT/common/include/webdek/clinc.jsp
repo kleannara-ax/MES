@@ -1,0 +1,2 @@
+<script type="text/javascript" src="/common/js/cl.js?v=<%=System.currentTimeMillis()%>"></script>
+<link rel="stylesheet" type="text/css" href="/common/theme/webdek/css/cl.css?v=<%=System.currentTimeMillis()%>" />

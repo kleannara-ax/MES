@@ -1,0 +1,418 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+
+*{box-sizing:border-box;}
+
+html,body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body.GCLC {
+	background: url(/common/theme/webdek/images/login/intro_bg.png) repeat center center; 
+	background-size: cover;
+}
+body.GCCL {
+	background: url(/common/theme/webdek/images/login/intro_bg_GCCL.png) repeat center center; 
+	background-size: cover;
+}
+
+.intro_text{
+	width:500px;
+	height:480px;
+	position: relative;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	text-align:center;
+	color: #fff;
+ /*  animation: name duration timing-function delay iteration-count direction fill-mode; */
+	animation : fadeIn .5s linear 2s 1 reverse forwards;
+}
+
+.intro_text .text_Wrap{
+	overflow: hidden;
+	height: 0;
+	
+ /*  animation: name duration timing-function delay iteration-count direction fill-mode; */
+	animation : slideDown 1s linear 0s 1 normal forwards;
+}
+
+
+.text_Wrap>*{
+	display: block;
+	border-bottom: 3px solid #fff;
+	font-size: 100px;
+	line-height: 150px;
+	
+}
+.intro_text .text_Wrap b:LAST-CHILD {
+	display: inline-block;
+}
+
+.menu{
+	width: 700px;
+	height: 600px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	opacity :0;
+	transform: translate(-50%, -50%);
+ /*  animation: name duration timing-function delay iteration-count direction fill-mode; */
+	animation : fadeIn .5s linear 3s 1 normal forwards;
+}
+
+.menu>div{
+	position: absolute; 
+	top: 0;
+	left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.info h2{
+	color: #327b33;
+	font-size: 30px;
+	text-align: center;
+}
+.info h2 .username{
+	font-weight: bold;
+	border-bottom: 2px solid #1b9b21;
+}
+
+.GCCL .info h2{
+	color: #fff;
+}
+.GCCL .info h2 .username{
+	border-bottom: 2px solid #fff;
+}
+
+.info .logoDiv{
+	height: 350px;
+	width: 350px;
+	border-radius : 50%;
+	position: absolute;
+	top : 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #fdedb3;
+}
+.GCCL .info .logoDiv{
+	background-color: #e8eef2;
+}
+
+.info .logoDiv .logo{
+	width: 70%;
+    height: 70%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	opacity : 0;
+ /*  animation: name duration timing-function delay iteration-count direction fill-mode; */
+	animation : fadeIn .1s linear 3.7s 1 normal forwards;
+}
+
+.GCLC .info .logoDiv .logo{
+	background: url("/common/theme/webdek/images/login/G-HUB_LOGO.png") no-repeat center center;
+	background-size: 100% auto;
+}
+
+.GCCL .info .logoDiv .logo{
+	background: url("/common/theme/webdek/images/login/GHUB_LOGO_b.png") no-repeat center center;
+	background-size: 100% auto;
+}
+
+body .menu_Wrap{
+	height: 100%;
+	width: 0;
+	overflow: hidden;
+	animation : slideRight 1s linear 4s 1 normal forwards;
+}
+
+.menu_Wrap .menuBar{
+	height: 390px;
+	width: 410px;
+	background: url(/common/theme/webdek/images/login/menuBar.png) no-repeat; 
+	background-size : 100% 100%;
+	position: absolute;
+	top : 10%;
+	left: 50%;
+	transform: translateX(-50%);
+	opacity: 0.7;
+}
+
+.menu_Wrap .menuPoint{
+	width: 20px;
+	height: 20px;
+	border-radius : 50%;
+	background-color: #f9f4bf;
+	position: absolute;
+} 
+
+.GCCL .menu_Wrap .menuPoint{
+	background-color: #fff;
+}
+
+.menu .menu_Wrap .menuList{
+	height: 100%;
+	width: 0;
+	overflow: hidden;
+	/*  animation: name duration timing-function delay iteration-count direction fill-mode; */
+	animation : slideRight 1s linear 4s 1 normal forwards;
+}
+
+.menu_Wrap .menuList .menuDiv .menuName{
+	position:absolute;
+	top:103%;
+	left:50%;
+	transform: translateX(-50%);
+	text-align: center;
+	width: 100%;;
+}
+
+.menu_Wrap .menuList .menuDiv.focus{
+	color: green;
+}
+
+.menu_Wrap .menuList .menuDiv{
+	width: 100px;
+	height: 100px;
+	border-radius : 50%;
+	position: absolute;
+	color: #fdedb3;
+	cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.GCCL .menu_Wrap .menuList .menuDiv{
+	color: #e8eef2;
+    opacity:0.7;
+}
+.GCCL .menu_Wrap .menuList .menuDiv.focus{
+	color: #fff;
+}
+
+.GCCL .menuDiv[menuid="BM"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico1.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CL"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico2.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="LI"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico3.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="KPI"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico4.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CA"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico5.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CP"]{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico6.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="BM"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico1_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CL"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico2_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="LI"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico3_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="KPI"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico4_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CA"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico5_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCCL .menuDiv[menuid="CP"].focus{
+	background: url(/common/theme/webdek/images/login/GCCL_menu_ico6_f.png) no-repeat center center;background-size : 100% 100%;}
+
+
+.GCLC .menuDiv[menuid="OD"]{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico1.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="OB"]{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico2.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="RO"]{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico3.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="KPI"]{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico4.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="BM"]{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico5.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="OD"].focus{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico1_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="OB"].focus{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico2_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="RO"].focus{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico3_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="KPI"].focus{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico4_f.png) no-repeat center center;background-size : 100% 100%;}
+.GCLC .menuDiv[menuid="BM"].focus{
+	background: url(/common/theme/webdek/images/login/GCLC_menu2_ico5_f.png) no-repeat center center;background-size : 100% 100%;}
+
+.menuBox{
+    width: 700px;
+    height: 600px;
+    position: relative;
+}
+
+
+/* .menu_Wrap .set7 .menuPoint.focus1{ */
+/* 	top: 50%; left: -10px;}  */
+/* .menu_Wrap .set7 .menuPoint.focus7{ */
+/*     top: 50%;right: -10px;} */
+/* .menu_Wrap .set7 .menuPoint.focus2{ */
+/*     top: 70%;left: calc(6% - 10px);} */
+/* .menu_Wrap .set7 .menuPoint.focus6{ */
+/*     top: 70%;right: calc(6% - 10px);} */
+/* .menu_Wrap .set7 .menuPoint.focus3{ */
+/*     top: 90%;left: calc(25% - 10px);} */
+/* .menu_Wrap .set7 .menuPoint.focus5{ */
+/*     top: 90%;right: calc(25% - 10px);} */
+/* .menu_Wrap .set7 .menuPoint.focus4{ */
+/*     top: 97%;right: calc(50% - 10px);} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(1){ */
+/*     top: 30%; left: 16%;} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(7){ */
+/*     top: 30%; right: 16%;} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(2){ */
+/*     top: 50%;  left: 20%;} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(6){ */
+/* 	top: 50%; right : 20%;	} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(3){ */
+/*     top: 64%; left: 31%;} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(5){ */
+/*  	top: 64%; right : 31%;} */
+/* .menu_Wrap .set7 .menuDiv:nth-child(4){ */
+/*     top: 70%; left: 50%; */
+/*     transform: translateX(-50%); */
+/* } */
+
+.menu_Wrap .set6 .menuPoint.focus1{
+	top: 57%; left: calc(1% - 10px);} 
+.menu_Wrap .set6 .menuPoint.focus6{
+    top: 57%;right: calc(1% - 10px);}
+.menu_Wrap .set6 .menuPoint.focus2{
+    top: 79.5%;left: calc(12% - 10px);}
+.menu_Wrap .set6 .menuPoint.focus5{
+    top: 79.5%;right: calc(12% - 10px);}
+.menu_Wrap .set6 .menuPoint.focus3{
+    top: 95.5%;left: calc(37% - 10px);}
+.menu_Wrap .set6 .menuPoint.focus4{
+    top: 95.5%;right: calc(37% - 10px);}
+.menu_Wrap .set6 .menuDiv:nth-child(1){
+    top: 44%; left: 2%;}
+.menu_Wrap .set6 .menuDiv:nth-child(6){
+    top: 44%; right: 2%;}
+.menu_Wrap .set6 .menuDiv:nth-child(2){
+    top: 67%;  left: 12%;}
+.menu_Wrap .set6 .menuDiv:nth-child(5){
+	top: 67%; right : 12%;	}
+.menu_Wrap .set6 .menuDiv:nth-child(3){
+    top: 80%; left: 32%;}
+.menu_Wrap .set6 .menuDiv:nth-child(4){
+ 	top: 80%; right : 32%;}
+    
+    
+.menu_Wrap .set5 .menuPoint.focus1{
+    top: 65%;left: calc(3.5% - 10px);}
+.menu_Wrap .set5 .menuPoint.focus5{
+    top: 65%;right: calc(3.5% - 10px);}
+.menu_Wrap .set5 .menuPoint.focus2{
+    top: 88%;left: calc(22% - 10px);}
+.menu_Wrap .set5 .menuPoint.focus4{
+    top: 88%;right: calc(22% - 10px);}
+.menu_Wrap .set5 .menuPoint.focus3{
+    top: 97%;right: calc(50% - 10px);}
+.menu_Wrap .set5 .menuDiv:nth-child(1){
+    top: 50%;  left: 5%;}
+.menu_Wrap .set5 .menuDiv:nth-child(5){
+	top: 50%; right : 5%;	}
+.menu_Wrap .set5 .menuDiv:nth-child(2){
+    top: 72%; left: 20%;}
+.menu_Wrap .set5 .menuDiv:nth-child(4){
+ 	top: 72%; right : 20%;}
+.menu_Wrap .set5 .menuDiv:nth-child(3){
+    top: 80%;left: 50%;
+    transform: translateX(-50%);
+}
+
+.menu_Wrap .set4 .menuPoint.focus1{
+    top: 79.5%;left: calc(12% - 10px);}
+.menu_Wrap .set4 .menuPoint.focus4{
+    top: 79.5%;right: calc(12% - 10px);}
+.menu_Wrap .set4 .menuPoint.focus2{
+    top: 95.5%;left: calc(37% - 10px);}
+.menu_Wrap .set4 .menuPoint.focus3{
+    top: 95.5%;right: calc(37% - 10px);}
+.menu_Wrap .set4 .menuDiv:nth-child(1){
+    top: 67%;  left: 12%;}
+.menu_Wrap .set4 .menuDiv:nth-child(4){
+	top: 67%; right : 12%;	}
+.menu_Wrap .set4 .menuDiv:nth-child(2){
+    top: 80%; left: 32%;}
+.menu_Wrap .set4 .menuDiv:nth-child(3){
+ 	top: 80%; right : 32%;}
+
+.menu_Wrap .set3 .menuPoint.focus1{
+    top: 88%;left: calc(22% - 10px);}
+.menu_Wrap .set3 .menuPoint.focus3{
+    top: 88%;right: calc(22% - 10px);}
+.menu_Wrap .set3 .menuPoint.focus2{
+    top: 97%;right: calc(50% - 10px);}
+.menu_Wrap .set3 .menuDiv:nth-child(1){
+    top: 72%; left: 20%;}
+.menu_Wrap .set3 .menuDiv:nth-child(3){
+ 	top: 72%; right : 20%;}
+.menu_Wrap .set3 .menuDiv:nth-child(2){
+    top: 80%;left: 50%;
+    transform: translateX(-50%);
+}
+
+.menu_Wrap .set2 .menuPoint.focus1{
+    top: 95.5%;left: calc(37% - 10px);}
+.menu_Wrap .set2 .menuPoint.focus2{
+    top: 95.5%;right: calc(37% - 10px);}
+.menu_Wrap .set2 .menuDiv:nth-child(1){
+    top: 80%; left: 32%;}
+.menu_Wrap .set2 .menuDiv:nth-child(2){
+ 	top: 80%; right : 32%;}
+	
+.menu_Wrap .set1 .menuPoint.focus1{
+    top: 97%;right: calc(50% - 10px);}
+.menu_Wrap .set1 .menuDiv:nth-child(1){
+    top: 80%;left: 50%;
+    transform: translateX(-50%);
+}
+
+.skip{
+	position:absolute;
+	top:-100%;
+	left:-100%;
+	width:90px;
+	height:50px;
+	background: url("/common/theme/webdek/images/login/skip.png") no-repeat center center;
+	background-size:100% auto;
+    transform: translate(-50%, -58%);
+	cursor: pointer;
+}
+
+@keyframes slideDown {
+  from {
+    height:0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    width:0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+

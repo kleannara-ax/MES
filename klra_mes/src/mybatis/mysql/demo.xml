@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Demo">
+
+	<select id="COMCODE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_PARAM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_EVENT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="SYSFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			F.UUID,
+			F.UUID AS ATTACH,
+			F.GUUID,
+			F.RPATH,
+			F.PATH,
+			F.FNAME,
+			F.NAME AS UUID_FILEVIEW,
+			F.NAME AS ATTACH_FILEVIEW,
+			F.MIME,
+			F.STYPE,
+			F.BYTE,
+			F.CREATEUSER,
+			F.CREATEDATE,
+			F.UPDATEUSER,
+			F.UPDATEDATE,
+			F.DELETEYN,
+			CASE WHEN F.BYTE <![CDATA[<]]> 1024 THEN F.BYTE || ' BYTE'
+		         WHEN F.BYTE > 1024 AND F.BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(F.BYTE/1024,2) || ' KB'
+		         ELSE ROUND(F.BYTE/(1024*1024),2) || ' MB'
+		    END  AS BYTE_FILESIZEVIEW,
+		    'Y' AS UPTBYN
+		FROM SYSFILE F
+		WHERE 1=1
+		<if test="GUUID != null and GUUID != ''">
+			AND F.GUUID = #{GUUID}
+		</if>
+		<if test="DELETEYN != null and DELETEYN != ''">
+			AND F.DELETEYN = #{DELETEYN}
+		</if>
+	</select>
+	
+	<select id="GRIDTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUID, MGL.PMENUID, CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS MENULABEL,
+		    MM.MENUNAME, MM.URI, MM.PARAM, MGL.MENUGID, MGL.SORTORDER
+		FROM
+		(SELECT 
+			COMPID,
+             MENUGID,
+             MENUID,
+             SORTORDER,
+             PMENUID
+         FROM MSTMENUGL 
+         WHERE MENUGID = #{MENUGID} AND COMPID = #{SES_USER_COMPANY}) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="MENUTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUID AS "id", MGL.PMENUID AS "pId", CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS "name",
+		    MM.MENUNAME, MM.URI, MM.PARAM
+		FROM
+		(SELECT 
+			COMPID,
+             MENUGID,
+             MENUID,
+             SORTORDER,
+             PMENUID
+         FROM MSTMENUGL 
+         WHERE MENUGID = #{MENUGID} AND COMPID = #{SES_USER_COMPANY}) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="SYSLABEL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			L.LABELGID,
+			L.LABELID,
+			L.LANGCODE,
+			L.LABEL,
+			L.LABELTYPE,
+			L.CREATEUSER,
+			L.CREATEDATE,
+			L.UPDATEUSER,
+			L.UPDATEDATE,
+			L.DELETEYN
+		FROM SYSLABEL L
+		WHERE 1=1 
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+		<if test="RANGE_SQL_G1 != null and RANGE_SQL_G1 != ''">
+			${RANGE_SQL_G1}
+		</if>
+	</select>
+</mapper>

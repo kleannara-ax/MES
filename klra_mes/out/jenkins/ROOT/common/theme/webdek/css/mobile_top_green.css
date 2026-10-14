@@ -1,0 +1,18 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "mobile_top.css"; 
+
+html,body,h1 {height: 100vh;}
+
+.content_top{background:url(/common/theme/webdek/mobile_green/green_top_bg.png) no-repeat center; background-size: cover;/* background-color:#273984 */}
+.content_top:after{content:" ";display:block;height:0;clear:both}
+/* .logo, .logos, .logo a {background-color:#273984; } */
+
+.btn_ghost {float:left; width:100px; height:80px;  padding: 30px 20px;}
+.btn_ghost span {display: block; width: 100%; height: 100%; text-indent: -5000px; overflow: hidden; background: url(/common/theme/webdek/mobile_green/icon_menu.png) no-repeat center center; background-size: 60% auto; }
+
+.title_wrap {float:left; height: 140px; width:calc(100% - 280px); text-align:center;}
+.title_wrap .title {font-size: 3.5em; line-height: 140px; color: #fff;}
+
+.setting {float:right; width:100px; height:80px;  padding: 30px 20px;}
+.setting span {display: block; width: 100%; height: 100%; text-indent: -5000px; overflow: hidden; background: url(/common/theme/webdek/mobile_green/btn_user.png) no-repeat center center; background-size: 60% auto; }

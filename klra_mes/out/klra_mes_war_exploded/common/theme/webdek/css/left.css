@@ -1,0 +1,97 @@
+@charset "utf-8";
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+/* left */
+
+body{overflow: hidden;}
+.left_wrap{position:relative; height:100%;}
+
+/* info_my */
+.info_my {background-color: transparent;}
+.info_my:after{content:" ";display:block;height:0;clear:both}
+.info_my .name_user{display:none; float:left;line-height:2;font-size:14px;text-decoration:underline}
+.info_my button {float:left; margin: 0px auto;}
+
+.wrap_btn {position:relative; box-sizing: border-box; height: 42px; background-color: #f8f9fa;}
+.wrap_btn btn {display:block; width: 91px; height: 42px; box-sizing: border-box;}
+.wrap_btn span {display:block; text-indent:-5000px; overflow:hidden;}
+.wrap_btn .alert {float:left; display:block; width: 93px; height: 42px; }
+.wrap_btn .set {float:left; display:block; width: 92px;  border-left: 1px solid #eee; border-right: 1px solid #eee;}
+.wrap_btn .info_my {float: right; }
+.btn_alert {box-sizing: border-box; background: url("/common/theme/webdek/images/icon_bottom_bell.png") no-repeat center; background-size: 15px 18px; padding:12px 46px; }
+.btn_setting {float:left;  display:block; width: 93px; height:41px; box-sizing: border-box; padding-left: 1px solid #eee;
+ padding-right: 1px solid #eee;  background: url("/common/theme/webdek/images/icon_bottom_set.png") no-repeat center; background-size: 18px;  padding:10px 40px}
+.btn_logout{float:right; width: 91px;  box-sizing: border-box; background-color: transparent;  background: url("/common/theme/webdek/images/icon_bottom_logout.png") no-repeat center; background-size: 18px; padding:12px 40px}
+.btn span{display:inline-block;text-align:left;text-indent:-5000px;overflow:hidden}
+.label-warning {position:absolute; background-color: #fa6d45; font-size:10px; width:14px; height:14px; text-align:center; background-size: 10px; border-radius:14px; display:inline-block; vertical-align:middle; color: white; top: 9px; left: 44px;}
+ 
+/* Quick menu */
+/* .guick_menu{position:relative} */
+/* .guick_link{text-align:right;margin:16px 20px 20px} */
+/* .guick_link:after{content:" ";display:block;height:0;clear:both} */
+/* .guick_tit{float:left;line-height:2;font-size:14px} */
+.guick_menu ul {display: none;}
+.guick_menu .lnb_dep01{overflow:auto;display:none;}
+/*display:none;  */
+.guick_menu.open .lnb_dep01{display:block}
+
+/* lnb dep */
+.lnb_wrap{overflow:auto; border: none;}
+.lnb_wrap ul{display:none}
+.my_menu,.sys_menu{width:50%; box-sizing:border-box;}
+.lnb_dep01
+.lnb_dep01 {background-color: #fff; border: none;}
+.lnb_dep01 li a {border: none; color: #666;}
+.lnb_dep01 .open {display:block;}/* 메뉴 확장 */
+.lnb_dep01 li a{position:relative; display:block;padding: 6px 0px 6px 38px; text-overflow:ellipsis; white-space:nowrap}
+.lnb_dep01 > li > a:after{content:" ";display:block;position:absolute;left:0px;top:18px;width:14px;height:12px}
+.lnb_dep01 li a{position:relative; display:block;padding: 6px 0px 6px 38px; text-overflow:ellipsis;overflow:hidden; white-space:nowrap}
+.lnb_dep01 > li > a:after {background: url(/common/theme/webdek/images/icon_folder_minus.png) no-repeat 20px center;  background-size: 14px; color: #222;}
+
+.lnb_dep02 > li > a{padding:6px 0px 6px 56px}
+.lnb_dep02 > li > a:after {background: url(/common/theme/webdek/images/icon_folder_minus.png) no-repeat 38px center;  background-size: 14px;}
+
+.lnb_dep03 > li > a:after {background: url(/common/theme/webdek/images/icon_folder_doc.png) no-repeat 54px center;  background-size: 12px;}
+.lnb_dep03 {border: none;}
+.lnb_dep03 li.on a {background-color: #fcfcfc;}
+
+/* tabs */
+.tab_wrap {display:block; list-style: none; width:100%; overflow: hidden; position: relative; box-sizing:border-box;}
+.tab_wrap .tabs {cursor: pointer; height: 30px; display:block; overflow: hidden;box-sizing:border-box; list-style: none;width:100%; margin: 0; padding: 0;}
+.tabs .tab {display:block; box-sizing:border-box;float: left; height: 30px; position: relative; text-align: center; font-size: 14px;  letter-spacing: -1px; padding: 7px 20px 18px 19px;}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+.tab a {display:block; height:14px; text-decoration: none;}
+.tab span {display:block; height:14px; line-height: 14px; text-align:center; text-indent: 22px;}
+
+/* .tabs li.active, .tabs li.active a:hover  {background-color: #fff; border-bottom: 1px solid #fff;}*/
+/* .tab a {display:block; height:14px; text-decoration: none;}
+.tab span {display:block; height:14px; line-height: 14px; text-align:center; text-indent: 22px;}
+.sys_menu {border-left: 1px solid #fff; width: 140px; background: #fff;}
+.btn_sysmenu span {color:#333; background: url("/common/theme/webdek/images/icon_set01.png") no-repeat left center; background-size: 12px;}
+.my_menu {border-left: 1px solid #eee; border-bottom: 1px solid #eee; width:139px; background: #f8f9fa; padding: 18px 28px 18px 50px;}
+.btn_mymenu span  {color:#99a4b1; background: url("/common/theme/webdek/images/icon_star02.png") no-repeat 14px center; background-size: 12px;}
+   */
+/* search */
+.search_box{position:relative; float: left; border: none;clear: both; }
+.search_box input::placeholder {position:absolute; color: #999; top: 0; left:16px;} 
+
+.tab_container {background: url(/common/theme/webdek/images/left-main-bg.png) no-repeat; background-size: cover; background-position: 11% 25%;}
+.tab_container fieldset {display:block;box-sizing:border-box; height: 70px; padding: 18px 15px;}
+
+.search_box .btn {width: 13px; height: 13px;  top: 8px; right:8px; }
+.serch_input {background-color:#fff; border:2px solid #fff;border-radius:2px; padding-left: 15px; padding-right: 13px; border: solid 1px #c9c9c9; box-sizing:border-box;  border-radius: 2px; width: 244px; height: 30px; padding-left:7px; box-sizing:border-box; color: #999;}
+.sort_box {float:right; box-sizing:border-box; width: 30px; height: 30px; margin-left:1px; border-radius: 2px; }
+.sort_box button { border:0; margin: 0; padding: 0;}
+.sort_box button.slide{background-image:url(/common/theme/webdek/green/btn_close_menu_blue.png);}
+/* .btn_asc {float:left; width: 31px; height: 30px; background: url("/common/theme/webdek/images/icon_sort_asc_01.png") no-repeat center; background-size: 18px 8px; }
+.btn_desc  {float:right; width: 30px; height: 29px; background: url("/common/theme/webdek/images/icon_sort_desc_02.png") no-repeat center;  background-color: #99a4b1;  background-size: 18px 8px;  border-bottom-right-radius: 2px;  border-top-right-radius: 2px;  } */\
+
+/* 111202 */
+/* .tabs li {}
+.tabs .sys_menu .on { border-bottom: 1px solid #eee; width:139px;  background-color:#f8f9fa; border-right:1px solid #eee; color:#99a4b1; }
+.tabs .my_menu .on {border-bottom: 1px solid #fff; width: 140px; background: #333; }
+ */
+
+/*input 버튼 위치수정*/
+.search_box_change {width:210px;}
+.serch_input_change {width:210px;}
+

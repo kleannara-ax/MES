@@ -1,0 +1,2 @@
+grid set readonly 성능개선
+ - configData.js, grid.js

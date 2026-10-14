@@ -1,0 +1,11 @@
+input.js
+ - multi combo 선언시 크기 지정기능 추가 : 해당 select tag에 크기 지정한 style="width:200px" 경우 동일한 크기로 변경
+ - 전체 체크/해지 함수 추가 : inputList.setMultiComboSelectAll(obj, eventType);
+ - value set 함수 : inputList.setMultiComboValue(obj, values, eventType);
+ - value 추가 함수 : inputList.addMultiComboValue(obj, values, eventType);
+ - value remove 함수 : inputList.removeMultiComboValue(obj, values, eventType);
+ - multi combo(MC), multi search combo(MS) 로 형태 구분
+ - multi combo, multi search combo 는  RANGE_SQL에 적용 되도록 추가
+ 
+grid.js
+ - 컬럼 데이터 변경시 원래 데이터와 같고, 해당 row에 변경된 데이터가 없는 경우 rownum 컬럼에 정상 행 번호 표시

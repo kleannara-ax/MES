@@ -1,0 +1,7 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "system_red.css"; /* color CSS */
+
+html, body{height:100%; width:100%;}
+body{display:none; min-width:unset !important; min-width:0px !important;}
+.content_wrap{background: none;}

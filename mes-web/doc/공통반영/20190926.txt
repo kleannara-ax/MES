@@ -1,0 +1,22 @@
+grid.js
+ - 화면 로딩 시 성능 개선을 위해 초기 그리드 셋팅 시 컬럼 크기 조정 기능을 로드하지 않고, 데이터가 그려진 이후에 로드하도록 하는 옵션 추가
+ - setGrid - draggInitType : true
+ - draggInitType : false 인 경우 데이터가 그려진 이후에 로드
+ 
+ - total 보인 후 이벤트 추가
+ - gridListEventTotalViewEnd(gridId, totalNumMap) : totalNumMap - 합계값 들어 있음
+ - total의 특정 컬럼에 값 표시 기능 추가
+ - gridList.setTotalColtext(gridId, colName, colText);
+ 
+ - next focus 이동 시 함수오류 수정
+ 
+최신 버젼 크롬에서 그리드 내 버튼 오류 수정
+ - grid.js
+ - content_body.css
+ 
+그리드 월 선택 컴퍼넌트 추가
+ - GF="MS"
+ - grid.js, ui,js
+ 
+ input.js
+  - 멀티콤보 get, save variant 기능 수정

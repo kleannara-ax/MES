@@ -1,0 +1,46 @@
+@charset 'utf-8';
+
+/* lnb */
+.lnb { height:100%; border-right:1px solid #b9bcc7; background-color:#f5f6f9; overflow-y: scroll; font-family:나눔고딕, NanumGothic, Georgia, Serif !important;}
+.lnb h2 { height:72px; line-height:72px; text-align:center; border-bottom:1px solid #c2c8d7; background-color:#fff;}
+.lnb h2 span { display:inline-block; line-height:1; padding-bottom:5px; border-bottom:1px solid #444; color:#444; font-size:12px; font-weight:bold;}
+.lnb .list { border-top:1px solid #d0d3de;}
+.lnb .list > li { border-bottom:1px solid #d0d3de;}
+.lnb .list > li > a { display:block; height:25px; line-height:25px; padding-left:15px; background:url("/common/images/bg_lnb1.png") repeat-x left top;}
+.lnb .list > li > a > span { display:block; height:25px; width:100%; line-height:25px; background:url("/common/images/ico_lnb_close.png") no-repeat 95% center; }
+.lnb .list > li.active > a { background-image:url("/common/images/bg_lnb2.png");}
+.lnb .list > li.active > a > span { height:25px; color:#fff; background-image:url("/common/images/ico_lnb_open.png");}
+.lnb .list > li > ul { display:none; background-color:#f5f6f9;}
+.lnb .list > li > ul > li { padding-left:15px; display: table; width: 100%;}
+.lnb .list > li > ul > li.hasDepth { background:url("/common/images/ico_lnb_plus.png") no-repeat 95% 10px;}
+.lnb .list > li > ul > li > a { display:block; height:25px; padding:6px 0 8px 10px; color:#666; background:url("/common/images/ico_lnb_dot3.png") no-repeat left 10px;}
+
+.fmnuTxt {float: left; margin-right: 10px;}
+.mnuTxt {float: left;}
+.delFav { display:block; width:20px; margin-right:6px; padding:5px 5px 5px 5px; position:absolute; right:1px; float:left; }
+
+
+#mnuTxt {float: left; margin-right: 25px;}
+#delFav { display:block; width:20px; margin-right:6px; padding:5px 5px 5px 5px; position:absolute; right:1px; float:left; }
+
+.lnb .list > li > ul > li.active { background-color:#d4d6df;}
+.lnb .list > li > ul > li.active.hasDepth { background-image:url("/common/images/ico_lnb_minus.png"); background-position:95% 13px;}
+.lnb .list > li > ul > li.active > a { height:20px; color:#4786f6; background-image:url("/common/images/ico_lnb_dot4.png");}
+.lnb .list > li > ul > li > ul { display:none; padding:0 0 5px;}
+.lnb .list > li > ul > .favmnu > a {float : left;}
+.lnb .list > li > ul > li > ul > li { padding:2px 0; }
+.lnb .list > li > ul > li > ul > li > a { height:20px; display:block; padding:5px 0 5px 15px; margin-right:7px; background:url("/common/images/ico_lnb_dot2.png") no-repeat 3px center;}
+.lnb .list > li > ul > li > ul > li.active > a { height:20px; background-image:url("/common/images/ico_lnb_dot1.png"); color:#fff; background-color:#555969;}
+
+.lnb .icons { padding:3px 10px 0; height:25px; overflow:hidden; background-color:#fff;}
+.lnb .icons .leftArea,
+.lnb .icons .leftArea .button { float:left;}
+.lnb .icons .leftArea .button.first { border-right:0 none; border-radius:2px 0 0 2px;}
+.lnb .icons .leftArea .button.second { border-radius:0 2px 2px 0;}
+.lnb .icons .rightArea,
+.lnb .icons .rightArea .button { float:right;}
+
+/* button */
+.button { position:relative; display:inline-block; text-align:center; }
+.button.type1 { width:24px; height:20px; background-color:#e4e4e4; border:1px solid #a2a7b5; border-radius:2px; }
+.button.type1:hover { background:url("/common/images/bg_button1.png") repeat-x 1px 1px; }

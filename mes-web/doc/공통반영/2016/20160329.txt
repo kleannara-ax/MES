@@ -1,0 +1,6 @@
+checkBox 컬럼의 경우 heaed에 전체 check하는 기능 추가
+ - grid.js : <th GBtnCheck="CHECKDATA">Check</th>
+ 
+ grid.js
+  - 그리드 input box 제거시 해당 컬럼에 데이터 보여지지 않는 오류 수정
+  - 조회된 데이터가 없는 경우 해더를 클릭해도 소트가 먹지 않도록 변경

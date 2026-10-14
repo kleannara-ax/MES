@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom.css" />
+<link rel="stylesheet" type="text/css" href="css/cubefw.ref.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom.js"></script>
+<script type="text/javascript" src="js/cubefw.js"></script>
+<script type="text/javascript">
+	jQuery(function(){	
+		cubeUI.typeCheck();	
+	});
+</script>
+</head>
+<body class="cubeContentBody">
+	<div class="cubeTopMenu">
+		<span cubeDataType="button"><a href="/cubefw/reference/cubeReference.html">Reference</a></span>	
+	</div>
+	<div class="cubeTopLine"></div>	
+	<div class="cubeCenterCont">
+		<div class="cubeLeftMenu">
+		<div class="cubeSubMenu" cubeDataType="accordion">
+			<h1>
+				Reference
+			</h1>
+			<ul cubeDataType="menu">
+				<li><a href="/cubefw/reference/cubeMap.html">CubeMap</a></li>
+				<li><a href="/cubefw/reference/cubeConfig.html">CubeConfig</a></li>
+				<li><a href="/cubefw/reference/cubeCommon.html">CubeCommon</a></li>
+				<li><a href="/cubefw/reference/cubeGridRow.html">CubeGridRow</a></li>
+				<li><a href="/cubefw/reference/cubeNet.html">CubeNet</a></li>
+				<li><a href="/cubefw/reference/cubeBind.html">CubeBind</a></li>
+				<li><a href="/cubefw/reference/cubeUI.html">CubeUI</a></li>
+				<li><a href="/cubefw/reference/cubeBoard.html">CubeBoard</a></li>
+				<li><a href="/cubefw/reference/cubeValidate.html">CubeValidate</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="cubeRightCont">
+			<span class="cubeTitleNav">HOME &gt; Cubefw Reference &gt; CubeCommon</span>
+			<div id="contents">
+				<ul class="referenceList">
+					<li class="refTit">
+						<h1>CubeCommon</h1>	
+					</li>
+					<li>
+						<h2>CubeCommon.loadingViewType</h2>
+						<p>Boolean. ajax 호출시 자동으로 표시되는 loading의 표시 유무.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.cubeLoadingCount</h2>
+						<p>ajax의 비동기 호출 시 여러건의 call back을 감지하여 모두 완료되어야ㅣloading을 해지한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.$cubeFwAjaxIndicator</h2>
+						<p>loading시 화면을 블락한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.$cubeFwIndicatorDiv</h2>
+						<p>loading이미지가 표시되는 영역</p>
+					</li>
+					<li>
+						<h2>CubeCommon.$cubeFwUploadText</h2>
+						<p>ajax fileupload시 진행상태가 표시되는 영역</p>
+					</li>
+					<li>
+						<h2>CubeCommon.displayLoadingSet()</h2>
+						<p>loaging을 표시하기 위한 기본 영역을 생성한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.loadingViewOff()</h2>
+						<p>logding을 사용하지 않도록 설정</p>
+					</li>
+					<li>
+						<h2>CubeCommon.loadingViewOn()</h2>
+						<p>loading을 사용하도록 설정</p>
+					</li>
+					<li>
+						<h2>CubeCommon.displayLoading(type)</h2>
+						<p>loading을 표시한다. type - true:표시, false:해지</p>
+					</li>
+					<li>
+						<h2>CubeCommon.commonLoad(vId)</h2>
+						<p>최초 loading 준비</p>
+					</li>
+					<li>
+						<h2>CubeCommon.enterKeyCheck(event, fncName)</h2>
+						<p>input에서 enter key조작시 특정 함수 호출</p>
+					</li>
+					<li>
+						<h2>CubeCommon.setElementValue($obj, data)</h2>
+						<p>$obj jQuery객체에서 값을 셋팅한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.getElementValue($obj)</h2>
+						<p>$obj jQuery객체에 값을 추출한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.getArea(vId)</h2>
+						<p>vId에 해당하는 jQuery객체를 가져온다. 지정 영역이 없는 경우 body전체를 영역으로 잡는다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.getObjType(obj)</h2>
+						<p>obj의 타입을 가져온다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.getJObj(obj)</h2>
+						<p>obj의 값이 어떤 형태이건 jQuery객체로 반환한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.getObjId(obj)</h2>
+						<p>지정한 obj의 id를 반환한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.isEmpty(obj)</h2>
+						<p>obj가 어떤 형태이건 값이 없는지 판단한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.isNotEmpty(obj)</h2>
+						<p>obj가 어떤 형태이건 값이 있는지 판단한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.NVL(obj, val)</h2>
+						<p>obj가 Empty이면 지정한 val을 리턴한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.popupOpen(url, width, height)</h2>
+						<p>popup을 open한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.msg(txt)</h2>
+						<p>해당 txt를 화면에 보여준다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.leftPadding(data, char, len)</h2>
+						<p>data의 길이가 len보다 작으면 왼쪽부터 char를 채운다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.fillString(char, len)</h2>
+						<p>char를 len개수만큼 만들어서 리턴한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.replaceAll(str, char, nChar)</h2>
+						<p>str에 포함된 char를 nChar로 변경한다.</p>
+					</li>
+					<li>
+						<h2>CubeCommon.toString()</h2>
+						<p>return "CubeCommon"</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cubeFooterLine"></div>
+	<div class="cubeFooter">
+		<img src="/cubefw/images/cubefw.jpg" height="25" alt="SMCube" align="left"/>
+		152-743 서울시 구로구 구로3동 197-5 삼성IT밸리 1108호 (주)에스엠큐브 TEL:02)6465-8311 FAX:02)6465-8313<br/>
+		Copyright (c) 2011 SMCube Co.,Ltd All Rights Reserved. Contact Us
+	</div>
+</body>
+</html>

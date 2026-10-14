@@ -1,0 +1,64 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "mobile_left.css";
+
+/* left */
+.left_wrap{background-color:#fff;position:fixed;display:block;position:fixed;top:0;left:0px;z-index:190;}
+
+/*left-top-logo*/
+.left-top-logo {height: 140px; width: 100%; text-align: left; background:url(/common/theme/webdek/mobile_green/green_top_bg.png) no-repeat center; background-size: cover;}
+.left-top-logo .left-top-webdek {width: 250px; height: auto; margin-top: 45px; margin-left: 46px;}
+
+/* info_my */
+.info_my {background-color:red}
+.info_my .name_user{color:#333}
+
+/* Quick menu */
+.guick_tit{color:#fffefe}
+
+/* lnb dep */
+.lnb_dep01{border-top:1px solid #ebebeb}
+.lnb_dep01 li a{color:#333;}
+.dep01_focus {background-color: #485fab; }
+.dep01_focus > a {color: #fff !important; background: #389a25 url(/common/theme/webdek/navy/icon_folder_open.png) no-repeat 20px center !important; background-size: 1em auto !important; }
+.lnb_dep01 > li > a {background: url(/common/theme/webdek/navy/icon_folder_close.png) no-repeat 20px center; background-size: 1em auto;}
+
+.lnb_dep02{background-color:#fff}
+.lnb_dep02 > li > a{background:url("/common/theme/webdek/navy/icon_folder_close.png") no-repeat 50px center; background-size: 1em auto;}
+.lnb_dep02 > li.on > a {color: #005d2c !important; border-bottom: 2px solid #dedede; font-weight: bold; background: #fff url(/common/theme/webdek/green/icon_folder_open_green.png) no-repeat 50px center !important; background-size: 1em auto !important; }
+/* .dep02_focus_off > a {color:#666 !important;background-color:#f5f5f7 !important;background: url(/common/theme/webdek/navy/icon_folder_list_on.png) no-repeat 37px center !important; background-size: 14px auto !important;} */
+/* .dep02_focus_on > a {color:#cb470a !important;background: url("/common/theme/webdek/navy/icon_folder_open_navy.png") no-repeat 37px center; background-size: 14px auto;background-color:#f5e2d8 !important;} */
+
+.lnb_dep03{background-color:#f1f1f1;border-bottom:1px solid #ebebeb}
+.lnb_dep03 > li > a {padding:5px 0px 5px 130px !important; color: #99a4b1; background:url(/common/theme/webdek/navy/icon_folder_list_on.png) no-repeat 75px center; background-size: 1em auto;}
+.lnb_dep03 li a{color:#666;border-bottom:none;}
+.lnb_dep03 li.on a{color:#007a33;background: url(/common/theme/webdek/green/icon_folder_list.png) no-repeat 75px center !important; background-size: 1em auto !important; background-color:#f8f3f0;}
+
+/* search */
+.search_box{background:#fff;border:2px solid #fff;border-radius:2px}
+.required:after{background:url("/common/theme/webdek/images/icon.png") no-repeat right -40px}/* 필수 항목 */
+.input_box{background:#fff;border:2px solid #fff;border-radius:2px}
+.input_box_g{background:#fff;border:1px solid #ececec;border-radius:2px}
+.input_box_bg{background:#f5f5f5;border:2px solid #f5f5f5;border-radius:2px}
+.input_bg{background:#f5f5f5}
+.txt_count{color:#101010}
+.txt_total{color:#101010}
+
+/*tabs*/
+.sys_menu {/* border-left: 1px solid #6e7387; */ width: 140px;  /* background: #ffa000; */}
+.sys_menu.on span {background: url("/common/theme/webdek/red/icon_set01.png") no-repeat left center; background-size: 12px;}
+.my_menu {border-left: 1px solid #494d5e; border-bottom: 1px solid #494d5e; width:139px; background: #785844; padding: 18px 28px 18px 50px;}
+.my_menu.on span {background: url("/common/theme/webdek/red/icn_star02_on.png") no-repeat 14px center; background-size: 12px;}
+.tabs .sys_menu.on, .tabs .my_menu.on {border-bottom: 1px solid #ffa000; background-color:#ffa000; }
+.tabs .sys_menu.on span, .tabs .my_menu.on span {color:#fff;}
+.tabs .sys_menu.off, .tabs .my_menu.off {border-bottom: 1px solid #785844; background: #785844; }
+.tabs .sys_menu.off span, .tabs .my_menu.off span {color:#d7d9e0;}  
+.tabs .sys_menu.off span {background: url("/common/theme/webdek/red/icon_set01_off.png") no-repeat left center; background-size: 12px;}
+.tabs .my_menu.off span {background: url("/common/theme/webdek/red/icon_star02.png") no-repeat 14px center; background-size: 12px;}
+ 
+/*btn*/
+.btn_asc {float:left; width: 31px; height: 30px; background-color:#8e664c !important; background: url("/common/theme/webdek/navy/icon_sort_asc_01.png") no-repeat center; background-size: 18px 8px; border-bottom-left-radius: 2px;  border-top-left-radius: 2px; }
+.btn_desc  {float:right; width: 31px; height: 30px; background: url("/common/theme/webdek/images/icon_sort_desc_02.png") no-repeat center;  background-color: #765540 !important;  background-size: 18px 8px;  border-bottom-right-radius: 2px;  border-top-right-radius: 2px;  }
+.btn_search{position:absolute; background: url("/common/theme/webdek/green/search.png") no-repeat 10px bottom; background-size:60px; top:10px; right:35px; }
+
+

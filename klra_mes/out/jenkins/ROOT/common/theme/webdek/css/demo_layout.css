@@ -1,0 +1,46 @@
+@charset "utf-8";
+
+
+/******************* 수정적용필요 *************************/
+
+/* .content-horizontal-wrap,.content-vertical-wrap{height: auto;min-height: 100%;} */
+
+/* table_box>inner_search_wrap */
+.inner_search_wrap{height: 100%;}
+
+.inner_tablebox_wrap{height: calc(100% - 50px); width: 100%;}
+.inner_tablebox_wrap>.table_box{height: 100%;}
+
+/* 버튼까지 input기본사이즈 맞춤(150px) */
+.inner_search_wrap .detail_table tr td input.hasMonthpicker,
+.inner_search_wrap .detail_table tr td input.hasDatepicker,
+.inner_search_wrap .detail_table tr td input.hasTimepicker {width: 130px !important;}
+
+.inner_search_wrap .detail_table{min-width: 850px;}
+
+/* tablebox 없는 inner_search_wrap */
+.content_layout>.tab+.inner_search_wrap{height: calc(100% - 50px);}
+
+/* head 기본크기 */
+.top_layout{margin-bottom: 10px; height: 58%;}
+/* bottom 기본크기 */
+.bottom_layout{height: 40%;}
+
+/* 가로 3set layout 크기동일 */
+.content_3set {float: left; width: calc((100% - 40px) / 3) !important;}
+.content_3set+.content_3set {margin: 0 0 0 20px;}
+
+/* 세로 3set layout  */
+.content_H_3set {height: 200px; margin: 0 0 10px 0;}
+.content_H_3set:last-child {height: calc(100% - 440px); margin:0}
+
+/* 세로 여러줄, 고정크기 */
+.more_H_layout {height: 200px; margin: 0 0 10px 0;}
+.more_H_layout:last-child { margin:0}
+
+
+/* 세로 여러줄, 크기 */
+.more_H_layout {height: 200px; margin: 0 0 10px 0;}
+.more_H_layout:last-child { margin:0}
+
+.btn_wrap~.table_box { height: calc(100% - 85px);}

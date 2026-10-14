@@ -1,0 +1,17 @@
+grid.js
+ - row readonly 적용 오류 수정
+ - append paging 기능에서 조회를 연속 수행 시 동일 데이터 append되는 오류 수정
+ - colfix 기능 수행시 focus가 정확하지 않으면 발생하는 오류 수정
+ 
+ExcelView.java
+ - 그리드 엑셀 다운로드시 타이틀 배경과 셍선 표시, 컬럼 크기 자동 조절 기능 추가
+ 
+그리드 엑셀 다운로드시 엑셀 셀크기를 그리드 컬럼 크기로 맞춰주도록 변경
+ - CommonConfig.java, ExcelView.java, BaseController,java
+ - configData.js, grid.js
+
+grid.js
+ - sort reset 순서 버그 패치
+ - rowNum 순서 버그 패치
+ - 그리드 보이는 순서대로 rowNum 순서대로 가져오는 함수. gridList.getRowNumList(gridId)
+ - rowViewNum attribute 제거

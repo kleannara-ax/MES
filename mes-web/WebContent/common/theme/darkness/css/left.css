@@ -1,0 +1,58 @@
+@charset 'utf-8';
+/* #c40452 -> #5DC560*/
+body{background:#1b1e24;}
+/* lnb */
+.lnb { height:100%; background-color:#1b1e24;overflow:auto;}
+.lnb h2 { height:72px; line-height:72px; text-align:center; border-bottom:1px solid #c2c8d7; background-color:#fff;}
+.lnb h2 span { display:inline-block; line-height:1; padding-bottom:5px; border-bottom:1px solid #444; color:#444; font-size:12px; font-weight:bold;}
+.lnb_top_space {height:25px;background-color:#22262e;}
+
+.lnb .list a {}
+
+.lnb .list > li {background:#1f2228;}
+.lnb .list > li > a { display:block; height:35px; padding-left:15px;color:#9f9fa1;border-bottom:1px solid #1b1e24;}								     /* 1depth font color */																		 /* 1depth height */
+.lnb .list > li > a > span { display:block; width:100%; line-height:35px; background:url("/common/theme/darkness/images/ico_lnb_close.png") no-repeat 95% center;}	 /* 1depth font line-height */
+.lnb .list > li.active > a { background:#555969;}																									 /* 1depth bg */
+.lnb .list > li.active > a > span { color:#fff; background-image:url("/common/theme/darkness/images/ico_lnb_open.png");}					   						 /* 1depth font color & img(-) */
+
+.lnb .list > li > ul { display:none; background-color:#22262e;}																						 /* 2depth bg */
+.lnb .list > li > ul > li { height:35px;display: table; width: 100%;border-bottom:1px solid #1b1e24;}							 /* 2depth height */
+.lnb .list > li > ul > li.hasDepth {}                                          /* 2depth img(-) */
+.lnb .list > li > ul > li > a { display:block; color:#9f9fa1;line-height:35px;padding:0 0 0 10px;background:url("/common/theme/darkness/images/ico_lnb_dot3.png") no-repeat 19px 13px;overflow:hidden;} /* 2depth font color(default) & line-height */
+.lnb .list > li > ul > li > a > span {padding-left:13px;border-left:1px solid #1d2027;margin-left:28px;}
+.lnb .list > li > ul > li.active {background-color:#2f3543;}																						 /* 3depth bg, 2depth bg(active) */
+
+.lnb .list > li > ul > li.active.hasDepth {} 				 /* 2depth title img(-) */
+.lnb .list > li > ul > li.active > a { height:35px;color:#fff; background:url("/common/theme/darkness/images/ico_lnb_dot4.png") no-repeat 19px 13px;}	 						 /* 3depth active, 2depth height & color(active) */
+.lnb .list > li > ul > li > ul { width:100%;display:none;}																							/* 3depth zone */
+.lnb .list > li > ul > .favmnu > a {float:left;}
+.lnb .list > li > ul > li > ul > li {border-top:1px solid #1b1e24;} 
+.lnb .list > li > ul > li > ul > li > a { height:35px; display:block; color:#9f9fa1;background:url("/common/theme/darkness/images/ico_lnb_dot2.png") no-repeat 19px center;}
+.lnb .list > li > ul > li > ul > li > a > span {padding-left:13px;line-height:35px;border-left:1px solid #1d2027;margin-left:38px;text-overflow:ellipsis;white-space:nowrap;}
+.lnb .list > li > ul > li > ul > li.active > a { background-image:url("/common/theme/darkness/images/ico_lnb_dot1.png"); color:#fff; background-color:#2f3543;}
+
+.fmnuTxt {float: left; margin-right: 10px;}
+.mnuTxt {float: left;}
+.delFav { display:block; width:20px; margin-right:6px; padding:10px 5px 5px 5px; position:absolute; right:1px; float:left; }
+
+
+#mnuTxt {float: left; margin-right: 25px;}
+#delFav { display:block; width:20px; margin-right:6px; padding:5px 5px 5px 5px; position:absolute; right:1px; float:left; }
+
+.lnb .icons {height:25px;background:#555969;}
+.lnb .icons .bg_searchbox1{width:14px;height:32px;display:inline-block;background:url("/common/theme/darkness/images/bg_searchbox1.png") no-repeat;}
+.lnb .icons .bg_searchbox2{width:35px;height:32px;display:inline-block;vertical-align:top;background:url("/common/theme/darkness/images/bg_searchbox2.png") no-repeat;}
+.lnb .icons .bg_searchbox2 img {margin:7px 0 0 7px;}
+.lnb .icons #menuSearch {width:150px;height:100%;border:none;vertical-align:top;background:#ebeef1;padding-left:10px;text-transform: uppercase}
+.lnb .icons .rightArea {margin-top:1px;}
+.lnb .icons .leftArea,
+.lnb .icons .leftArea .button { float:left;}
+.lnb .icons .leftArea .button.first { border-right:0 none; border-radius:2px 0 0 2px;}
+.lnb .icons .leftArea .button.second { border-radius:0 2px 2px 0;}
+.lnb .icons .rightArea,
+.lnb .icons .rightArea .button { float:right;}
+
+/* button */
+.button { position:relative; display:inline-block; text-align:center; }
+.button.type1 { width:24px; height:20px;}
+.button.type1:hover { background:url("/common/theme/darkness/images/bg_button1.png") repeat-x 1px 1px; }

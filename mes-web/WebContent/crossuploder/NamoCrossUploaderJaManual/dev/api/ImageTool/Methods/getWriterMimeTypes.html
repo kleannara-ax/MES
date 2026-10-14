@@ -1,0 +1,68 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>getWriterMimeTypes</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">ImageTool</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>getWriterMimeTypes</h2>
+            <p class="dscrpt">현재 시스템에서 쓰기 가능한 이미지 마임 타입의 배열을 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>static String[] <span class="fname">getWriterMimeTypes</span> ( )</pre>
+            </ul>
+            <h4>Parameters</h4>
+           
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt">현재 시스템에서 쓰기 가능한 이미지 마임 타입의 배열을 반환합니다./p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+try { 
+	// 참고용 샘플이며, 업로드 한 이미지가 지원 가능한 이미지인지 판단하는 API는 각 이미지 파일 처리 샘플 내에서 확인 가능합니다.
+	String[] readerFormatNames = ImageTool.getReaderFormatNames(); 
+	String[] writerFormatNames = ImageTool.getWriterFormatNames(); 
+	String[] readerMimeTypes = ImageTool.getReaderMimeTypes(); 
+	<b>String[] writerMimeTypes = ImageTool.getWriterMimeTypes();</b> 
+	
+	printSupportedImageInfo(readerFormatNames, writerFormatNames, readerMimeTypes, writerMimeTypes, writer);  
+}
+catch(Exception ex) { 
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,4 @@
+grid.js
+ - gridSave 시 validation 이중 check 로직 제거
+ - validation check 시 focus 문제 해결
+ - file type 인 경우 grid save 시 기본 modifyType 에서도 데이터 추출되도록 변경

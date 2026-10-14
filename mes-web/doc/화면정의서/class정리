@@ -1,0 +1,53 @@
+tableHeader : 그리드 head에 사용(table)
+tableBody : 그리드 body에 사용(table)
+tableUtil : 그리드 버튼 영역에 사용
+section : 그리드 head, body, util 전체를 쌓고 있는 영역에 사용
+
+gridColorTextRed : 그리드 문자 red
+gridColorTextBlue : 그리드 문자 blue
+gridColorTextYellow : 그리드 문자 yellow
+gridColorBgRed : 그리드 배경 red
+gridColorBgBlue 그리드 배경 blue
+gridColorBgYellow : 그리드 배경 yellow
+
+gridColText : 문자컬럼
+gridColTextColorRed : 문자컬럼 red 
+gridColInputText : 입력컬럼
+gridColTextCenter : 문자컬럼 중앙정렬
+gridColTextRight : 문자컬럼 우측정렬
+gridColInputNumber : 숫자입력컬럼
+gridColObject : 객체컬럼
+gridColDisable : readonly
+
+gridTreeLvl : 크리 그리드 라벨 class
+
+gridColBtn : 그리드 버튼 컬럼
+
+rownum : 그리드 행 숫자
+active : 그리드 행 선택
+focusRow : 그리드 행 포커스
+sortableCol : 그리드 정렬가능 클래스
+gridMouseOver : 그리드 마우스 오버
+editable : 그리트 편집 가능
+editabled : 그리드 수정 컬럼
+
+GEditBack : 그리드 입력 input
+
+GLHeadColRight : 그리드 해더 우측 크기조절 부분(마우스 크그조절 적용)
+
+gridHeadSort : 그리드 해드 정렬
+
+searchInput : 서치핼프 입력값
+normalInput : 일반 입력값
+inputNumber : 숫자 입력값
+calendarInput : 달력 입력값
+
+textUpperFormat : 대문자만 입력
+textLowerFormat : 소문자만 입력
+
+button : 버튼
+top_icon : 버튼 아이콘 영역
+top_icon_text : 버튼 글자 영역
+bInactive : 버튼 비활성화
+
+

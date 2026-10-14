@@ -1,0 +1,38 @@
+/*-------------------------------------
+zTree Style
+
+version:	3.5.19
+author:		Hunter.z
+email:		hunter.z@263.net
+website:	http://code.google.com/p/jquerytree/
+
+-------------------------------------*/
+
+.ztree li span.button.ico_open {
+    background-color: #222636;
+    background-image: url("/common/theme/webdek/images/icon_folder_list_on2.png") !important;
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 6px 46%;
+}
+.ztree li span.button.center_open + a {
+    background-color: #222636;
+}
+.ztree li span.button.roots_open + a {
+    background-color: #222636;
+}
+.ztree li span.button.bottom_open + a {
+    background-color: #222636;
+}
+
+.ztree li a.curSelectedNode {
+    background-color: #4c78ea ;
+    border: 1px #4ba1d9 dashed;
+    color: #ffffff;    
+}
+.ztree li a.curSelectedNode > span:first-child {
+    background-image: url("/common/theme/webdek/images/icon_folder_close_03.png");
+    background-size: 18px;
+    background-position: 50% 50%;
+    background-color: transparent;
+}

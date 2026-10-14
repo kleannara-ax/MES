@@ -1,0 +1,116 @@
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_INV17_INSERT" 
+    
+AS
+BEGIN
+    INSERT INTO TB_INV017 (BASE_DT, BASE_SEQ, LOC_CD, PCNT, WGT, REGDATE, REGID, ETC1)
+		SELECT	TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '1' AS BASE_SEQ
+		        , '카타대기' AS LOC_CD, COUNT(*) AS PCNT, SUM(WGT) AS WGT, SYSDATE, 'SYSTEM', ''
+		FROM	TB_INV001
+		WHERE	WERKS = 'P100' AND STOR_LOC_CD = '2700' 
+		AND		NVL(DLFL, 'N') = 'N'
+		AND		STCK_QTY != 0
+		AND		STCK_STA = '00'
+		UNION	ALL
+		-- 밀롤창고
+		SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '2' AS BASE_SEQ
+		        , '밀롤창고' AS LOC_CD, COUNT(*), SUM(WGT), SYSDATE, 'SYSTEM', ''
+		FROM TB_INV001
+		WHERE	WERKS = 'P100' AND STOR_LOC_CD = '2500'
+		AND		NVL(DLFL, 'N') = 'N'
+		AND		STCK_QTY != 0
+		AND		STCK_STA = '00'
+		UNION	ALL
+		SELECT	TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '3' AS BASE_SEQ
+		       , CASE	LOC_CD	WHEN	'L2200'	THEN	'슬리터 대기창고'
+								WHEN	'L2300'	THEN	'원지포장 대기창고'
+								WHEN	'L2400'	THEN	'수재단 대기창고'
+								WHEN	'L2600'	THEN	'포장 대기창고'
+				END AS LOC_CD,
+				COUNT(*), SUM(STCK_QTY), SYSDATE, 'SYSTEM', ''
+		FROM TB_INV001
+		WHERE	WERKS = 'P100' AND STOR_LOC_CD = '2000'
+		AND		LOC_CD = 'L2200'
+		AND		STCK_QTY != 0
+		AND		STCK_STA = '00'
+		GROUP BY	LOC_CD
+		UNION	ALL
+        SELECT  TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '4' AS BASE_SEQ
+                , '원지포장 대기창고' AS LOC_CD, COUNT(*), SUM(STCK_QTY), SYSDATE, 'SYSTEM', ''
+        FROM    TB_INV001
+        WHERE   WERKS = 'P100'
+        AND     LOC_CD = 'L2300'
+        AND     NVL(DLFL, 'N') = 'N'
+        AND     STCK_QTY <> 0
+        AND     STCK_STA <> '70'
+        GROUP BY LOC_CD
+        UNION   ALL
+        SELECT  TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '5' AS BASE_SEQ
+                , '수재단 대기' LOC_CD
+                , COUNT(*) AS CNT
+                , SUM(NVL(((TO_NUMBER(SUBSTR(I001.MATNR, 10, 4)) /1000) * (TO_NUMBER(SUBSTR(I001.MATNR, 14, 4)) /1000) *
+                (TO_NUMBER(SUBSTR(I001.MATNR, 6, 3)) /1000) * (I001.STCK_QTY)),0) +
+                NVL(((TO_NUMBER(SUBSTR(I003.MATNR, 10, 4)) /1000) * (TO_NUMBER(SUBSTR(I003.MATNR, 14, 4)) /1000) *
+                (TO_NUMBER(SUBSTR(I003.MATNR, 6, 3)) /1000) * (I003.STCK_QTY * 500)),0)) AS WGT
+                , SYSDATE, 'SYSTEM', ''
+        --         , SUM(I001.STCK_QTY)
+        FROM TB_WRK002 W002
+            LEFT JOIN TB_INV001 I001
+                ON W002.WERKS = I001.WERKS
+                AND W002.IND_BCD = I001.IND_BCD
+            LEFT JOIN TB_INV003 I003
+                ON W002.WERKS = I003.WERKS
+                AND W002.IND_BCD = I003.IND_BCD
+        WHERE   W002.WERKS = 'P100'
+        AND     W002.MACH_CD IN (SELECT MACH_CD FROM TB_MAS012 WHERE PROC_CD IN ('CA', 'CB'))
+        AND     I001.STCK_STA = '00' AND NVL(W002.CNL_YN, 'N') = 'N'
+        AND     SUBSTR(W002.IND_BCD, 6, 1) = 'T'
+        GROUP BY I001.LOC_CD
+		UNION   ALL
+        SELECT  TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES
+                , CASE WHEN   S017.PACKTYPE = 'A' THEN   '6'           WHEN     S017.PACKTYPE = 'B' THEN    '7'           END AS BASE_SEQ
+                , CASE WHEN   S017.PACKTYPE = 'A' THEN   '속포장 대기'  WHEN    S017.PACKTYPE = 'B' THEN    'S/F포장 대기'    END AS LOC_CD
+                , COUNT(*) AS CNT
+                , SUM(NVL(((TO_NUMBER(SUBSTR(I001.MATNR, 10, 4)) /1000) * (TO_NUMBER(SUBSTR(I001.MATNR, 14, 4)) /1000) *
+                (TO_NUMBER(SUBSTR(I001.MATNR, 6, 3)) /1000) * (I001.STCK_QTY)),0) +
+                NVL(((TO_NUMBER(SUBSTR(I003.MATNR, 10, 4)) /1000) * (TO_NUMBER(SUBSTR(I003.MATNR, 14, 4)) /1000) *
+                (TO_NUMBER(SUBSTR(I003.MATNR, 6, 3)) /1000) * (I003.STCK_QTY * 500)),0)) AS WGT
+                , SYSDATE, 'SYSTEM', ''
+        --         , SUM(I001.STCK_QTY)
+        FROM TB_WRK002 W002
+            LEFT JOIN TB_INV001 I001
+                ON W002.WERKS = I001.WERKS
+                AND W002.IND_BCD = I001.IND_BCD
+            LEFT JOIN TB_INV003 I003
+                ON W002.WERKS = I003.WERKS
+                AND W002.IND_BCD = I003.IND_BCD
+            INNER JOIN TB_SCH017 S017
+                ON W002.WERKS = S017.WERKS
+                AND W002.WRK_ORDR_NO = S017.WRK_ORDR_NO
+                AND W002.WRK_ORDR_SEQNO = S017.WRK_ORDR_SEQNO
+        WHERE   W002.WERKS = 'P100'
+        AND     W002.MACH_CD IN (SELECT MACH_CD FROM TB_MAS012 WHERE PROC_CD IN ('CA', 'CB'))
+        AND     I001.STCK_STA = '00' AND NVL(W002.CNL_YN, 'N') = 'N'
+        AND     I001.STCK_QTY <> 0
+        AND     SUBSTR(W002.IND_BCD, 6, 1) = 'C'
+		GROUP BY SUBSTR(W002.IND_BCD, 6, 1), S017.PACKTYPE
+        UNION ALL
+        -- 판지 포장후 물류입고 전
+		SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '8' AS BASE_SEQ
+		        , '판지포장후물류입고전' AS LOC_CD, COUNT(*), SUM(WGT), SYSDATE, 'SYSTEM', ''
+		FROM TB_INV001
+		WHERE	WERKS = 'P100' AND STOR_LOC_CD IN ('2600', '3100')
+		AND		NVL(DLFL, 'N') = 'N'
+		AND		STCK_QTY != 0
+		AND		STCK_STA = '80'
+		UNION	ALL
+		SELECT	TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS DATES, '9' AS BASE_SEQ
+		        , '원지포장후물류입고전' AS LOC_CD, COUNT(*), SUM(WGT), SYSDATE, 'SYSTEM', ''
+		FROM TB_INV001
+		WHERE	WERKS = 'P100' AND STOR_LOC_CD IN ('2000')
+		AND		NVL(DLFL, 'N') = 'N'
+		AND		STCK_QTY != 0
+		AND		STCK_STA = '80';
+
+END;
+/

@@ -1,0 +1,20 @@
+grid.js
+ - sort상태에서 영역복사시 오류 수정
+ 
+search help 를 grid에서 호출시 rownum 인자가 넘어가도록 추가
+ - grid.js
+ - page.js
+ 
+netUtil send 에서 grid에 데이터를 append하는 기능 추가
+ - netUtil.send : sendType append
+ - netUtil.js, grid.js
+ 
+index.jsp
+ - 로그인 화면에서 다국어 메세지 처리방식 변경
+ 
+layout save 동작 함수 service로 분리
+ - CommonController.java, CommonService.java
+ 
+조회 쿼리 오류시 sql exception을 화면에 표시하는 기능 추가
+ - dataException.jsp
+ - dataRequest.js

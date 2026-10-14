@@ -1,0 +1,4 @@
+validate.check("searchArea") 사용시 range 와 search help validation 확인 안하는 오류 수정
+ - input.js
+
+ 

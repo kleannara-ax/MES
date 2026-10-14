@@ -1,0 +1,14 @@
+validateUtil.js
+ - lt(less than), gt(greater than) 추가
+ 
+그리드 특정컬럼만 소트가능한 옵션 추가
+ - configData.js
+ - grid.js - sortableCols : "ZONEKY,LOCAKY"
+ 
+grid.js
+ - 하나의 컬럼만 정렬되도록 하는 옵션 추가 - multisort : false
+ 
+그리드 콤보 표시에서 다른 특정 컬럼값에 의해서 콤보내용이 바뀌는 경우 그룹 컬럼을 지정해서 사용하는 기능 추가
+ - <td GCol="select,AREAKY,WAREKY"> : 세번째 옵션에 그룹 컬럼 표시
+ - grid.js, input.js, configData.js
+ 

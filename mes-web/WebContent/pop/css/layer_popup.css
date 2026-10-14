@@ -1,0 +1,40 @@
+@charset 'utf-8';
+
+	.pop-layer {display:none; position: absolute; top: 50%; left: 50%; width: 410px; height:auto; z-index: 10;}  
+	.pop-layer .pop-container {padding: 20px 25px;}
+	.pop-layer p.ctxt {color: #666; line-height: 25px;}
+	.pop-layer .btn-r {width: 100%; margin:10px 0 20px; padding-top: 10px; border-top: 1px solid #DDD; text-align:right;}
+	
+	.pop-layer2 {display:none; position: absolute; top: 50%; left: 50%; width: 500px; height:auto; z-index: 10;}  
+	.pop-layer2 .pop-container2 {padding: 20px 25px;}
+	.pop-layer2 p.ctxt {color: #666; line-height: 25px;}
+	.pop-layer2 .btn-r {width: 100%; margin:10px 0 20px; padding-top: 10px; border-top: 1px solid #DDD; text-align:right;}
+
+	.pop-layer3 {display:none; position: absolute; top: 50%; left: 50%; width: 500px; height:auto; z-index: 10;}  
+	.pop-layer3 .pop-container3 {padding: 20px 25px;}
+	.pop-layer3 p.ctxt {color: #666; line-height: 25px;}
+	.pop-layer3 .btn-r {width: 100%; margin:10px 0 20px; padding-top: 10px; border-top: 1px solid #DDD; text-align:right;}
+	
+	.outer{width : 400px; text-align:center; color :white; margin: 20% auto; }
+	.outer .text{background : black; padding : 20px 0; font-family : "HY견고딕","HYGothic-Extra", "HYgtrE";}
+	.outer .number{background : white; }
+	.outer .number input{width : 396px; height : 150px; text-align: center; font-size : 600%; font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE"; }
+	
+	table,tr,td{border : 1px solid gray; border-collapse : collapse;}
+	.c_outer{margin : 0 auto; width : 400px; }
+	.c_outer table{width : 400px; border : 1px solid gray; border-collapse : collapse;}
+	.c_outer td{ height : 75px; border : 1px solid gray; border-collapse : collapse;}
+	.c_outer td input{border :none; background:none; width :100%; padding : 3px; font-size : 200% !important; font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE";}
+
+	.b_outer{width : 400px; text-align:center; color :white; margin: 20% auto; border : 1px solid gray;}
+	.b_outer .text{background : black; padding : 20px 0;font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE"; font-size : 140%;}
+	.b_outer .button_inner{ height : 120px; }
+	.b_outer .button1{float :left; width : 50%; height : 100%; margin-top :10px; background-color : none;}
+	.b_outer .button1 input{ width : 180px; padding : 20px 0;  border: 1px solid; border-radius : 10px; background-color :black; color : white; font-size : 200%; font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE";}
+	.b_outer .button2{float : right; width : 50%; margin-top :10px; }
+	.b_outer .button2 input{ width : 180px; padding : 20px 0;   border: 1px solid; border-radius : 10px; background-color :black; color : white; font-size : 200%; font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE";}
+	
+	.d_outer{width : 400px; margin : 0 auto ; text-align : center;}
+	.d_outer .text{width : 400px; height : 80px; background-color : black; color : white; padding :20px; box-sizing: border-box;}
+	.d_outer .text_1{width : 400px; background-color : white; padding : 20px; box-sizing: border-box;}
+	.d_outer .text_1 input{font-family : "HY견고딕", "HYGothic-Extra", "HYgtrE";}

@@ -1,0 +1,4824 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="System">
+
+	<!-- MSTCOMP -->
+	<select id="MSTCOMP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			C.COMPID AS "COMPID",
+			C.COMPLABEL AS "COMPLABEL",
+			C.COMPNAME AS "COMPNAME",
+			C.SORTORDER AS "SORTORDER",
+			C.AUTOSORT AS "AUTOSORT",
+			C.PCOMID AS "PCOMID",
+			C.CREATEUSER AS "CREATEUSER",
+			C.CREATEDATE AS "CREATEDATE",
+			C.UPDATEUSER AS "UPDATEUSER",
+			C.UPDATEDATE AS "UPDATEDATE",
+			C.DELETEYN AS "DELETEYN"
+		FROM MSTCOMP C
+	</select>
+	
+	<insert id="MSTCOMP_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTCOMP(
+			COMPID, COMPLABEL, COMPNAME, SORTORDER, AUTOSORT,
+			PCOMID, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{COMPLABEL}, #{COMPNAME}, #{SORTORDER}, #{AUTOSORT},
+			#{PCOMID}, #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTCOMP_UPDATE"  parameterType="hashmap">
+		UPDATE MSTCOMP SET 
+			COMPLABEL = #{COMPLABEL},
+			COMPNAME = #{COMPNAME},
+			SORTORDER = #{SORTORDER},
+			AUTOSORT = #{AUTOSORT},
+			PCOMID = #{PCOMID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMPID = #{COMPID}
+	</update>
+	
+	<delete id="MSTCOMP_DELETE"  parameterType="hashmap">
+		UPDATE MSTCOMP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID}
+	</delete>
+	
+	<!-- MSTDEPT -->
+	<select id="MSTDEPT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			D.COMPID AS "COMPID",
+			D.DEPTID AS "DEPTID",
+			D.DEPTLABEL AS "DEPTLABEL",
+			D.DEPTNAME AS "DEPTNAME",
+			D.SORTORDER AS "SORTORDER",
+			D.PDEPTID AS "PDEPTID",
+			D.CREATEUSER AS "CREATEUSER",
+			D.CREATEDATE AS "CREATEDATE",
+			D.UPDATEUSER AS "UPDATEUSER",
+			D.UPDATEDATE AS "UPDATEDATE",
+			D.DELETEYN AS "DELETEYN"
+		FROM MSTDEPT D
+	</select>
+	
+	<insert id="MSTDEPT_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTDEPT(
+			COMPID, DEPTID, DEPTLABEL, DEPTNAME, SORTORDER,
+			PDEPTID, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{DEPTID}, #{DEPTLABEL}, #{DEPTNAME}, #{SORTORDER},
+			#{PDEPTID}, #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTDEPT_UPDATE"  parameterType="hashmap">
+		UPDATE MSTDEPT SET 
+			DEPTLABEL = #{DEPTLABEL},
+			DEPTNAME = #{DEPTNAME},
+			SORTORDER = #{SORTORDER},
+			PDEPTID = #{PDEPTID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMPID = #{COMPID} AND DEPTID = #{DEPTID}
+	</update>
+	
+	<delete id="MSTDEPT_DELETE"  parameterType="hashmap">
+		UPDATE MSTDEPT SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID} AND DEPTID = #{DEPTID}
+	</delete>
+	
+	<!-- MSTGRADE -->
+	<select id="MSTGRADE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			G.COMPID AS "COMPID",
+			G.GRADEID AS "GRADEID",
+			G.GRADELABEL AS "GRADELABEL",
+			G.GRADENAME AS "GRADENAME",
+			G.SORTORDER AS "SORTORDER",
+			G.CREATEUSER AS "CREATEUSER",
+			G.CREATEDATE AS "CREATEDATE",
+			G.UPDATEUSER AS "UPDATEUSER",
+			G.UPDATEDATE AS "UPDATEDATE",
+			G.DELETEYN AS "DELETEYN"
+		FROM MSTGRADE G
+	</select>
+	
+	<insert id="MSTGRADE_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTGRADE(
+			COMPID, GRADEID, GRADELABEL, GRADENAME, SORTORDER,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{GRADEID}, #{GRADELABEL}, #{GRADENAME}, #{SORTORDER},
+			#{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTGRADE_UPDATE"  parameterType="hashmap">
+		UPDATE MSTGRADE SET 
+			GRADELABEL = #{GRADELABEL},
+			GRADENAME = #{GRADENAME},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMPID = #{COMPID} AND GRADEID = #{GRADEID}
+	</update>
+	
+	<delete id="MSTGRADE_DELETE"  parameterType="hashmap">
+		UPDATE MSTGRADE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID} AND GRADEID = #{GRADEID}
+	</delete>
+	
+	<!-- MSTUSER -->
+	<select id="MSTUSER_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			U.USERID AS "USERID",
+			U.PASSWORD AS "PASSWORD",
+			U.USERNAME AS "USERNAME",
+			U.COMPID AS "COMPID",
+			U.USERTYPE AS "USERTYPE",
+			U.MENUGID AS "MENUGID",
+			U.DEPTID AS "DEPTID",
+			U.GRADEID AS "GRADEID",
+			U.SORTORDER AS "SORTORDER",
+			U.LOGINDATE AS "LOGINDATE",
+			U.LOGOUTDATE AS "LOGOUTDATE",
+			U.CREATEUSER AS "CREATEUSER",
+			U.CREATEDATE AS "CREATEDATE",
+			U.UPDATEUSER AS "UPDATEUSER",
+			U.UPDATEDATE AS "UPDATEDATE",
+			U.DELETECHECK AS "DELETECHECK"
+		FROM MSTUSER U
+	</select>
+	
+	<insert id="MSTUSER_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTUSER(
+			USERID, PASSWORD, USERNAME, COMPID, USERTYPE, 
+			MENUGID, DEPTID, GRADEID, SORTORDER, LOGINDATE, 
+			LOGOUTDATE, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{USERID}, #{PASSWORD}, #{USERNAME}, #{COMPID}, #{USERTYPE}, 
+			#{MENUGID},#{DEPTID}, #{GRADEID}, #{SORTORDER}, now(),
+			now(), #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTUSER_UPDATE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			PASSWORD = #{PASSWORD},
+			USERNAME = #{USERNAME},
+			COMPID = #{COMPID},
+			USERTYPE = #{USERTYPE},
+			MENUGID = #{MENUGID},
+			DEPTID = #{DEPTID},
+			GRADEID = #{GRADEID},
+			SORTORDER = #{SORTORDER},
+			LOGINDATE = now(),
+			LOGOUTDATE = now(),
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			USERID = #{USERID}
+	</update>
+	
+	<delete id="MSTUSER_DELETE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			DELETEYN = 'Y'
+		WHERE 
+			USERID = #{USERID}
+	</delete>
+	
+	<!-- MSTMENUG -->
+	<select id="MSTMENUG_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUGROUPID AS "MENUGROUPID",
+			M.MENUGLABEL AS "MENUGLABEL",
+			M.MENUGNAME AS "MENUGNAME",
+			M.COMPID AS "COMPID",
+			M.CREATEUSER AS "CREATEUSER",
+			M.CREATEDATE AS "CREATEDATE",
+			M.UPDATEUSER AS "UPDATEUSER",
+			M.UPDATEDATE AS "UPDATEDATE",
+			M.DELETEYN AS "DELETEYN"
+		FROM MSTMENUG M
+	</select>
+	
+	<insert id="MSTMENUG_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUG(
+			MENUGROUPID, MENUGLABEL, MENUGNAME, COMPID, CREATEUSER,
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MENUGROUPID}, #{MENUGROUPID}, #{MENUGNAME}, #{COMPID}, #{SES_USER_ID},
+			now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTMENUG_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENUG SET 
+			MENUGLABEL = #{MENUGLABEL},
+			MENUGNAME = #{MENUGNAME},
+			COMPID = #{COMPID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			MENUGROUPID = #{MENUGROUPID}
+	</update>
+	
+	<delete id="MSTMENUG_DELETE"  parameterType="hashmap">
+		UPDATE MSTMENUG SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MENUGROUPID = #{MENUGROUPID}
+	</delete>
+	
+	<!-- MSTMENUGL -->
+	<select id="MSTMENUGL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUGID AS "MENUGID",
+			M.MENUID AS "MENUID",
+			M.SORTORDER AS "SORTORDER",
+			M.PMENUID AS "PMENUID",
+			M.CREATEUSER AS "CREATEUSER",
+			M.CREATEDATE AS "CREATEDATE",
+			M.UPDATEUSER AS "UPDATEUSER",
+			M.UPDATEDATE AS "UPDATEDATE",
+			M.DELETEYN AS "DELETEYN"
+		FROM MSTMENUGL M
+	</select>
+	
+	<insert id="MSTMENUGL_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUGL(
+			  COMPID
+			, SEQ 
+			, MENUGID
+			, MENUID
+			, SORTORDER
+			, PMENUID
+			, CREATEUSER
+			, CREATEDATE
+			, UPDATEUSER
+			, UPDATEDATE
+		)
+		VALUES(
+			  #{SES_USER_COMPANY}
+			, NEXTVAL('seq_mstmenugl')
+			, #{MENUGID}
+			, #{MENUID}
+			, #{SORTORDER}::NUMERIC
+			, #{PMENUID}
+			, #{SES_USER_ID}
+			, NOW()
+			, #{SES_USER_ID}
+			, NOW()
+		)
+	</insert>
+	
+	<update id="MSTMENUGL_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENUGL 
+		SET    MENUID     = #{MENUID}
+		  ,    SORTORDER  = #{SORTORDER}::NUMERIC
+		  ,	   PMENUID    = #{PMENUID}
+		  ,	   UPDATEUSER = #{SES_USER_ID}
+		  ,	   UPDATEDATE = now()
+		WHERE  COMPID  = #{SES_USER_COMPANY}
+		AND    MENUGID = #{MENUGID} 
+		AND    SEQ = #{SEQ}::NUMERIC
+	</update>
+	
+	<delete id="MSTMENUGL_DELETE"  parameterType="hashmap">
+		DELETE
+		FROM   MSTMENUGL
+		WHERE  COMPID  = #{SES_USER_COMPANY}
+		AND    MENUGID = #{MENUGID} 
+		AND    SEQ = #{SEQ}::NUMERIC
+	</delete>
+	
+	<delete id="MSTMENUGL_ALL_DELETE"  parameterType="hashmap">
+		DELETE
+		FROM   MSTMENUGL
+		WHERE  COMPID  = #{SES_USER_COMPANY}
+		AND    MENUGID = #{MENUGID}
+	</delete>
+	
+	<!-- MSTMENU -->
+	<select id="MSTMENU_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUID AS "MENUID",
+			M.MENULABEL AS "MENULABEL",
+			M.MENUNAME AS "MENUNAME",
+			M.MENUTYPE AS "MENUTYPE",
+			M.MAUTHTYPE AS "MAUTHTYPE",
+			M.PROGID AS "PROGID",
+			M.URI AS "URI",
+			M.PARAM AS "PARAM",
+			M.SORTORDER AS "SORTORDER",
+			M.CREATEUSER AS "CREATEUSER",
+			M.CREATEDATE AS "CREATEDATE",
+			M.UPDATEUSER AS "UPDATEUSER",
+			M.UPDATEDATE AS "UPDATEDATE",
+			M.DELETEYN AS "DELETEYN"
+		FROM MSTMENU M
+	</select>
+	
+	<insert id="MSTMENU_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENU(
+			MENUID, MENULABEL, MENUNAME, MENUTYPE, MAUTHTYPE,
+			PROGID, URI, PARAM, SORTORDER, CREATEUSER, 
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MENUID}, #{MENULABEL}, #{MENUNAME}, #{MENUTYPE}, #{MAUTHTYPE},
+			#{PROGID}, #{URI}, #{PARAM}, #{SORTORDER}, #{SES_USER_ID},
+			now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="MSTMENU_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENU SET 
+			MENULABEL = #{MENULABEL},
+			MENUNAME = #{MENUNAME},
+			MENUTYPE = #{MENUTYPE},
+			MAUTHTYPE = #{MAUTHTYPE},
+			PROGID = #{PROGID},
+			URI = #{URI},
+			PARAM = #{PARAM},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			MENUID = #{MENUID}
+	</update>
+	
+	<delete id="MSTMENU_DELETE"  parameterType="hashmap">
+		UPDATE MSTMENU SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MENUID = #{MENUID}
+	</delete>
+	
+	<!-- MSTPROG -->
+	<select id="MSTPROG_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			P.PROGID AS "PROGID",
+			P.PROGLABEL AS "PROGLABEL",
+			P.PROGNAME AS "PROGNAME",
+			P.PROGTYPE AS "PROGTYPE",
+			P.PAUTHTYPE AS "PAUTHTYPE",
+			P.URI AS "URI",
+			P.PARAM AS "PARAM",
+			P.CREATEUSER AS "CREATEUSER",
+			P.CREATEDATE AS "CREATEDATE",
+			P.UPDATEUSER AS "UPDATEUSER",
+			P.UPDATEDATE AS "UPDATEDATE",
+			P.DELETEYN AS "DELETEYN"
+		FROM MSTPROG P
+	</select>
+	
+	<insert id="MSTPROG_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTPROG(
+			PROGID, PROGLABEL, PROGNAME, PROGTYPE, PAUTHTYPE, 
+			URI, PARAM, CREATEUSER, CREATEDATE, UPDATEUSER, 
+			UPDATEDATE
+		)
+		VALUES(
+			#{PROGID}, #{PROGLABEL}, #{PROGNAME}, #{PROGTYPE}, #{PAUTHTYPE},
+			#{URI}, #{PARAM}, #{SES_USER_ID}, now(), #{SES_USER_ID}, 
+			now()
+		)
+	</insert>
+	
+	<update id="MSTPROG_UPDATE"  parameterType="hashmap">
+		UPDATE MSTPROG SET 
+			PROGLABEL = #{PROGLABEL},
+			PROGNAME = #{PROGNAME},
+			PROGTYPE = #{PROGTYPE},
+			PAUTHTYPE = #{PAUTHTYPE},
+			URI = #{URI},
+			PARAM = #{PARAM},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			PROGID = #{PROGID}
+	</update>
+	
+	<delete id="MSTPROG_DELETE"  parameterType="hashmap">
+		UPDATE MSTPROG SET 
+			DELETEYN = 'Y'
+		WHERE 
+			PROGID = #{PROGID}
+	</delete>
+	
+	<!-- SYSLABEL -->
+	<select id="SYSLABEL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			L.LABELGID AS "LABELGID",
+			L.LABELID AS "LABELID",
+			L.LANGCODE AS "LANGCODE",
+			L.LABEL AS "LABEL",
+			L.LABELTYPE AS "LABELTYPE",
+			L.CREATEUSER AS "CREATEUSER",
+			L.CREATEDATE AS "CREATEDATE",
+			L.UPDATEUSER AS "UPDATEUSER",
+			L.UPDATEDATE AS "UPDATEDATE",
+			L.DELETEYN AS "DELETEYN"
+		FROM SYSLABEL L
+	</select>
+	
+	<insert id="SYSLABEL_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSLABEL(
+			LABELGID, LABELID, LANGCODE, LABEL, LABELTYPE,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{LABELGID}, #{LABELID}, #{LANGCODE}, #{LABEL}, #{LABELTYPE}, 
+			#{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSLABEL_UPDATE"  parameterType="hashmap">
+		UPDATE SYSLABEL SET 
+			LABEL = #{LABEL},
+			LABELTYPE = #{LABELTYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			LABELGID = #{LABELGID} AND LABELID = #{LABELID} AND LANGCODE = #{LANGCODE}
+	</update>
+	
+	<delete id="SYSLABEL_DELETE"  parameterType="hashmap">
+		UPDATE SYSLABEL SET 
+			DELETEYN = 'Y'
+		WHERE 
+			LABELGID = #{LABELGID} AND LABELID = #{LABELID} AND LANGCODE = #{LANGCODE}
+	</delete>
+	
+	<!-- SYSMESSAGE -->
+	<select id="SYSMESSAGE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MESSAGEGID AS "MESSAGEGID",
+			M.MESSAGEID AS "MESSAGEID",
+			M.LANGCODE AS "LANGCODE",
+			M.MESSAGE AS "MESSAGE",
+			M.MESSAGETYPE AS "MESSAGETYPE",
+			M.CREATEUSER AS "CREATEUSER",
+			M.CREATEDATE AS "CREATEDATE",
+			M.UPDATEUSER AS "UPDATEUSER",
+			M.UPDATEDATE AS "UPDATEDATE",
+			M.DELETEYN AS "DELETEYN"
+		FROM SYSMESSAGE M
+	</select>
+	
+	<insert id="SYSMESSAGE_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSMESSAGE(
+			MESSAGEGID, MESSAGEID, LANGCODE, MESSAGE, MESSAGETYPE,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MESSAGEGID}, #{MESSAGEID}, #{LANGCODE}, #{MESSAGE}, #{MESSAGETYPE}, 
+			#{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSMESSAGE_UPDATE"  parameterType="hashmap">
+		UPDATE SYSMESSAGE SET 
+			MESSAGE = #{MESSAGE},
+			MESSAGETYPE = #{MESSAGETYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			MESSAGEGID = #{MESSAGEGID} AND MESSAGEID = #{MESSAGEID} AND LANGCODE = #{LANGCODE}
+	</update>
+	
+	<delete id="SYSMESSAGE_DELETE"  parameterType="hashmap">
+		UPDATE SYSMESSAGE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MESSAGEGID = #{MESSAGEGID} AND MESSAGEID = #{MESSAGEID} AND LANGCODE = #{LANGCODE}
+	</delete>
+	
+	<!-- SYSCOMMON -->
+	<select id="SYSCOMMON_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMONID AS "COMMONID",
+			C.COMMLABEL AS "COMMLABEL", 
+			C.COMMNAME AS "COMMNAME",
+			C.COMMTYPE AS "COMMTYPE",
+			C.CREATEUSER AS "CREATEUSER",
+			C.CREATEDATE AS "CREATEDATE",
+			C.UPDATEUSER AS "UPDATEUSER",
+			C.UPDATEDATE AS "UPDATEDATE",
+			C.DELETEYN AS "DELETEYN"
+		FROM SYSCOMMON C
+	</select>
+	
+	<insert id="SYSCOMMON_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMON(
+			COMMONID, COMMLABEL, COMMNAME, COMMTYPE, CREATEUSER,
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMONID}, #{COMMLABEL}, #{COMMNAME}, #{COMMTYPE}, #{SES_USER_ID}, 
+			now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSCOMMON_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMON SET 
+			COMMLABEL = #{COMMLABEL},
+			COMMNAME = #{COMMNAME},
+			COMMTYPE = #{COMMTYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMMONID = #{COMMONID}
+	</update>
+	
+	<delete id="SYSCOMMON_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMON SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMONID = #{COMMONID}
+	</delete>
+	
+	<!-- SYSCOMMITEM -->
+	<select id="SYSCOMMITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMONID AS "COMMONID",
+			C.CITEMID AS "CITEMID",
+			C.CODELABEL AS "CODELABEL",
+			C.CODENAME AS "CODENAME",
+			C.ITEMTYPE AS "ITEMTYPE",
+			C.SORTORDER AS "SORTORDER",
+			C.CREATEUSER AS "CREATEUSER",
+			C.CREATEDATE AS "CREATEDATE",
+			C.UPDATEUSER AS "UPDATEUSER",
+			C.UPDATEDATE AS "UPDATEDATE",
+			C.DELETEYN AS "DELETEYN"
+		FROM SYSCOMMITEM C
+	</select>
+	
+	<insert id="SYSCOMMITEM_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMITEM(
+			COMMONID, CITEMID, CODELABEL, CODENAME, ITEMTYPE,
+			SORTORDER, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMONID}, #{CITEMID}, #{CODELABEL}, #{CODENAME}, #{ITEMTYPE}, 
+			#{SORTORDER}, #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSCOMMITEM_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMITEM SET
+			CODELABEL = #{CODELABEL},
+			CODENAME = #{CODENAME},
+			ITEMTYPE = #{ITEMTYPE},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMMONID = #{COMMONID} AND CITEMID = #{CITEMID}
+	</update>
+	
+	<delete id="SYSCOMMITEM_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMITEM SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMONID = #{COMMONID} AND CITEMID = #{CITEMID}
+	</delete>
+	
+	<!-- SYSCOMMPOP -->
+	<select id="SYSCOMMPOP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMPOPID AS "COMMPOPID",
+			C.CPOPLABEL AS "CPOPLABEL",
+			C.CPOPNAME AS "CPOPNAME",
+			C.VIEWTNAME AS "VIEWTNAME",
+			C.CPOPDESC AS "CPOPDESC",
+			C.CPOPTYPE AS "CPOPTYPE",
+			C.EXETYPE AS "EXETYPE",
+			C.CREATEUSER AS "CREATEUSER",
+			C.CREATEDATE AS "CREATEDATE",
+			C.UPDATEUSER AS "UPDATEUSER",
+			C.UPDATEDATE AS "UPDATEDATE",
+			C.DELETEYN AS "DELETEYN"
+		FROM SYSCOMMPOP C
+	</select>
+	
+	<insert id="SYSCOMMPOP_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMPOP(
+			COMMPOPID, CPOPLABEL, CPOPNAME, VIEWTNAME, CPOPDESC,
+			CPOPTYPE, EXETYPE, CREATEUSER, CREATEDATE, UPDATEUSER,
+			UPDATEDATE
+		)
+		VALUES(
+			#{COMMPOPID}, #{CPOPLABEL}, #{CPOPNAME}, #{VIEWTNAME}, #{CPOPDESC}, 
+			#{CPOPTYPE}, #{EXETYPE}, #{SES_USER_ID}, now(), #{SES_USER_ID}, 
+			now()
+		)
+	</insert>
+	
+	<update id="SYSCOMMPOP_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMPOP SET 
+			CPOPLABEL = #{CPOPLABEL},
+			CPOPNAME = #{CPOPNAME},
+			VIEWTNAME = #{VIEWTNAME},
+			CPOPDESC = #{CPOPDESC},
+			CPOPTYPE = #{CPOPTYPE},
+			EXETYPE = #{EXETYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMMPOPID = #{COMMPOPID}
+	</update>
+	
+	<delete id="SYSCOMMPOP_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMPOP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMPOPID = #{COMMPOPID}
+	</delete>
+	
+	<!-- SYSCPOPITEM -->
+	<select id="SYSCPOPITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMPOPID AS "COMMPOPID",
+			C.CPOPITEMID AS "CPOPITEMID",  
+			C.CPOPITLABEL AS "CPOPITLABEL",
+			C.CPOPITNAME AS "CPOPITNAME",
+			C.ITEMTYPE AS "ITEMTYPE",
+			C.SEARCHTYPE AS "SEARCHTYPE",
+			C.SFORMAT AS "SFORMAT",
+			C.SOPTION AS "SOPTION",
+			C.SDEFAULT AS "SDEFAULT",
+			C.SREQUIRED AS "SREQUIRED",
+			C.GWIDTH AS "GWIDTH",
+			C.RETURNCOL AS "RETURNCOL",
+			C.SORTORDER AS "SORTORDER",
+			C.CREATEUSER AS "CREATEUSER",
+			C.CREATEDATE AS "CREATEDATE",
+			C.UPDATEUSER AS "UPDATEUSER",
+			C.UPDATEDATE AS "UPDATEDATE",
+			C.DELETEYN AS "DELETEYN"
+		FROM SYSCPOPITEM C
+	</select>
+	
+	<insert id="SYSCPOPITEM_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCPOPITEM(
+			COMMPOPID, CPOPITEMID, CPOPITLABEL, CPOPITNAME, ITEMTYPE,
+			SEARCHTYPE, SFORMAT, SOPTION, SDEFAULT, SREQUIRED,
+			GWIDTH, RETURNCOL, SORTORDER, CREATEUSER, CREATEDATE,
+			UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMPOPID}, #{CPOPITEMID}, #{CPOPITLABEL}, #{CPOPITNAME}, #{ITEMTYPE}, 
+			#{SEARCHTYPE}, #{SFORMAT}, #{SOPTION}, #{SDEFAULT}, #{SREQUIRED}, 
+			#{GWIDTH}, #{RETURNCOL}, #{SORTORDER}, #{SES_USER_ID}, now(), 
+			#{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSCPOPITEM_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCPOPITEM SET
+			CPOPITLABEL = #{CPOPITLABEL},
+			CPOPITNAME = #{CPOPITNAME},
+			ITEMTYPE = #{ITEMTYPE},
+			SEARCHTYPE = #{SEARCHTYPE},
+			SFORMAT = #{SFORMAT},
+			SOPTION = #{SOPTION},
+			SDEFAULT = #{SDEFAULT},
+			SREQUIRED = #{SREQUIRED},
+			GWIDTH = #{GWIDTH},
+			RETURNCOL = #{RETURNCOL},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			COMMPOPID = #{COMMPOPID} AND CPOPITEMID = #{CPOPITEMID}
+	</update>
+	
+	<delete id="SYSCPOPITEM_DELETE"  parameterType="hashmap">
+		UPDATE SYSCPOPITEM SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMPOPID = #{COMMPOPID} AND CPOPITEMID = #{CPOPITEMID}
+	</delete>
+	
+	<!-- SYSEDIREP -->
+	<select id="SYSEDIREP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			E.EDIID AS "EDIID",
+			E.FILENAME AS "FILENAME",
+			E.TARGET AS "TARGET",
+			E.STARTDATE AS "STARTDATE",
+			E.SUCCESS AS "SUCCESS",
+			E.FAILDESC AS "FAILDESC",
+			E.ENDDATE AS "ENDDATE",
+			E.DATAKEY AS "DATAKEY",
+			E.CUDSUCCESS AS "CUDSUCCESS",
+			E.CUDFDESC AS "CUDFDESC",
+			E.CREATEUSER AS "CREATEUSER",
+			E.CREATEDATE AS "CREATEDATE",
+			E.UPDATEUSER AS "UPDATEUSER",
+			E.UPDATEDATE AS "UPDATEDATE",
+			E.DELETEYN AS "DELETEYN"
+		FROM SYSEDIREP E
+	</select>
+	
+	<insert id="SYSEDIREP_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSEDIREP(
+			EDIID, FILENAME, TARGET, STARTDATE, SUCCESS,
+			FAILDESC, ENDDATE, DATAKEY, CUDSUCCESS, CUDFDESC,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{EDIID}, #{FILENAME}, #{TARGET}, now(), #{SUCCESS}, 
+			#{FAILDESC}, now(), #{DATAKEY}, #{CUDSUCCESS}, #{CUDFDESC}, 
+			#{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSEDIREP_UPDATE"  parameterType="hashmap">
+		UPDATE SYSEDIREP SET 
+			FILENAME = #{FILENAME},
+			TARGET = #{TARGET},
+			STARTDATE = now(),
+			SUCCESS = #{SUCCESS},
+			FAILDESC = #{FAILDESC},
+			ENDDATE = now(),
+			DATAKEY = #{DATAKEY},
+			CUDSUCCESS = #{CUDSUCCESS},
+			CUDFDESC = #{CUDFDESC},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			EDIID = #{EDIID}
+	</update>
+	
+	<delete id="SYSEDIREP_DELETE"  parameterType="hashmap">
+		UPDATE SYSEDIREP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			EDIID = #{EDIID}
+	</delete>
+	
+	<!-- SYSEDIERR -->
+	<select id="SYSEDIERR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			E.EDIID AS "EDIID",
+			E.EDIITEM AS "EDIITEM",
+			E.ERRTYPE AS "ERRTYPE",
+			E.EDIDATA AS "EDIDATA",
+			E.DBDATA AS "DBDATA",
+			E.EXCDATA AS "EXCDATA",
+			E.CREATEUSER AS "CREATEUSER",
+			E.CREATEDATE AS "CREATEDATE",
+			E.UPDATEUSER AS "UPDATEUSER",
+			E.UPDATEDATE AS "UPDATEDATE",
+			E.DELETEYN AS "DELETEYN"
+		FROM SYSEDIERR E
+	</select>
+	
+	<insert id="SYSEDIERR_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSEDIERR(
+			EDIID, EDIITEM, ERRTYPE, EDIDATA, DBDATA,
+			EXCDATA, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{EDIID}, #{EDIITEM}, #{ERRTYPE}, #{EDIDATA}, #{DBDATA}, 
+			#{EXCDATA}, #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSEDIERR_UPDATE"  parameterType="hashmap">
+		UPDATE SYSEDIERR SET 
+			EDIITEM = #{EDIITEM},
+			ERRTYPE = #{ERRTYPE},
+			EDIDATA = #{EDIDATA},
+			DBDATA = #{DBDATA},
+			EXCDATA = #{EXCDATA},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			EDIID = #{EDIID}
+	</update>
+	
+	<delete id="SYSEDIERR_DELETE"  parameterType="hashmap">
+		UPDATE SYSEDIERR SET 
+			DELETEYN = 'Y'
+		WHERE 
+			EDIID = #{EDIID}
+	</delete>
+			
+	<!-- SYSGRIDCOL -->
+	<select id="SYSGRIDCOL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			G.USERID AS "USERID",
+			G.PROGID AS "PROGID",
+			G.GRIDID AS "GRIDID",
+			G.COLGID AS "COLGID",
+			G.GROUPDATA AS "GROUPDATA",
+			G.CREATEUSER AS "CREATEUSER",
+			G.CREATEDATE AS "CREATEDATE",
+			G.UPDATEUSER AS "UPDATEUSER",
+			G.UPDATEDATE AS "UPDATEDATE",
+			G.DELETEYN AS "DELETEYN"
+		FROM SYSGRIDCOL G
+	</select>
+	
+	<insert id="SYSGRIDCOL_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSGRIDCOL(
+			USERID, PROGID, GRIDID, COLGID, GROUPDATA,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{USERID}, #{PROGID}, #{GRIDID}, #{COLGID}, #{GROUPDATA}, 
+			#{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSGRIDCOL_UPDATE"  parameterType="hashmap">
+		UPDATE SYSGRIDCOL SET
+			GROUPDATA = #{GROUPDATA},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			USERID = #{USERID} AND PROGID = #{PROGID} AND GRIDID = #{GRIDID} AND COLGID = #{COLGID}
+	</update>
+	
+	<delete id="SYSGRIDCOL_DELETE"  parameterType="hashmap">
+		UPDATE SYSGRIDCOL SET 
+			DELETEYN = 'Y'
+		WHERE 
+			USERID = #{USERID} AND PROGID = #{PROGID} AND GRIDID = #{GRIDID} AND COLGID = #{COLGID}
+	</delete>
+	
+	<!-- SYSFILE -->
+	<select id="SYSFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			F.UUID AS "UUID",
+			F.GUUID AS "GUUID",
+			F.RPATH AS "RPATH",
+			F.PATH AS "PATH",
+			F.FNAME AS "FNAME",
+			F.NAME AS "NAME",
+			F.MIME AS "MIME",
+			F.STYPE AS "STYPE",
+			F.BYTE AS "BYTE",
+			F.CREATEUSER AS "CREATEUSER",
+			F.CREATEDATE AS "CREATEDATE",
+			F.UPDATEUSER AS "UPDATEUSER",
+			F.UPDATEDATE AS "UPDATEDATE",
+			F.DELETEYN AS "DELETEYN"
+		FROM SYSFILE F
+		WHERE 1=1
+		<if test="GUUID != null and GUUID != ''">
+			AND F.GUUID = #{GUUID}
+		</if>
+		<if test="DELETEYN != null and DELETEYN != ''">
+			AND F.DELETEYN = #{DELETEYN}
+		</if>
+	</select>
+	
+	<select id="SYSFILE_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			F.UUID AS "UUID",
+			F.GUUID AS "GUUID",
+			F.RPATH AS "RPATH",
+			F.PATH AS "PATH",
+			F.FNAME AS "FNAME",
+			F.NAME AS "NAME",
+			F.MIME AS "MIME",
+			F.STYPE AS "STYPE",
+			F.BYTE AS "BYTE",
+			F.CREATEUSER AS "CREATEUSER",
+			F.CREATEDATE AS "CREATEDATE",
+			F.UPDATEUSER AS "UPDATEUSER",
+			F.UPDATEDATE AS "UPDATEDATE",
+			F.DELETEYN AS "DELETEYN"
+		FROM SYSFILE F
+		WHERE F.UUID = #{UUID}
+	</select>
+	
+	<insert id="SYSFILE_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSFILE(
+			UUID, GUUID, RPATH, PATH, FNAME, NAME,
+			MIME, STYPE, BYTE, CREATEUSER, CREATEDATE, 
+			UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{UUID}, #{GUUID}, #{RPATH}, #{PATH}, #{FNAME}, #{NAME},
+			#{MIME}, #{STYPE}, #{BYTE}::NUMERIC, #{SES_USER_ID}, now(),
+			#{SES_USER_ID}, now()
+		)
+	</insert>
+	
+	<update id="SYSFILE_UPDATE"  parameterType="hashmap">
+		UPDATE SYSFILE SET
+			RPATH = #{RPATH},
+			PATH = #{PATH},
+			FNAME = #{FNAME},
+			NAME = #{NAME},
+			MIME = #{MIME},
+			STYPE = #{STYPE},
+			BYTE = #{BYTE}::NUMERIC,
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = now()
+		WHERE 
+			UUID = #{UUID}
+	</update>
+	
+	<delete id="SYSFILE_DELETE"  parameterType="hashmap">
+		UPDATE SYSFILE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			UUID = #{UUID}
+	</delete>
+	
+	<sql id="SYSTNFILE_TABLE">
+		SELECT
+			UUID AS "UUID",
+			PIXEL AS "PIXEL",
+			FNAME AS "FNAME",
+			CREATEUSER AS "CREATEUSER",
+			CREATEDATE AS "CREATEDATE",
+			UPDATEUSER AS "UPDATEUSER",
+			UPDATEDATE AS "UPDATEDATE",
+			DELETEYN AS "DELETEYN"
+		FROM SYSTNFILE
+	</sql>
+	<select id="SYSTNFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE 1=1
+		<if test="UUID != null and UUID != ''"> 
+	    	AND UUID = #{UUID}
+	    </if>
+	</select>
+
+	<select id="SYSTNFILE_MAP" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE UUID = #{UUID}
+		AND PIXEL = #{PIXEL}
+	</select>
+	
+	<select id="SYSTNFILEMIN_MAP" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE UUID = #{UUID}
+		AND PIXEL = (SELECT COALESCE(MIN(PIXEL), ' ') FROM SYSTNFILE WHERE UUID = #{UUID}
+	</select>
+
+	<insert id="SYSTNFILE_INSERT" parameterType="hashmap">
+		INSERT INTO SYSTNFILE 
+		(UUID,PIXEL,FNAME
+		,CREATEUSER,CREATEDATE,UPDATEUSER,UPDATEDATE) 
+ 		VALUES 
+ 		(#{UUID},#{PIXEL},#{FNAME}
+ 		,#{SES_USER_ID}, now(), #{SES_USER_ID}, now())
+	</insert>
+
+	<delete id="SYSTNFILE_DELETE" parameterType="hashmap">
+		UPDATE SYSTNFILE
+		SET
+			DELETEYN = 'Y' ,
+			UPDATEDATE = now(),
+			UPDATEUSER = #{SES_USER_ID}
+		WHERE
+		UUID = #{UUID}
+	</delete>
+	
+	<!-- **[UI01] 사용자 -->
+	<select id="USRMA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT  U.USERID AS "USERID"
+		       ,PASSWD   AS "PASSWD"
+		       ,NMLAST   AS "NMLAST"
+		       ,R.UROLKY AS "UROLKY"
+		       ,NMFIRS   AS "NMFIRS" 
+		       ,ADDR01   AS "ADDR01"
+		       ,ADDR02   AS "ADDR02"
+		       ,ADDR03   AS "ADDR03"
+		       ,ADDR04   AS "ADDR04"
+		       ,ADDR05   AS "ADDR05"
+		       ,CITY01   AS "CITY01"
+		       ,REGN01   AS "REGN01"
+		       ,POSTCD   AS "POSTCD"
+		       ,NATNKY   AS "NATNKY"
+		       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'NATNKY' AND C.CMCDVL = U.NATNKY) AS "NATNKYT"
+		       ,TELN01   AS "TELN01"
+		       ,TELN02   AS "TELN02"
+		       ,TELN03   AS "TELN03"
+		       ,TLEXT1   AS "TLEXT1"
+		       ,FAXTL1   AS "FAXTL1"
+		       ,FAXTL2   AS "FAXTL2"
+		       ,POBOX1   AS "POBOX1"
+		       ,POBPC1   AS "POBPC1"
+		       ,EMAIL1   AS "EMAIL1"
+		       ,EMAIL2   AS "EMAIL2"
+		       ,COMPKY   AS "COMPKY"
+		       ,DEPART   AS "DEPART"
+		       ,EMPLID   AS "EMPLID"
+		       ,USERG1   AS "USERG1"
+		       ,(CASE USERG1 WHEN 'PV' THEN USERG2 ELSE USERG1||'-RCV' END)  AS "USERG2" 
+		       ,(CASE USERG1 WHEN 'PV' THEN USERG3 ELSE 'RCV'||USERG1 END)   AS "USERG3" 
+		       ,(CASE USERG1 WHEN 'PV' THEN USERG2||'-REPA' ELSE USERG4 END) AS "USERG4" 
+		       ,USERG5   AS "USERG5"
+		       ,LANGKY   AS "LANGKY"
+		       ,DATEFM   AS "DATEFM"
+		       ,DATEDL   AS "DATEDL"
+		       ,DECPFM   AS "DECPFM"
+		       ,LLOGID   AS "LLOGID"
+		       ,LLOGIT   AS "LLOGIT"
+		       ,LLOGOD   AS "LLOGOD"
+		       ,LLOGOT   AS "LLOGOT"
+		       ,MENUKY   AS "MENUKY"
+		       ,LLOGWH   AS "LLOGWH"
+		       ,TIMFMT   AS "TIMFMT"
+		       ,CURRFM   AS "CURRFM"
+		       ,FTSIZE   AS "FTSIZE"
+		       ,RECNTF   AS "RECNTF"
+		       ,DELMAK   AS "DELMAK"
+		       ,PGSIZE   AS "PGSIZE"
+		       ,U.CREDAT AS "CREDAT"
+		       ,U.CRETIM AS "CRETIM"
+		       ,U.CREUSR AS "CREUSR"
+		       ,(SELECT A.NMFIRS FROM USRMA A WHERE A.USERID = U.CREUSR LIMIT 1) AS "CUSRNM"
+		       ,U.LMODAT AS "LMODAT"
+		       ,U.LMOTIM AS "LMOTIM"
+		       ,U.LMOUSR AS "LMOUSR"
+		       ,(SELECT A.NMFIRS FROM USRMA A WHERE A.USERID = U.LMOUSR LIMIT 1) AS "LUSRNM"
+		       ,U.INDBZL AS "INDBZL"
+		       ,U.INDARC AS "INDARC"
+		       ,U.UPDCHK AS "UPDCHK"
+		FROM    USRMA U
+			    LEFT OUTER JOIN USRRA R ON U.USERID = R.USERID
+		WHERE   COMPKY = #{SES_USER_COMPANY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<insert id="USRMA_INSERT" parameterType="hashmap">
+		INSERT INTO USRMA(
+			  USERID
+			, PASSWD
+			, NMLAST
+			, NMFIRS
+			, ADDR01
+			, ADDR02
+			, ADDR03
+			, ADDR04
+			, ADDR05
+			, CITY01
+			, REGN01
+			, POSTCD
+			, NATNKY
+			, TELN01
+			, TELN02
+			, TELN03
+			, TLEXT1
+			, FAXTL1
+			, FAXTL2
+			, POBOX1
+			, POBPC1
+			, EMAIL1
+			, EMAIL2
+			, COMPKY
+			, DEPART
+			, EMPLID
+			, USERG1
+			, USERG2
+			, USERG3
+			, USERG4
+			, USERG5
+			, LANGKY
+			, DATEFM
+			, DATEDL
+			, DECPFM
+			, LLOGID
+			, LLOGIT
+			, LLOGOD
+			, LLOGOT
+			, MENUKY
+			, PDAMKY
+			, LLOGWH
+			, TIMFMT
+			, CURRFM
+			, RECNTF
+			, DELMAK
+			, PGSIZE
+			, FTNAME
+			, FTSIZE
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, INDBZL
+			, INDARC
+			, UPDCHK
+		)VALUES(
+			  #{USERID}
+			, #{PASSWD}
+			, #{NMLAST}
+			, COALESCE(#{NMFIRS}, ' ')
+			, COALESCE(#{ADDR01}, ' ') 
+			, COALESCE(#{ADDR02}, ' ') 
+			, COALESCE(#{ADDR03}, ' ') 
+			, COALESCE(#{ADDR04}, ' ') 
+			, COALESCE(#{ADDR05}, ' ') 
+			, COALESCE(#{CITY01}, ' ') 
+			, COALESCE(#{REGN01}, ' ') 
+			, COALESCE(#{POSTCD}, ' ') 
+			, COALESCE(#{NATNKY}, ' ') 
+			, COALESCE(#{TELN01}, ' ') 
+			, COALESCE(#{TELN02}, ' ') 
+			, COALESCE(#{TELN03}, ' ') 
+			, COALESCE(#{TLEXT1}, ' ') 
+			, COALESCE(#{FAXTL1}, ' ') 
+			, COALESCE(#{FAXTL2}, ' ') 
+			, COALESCE(#{POBOX1}, ' ') 
+			, COALESCE(#{POBPC1}, ' ') 
+			, COALESCE(#{EMAIL1}, ' ') 
+			, COALESCE(#{EMAIL2}, ' ') 
+			, COALESCE(#{COMPKY}, #{SES_USER_COMPANY}) 
+			, COALESCE(#{DEPART}, ' ') 
+			, COALESCE(#{EMPLID}, ' ') 
+			, COALESCE(#{USERG1}, ' ') 
+			, COALESCE(#{USERG2}, ' ') 
+			, COALESCE(#{USERG3}, ' ') 
+			, COALESCE(#{USERG4}, ' ') 
+			, COALESCE(#{USERG5}, ' ') 
+			, COALESCE(#{LANGKY}, ' ') 
+			, COALESCE(#{DATEFM}, ' ') 
+			, COALESCE(#{DATEDL}, ' ')
+			, COALESCE(#{DECPFM}, ' ') 
+			, COALESCE(#{LLOGID}, ' ') 
+			, COALESCE(#{LLOGIT}, ' ') 
+			, COALESCE(#{LLOGOD}, ' ') 
+			, COALESCE(#{LLOGOT}, #{SES_USER_COMPANY}) 
+			, COALESCE(#{MENUKY}, ' ') 
+			, 'PDA'
+			, COALESCE(#{LLOGWH}, ' ')
+			, COALESCE(#{TIMFMT}, ' ') 
+			, COALESCE(#{CURRFM}, ' ') 
+			, COALESCE(#{RECNTF}, '0')::NUMERIC
+			, COALESCE(#{DELMAK}, 'N') 
+			, COALESCE(#{PGSIZE}, '0')::NUMERIC
+			, COALESCE(#{FTNAME}, ' ') 
+			, COALESCE(#{FTSIZE}, '0')::NUMERIC 
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, COALESCE(#{INDBZL}, ' ')
+			, COALESCE(#{INDARC}, ' ')
+			, 0
+		)
+	</insert>
+	
+	<update id="USRMA_UPDATE" parameterType="hashmap">
+		UPDATE USRMA 
+		SET
+		<if test="NMLAST != null and NMLAST != ''">
+			   NMLAST = #{NMLAST},
+		</if>
+		<if test="NMFIRS != null and NMFIRS != ''">	   
+			   NMFIRS = #{NMFIRS},
+		</if>
+		<if test="ADDR01 != null and ADDR01 != ''">	   
+			   ADDR01 = #{ADDR01},
+		</if>
+		<if test="ADDR02 != null and ADDR02 != ''">	   
+			   ADDR02 = #{ADDR02},
+		</if>
+		<if test="ADDR03 != null and ADDR03 != ''">	   
+			   ADDR03 = #{ADDR03},
+		</if>
+		<if test="ADDR04 != null and ADDR04 != ''">	   
+			   ADDR04 = #{ADDR04},
+		</if>
+		<if test="ADDR05 != null and ADDR05 != ''">	   
+			   ADDR05 = #{ADDR05},
+		</if>
+		<if test="CITY01 != null and CITY01 != ''">	   
+			   CITY01 = #{CITY01},
+		</if>
+		<if test="REGN01 != null and REGN01 != ''">	   
+			   REGN01 = #{REGN01},
+		</if>
+		<if test="POSTCD != null and POSTCD != ''">	   
+			   POSTCD = #{POSTCD},
+		</if>
+		<if test="NATNKY != null and NATNKY != ''">	   
+			   NATNKY = #{NATNKY},
+		</if>
+		<if test="TELN01 != null and TELN01 != ''">	   
+			   TELN01 = #{TELN01},
+		</if>
+		<if test="TELN02 != null and TELN02 != ''">	   
+			   TELN02 = #{TELN02},
+		</if>
+		<if test="TELN03 != null and TELN03 != ''">	   
+			   TELN03 = #{TELN03},
+		</if>
+		<if test="TLEXT1 != null and TLEXT1 != ''">	   
+			   TLEXT1 = #{TLEXT1},
+		</if>
+		<if test="FAXTL1 != null and FAXTL1 != ''">	   
+			   FAXTL1 = #{FAXTL1},
+		</if>
+		<if test="FAXTL2 != null and FAXTL2 != ''">	   
+			   FAXTL2 = #{FAXTL2},
+		</if>
+		<if test="POBOX1 != null and POBOX1 != ''">	   
+			   POBOX1 = #{POBOX1},
+		</if>
+		<if test="POBPC1 != null and POBPC1 != ''">	   
+			   POBPC1 = #{POBPC1},
+		</if>
+		<if test="EMAIL1 != null and EMAIL1 != ''">	   
+			   EMAIL1 = #{EMAIL1},
+		</if>
+		<if test="EMAIL2 != null and EMAIL2 != ''">	   
+			   EMAIL2 = #{EMAIL2},
+		</if>
+		<if test="DEPART != null">	   
+			   DEPART = COALESCE(#{DEPART},' '),
+		</if>
+		<if test="EMPLID != null and EMPLID != ''">	   
+			   EMPLID = #{EMPLID},
+		</if>
+		<if test="USERG1 != null and USERG1 != ''">	   
+			   USERG1 = #{USERG1},
+		</if>
+		<if test="USERG2 != null and USERG2 != ''">	   
+			   USERG2 = #{USERG2},
+		</if>
+		<if test="USERG3 != null and USERG3 != ''">	   
+			   USERG3 = #{USERG3},
+		</if>
+		<if test="USERG4 != null and USERG4 != ''">	   
+			   USERG4 = #{USERG4},
+		</if>
+		<if test="USERG5 != null and USERG5 != ''">	   
+			   USERG5 = #{USERG5},
+		</if>
+		<if test="LANGKY != null and LANGKY != ''">	   
+			   LANGKY = #{LANGKY},
+		</if>
+		<if test="DATEFM != null and DATEFM != ''">	   
+			   DATEFM = #{DATEFM},
+		</if>
+		<if test="DATEDL != null and DATEDL != ''">	   
+			   DATEDL = #{DATEDL},
+		</if>
+		<if test="DECPFM != null and DECPFM != ''">	   
+			   DECPFM = #{DECPFM},
+		</if>
+		<if test="LLOGID != null and LLOGID != ''">	   
+			   LLOGID = #{LLOGID},
+		</if>
+		<if test="LLOGIT != null and LLOGIT != ''">	   
+			   LLOGIT = #{LLOGIT},
+		</if>
+		<if test="LLOGOD != null and LLOGOD != ''">	   
+			   LLOGOD = #{LLOGOD},
+		</if>
+		<if test="LLOGOT != null and LLOGOT != ''">	   
+			   LLOGOT = #{LLOGOT},
+		</if>
+		<if test="MENUKY != null">	   
+			   MENUKY = COALESCE(#{MENUKY},' '),
+		</if>
+		<if test="PDAMKY != null">	   
+			   PDAMKY = 'PDA',
+		</if>
+		<if test="LLOGWH != null">	   
+			   LLOGWH = COALESCE(#{LLOGWH},' '),
+		</if>
+		<if test="TIMFMT != null and TIMFMT != ''">	   
+			   TIMFMT = #{TIMFMT},
+		</if>
+		<if test="CURRFM != null and CURRFM != ''">	   
+			   CURRFM = #{CURRFM},
+		</if>
+		<if test="RECNTF != null and RECNTF != ''">	   
+			   RECNTF = #{RECNTF}::NUMERIC,
+		</if>
+		<if test="DELMAK != null and DELMAK != ''">	   
+			   DELMAK = #{DELMAK},
+		</if>
+		<if test="PGSIZE != null and PGSIZE != ''">	   
+			   PGSIZE = #{PGSIZE}::NUMERIC,
+		</if>
+		<if test="FTNAME != null and FTNAME != ''">	   
+			   FTNAME = #{FTNAME},
+		</if>
+		<if test="FTSIZE != null and FTSIZE != ''">	   
+			   FTSIZE = #{FTSIZE}::NUMERIC,
+		</if>
+			   LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+		       LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+		       LMOUSR = #{SES_USER_ID},
+		       UPDCHK = UPDCHK + 1
+		WHERE USERID = #{USERID}
+		AND   COMPKY = #{SES_USER_COMPANY}
+	</update>
+	
+	<delete id="USRMA_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   USRMA 
+		WHERE  USERID = #{USERID} 
+		AND    COMPKY = #{SES_USER_COMPANY}
+	</delete>
+	
+	<select id="USER_DUPLICATION_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT" 
+		FROM   USRMA
+		WHERE  USERID = #{USERID} 
+		AND    COMPKY = #{SES_USER_COMPANY}
+	</select>
+	<!-- [UI01] 사용자** -->
+	
+	<!-- **[YL01] 라벨 -->
+	<select id="JLBLM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT  LANGKY AS "LANGKY"
+			,	LABLGR AS "LABLGR"
+			,	LABLKY AS "LABLKY"
+		    ,	LBLTXS AS "LBLTXS"
+			,	LBLTXM AS "LBLTXM"
+			,	LBLTXL AS "LBLTXL"
+			,	CREDAT AS "CREDAT"
+			,	CRETIM AS "CRETIM"
+			,	CREUSR AS "CREUSR"
+			,	LMODAT AS "LMODAT"
+			,	LMOTIM AS "LMOTIM"
+			,	LMOUSR AS "LMOUSR"
+		FROM    JLBLM
+		WHERE   1 = 1
+		<if test="LANGKY != null and LANGKY != ''">
+		AND     LANGKY = #{LANGKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY LANGKY, LABLGR, LABLKY
+	</select>
+	
+	<insert id="JLBLM_INSERT" parameterType="hashmap">
+		INSERT INTO JLBLM(
+			  LANGKY
+			, LABLGR
+			, LABLKY
+			, LBLTXS
+			, LBLTXM
+			, LBLTXL
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, INDBZL
+			, INDARC
+			, UPDCHK
+		)VALUES(
+			  #{LANGKY}
+			, #{LABLGR}
+			, #{LABLKY}
+			, COALESCE(#{LBLTXS}, ' ')
+			, COALESCE(#{LBLTXM}, ' ')
+			, COALESCE(#{LBLTXL}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, COALESCE(#{SES_USER_ID}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, COALESCE(#{SES_USER_ID}, ' ')
+			, COALESCE(#{INDBZL}, ' ')
+			, COALESCE(#{INDARC}, ' ')
+			, 0
+		)
+	</insert>
+	
+	<update id="JLBLM_UPDATE" parameterType="hashmap">
+		UPDATE JLBLM
+		SET    
+		<if test="LBLTXS != null and LBLTXS != ''">
+			   LBLTXS = #{LBLTXS},
+		</if>
+		<if test="LBLTXS != null and LBLTXS != ''">
+			   LBLTXM = #{LBLTXM},
+		</if>
+		<if test="LBLTXS != null and LBLTXS != ''">
+			   LBLTXL = #{LBLTXL},
+		</if>
+		       LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+		       LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+		       LMOUSR = #{SES_USER_ID},
+		       UPDCHK = UPDCHK + 1
+		WHERE  LANGKY = #{LANGKY}
+		AND    LABLGR = #{LABLGR}
+		AND    LABLKY = #{LABLKY}      
+	</update>
+	
+	<delete id="JLBLM_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   JLBLM
+		WHERE  LANGKY = #{LANGKY}
+		AND    LABLGR = #{LABLGR}
+		AND    LABLKY = #{LABLKY}
+	</delete>
+	<!-- [YL01] 라벨** -->
+	
+	<!-- **[YM01] 메시지 -->
+	<select id="JMSGM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT  LANGKY AS "LANGKY"
+			,	MESGGR AS "MESGGR"
+			,	MESGKY AS "MESGKY"
+		    ,	MESGTX AS "MESGTX"
+			,	CREDAT AS "CREDAT"
+			,	CRETIM AS "CRETIM"
+			,	CREUSR AS "CREUSR"
+			,	LMODAT AS "LMODAT"
+			,	LMOTIM AS "LMOTIM"
+			,	LMOUSR AS "LMOUSR"
+		FROM    JMSGM
+		WHERE   1 = 1
+		<if test="LANGKY != null and LANGKY != ''">
+		AND     LANGKY = #{LANGKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY LANGKY, MESGGR, MESGKY
+	</select>
+	
+	<insert id="JMSGM_INSERT" parameterType="hashmap">
+		INSERT INTO JMSGM(
+			  LANGKY
+			, MESGGR
+			, MESGKY
+			, MESGTX
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, INDBZL
+			, INDARC
+			, UPDCHK
+		)VALUES(
+			  #{LANGKY}
+			, #{MESGGR}
+			, #{MESGKY}
+			, COALESCE(#{MESGTX}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, COALESCE(#{SES_USER_ID}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, COALESCE(#{SES_USER_ID}, ' ')
+			, COALESCE(#{INDBZL}, ' ')
+			, COALESCE(#{INDARC}, ' ')
+			, 0
+		)
+	</insert>
+	
+	<update id="JMSGM_UPDATE" parameterType="hashmap">
+		UPDATE JMSGM
+		SET    
+		<if test="MESGTX != null and MESGTX != ''">
+			   MESGTX = #{MESGTX},
+		</if>
+		       LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+		       LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+		       LMOUSR = #{SES_USER_ID},
+		       UPDCHK = UPDCHK + 1
+		WHERE  LANGKY = #{LANGKY}
+		AND    MESGGR = #{MESGGR}
+		AND    MESGKY = #{MESGKY}      
+	</update>
+	
+	<delete id="JMSGM_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   JMSGM
+		WHERE  LANGKY = #{LANGKY}
+		AND    MESGGR = #{MESGGR}
+		AND    MESGKY = #{MESGKY}
+	</delete>
+	<!-- [YM01] 메시지** -->
+	
+	<!--[ CC01] 공통코드 -->
+	<select id="CC01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT CMCDKY AS "CMCDKY" 
+			,  SHORTX AS "SHORTX" 
+			,  DBFILD AS "DBFILD" 
+			,  USARL1 AS "USARL1" 
+			,  USARL2 AS "USARL2" 
+			,  USARL3 AS "USARL3" 
+			,  USARL4 AS "USARL4" 
+			,  USARL5 AS "USARL5" 
+			,  SYONLY AS "SYONLY" 
+			,  CREDAT AS "CREDAT" 
+			,  CRETIM AS "CRETIM" 
+			,  CREUSR AS "CREUSR" 
+			,  LMODAT AS "LMODAT" 
+			,  LMOTIM AS "LMOTIM" 
+			,  LMOUSR AS "LMOUSR" 
+			,  INDBZL AS "INDBZL" 
+			,  INDARC AS "INDARC" 
+			,  UPDCHK AS "UPDCHK" 
+		FROM   CMCDM
+		WHERE  1=1
+		<if test="CMCDKY != null and CMCDKY != ''">
+		AND    CMCDKY = #{CMCDKY}
+		</if>
+		<if test="SHORTX != null and SHORTX != ''">
+		AND    SHORTX LIKE '%' || #{SHORTX} || '%'
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<insert id="CC01_INSERT"  parameterType="hashmap">
+		INSERT INTO CMCDM(
+			 CMCDKY, SHORTX
+			,CREDAT, CRETIM, CREUSR
+			,LMODAT, LMOTIM, LMOUSR
+		)
+		VALUES(
+			 #{CMCDKY}, #{SHORTX}
+			,TO_CHAR(NOW(),'YYYYMMDD'), TO_CHAR(NOW(),'HH24MISS'), #{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD'), TO_CHAR(NOW(),'HH24MISS'), #{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="CC01_UPDATE"  parameterType="hashmap">
+		UPDATE CMCDM  
+		SET	   
+			   SHORTX = #{SHORTX},
+			   LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+			   LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+			   LMOUSR = #{SES_USER_ID}
+		WHERE  CMCDKY = #{CMCDKY}
+	</update>
+	
+	<delete id="CC01_DELETE"  parameterType="hashmap">
+		DELETE 
+		FROM   CMCDM 
+		WHERE  CMCDKY = #{CMCDKY}
+	</delete>
+	
+	<select id="CC01SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT CMCDKY AS "CMCDKY"
+			,  CMCDVL AS "CMCDVL"
+			,  CDESC1 AS "CDESC1"
+			,  CDESC2 AS "CDESC2"
+			,  USARG1 AS "USARG1"
+			,  USARG2 AS "USARG2"
+			,  USARG3 AS "USARG3"
+			,  USARG4 AS "USARG4"
+			,  USARG5 AS "USARG5"
+			,  CREDAT AS "CREDAT"
+			,  CRETIM AS "CRETIM"
+			,  CREUSR AS "CREUSR"
+			,  LMODAT AS "LMODAT"
+			,  LMOTIM AS "LMOTIM"
+			,  LMOUSR AS "LMOUSR"
+			,  INDBZL AS "INDBZL"
+			,  INDARC AS "INDARC"
+			,  UPDCHK AS "UPDCHK" 
+		FROM   CMCDV
+		WHERE  CMCDKY = #{CMCDKY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<insert id="CC01SUB_INSERT"  parameterType="hashmap">
+		INSERT INTO CMCDV(
+			 CMCDKY, CMCDVL, CDESC1, CDESC2
+			,USARG1, USARG2, USARG3, USARG4, USARG5
+			,CREDAT, CRETIM, CREUSR
+			,LMODAT, LMOTIM, LMOUSR
+		)
+		VALUES(
+			 #{CMCDKY}, #{CMCDVL}, #{CDESC1}, #{CDESC2}
+			,#{USARG1}, #{USARG2}, #{USARG3}, #{USARG4}, #{USARG5}
+			,TO_CHAR(NOW(),'YYYYMMDD'), TO_CHAR(NOW(),'HH24MISS'), #{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD'), TO_CHAR(NOW(),'HH24MISS'), #{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="CC01SUB_UPDATE"  parameterType="hashmap">
+		UPDATE CMCDV 
+		SET	
+			  CMCDKY = #{CMCDKY},
+			  CMCDVL = #{CMCDVL},
+			  CDESC1 = #{CDESC1},
+			  CDESC2 = #{CDESC2},
+			  USARG1 = #{USARG1},
+			  USARG2 = #{USARG2},
+			  USARG3 = #{USARG3},
+			  USARG4 = #{USARG4},
+			  USARG5 = #{USARG5},
+			  LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+			  LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+			  LMOUSR = #{SES_USER_ID}
+		WHERE CMCDKY = #{CMCDKY}
+		AND   CMCDVL = #{CMCDVL}
+	</update>
+	
+	<delete id="CC01SUB_DELETE"  parameterType="hashmap">
+		DELETE 
+		FROM   CMCDV 
+		WHERE  CMCDKY = #{CMCDKY}
+		AND    CMCDVL = #{CMCDVL}
+	</delete>
+	<!--[ CC01] 공통코드** -->
+	
+	<!-- **[MW01] 창고 -->
+	<select id="WAHMA_CHECK_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   WAHMA
+		WHERE  WAREKY = #{WAREKY}
+		AND    COMPKY = #{SES_USER_COMPANY}
+	</select>
+	<!-- [MW01] 창고** -->
+	
+	<!-- **[DC01] 문서유형 -->
+	<select id="DOCCM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DOCCAT AS "DOCCAT"
+			,  SHORTX AS "SHORTX"
+			,  DOCUFM AS "DOCUFM"
+			,  DEFLIN AS "DEFLIN"
+			,  CREDAT AS "CREDAT"
+			,  CRETIM AS "CRETIM"
+			,  CREUSR AS "CREUSR"
+			,  LMODAT AS "LMODAT"
+			,  LMOTIM AS "LMOTIM"
+			,  LMOUSR AS "LMOUSR"
+		FROM   DOCCM
+		WHERE  1=1
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY 
+		       DOCCAT
+	</select>
+	
+	<select id="DOCCM_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT DOCCAT AS "DOCCAT"
+			,  SHORTX AS "SHORTX"
+			,  DOCUFM AS "DOCUFM"
+			,  DEFLIN AS "DEFLIN"
+		FROM   DOCCM
+		WHERE  DOCCAT = #{DOCCAT}
+	</select>
+	
+	<insert id="DOCCM_INSERT"  parameterType="hashmap">
+		INSERT INTO DOCCM(
+			  DOCCAT
+			, SHORTX
+			, DOCUFM
+			, DEFLIN
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, INDBZL
+			, INDARC
+			, UPDCHK
+		)
+		VALUES(
+			  #{DOCCAT}
+			, #{SHORTX}
+			, COALESCE(#{DOCUFM}, ' ')
+			, #{DEFLIN}::NUMERIC
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, COALESCE(#{INDBZL}, ' ')
+			, COALESCE(#{INDARC}, ' ')
+			, 0
+		)
+	</insert>
+	
+	<update id="DOCCM_UPDATE"  parameterType="hashmap">
+		UPDATE DOCCM
+		SET    SHORTX = COALESCE(#{SHORTX},' '),
+			   LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+			   LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+			   LMOUSR = #{SES_USER_ID},
+			   UPDCHK = UPDCHK + 1
+		WHERE  DOCCAT = #{DOCCAT}
+	</update>
+	
+	<delete id="DOCCM_DELETE"  parameterType="hashmap">
+		DELETE 
+		FROM   DOCCM 
+		WHERE  DOCCAT = #{DOCCAT}
+	</delete>
+	
+	<select id="DOCCAT_DUPLICATION_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   DOCCM
+		WHERE  DOCCAT = #{DOCCAT}
+	</select>
+	<!-- [DC01] 문서유형** -->
+	
+	<!-- **[DT01] 문서종류 -->
+	<select id="DOCTM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DT.DOCUTY AS "DOCUTY"
+			,  DT.DOCCAT AS "DOCCAT"
+			,  DC.SHORTX AS "DOCCATNM"
+			,  DT.SHORTX AS "SHORTX"
+			,  DT.NUMOBJ AS "NUMOBJ"
+			,  DT.ITNINC AS "ITNINC"
+			,  DT.INSINC AS "INSINC"
+			,  DT.CDOCTY AS "CDOCTY"
+			,  DT.TRNHTY AS "TRNHTY"
+			,  DT.INVNDL AS "INVNDL"
+			,  DT.SKUVND AS "SKUVND"
+			,  DT.SYSLOC AS "SYSLOC"
+			,  DT.ERPLOC AS "ERPLOC"
+			,  DT.SBWART AS "SBWART"
+			,  DT.IFTBLN AS "IFTBLN"
+			,  DT.INDSND AS "INDSND"
+			,  DT.DOCGRP AS "DOCGRP"
+			,  DT.TKFLKY AS "TKFLKY"
+			,  DT.ALSTKY AS "ALSTKY"
+			,  DT.MENUID AS "MENUID"
+			,  DT.CREDAT AS "CREDAT"
+			,  DT.CRETIM AS "CRETIM"
+			,  DT.CREUSR AS "CREUSR"
+			,  DT.LMODAT AS "LMODAT"
+			,  DT.LMOTIM AS "LMOTIM"
+			,  DT.LMOUSR AS "LMOUSR"
+		FROM   DOCTM DT
+		       INNER JOIN DOCCM DC ON DT.DOCCAT = DC.DOCCAT
+		WHERE  1=1
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY 
+		       DT.DOCCAT, DT.DOCUTY
+	</select>
+	
+	<insert id="DOCTM_INSERT"  parameterType="hashmap">
+		INSERT INTO DOCTM(
+			  DOCUTY
+			, DOCCAT
+			, SHORTX
+			, NUMOBJ
+			, ITNINC
+			, INSINC
+			, CDOCTY
+			, TRNHTY
+			, INVNDL
+			, SKUVND
+			, SYSLOC
+			, ERPLOC
+			, SBWART
+			, IFTBLN
+			, INDSND
+			, DOCGRP
+			, TKFLKY
+			, ALSTKY
+			, MENUID
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, INDBZL
+			, INDARC
+			, UPDCHK
+		)
+		VALUES(
+			  #{DOCUTY}
+			, #{DOCCAT}
+			, #{SHORTX}
+			, COALESCE(#{NUMOBJ},' ')
+			, COALESCE(#{ITNINC},' ')
+			, COALESCE(#{INSINC},' ')
+			, COALESCE(#{CDOCTY},' ')
+			, COALESCE(#{TRNHTY},' ')
+			, COALESCE(#{INVNDL},' ')
+			, COALESCE(#{SKUVND},' ')
+			, COALESCE(#{SYSLOC},' ')
+			, COALESCE(#{ERPLOC},' ')
+			, COALESCE(#{SBWART},' ')
+			, COALESCE(#{IFTBLN},' ')
+			, COALESCE(#{INDSND},' ')
+			, COALESCE(#{DOCGRP},' ')
+			, COALESCE(#{TKFLKY},' ')
+			, COALESCE(#{ALSTKY},' ')
+			, COALESCE(#{MENUID},' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, COALESCE(#{INDBZL}, ' ')
+			, COALESCE(#{INDARC}, ' ')
+			, 0
+		)
+	</insert>
+	
+	<update id="DOCTM_UPDATE"  parameterType="hashmap">
+		UPDATE DOCTM
+		SET    SHORTX = #{SHORTX},
+			   NUMOBJ = COALESCE(#{NUMOBJ},' '),
+			   ITNINC = COALESCE(#{ITNINC},' '),
+			   INSINC = COALESCE(#{INSINC},' '),
+			   CDOCTY = COALESCE(#{CDOCTY},' '),
+			   TRNHTY = COALESCE(#{TRNHTY},' '),
+			   INVNDL = COALESCE(#{INVNDL},' '),
+			   SKUVND = COALESCE(#{SKUVND},' '),
+			   SYSLOC = COALESCE(#{SYSLOC},' '),
+			   ERPLOC = COALESCE(#{ERPLOC},' '),
+			   SBWART = COALESCE(#{SBWART},' '),
+			   IFTBLN = COALESCE(#{IFTBLN},' '),
+			   INDSND = COALESCE(#{INDSND},' '),
+			   DOCGRP = COALESCE(#{DOCGRP},' '),
+			   TKFLKY = COALESCE(#{TKFLKY},' '),
+			   ALSTKY = COALESCE(#{ALSTKY},' '),
+			   MENUID = COALESCE(#{MENUID},' '),
+			   LMODAT = TO_CHAR(NOW(),'YYYYMMDD'),
+			   LMOTIM = TO_CHAR(NOW(),'HH24MISS'),
+			   LMOUSR = #{SES_USER_ID},
+			   UPDCHK = UPDCHK + 1
+		WHERE  DOCCAT = #{DOCCAT}
+		AND    DOCUTY = #{DOCUTY}
+	</update>
+	
+	<delete id="DOCTM_DELETE"  parameterType="hashmap">
+		DELETE 
+		FROM   DOCTM 
+		WHERE  DOCCAT = #{DOCCAT}
+		AND    DOCUTY = #{DOCUTY}
+	</delete>
+	
+	<select id="DOCUTY_DUPLICATION_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   DOCTM
+		WHERE  DOCCAT = #{DOCCAT}
+		AND    DOCUTY = #{DOCUTY}
+	</select>
+	<!-- [DT01] 문서종류 ** -->
+	
+	<!-- [MW01] 창고  -->
+	<select id="WAHMA_LIST" parameterType="hashmap" resultType="DataMap">
+	    SELECT WAREKY AS "WAREKY" 
+			,  COMPKY AS "COMPKY" 
+			,  NAME01 AS "NAME01" 
+			,  ADDR01 AS "ADDR01" 
+			,  POSTCD AS "POSTCD" 
+			,  TELN01 AS "TELN01" 
+			,  FAXTL1 AS "FAXTL1" 
+		FROM   WAHMA
+		WHERE  1 = 1
+		AND	COMPKY = #{SES_USER_COMPANY}
+		<if test="WAREKY != null and WAREKY != ''">
+		AND    WAREKY = #{WAREKY}
+		</if>
+		<if test="DELMAK != null and DELMAK != ''">
+		AND    DELMAK = #{DELMAK}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY COMPKY, WAREKY
+    </select> 
+    
+	<insert id="WAHMA_INSERT"  parameterType="hashmap">
+		INSERT INTO WAHMA(
+			 COMPKY, WAREKY
+			,NAME01 ,ADDR01 ,POSTCD ,TELN01, FAXTL1
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY}, #{WAREKY}
+			,#{NAME01} ,#{ADDR01} ,#{POSTCD} ,#{TELN01} ,#{FAXTL1}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="WAHMA_UPDATE"  parameterType="hashmap">
+	    UPDATE WAHMA SET 
+			   LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+			,  LMOTIM = TO_CHAR(now(), 'HH24MISS')
+			,  LMOUSR = #{SES_USER_ID}
+			,  NAME01 = #{NAME01}
+			,  ADDR01 = #{ADDR01}
+			,  POSTCD = #{POSTCD}
+			,  TELN01 = #{TELN01}
+			,  FAXTL1 = #{FAXTL1}
+	    WHERE  COMPKY = #{SES_USER_COMPANY}
+	    AND	   WAREKY = #{WAREKY}
+    </update> 
+	
+	<delete id="WAHMA_DELETE"  parameterType="hashmap">
+		DELETE FROM WAHMA 
+		WHERE COMPKY = #{SES_USER_COMPANY}
+        AND   WAREKY = #{WAREKY}
+	</delete>
+	<!-- [MW01] 창고 ** -->
+	
+	<!-- **[MA01] 영역-->
+	<select id="AREMA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"  
+			,  WAREKY AS "WAREKY"
+			,  AREAKY AS "AREAKY"
+			,  AREATY AS "AREATY"
+			,  SHORTX AS "SHORTX"
+			,  NEGSTK AS "NEGSTK"
+			,  INDCDO AS "INDCDO"
+			,  INDAES AS "INDAES"
+			,  INDSHW AS "INDSHW"
+			,  INDULT AS "INDULT"
+			,  RDDALL AS "RDDALL"
+			,  CREDAT AS "CREDAT"
+			,  CRETIM AS "CRETIM"
+			,  CREUSR AS "CREUSR"
+			,  LMODAT AS "LMODAT"
+			,  LMOTIM AS "LMOTIM"
+			,  LMOUSR AS "LMOUSR"
+			,  INDBZL AS "INDBZL"
+			,  INDARC AS "INDARC"
+			,  UPDCHK AS "UPDCHK"
+	    FROM   AREMA
+	    WHERE  1 = 1
+		AND    COMPKY = #{SES_USER_COMPANY}
+		<if test="WAREKY != null and WAREKY != ''">
+		AND    WAREKY = #{WAREKY}
+		</if>
+		<if test="AREAKY != null and AREAKY != ''">
+		AND    AREAKY = #{AREAKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY COMPKY, WAREKY, AREAKY
+    </select> 
+    
+	<insert id="AREMA_INSERT"  parameterType="hashmap">
+		INSERT INTO AREMA(
+			 COMPKY ,WAREKY ,AREAKY ,AREATY ,SHORTX
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY} ,#{WAREKY} ,#{AREAKY} ,#{AREATY} ,#{SHORTX}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="AREMA_UPDATE"  parameterType="hashmap">
+	    UPDATE AREMA SET 
+	           LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+	         , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+	         , LMOUSR = #{SES_USER_ID}
+	         , AREAKY = #{AREAKY}
+	         , AREATY = #{AREATY} 
+	         , SHORTX = #{SHORTX} 
+	    WHERE  COMPKY = #{SES_USER_COMPANY}
+	    AND	   WAREKY = #{WAREKY}
+	    AND	   AREAKY = #{AREAKY}
+    </update> 
+    
+	<delete id="AREMA_DELETE"  parameterType="hashmap">
+		DELETE FROM AREMA 
+		WHERE COMPKY = #{SES_USER_COMPANY}
+	    AND   WAREKY = #{WAREKY}
+	    AND   AREAKY = #{AREAKY}
+	</delete>
+	<!--[MA01] 영역** -->
+	
+	<!-- **MZ01 존-->
+	<select id="ZONMA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"  
+			,  WAREKY AS "WAREKY"
+			,  AREAKY AS "AREAKY"
+			,  ZONEKY AS "ZONEKY"
+			,  ZONETY AS "ZONETY"
+			,  SHORTX AS "SHORTX"
+			,  CREDAT AS "CREDAT"
+			,  CRETIM AS "CRETIM"
+			,  CREUSR AS "CREUSR"
+			,  LMODAT AS "LMODAT"
+			,  LMOTIM AS "LMOTIM"
+			,  LMOUSR AS "LMOUSR"
+			,  INDBZL AS "INDBZL"
+			,  INDARC AS "INDARC"
+			,  UPDCHK AS "UPDCHK"
+	    FROM   ZONMA
+	    WHERE  1 = 1
+		AND    COMPKY = #{SES_USER_COMPANY}
+		<if test="WAREKY != null and WAREKY != ''">
+		AND    WAREKY = #{WAREKY}
+		</if>
+		<if test="ZONEKY != null and ZONEKY != ''">
+		AND    ZONEKY = #{ZONEKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY COMPKY, WAREKY, ZONEKY
+    </select> 
+    
+	<insert id="ZONMA_INSERT"  parameterType="hashmap">
+		INSERT INTO ZONMA(
+			 COMPKY ,WAREKY ,ZONEKY ,ZONETY ,SHORTX ,AREAKY
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY} ,#{WAREKY} ,#{ZONEKY} ,#{ZONETY} ,#{SHORTX} ,#{AREAKY}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="ZONMA_UPDATE"  parameterType="hashmap">
+	    UPDATE ZONMA SET 
+	           LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+	         , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+	         , LMOUSR = #{SES_USER_ID}
+	         , ZONETY = #{ZONETY} 
+	         , SHORTX = #{SHORTX} 
+	         , AREAKY = #{AREAKY}
+	    WHERE  COMPKY = #{SES_USER_COMPANY}
+	    AND	   WAREKY = #{WAREKY}
+	    AND	   ZONEKY = #{ZONEKY}
+    </update> 
+    
+	<delete id="ZONMA_DELETE"  parameterType="hashmap">
+		DELETE FROM ZONMA 
+		WHERE COMPKY = #{SES_USER_COMPANY}
+	    AND   WAREKY = #{WAREKY}
+	    AND   ZONEKY = #{ZONEKY}
+	</delete>
+	<!--MZ01 존** -->
+	
+	<!-- **ML01 로케이션-->
+	<select id="LOCMA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"
+			,  WAREKY AS "WAREKY"
+			,  LOCAKY AS "LOCAKY"
+			,  LOCATY AS "LOCATY"
+			,  SHORTX AS "SHORTX"
+			,  TASKTY AS "TASKTY"
+			,  ZONEKY AS "ZONEKY"
+			,  AREAKY AS "AREAKY"
+			,  TKZONE AS "TKZONE"
+			,  FACLTY AS "FACLTY"
+			,  ARLVLL AS "ARLVLL"
+			,  INDCPC AS "INDCPC"
+			,  INDTUT AS "INDTUT"
+			,  IBROUT AS "IBROUT"
+			,  OBROUT AS "OBROUT"
+			,  RPROUT AS "RPROUT"
+			,  STATUS AS "STATUS"
+			,  ABCANV AS "ABCANV"
+			,  LENGTH AS "LENGTH"
+			,  WIDTHW AS "WIDTHW"
+			,  HEIGHT AS "HEIGHT"
+			,  CUBICM AS "CUBICM"
+			,  MAXCPC AS "MAXCPC"
+			,  MAXQTY AS "MAXQTY"
+			,  MAXWGT AS "MAXWGT"
+			,  MAXLDR AS "MAXLDR"
+			,  MAXSEC AS "MAXSEC"
+			,  MIXSKU AS "MIXSKU"
+			,  MIXLOT AS "MIXLOT"
+			,  RPNCAT AS "RPNCAT"
+			,  INDQTC AS "INDQTC"
+			,  QTYCHK AS "QTYCHK"
+			,  NEDSID AS "NEDSID"
+			,  INDUPA AS "INDUPA"
+			,  INDUPK AS "INDUPK"
+			,  AUTLOC AS "AUTLOC"
+			,  CREDAT AS "CREDAT"
+			,  CRETIM AS "CRETIM"
+			,  CREUSR AS "CREUSR"
+			,  LMODAT AS "LMODAT"
+			,  LMOTIM AS "LMOTIM"
+			,  LMOUSR AS "LMOUSR"
+			,  INDBZL AS "INDBZL"
+			,  INDARC AS "INDARC"
+			,  UPDCHK AS "UPDCHK"
+	    FROM   LOCMA
+	    WHERE  1 = 1
+		AND	   COMPKY = #{SES_USER_COMPANY}
+		<if test="WAREKY != null and WAREKY != ''">
+		AND    WAREKY = #{WAREKY}
+		</if>
+		<if test="LOCAKY != null and LOCAKY != ''">
+		AND    LOCAKY = #{LOCAKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY COMPKY, WAREKY, LOCAKY
+    </select> 
+    
+	<insert id="LOCMA_INSERT"  parameterType="hashmap">
+		INSERT INTO LOCMA(
+			 COMPKY, WAREKY ,LOCAKY ,LOCATY
+			,SHORTX ,TASKTY ,ZONEKY ,AREAKY ,TKZONE
+			,FACLTY ,ARLVLL ,INDCPC ,INDTUT ,IBROUT
+			,OBROUT ,RPROUT ,STATUS ,ABCANV 
+			,LENGTH ,WIDTHW ,HEIGHT 
+			,CUBICM ,MAXCPC ,MAXQTY
+			,MAXWGT ,MAXLDR ,MAXSEC 
+			,MIXSKU ,MIXLOT ,RPNCAT ,INDQTC ,QTYCHK 
+			,NEDSID ,INDUPA ,INDUPK ,AUTLOC
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY}, #{WAREKY}, #{LOCAKY}, #{LOCATY}
+			,#{SHORTX} ,#{TASKTY} ,#{ZONEKY} ,#{AREAKY} ,#{TKZONE}
+			,#{FACLTY} ,#{ARLVLL} ,#{INDCPC} ,#{INDTUT} ,#{IBROUT}
+			,#{OBROUT} ,#{RPROUT} ,#{STATUS} ,#{ABCANV} 
+			,#{LENGTH}::NUMERIC ,#{WIDTHW}::NUMERIC ,#{HEIGHT}::NUMERIC 
+			,#{CUBICM}::NUMERIC ,#{MAXCPC}::NUMERIC ,#{MAXQTY}::NUMERIC
+			,#{MAXWGT}::NUMERIC ,#{MAXLDR}::NUMERIC ,#{MAXSEC}::NUMERIC
+			,#{MIXSKU} ,#{MIXLOT} ,#{RPNCAT} ,#{INDQTC} ,#{QTYCHK}::NUMERIC
+			,#{NEDSID} ,#{INDUPA} ,#{INDUPK} ,#{AUTLOC}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="LOCMA_UPDATE"  parameterType="hashmap">
+	     UPDATE LOCMA SET 
+			    LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+			  , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+			  , LMOUSR = #{SES_USER_ID}
+			  , LOCATY = #{LOCATY}
+			  , SHORTX = #{SHORTX}
+			  , TASKTY = #{TASKTY}
+			  , ZONEKY = #{ZONEKY}
+			  , AREAKY = #{AREAKY}
+			  , TKZONE = #{TKZONE}
+			  , FACLTY = #{FACLTY}
+			  , ARLVLL = #{ARLVLL}
+			  , INDCPC = #{INDCPC}
+			  , INDTUT = #{INDTUT}
+			  , IBROUT = #{IBROUT}
+			  , OBROUT = #{OBROUT}
+			  , RPROUT = #{RPROUT}
+			  , STATUS = #{STATUS}
+			  , ABCANV = #{ABCANV}
+			  , LENGTH = #{LENGTH}::NUMERIC
+			  , WIDTHW = #{WIDTHW}::NUMERIC
+			  , HEIGHT = #{HEIGHT}::NUMERIC
+			  , CUBICM = #{CUBICM}::NUMERIC
+			  , MAXCPC = #{MAXCPC}::NUMERIC
+			  , MAXQTY = #{MAXQTY}::NUMERIC
+			  , MAXWGT = #{MAXWGT}::NUMERIC
+			  , MAXLDR = #{MAXLDR}::NUMERIC
+			  , MAXSEC = #{MAXSEC}::NUMERIC
+			  , MIXSKU = #{MIXSKU}
+			  , MIXLOT = #{MIXLOT}
+			  , RPNCAT = #{RPNCAT}
+			  , INDQTC = #{INDQTC}
+			  , QTYCHK = #{QTYCHK}::NUMERIC
+			  , NEDSID = #{NEDSID}
+			  , INDUPA = #{INDUPA}
+			  , INDUPK = #{INDUPK}
+			  , AUTLOC = #{AUTLOC}
+	     WHERE  COMPKY = #{SES_USER_COMPANY}
+	     AND	WAREKY = #{WAREKY}
+	     AND	LOCAKY = #{LOCAKY}
+    </update> 
+    
+	<delete id="LOCMA_DELETE"  parameterType="hashmap">
+	    DELETE FROM LOCMA 
+	    WHERE COMPKY = #{SES_USER_COMPANY}
+	    AND   WAREKY = #{WAREKY}
+	    AND   LOCAKY = #{LOCAKY}
+	</delete>
+	<!--ML01 로케이션** -->
+	
+	<!-- [SK01] SKU마스터 -->
+	<select id="SKUMA_LIST" parameterType="hashmap" resultType="DataMap">
+	SELECT SM.COMPKY AS "COMPKY"
+		,  SM.OWNRKY AS "OWNRKY"
+		,  SW.WAREKY AS "WAREKY"
+		,  SW.AREAKY AS "AREAKY"
+		,  SW.ZONEKY AS "ZONEKY"
+		,  SM.SKUKEY AS "SKUKEY"
+		,  SM.DELMAK AS "DELMAK"
+		,  SM.DESC01 AS "DESC01"
+		,  SM.DESC02 AS "DESC02"
+		,  SM.VENDKY AS "VENDKY"
+		,  SM.ASKU01 AS "ASKU01"
+		,  SM.ASKU02 AS "ASKU02"
+		,  SM.ASKU03 AS "ASKU03"
+		,  SM.ASKU04 AS "ASKU04"
+		,  SM.ASKU05 AS "ASKU05"
+		,  SM.ASKL01 AS "ASKL01"
+		,  SM.ASKL02 AS "ASKL02"
+		,  SM.ASKL03 AS "ASKL03"
+		,  SM.ASKL04 AS "ASKL04"
+		,  SM.ASKL05 AS "ASKL05"
+		,  SM.EANCOD AS "EANCOD"
+		,  SM.GTINCD AS "GTINCD"
+		,  SM.SKUG01 AS "SKUG01"
+		,  SM.SKUG02 AS "SKUG02"
+		,  SM.SKUG03 AS "SKUG03"
+		,  SM.SKUG04 AS "SKUG04"
+		,  SM.SKUG05 AS "SKUG05"
+		,  SM.SKUL01 AS "SKUL01"
+		,  SM.SKUL02 AS "SKUL02"
+		,  SM.SKUL03 AS "SKUL03"
+		,  SM.SKUL04 AS "SKUL04"
+		,  SM.SKUL05 AS "SKUL05"
+		,  SM.GRSWGT AS "GRSWGT"
+		,  SM.NETWGT AS "NETWGT"
+		,  SM.WGTUNT AS "WGTUNT"
+		,  SM.LENGTH AS "LENGTH"
+		,  SM.WIDTHW AS "WIDTHW"
+		,  SM.HEIGHT AS "HEIGHT"
+		,  SM.CUBICM AS "CUBICM"
+		,  SM.CAPACT AS "CAPACT"
+		,  SM.DUOMKY AS "DUOMKY"
+		,  SM.QTDUOM AS "QTDUOM"
+		,  SM.LOTL01 AS "LOTL01"
+		,  SM.LOTL02 AS "LOTL02"
+		,  SM.LOTL03 AS "LOTL03"
+		,  SM.LOTL04 AS "LOTL04"
+		,  SM.LOTL05 AS "LOTL05"
+		,  SM.OUTDMT AS "OUTDMT"
+		,  SM.RIMDMT AS "RIMDMT"
+		,  SW.INNDPT AS "INNDPT"
+		,  SM.SECTWD AS "SECTWD"
+		,  SM.WEIGHT AS "WEIGHT"
+		,  SM.LGPRO  AS "LGPRO"
+		,  SM.DLGORT AS "DLGORT"
+		,  SM.BATMNG AS "BATMNG"
+		,  SM.CSTDAT AS "CSTDAT"
+		,  SM.CPSKUG AS "CPSKUG"
+		,  SM.DESC03 AS "DESC03"
+		,  SM.QTYMON AS "QTYMON"
+		,  SM.QTYSTD AS "QTYSTD"
+		,  SM.QTYCNT AS "QTYCNT"
+		,  SM.DESC04 AS "DESC04"
+		,  SM.BUFMNG AS "BUFMNG"
+		,  SW.MEASKY AS "MEASKY"
+		,  SW.LOCARV AS "LOCARV"
+		,  SW.LOCAQC AS "LOCAQC"
+		,  SW.RCSTKY AS "RCSTKY"
+		,  SW.PASTKY AS "PASTKY"
+		,  SW.CAPACR AS "CAPACR"
+		,  SW.SASTKY AS "SASTKY"
+		,  SW.ALSTKY AS "ALSTKY"
+		,  SW.TKFLKY AS "TKFLKY"
+		,  SW.SPRIKY AS "SPRIKY"
+		,  SW.IBPROT AS "IBPROT"
+		,  SW.OBPROT AS "OBPROT"
+		,  SW.UOMDIN AS "UOMDIN"
+		,  SW.UOMDOU AS "UOMDOU"
+		,  SW.UOMDTA AS "UOMDTA"
+		,  SW.INDSLC AS "INDSLC"
+		,  SW.SLCLAT AS "SLCLAT"
+		,  SW.SLCTYP AS "SLCTYP"
+		,  SW.SLCPDI AS "SLCPDI"
+		,  SW.SLCPDO AS "SLCPDO"
+		,  SW.DPUTZO AS "DPUTZO"
+		,  SW.DPUTLO AS "DPUTLO"
+		,  SW.CPVNDR AS "CPVNDR"
+		,  SW.CPMEAS AS "CPMEAS"
+		,  SW.LOCOVR AS "LOCOVR"
+		,  SW.PLOCOV AS "PLOCOV"
+		,  SW.TARIKY AS "TARIKY"
+		,  SW.LOTRKY AS "LOTRKY"
+		,  SW.EXPDCK AS "EXPDCK"
+		,  SW.PRODCK AS "PRODCK"
+		,  SW.SHPPRT AS "SHPPRT"
+		,  SW.IFFLAG AS "IFFLAG"
+		,  SW.CREDAT AS "CREDAT"
+		,  SW.CRETIM AS "CRETIM"
+		,  SW.CREUSR AS "CREUSR"
+		,  (SELECT MAX(USERNAME) FROM MSTUSER D WHERE D.USERID = SW.CREUSR) AS "CUSRNM"
+		,  SW.LMODAT AS "LMODAT"
+		,  SW.LMOTIM AS "LMOTIM"
+		,  SW.LMOUSR AS "LMOUSR"
+		,  (SELECT MAX(USERNAME) FROM MSTUSER D WHERE D.USERID = SW.LMOUSR) AS "LUSRNM"
+		,  SW.UPDCHK AS "UPDCHK"
+		,  '' AS "ROWSTATUS"
+		,  SW.ABCANV AS "ABCANV"
+         FROM SKUMA SM
+         INNER JOIN SKUWC SW
+            ON SM.OWNRKY = SW.OWNRKY
+           AND SM.SKUKEY = SW.SKUKEY
+        WHERE 1 = 1
+        AND   SM.COMPKY = #{SES_USER_COMPANY}
+		<if test="WAREKY != null and WAREKY != ''">
+        AND   SW.WAREKY = #{WAREKY}
+        </if>
+		<if test="OWNRKY != null and OWNRKY != ''">
+        AND   SM.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="SKUKEY != null and SKUKEY != ''">
+		AND   SM.SKUKEY = #{SKUKEY}
+		</if>
+		<if test="DELMAK == null or DELMAK == ''">
+		AND   SM.DELMAK != 'V'
+		</if>
+		<if test="DELMAK != null and DELMAK != ''">
+		AND   SM.DELMAK = #{DELMAK}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+        ORDER BY SM.SKUKEY
+    </select> 
+    
+	<select id="SKUMA_VALI_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS CNT
+		FROM SKUMA SM
+        WHERE 1 = 1
+        AND   SM.COMPKY = #{SES_USER_COMPANY}
+        AND   SM.OWNRKY = #{OWNRKY}
+		AND   SM.SKUKEY = #{SKUKEY}
+	</select>
+	
+	<!-- SKU> SKU★  신규 -->	
+	<insert id="SKUMA_INSERT"  parameterType="hashmap">
+		INSERT INTO SKUMA 
+	    (
+	        OWNRKY, SKUKEY, DELMAK, DESC01, DESC02, VENDKY
+	      , ASKU01, ASKU02, ASKU03, ASKU04, ASKU05, ASKL01
+	      , ASKL02, ASKL03, ASKL04, ASKL05, EANCOD, GTINCD
+	      , SKUG01, SKUG02, SKUG03, SKUG04, SKUG05, SKUL01
+	      , SKUL02, SKUL03, SKUL04, SKUL05, GRSWGT, NETWGT
+	      , WGTUNT, LENGTH, WIDTHW, HEIGHT, CUBICM, CAPACT
+	      , DUOMKY, QTDUOM, ABCANV, LOTL01, LOTL02, LOTL03
+	      , LOTL04, LOTL05, LOTL06, LOTL07, LOTL08, LOTL09
+	      , LOTL10, LOTL11, LOTL12, LOTL13, LOTL14, LOTL15
+	      , LOTL16, LOTL17, LOTL18, LOTL19, LOTL20, OUTDMT
+	      , RIMDMT, INNDPT, SECTWD, WEIGHT, DLGORT, BATMNG
+	      , LGPRO , CSTDAT, CPSKUG, DESC03, DESC04, QTYMON
+	      , QTYSTD, QTYCNT, BUFMNG, CREDAT, CRETIM, CREUSR
+	      , LMODAT, LMOTIM, LMOUSR, INDBZL, COMPKY
+	    ) 
+		VALUES(
+		          COALESCE(#{OWNRKY},' '), COALESCE(#{SKUKEY},' '), COALESCE(#{DELMAK},' '), COALESCE(#{DESC01},' '), COALESCE(#{DESC02},' '), COALESCE(#{VENDKY},' ')
+		        , COALESCE(#{ASKU01},' '), COALESCE(#{ASKU02},' '), COALESCE(#{ASKU03},' '), COALESCE(#{ASKU04},' '), COALESCE(#{ASKU05},' '), COALESCE(#{ASKL01},' ')
+		        , COALESCE(#{ASKL02},' '), COALESCE(#{ASKL03},' '), COALESCE(#{ASKL04},' '), COALESCE(#{ASKL05},' '), COALESCE(#{EANCOD},' '), COALESCE(#{GTINCD},' ')
+		        , COALESCE(#{SKUG01},' '), COALESCE(#{SKUG02},' '), COALESCE(#{SKUG03},' '), COALESCE(#{SKUG04},' '), COALESCE(#{SKUG05},' '), COALESCE(#{SKUL01},' ')
+		        , COALESCE(#{SKUL02},' '), COALESCE(#{SKUL03},' '), COALESCE(#{SKUL04},' '), COALESCE(#{SKUL05},' '), #{GRSWGT}::NUMERIC, #{NETWGT}::NUMERIC
+		        , COALESCE(#{WGTUNT},' '), #{LENGTH}::NUMERIC, #{WIDTHW}::NUMERIC, #{HEIGHT}::NUMERIC, #{CUBICM}::NUMERIC, 0
+		        , COALESCE(#{DUOMKY},' '), 0, COALESCE(#{ABCANV},' '), COALESCE(#{LOTL01},' '), COALESCE(#{LOTL02},' '), COALESCE(#{LOTL03},' ')
+		        , COALESCE(#{LOTL04},' '), COALESCE(#{LOTL05},' '), COALESCE(#{LOTL06},' '), COALESCE(#{LOTL07},' '), COALESCE(#{LOTL08},' '), COALESCE(#{LOTL09},' ')
+		        , COALESCE(#{LOTL10},' '), COALESCE(#{LOTL11},' '), COALESCE(#{LOTL12},' '), COALESCE(#{LOTL13},' '), COALESCE(#{LOTL14},' '), COALESCE(#{LOTL15},' ')
+		        , COALESCE(#{LOTL16},' '), COALESCE(#{LOTL17},' '), COALESCE(#{LOTL18},' '), COALESCE(#{LOTL19},' '), COALESCE(#{LOTL20},' '), 0
+		        , 0, 0, 0, 0, COALESCE(#{DLGORT},' '), COALESCE(#{BATMNG},' ')
+		        , COALESCE(#{LGPRO},' '), COALESCE(#{CSTDAT},' '), COALESCE(#{CPSKUG},' '), COALESCE(#{DESC03},' '), COALESCE(#{DESC04},' '), 0
+		        , 0, 0, COALESCE(#{BUFMNG}, ' '), TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}
+		        , TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}, COALESCE(#{INDBZL},' '), #{SES_USER_COMPANY}
+	          )
+	</insert>
+	
+	<update id="SKUMA_UPDATE"  parameterType="hashmap">
+        UPDATE SKUMA SET 
+                LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+              , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+              , LMOUSR = #{SES_USER_ID}
+			  , DESC01 = COALESCE(#{DESC01},' ')
+			  , GRSWGT = #{GRSWGT}::NUMERIC
+			  , NETWGT = #{NETWGT}::NUMERIC
+			  , LENGTH = #{LENGTH}::NUMERIC
+			  , WIDTHW = #{WIDTHW}::NUMERIC
+			  , HEIGHT = #{HEIGHT}::NUMERIC
+			  , CUBICM = #{CUBICM}::NUMERIC
+			  , LOTL01 = COALESCE(#{LOTL01},' ')
+			  , LOTL02 = COALESCE(#{LOTL02},' ')
+			  , LOTL03 = COALESCE(#{LOTL03},' ')
+			  , LOTL04 = COALESCE(#{LOTL04},' ')
+			  , LOTL05 = COALESCE(#{LOTL05},' ')
+			  , DELMAK = COALESCE(#{DELMAK},' ')
+          WHERE COMPKY = #{SES_USER_COMPANY}
+          AND	SKUKEY = #{SKUKEY}
+          AND	OWNRKY = #{OWNRKY}
+    </update> 
+	
+	<delete id="SKUMA_DELETE"  parameterType="hashmap">
+        DELETE SKUMA
+        WHERE COMPKY = #{SES_USER_COMPANY}
+        AND	SKUKEY = #{SKUKEY}
+        AND	OWNRKY = #{OWNRKY}
+	</delete>
+	
+		<!-- SKU> SKU★  신규 -->	
+	<insert id="SKUWC_INSERT"  parameterType="hashmap">
+		INSERT INTO SKUWC
+		(
+		    WAREKY, OWNRKY, SKUKEY, CAPACT, MEASKY, LOCARV, LOCAQC
+		  , RCSTKY, PASTKY, CAPACR, SASTKY, ALSTKY, TKFLKY, SPRIKY
+		  , IBPROT, OBPROT, UOMDIN, UOMDOU, UOMDTA, ABCANV, INDSLC
+		  , SLCLAT, SLCTYP, SLCPDI, SLCPDO, DPUTZO, DPUTLO, CPVNDR
+		  , CPMEAS, LOCOVR, PLOCOV, TARIKY, LOTRKY, EXPDCK, PRODCK
+		  , OUTDMT, RIMDMT, INNDPT, SECTWD, WEIGHT, SHPPRT, IFFLAG
+		  , CREDAT, CRETIM, CREUSR, LMODAT, LMOTIM, LMOUSR, INDBZL
+		  , INDARC, UPDCHK, COMPKY, AREAKY, ZONEKY
+		) 
+		VALUES(
+		          COALESCE(#{WAREKY}, ' '), COALESCE(#{OWNRKY}, ' '), COALESCE(#{SKUKEY}, ' '), 0, COALESCE(#{MEASKY}, ' '), COALESCE(#{LOCARV}, ' '), COALESCE(#{LOCAQC}, ' ')
+		        , COALESCE(#{RCSTKY}, ' '), COALESCE(#{PASTKY}, ' '), COALESCE(#{CAPACR}, ' '), COALESCE(#{SASTKY}, ' '), COALESCE(#{ALSTKY}, ' '), COALESCE(#{TKFLKY}, ' '), COALESCE(#{SPRIKY}, ' ')
+		        , COALESCE(#{IBPROT}, ' '), COALESCE(#{OBPROT}, ' '), COALESCE(#{UOMDIN}, ' '), COALESCE(#{UOMDOU}, ' '), COALESCE(#{UOMDTA}, ' '), COALESCE(#{ABCANV}, ' '), COALESCE(#{INDSLC}, ' ')
+		        , COALESCE(#{SLCLAT}, ' '), COALESCE(#{SLCTYP}, ' '), 0, 0, COALESCE(#{DPUTZO}, ' '), COALESCE(#{DPUTLO}, ' '), COALESCE(#{CPVNDR}, ' ')
+		        , COALESCE(#{CPMEAS}, ' '), COALESCE(#{LOCOVR}, ' '), COALESCE(#{PLOCOV}, ' '), COALESCE(#{TARIKY}, ' '), COALESCE(#{LOTRKY}, ' '), COALESCE(#{EXPDCK}, ' '), COALESCE(#{PRODCK}, ' ')
+		        , 0, 0, 0, 0, 0, COALESCE(#{SHPPRT}, ' '), COALESCE(#{IFFLAG}, ' ')
+		        , TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}, TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}, COALESCE(#{INDBZL}, ' ')
+		        , COALESCE(#{INDARC}, ' '), 0, #{SES_USER_COMPANY}, COALESCE(#{AREAKY}, ' '), COALESCE(#{ZONEKY}, ' ')
+		      )
+	</insert>
+	
+	<update id="SKUWC_UPDATE"  parameterType="hashmap">
+        UPDATE SKUWC SET 
+                LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+              , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+              , LMOUSR = #{SES_USER_ID}
+			  , AREAKY = #{AREAKY}
+			  , ZONEKY = #{ZONEKY}
+          WHERE COMPKY = #{SES_USER_COMPANY}
+          AND	WAREKY = #{WAREKY}
+          AND	SKUKEY = #{SKUKEY}
+          AND	OWNRKY = #{OWNRKY}
+    </update> 
+	
+	<delete id="SKUWC_DELETE"  parameterType="hashmap">
+        DELETE SKUWC
+        WHERE COMPKY = #{SES_USER_COMPANY}
+        AND	WAREKY = #{WAREKY}
+        AND	SKUKEY = #{SKUKEY}
+        AND	OWNRKY = #{OWNRKY}
+	</delete>
+	
+	
+	<!-- [SK01] SKU마스터 ** -->
+	
+	<!-- [SM01] 단위구성  -->
+	
+	<select id="MEASH_LIST" parameterType="hashmap" resultType="DataMap">
+	SELECT DISTINCT MH.WAREKY AS "WAREKY"
+		,  MH.MEASKY AS "MEASKY"
+        ,  SM.DESC01 AS "DESC01"
+        ,  SM.DESC02 AS "DESC02"
+        ,  SM.DESC03 AS "DESC03"
+		,  MH.SHORTX AS "SHORTX"
+		,  MH.CREDAT AS "CREDAT"
+		,  MH.CRETIM AS "CRETIM"
+		,  MH.CREUSR AS "CREUSR"
+		,  MH.LMODAT AS "LMODAT"
+		,  MH.LMOTIM AS "LMOTIM"
+		,  MH.LMOUSR AS "LMOUSR"
+		,  MH.INDBZL AS "INDBZL"
+		,  MH.INDARC AS "INDARC"
+		,  MH.UPDCHK AS "UPDCHK"
+	FROM   MEASH MH
+           INNER JOIN SKUMA SM
+              ON MH.MEASKY = SM.SKUKEY
+             AND MH.COMPKY = SM.COMPKY
+             AND SM.DELMAK != 'V'
+           INNER JOIN SKUWC SW
+	          ON MH.WAREKY = SW.WAREKY
+	         AND SM.OWNRKY = SW.OWNRKY
+	         AND SM.SKUKEY = SW.SKUKEY
+	WHERE 1=1
+	AND   MH.COMPKY = #{SES_USER_COMPANY}
+	<if test="WAREKY != null and WAREKY != ''">
+    AND   MH.WAREKY = #{WAREKY}
+    </if>
+	<if test="MEASKY != null and MEASKY != ''">
+    AND   MH.MEASKY = #{MEASKY}
+    </if>
+    </select> 
+    
+    <select id="MEASI_LIST" parameterType="hashmap" resultType="DataMap">
+    SELECT  B.WAREKY AS "WAREKY"
+		,   B.MEASKY AS "MEASKY"
+		,   B.ITEMNO AS "ITEMNO"
+		,   B.UOMKEY AS "UOMKEY"
+		,   B.QTPUOM AS "QTPUOM"
+		,   B.INDDFU AS "INDDFU"
+		,   B.DISREC AS "DISREC"
+		,   B.DISSHP AS "DISSHP"
+		,   B.DISTAS AS "DISTAS"
+		,   B.LENGTH AS "LENGTH"
+		,   B.WIDTHW AS "WIDTHW"
+		,   B.HEIGHT AS "HEIGHT"
+		,   B.CUBICM AS "CUBICM"
+		,   B.CREDAT AS "CREDAT"
+		,   B.CRETIM AS "CRETIM"
+		,   B.CREUSR AS "CREUSR"
+		,   B.LMODAT AS "LMODAT"
+		,   B.LMOTIM AS "LMOTIM"
+		,   B.LMOUSR AS "LMOUSR"
+		,   B.INDBZL AS "INDBZL"
+		,   B.INDARC AS "INDARC"
+		,   B.UPDCHK AS "UPDCHK"
+		,   B.COMPKY AS "COMPKY"
+	FROM   MEASH A
+           INNER JOIN MEASI B
+              ON A.WAREKY = B.WAREKY
+             AND A.MEASKY = B.MEASKY
+             AND A.COMPKY = B.COMPKY
+    WHERE 1 = 1
+      AND A.WAREKY = #{WAREKY}
+      AND A.MEASKY = #{MEASKY}
+      AND A.COMPKY = #{SES_USER_COMPANY}
+    ORDER BY B.ITEMNO
+    </select> 
+    
+	<insert id="MEASH_INSERT"  parameterType="hashmap">
+		INSERT INTO MEASH
+		(
+		      WAREKY, MEASKY, SHORTX, INDBZL
+		    , INDARC, UPDCHK, COMPKY
+		    , CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+		) 
+		VALUES(
+	          COALESCE(#{WAREKY}, ' '), COALESCE(#{MEASKY}, ' '), COALESCE(#{SHORTX}, ' '), COALESCE(#{INDBZL}, ' ')
+	        , COALESCE(#{INDBZL}, ' '), 0, #{SES_USER_COMPANY}
+	        , TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}
+	        , TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}
+		      )
+	</insert>
+	
+	<insert id="MEASI_INSERT"  parameterType="hashmap">
+		INSERT INTO MEASI
+		(
+		      WAREKY, MEASKY, ITEMNO
+		    , UOMKEY, QTPUOM
+		    , INDDFU, DISREC, DISSHP, DISTAS, LENGTH
+			, WIDTHW, HEIGHT, CUBICM, INDBZL, INDARC
+			, UPDCHK, COMPKY
+			, CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+		) 
+		VALUES(
+         	  COALESCE(#{WAREKY}, ' '), COALESCE(#{MEASKY}, ' '), (SELECT COALESCE(MAX(ITEMNO)::numeric,0)+10 FROM MEASI WHERE COMPKY = #{SES_USER_COMPANY} AND WAREKY = #{WAREKY} AND MEASKY = #{MEASKY})
+         	, COALESCE(#{UOMKEY}, ' '), #{QTPUOM}::NUMERIC
+			, COALESCE(#{INDDFU}, ' '), COALESCE(#{DISREC}, ' '), COALESCE(#{DISSHP}, ' '), COALESCE(#{DISTAS}, ' '), #{LENGTH}::NUMERIC
+			, #{WIDTHW}::NUMERIC, #{HEIGHT}::NUMERIC, #{CUBICM}::NUMERIC, COALESCE(#{INDBZL}, ' '), COALESCE(#{INDARC}, ' ')
+			, 0, #{SES_USER_COMPANY}
+			, TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}
+			, TO_CHAR(now(), 'YYYYMMDD'), TO_CHAR(now(), 'HH24MISS'), #{SES_USER_ID}
+		      )
+	</insert>
+	
+	<update id="MEASI_UPDATE"  parameterType="hashmap">
+        UPDATE MEASI SET 
+                LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+              , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+              , LMOUSR = #{SES_USER_ID}
+			  , QTPUOM = #{QTPUOM}
+			  , INDDFU = #{INDDFU}
+          WHERE COMPKY = #{SES_USER_COMPANY}
+          AND	WAREKY = #{WAREKY}
+          AND	MEASKY = #{MEASKY}
+       	  AND	ITEMNO = #{ITEMNO}
+    </update> 
+	
+	<delete id="MEASI_DELETE"  parameterType="hashmap">
+	    DELETE FROM MEASI 
+        WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND	   WAREKY = #{WAREKY}
+        AND	   MEASKY = #{MEASKY}
+        AND	   ITEMNO = #{ITEMNO}
+	</delete>
+	<!-- [SM01] 단위구성 ** -->
+	
+	<!-- [BZ01] 파트너  -->
+    <select id="BZPTN_LIST" parameterType="hashmap" resultType="DataMap">
+    SELECT  BZ.COMPKY AS "COMPKY"
+    	,   BZ.OWNRKY AS "OWNRKY"
+		,   BZ.PTNRKY AS "PTNRKY"
+		,   BZ.PTNRTY AS "PTNRTY"
+		,   BZ.DELMAK AS "DELMAK"
+		,   BZ.NAME01 AS "NAME01"
+		,   BZ.NAME02 AS "NAME02"
+		,   BZ.NAME03 AS "NAME03"
+		,   BZ.ADDR01 AS "ADDR01"
+		,   BZ.ADDR02 AS "ADDR02"
+		,   BZ.ADDR03 AS "ADDR03"
+		,   BZ.ADDR04 AS "ADDR04"
+		,   BZ.ADDR05 AS "ADDR05"
+		,   BZ.CITY01 AS "CITY01"
+		,   BZ.REGN01 AS "REGN01"
+		,   BZ.POSTCD AS "POSTCD"
+		,   BZ.NATNKY AS "NATNKY"
+		,   BZ.TELN01 AS "TELN01"
+		,   BZ.TELN02 AS "TELN02"
+		,   BZ.TELN03 AS "TELN03"
+		,   BZ.FAXTL1 AS "FAXTL1"
+		,   BZ.FAXTL2 AS "FAXTL2"
+		,   BZ.TAXCD1 AS "TAXCD1"
+		,   BZ.TAXCD2 AS "TAXCD2"
+		,   BZ.VATREG AS "VATREG"
+		,   BZ.POBOX1 AS "POBOX1"
+		,   BZ.POBPC1 AS "POBPC1"
+		,   BZ.EMAIL1 AS "EMAIL1"
+		,   BZ.EMAIL2 AS "EMAIL2"
+		,   BZ.CTTN01 AS "CTTN01"
+		,   BZ.CTTT01 AS "CTTT01"
+		,   BZ.CTTT02 AS "CTTT02"
+		,   BZ.CTTM01 AS "CTTM01"
+		,   BZ.SALN01 AS "SALN01"
+		,   BZ.SALT01 AS "SALT01"
+		,   BZ.SALT02 AS "SALT02"
+		,   BZ.SALM01 AS "SALM01"
+		,   BZ.EXPTNK AS "EXPTNK"
+		,   BZ.CUSTMR AS "CUSTMR"
+		,   BZ.PTNG01 AS "PTNG01"
+		,   BZ.PTNG02 AS "PTNG02"
+		,   BZ.PTNG03 AS "PTNG03"
+		,   BZ.PTNG04 AS "PTNG04"
+		,   BZ.PTNG05 AS "PTNG05"
+		,   BZ.PTNL01 AS "PTNL01"
+		,   BZ.PTNL02 AS "PTNL02"
+		,   BZ.PTNL03 AS "PTNL03"
+		,   BZ.PTNL04 AS "PTNL04"
+		,   BZ.PTNL05 AS "PTNL05"
+		,   BZ.WTOPPM AS "WTOPPM"
+		,   BZ.WTOPMU AS "WTOPMU"
+		,   BZ.WTOPDV AS "WTOPDV"
+		,   BZ.PROCHA AS "PROCHA"
+		,   BZ.CREDAT AS "CREDAT"
+		,   BZ.CRETIM AS "CRETIM"
+		,   BZ.CREUSR AS "CREUSR"
+		,   BZ.LMODAT AS "LMODAT"
+		,   BZ.LMOTIM AS "LMOTIM"
+		,   BZ.LMOUSR AS "LMOUSR"
+		,   BZ.INDBZL AS "INDBZL"
+		,   BZ.INDARC AS "INDARC"
+		,   BZ.UPDCHK AS "UPDCHK"
+	FROM   BZPTN BZ
+    WHERE 1 = 1
+    AND   BZ.COMPKY = #{SES_USER_COMPANY}
+	<if test="PTNRKY != null and PTNRKY != ''">
+    AND   BZ.PTNRKY = #{PTNRKY}
+    </if>
+	<if test="PTNRTY != null and PTNRTY != ''">
+    AND   BZ.PTNRTY = #{PTNRTY}
+    </if>
+    ORDER BY BZ.PTNRKY, BZ.PTNRTY
+    </select> 
+    
+    <insert id="BZPTN_INSERT"  parameterType="hashmap">
+		INSERT INTO BZPTN(
+			 COMPKY ,OWNRKY ,PTNRKY ,PTNRTY ,NAME01 ,NAME02
+			,NAME03 ,ADDR01 ,ADDR02 ,TELN01 ,EMAIL1
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY} ,#{SES_USER_COMPANY} ,#{PTNRKY} ,#{PTNRTY} ,#{NAME01} ,#{NAME02}
+			,#{NAME03} ,#{ADDR01} ,#{ADDR02} ,#{TELN01} ,#{EMAIL1}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="BZPTN_UPDATE"  parameterType="hashmap">
+        UPDATE BZPTN SET 
+                LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+              , LMOTIM = TO_CHAR(now(), 'HH24MISS')
+              , LMOUSR = #{SES_USER_ID}
+			  , NAME01 = #{NAME01}
+			  , NAME02 = #{NAME02}
+			  , NAME03 = #{NAME03}
+			  , ADDR01 = #{ADDR01}
+			  , ADDR02 = #{ADDR02}
+			  , TELN01 = #{TELN01}
+			  , EMAIL1 = #{EMAIL1}
+          WHERE COMPKY = #{SES_USER_COMPANY}
+          AND	PTNRKY = #{PTNRKY}
+          AND	PTNRTY = #{PTNRTY}
+    </update> 
+	
+	<delete id="BZPTN_DELETE"  parameterType="hashmap">
+		DELETE FROM BZPTN 
+          WHERE COMPKY = #{SES_USER_COMPANY}
+          AND	PTNRKY = #{PTNRKY}
+          AND	PTNRTY = #{PTNRTY}
+	</delete>
+	<!-- [BZ01] 파트너 ** -->
+	
+	<!-- **RC01 사유코드-->
+	<select id="RC01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT RC.COMPKY AS "COMPKY"
+		    ,  RC.OWNRKY AS "OWNRKY"
+			,  RC.DOCCAT AS "DOCCAT"
+			,  RC.DOCUTY AS "DOCUTY"
+			,  RC.RSNCOD AS "RSNCOD"
+			,  RC.SHORTX AS "SHORTX"
+			,  RC.DIFLOC AS "DIFLOC"
+			,  RC.CREDAT AS "CREDAT"
+			,  RC.CRETIM AS "CRETIM"
+			,  RC.CREUSR AS "CREUSR"
+			,  RC.LMODAT AS "LMODAT"
+			,  RC.LMOTIM AS "LMOTIM"
+			,  RC.LMOUSR AS "LMOUSR"
+		FROM RSNCD RC
+			 LEFT OUTER JOIN DOCTM DT
+			      ON RC.DOCUTY = DT.DOCUTY
+		WHERE  RC.COMPKY = #{SES_USER_COMPANY}
+		<if test="DOCCAT != null and DOCCAT != ''">
+	    AND    RC.DOCCAT = #{DOCCAT}
+	    </if>
+		<if test="DOCUTY != null and DOCUTY != ''">
+	    AND    RC.DOCUTY = #{DOCUTY}
+	    </if>
+		ORDER BY RC.DOCCAT, RC.DOCUTY, RC.RSNCOD
+    </select> 
+    
+	<insert id="RC01_INSERT"  parameterType="hashmap">
+		INSERT INTO RSNCD(
+			 COMPKY ,OWNRKY ,DOCCAT ,DOCUTY ,RSNCOD ,SHORTX ,DIFLOC
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY} ,#{SES_USER_COMPANY} ,#{DOCCAT} ,#{DOCUTY} ,#{RSNCOD} ,#{SHORTX} ,#{DIFLOC}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="RC01_UPDATE"  parameterType="hashmap">
+        UPDATE RSNCD SET 
+			   LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+			,  LMOTIM = TO_CHAR(now(), 'HH24MISS')
+			,  LMOUSR = #{SES_USER_ID}
+			,  DOCCAT = #{DOCCAT}
+			,  DOCUTY = #{DOCUTY}
+			,  RSNCOD = #{RSNCOD}
+			,  SHORTX = #{SHORTX}
+			,  DIFLOC = #{DIFLOC}
+        WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND	   DOCCAT = #{DOCCAT}
+        AND	   DOCUTY = #{DOCUTY}
+    </update> 
+    
+	<delete id="RC01_DELETE"  parameterType="hashmap">
+		DELETE FROM RSNCD 
+        WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND    DOCCAT = #{DOCCAT}
+        AND	   DOCUTY = #{DOCUTY}
+	</delete>
+	<!--RC01 사유코드** -->
+	
+	<!--YH01 서치헬프** -->
+	<select id="YH01HEAD_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT H.COMPKY		AS "COMPKY"
+			 , H.COMMPOPID	AS "COMMPOPID"
+		     , H.CPOPLABEL	AS "CPOPLABEL"
+		     , H.CPOPNAME	AS "CPOPNAME"
+		     , H.VIEWTNAME	AS "VIEWTNAME"
+		     , H.CPOPDESC	AS "CPOPDESC"
+		     , H.CPOPTYPE	AS "CPOPTYPE"
+		     , H.EXETYPE	AS "EXETYPE"
+		     , H.SIZEW		AS "SIZEW"
+		     , H.SIZEH		AS "SIZEH"
+		     , H.COMMPOPID	AS "OLD_COMMPOPID"
+		     , H.CPOPLABEL	AS "OLD_CPOPLABEL"
+		     , H.CPOPNAME	AS "OLD_CPOPNAME"
+		     , H.VIEWTNAME	AS "OLD_VIEWTNAME"
+		     , H.CPOPDESC	AS "OLD_CPOPDESC"
+		     , H.CPOPTYPE	AS "OLD_CPOPTYPE"
+		     , H.EXETYPE	AS "OLD_EXETYPE"
+		     , H.SIZEW		AS "OLD_SIZEW"
+		     , H.SIZEH		AS "OLD_SIZEH"
+		  FROM SYSCOMMPOP H
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+		 AND   H.COMMPOPID = #{COMMPOPID}
+	</select>
+	
+	<select id="YH01ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.COMPKY		  AS "COMPKY"
+			 , I.COMMPOPID    AS "COMMPOPID"
+		     , I.CPOPITEMID   AS "CPOPITEMID"
+		     , I.CPOPITLABEL  AS "CPOPITLABEL"
+		     , I.CPOPITNAME   AS "CPOPITNAME"
+		     , I.ITEMTYPE     AS "ITEMTYPE"
+		     , I.SEARCHTYPE   AS "SEARCHTYPE"
+		     , I.SFORMAT      AS "SFORMAT"
+		     , I.SOPTION      AS "SOPTION"
+		     , I.SDEFAULT     AS "SDEFAULT"
+		     , I.SREQUIRED    AS "SREQUIRED"
+		     , I.GWIDTH       AS "GWIDTH"
+		     , I.RETURNCOL    AS "RETURNCOL"
+		     , I.SORTORDER    AS "SORTORDER"  
+		  FROM SYSCPOPITEM I
+		 WHERE I.COMPKY = #{SES_USER_COMPANY}
+		 AND   I.COMMPOPID = #{COMMPOPID}
+		 ORDER BY SORTORDER
+	</select>
+	
+	
+	<select id="YH01_VALID_POPID_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(*) AS "CNT"
+		  FROM SYSCOMMPOP
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+		 AND   COMMPOPID = #{COMMPOPID}
+	</select>
+	
+	<insert id="YH01HEAD_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMPOP (
+		                          COMPKY, COMMPOPID, CPOPNAME
+		                        , CREATEUSER, CREATEDATE
+		                       )
+		                VALUES (
+		                          #{SES_USER_COMPANY}, #{COMMPOPID}, #{CPOPNAME}
+		                        , #{SES_USER_ID}, now()
+		                       )
+	</insert>
+	
+	<update id="YH01HEAD_UPDATE" parameterType="hashmap">
+		UPDATE SYSCOMMPOP 
+		   SET UPDATEUSER =  #{SES_USER_ID}
+		     , UPDATEDATE = now()
+		     , CPOPLABEL = #{CPOPLABEL}
+		     , CPOPNAME = #{CPOPNAME}
+		     , VIEWTNAME = #{VIEWTNAME}
+		     , CPOPDESC = #{CPOPDESC}
+		     , CPOPTYPE = #{CPOPTYPE}
+		     , EXETYPE = #{EXETYPE}
+		     , SIZEW = #{SIZEW}::integer
+		     , SIZEH = #{SIZEH}::integer
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+		 AND   COMMPOPID = #{COMMPOPID}
+	</update>
+	
+	
+	<insert id="YH01ITEM_INSERT"  parameterType="hashmap">
+	INSERT INTO SYSCPOPITEM (
+	                       COMPKY, COMMPOPID, CPOPITEMID, CPOPITLABEL, CPOPITNAME, ITEMTYPE
+	                     , SEARCHTYPE, SFORMAT, SOPTION, SDEFAULT, SREQUIRED
+	                     , GWIDTH, RETURNCOL, SORTORDER
+	                     , CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE, DELETEYN
+	                    )
+	             VALUES (
+	                       #{SES_USER_COMPANY}, #{COMMPOPID}, #{CPOPITEMID}, #{CPOPITLABEL}, #{CPOPITNAME}, #{ITEMTYPE}
+	                     , #{SEARCHTYPE}, #{SFORMAT}, #{SOPTION}, #{SDEFAULT}, #{SREQUIRED}
+	                     , COALESCE(NULLIF(#{GWIDTH},''),'0')::integer, #{RETURNCOL}, COALESCE(NULLIF(#{SORTORDER},''),'0')::integer
+	                     , #{SES_USER_ID}, now(), #{SES_USER_ID}, now(), #{DELETEYN}
+	                    )
+	</insert>
+	
+	<update id="YH01ITEM_UPDATE" parameterType="hashmap">
+		UPDATE SYSCPOPITEM
+		   SET UPDATEUSER =  #{UPDATEUSER}
+		     , UPDATEDATE = now()
+		     , CPOPITLABEL = #{CPOPITLABEL}
+		     , CPOPITNAME = #{CPOPITNAME}
+		     , ITEMTYPE = #{ITEMTYPE}
+		     , SEARCHTYPE = #{SEARCHTYPE}
+		     , SFORMAT = #{SFORMAT}
+		     , SOPTION = #{SOPTION}
+		     , SDEFAULT = #{SDEFAULT}
+		     , SREQUIRED = #{SREQUIRED}
+		     , GWIDTH = #{GWIDTH}::integer
+		     , RETURNCOL = #{RETURNCOL}
+		     , SORTORDER = #{SORTORDER}::integer
+		     , DELETEYN = #{DELETEYN}
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+		 AND   COMMPOPID = #{COMMPOPID}
+		 AND   CPOPITEMID = #{CPOPITEMID}
+	</update>
+	
+	
+	<delete id="YH01ITEM_DELETE" parameterType="hashmap">
+		DELETE FROM SYSCPOPITEM 
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+		 AND   COMMPOPID = #{COMMPOPID}
+		 AND   CPOPITEMID = #{CPOPITEMID}
+	</delete>
+	<!--** YH01 서치헬프-->
+	
+	<!--** UR01 권한-->
+	<select id="UR01_LIST" parameterType="hashmap" resultType="DataMap">
+        SELECT
+              MGL.MENUID    AS "MENUID"
+            , MGL.PMENUID   AS "PMENUID"
+            , JM.LBLTXS     AS "CLLABEL"
+            , (CASE WHEN (JM.LBLTXS IS NULL OR JM.LBLTXS = '') THEN MM.MENUNAME ELSE JM.LBLTXS END) AS "MENULABEL"
+            , MM.MENUNAME   AS "MENUNAME"
+            , MM.URI        AS "URI"
+            , MM.PARAM      AS "PARAM"
+            , MGL.SORTORDER AS "SORTORDER"
+            , MGL.COMPID    AS "COMPID"
+            , MGL.DELETEYN  AS "DELETEYN"
+            <if test="SEARCH_TYPE == 'COPY'">
+            , #{CMENUGID} AS "MENUGID"
+            </if>
+            <if test="SEARCH_TYPE == 'SEARCH'">
+            , MGL.MENUGID AS "MENUGID"
+            </if>
+        FROM MSTMENUGL MGL
+	        LEFT OUTER JOIN MSTMENU MM 
+	        	ON  MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+	        LEFT OUTER JOIN JLBLM JM 
+	        	ON  JM.LABLGR = 'MENU' AND JM.LANGKY = #{SES_LANGUAGE} 
+	        	AND MM.MENULABEL = JM.LBLTXS
+        WHERE MGL.MENUGID = #{MENUGID} 
+        AND   MGL.COMPID = #{SES_USER_COMPANY}
+        ORDER BY MGL.SORTORDER
+	</select>
+	
+	<!-- MSTMENUG validation -->
+	<select id="UR01_VALID_POPID_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT (SELECT COUNT(*) FROM MSTMENUG WHERE COMPID = #{SES_USER_COMPANY} AND MENUGROUPID = #{MENUGID}) AS "MENUGID_CNT"
+		     , (SELECT COUNT(*) FROM MSTCOMP WHERE COMPID = #{SES_USER_COMPANY}) AS "COMPID_CNT"
+	</select>
+	
+	<!-- MSTMENUG 생성 -->
+	<insert id="UR01HEAD_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUG (
+		                        COMPID, MENUGROUPID, MENUGLABEL, MENUGNAME
+		                      , CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		                     )
+		               VALUES(
+		                        #{SES_USER_COMPANY}, #{MENUGID}, #{MENUGLABEL}, #{MENUGNAME}
+		                      , #{SES_USER_ID}, now(), #{SES_USER_ID}, now()
+		                     )
+	</insert>
+	
+    <!-- MSTMENUG 삭제 -->
+    <delete id="UR01HEAD_DELETE"  parameterType="hashmap">
+        DELETE 
+          FROM MSTMENUG
+         WHERE 1=1
+           AND COMPID = #{COMPID}
+           AND MENUGROUPID = #{MENUGID}
+	</delete>
+	
+    
+    <!-- MSTMENUG validation  -->
+    <select id="UR01_MENUIDG_VALID_MAP" parameterType="hashmap" resultType="DataMap">
+        SELECT COUNT(*) AS "CNT"
+          FROM MSTMENUG
+         WHERE MENUGROUPID = #{MENUGID}
+           AND COMPID = #{COMPID}
+    </select>
+	   
+    <!-- MSTMENU validation  -->
+    <select id="UR01_MENUID_VALID_MAP" parameterType="hashmap" resultType="DataMap">
+        SELECT COUNT(*) AS "CNT"
+             , MAX(MENUID) AS "MENUID"
+             , MAX(MENUNAME) AS "MENUNAME"
+             , MAX(URI) AS "URI"
+          FROM MSTMENU
+         WHERE MENUID = #{MENUID}
+           AND COMPID = #{SES_USER_COMPANY}
+    </select>
+    
+	<!-- MSTMENU validation  -->
+	<select id="UR01_MENUID_VALID2_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(*) AS "CNT"
+		  FROM MSTMENUGL
+		 WHERE MENUID = #{MENUID}
+           AND COMPID = #{SES_USER_COMPANY}
+           AND MENUGID = #{MENUGID}
+	</select>
+	
+	<!-- 메뉴복사 -->
+	<select id="UR01_MENUCOPY_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT MG.COMPID AS "COMPID"
+		     , MG.MENUGROUPID AS "MENUGID"
+		     , MG.MENUGNAME AS "MENUGNAME"
+		  FROM MSTMENUG MG 
+		 WHERE 1 = 1
+		   AND MG.COMPID = #{SES_USER_COMPANY}
+		<if test="MENUGID != null and MENUGID != ''">
+		   AND MG.MENUGROUPID = #{MENUGID}
+		</if>
+		
+	</select>
+	
+	<delete id="UR01ITEM_DELETE"  parameterType="hashmap">
+		DELETE FROM MSTMENUGL
+		 WHERE COMPID = #{COMPID}
+		   AND MENUGID = #{MENUGID}
+	</delete>
+	
+	<insert id="UR01ITEM_INSERT"  parameterType="hashmap">
+	INSERT INTO MSTMENUGL (
+	                         COMPID, MENUGID, MENUID, SORTORDER, PMENUID, DELETEYN
+	                       , CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE,SEQ
+	                      )
+	               VALUES (
+	                         #{SES_USER_COMPANY}, #{MENUGID}, #{MENUID}, #{SORTORDER}::integer, #{PMENUID}, #{DELETEYN}
+	                       , #{SES_USER_ID}, now(), #{SES_USER_ID}, now(), NEXTVAL('seq_mstmenugl')
+	                      )
+	</insert>
+	
+	
+    <select id="UR01_DELETEYN_COMBO_LIST" parameterType="hashmap" resultType="DataMap">
+        SELECT
+            'N' AS "VALUE_COL",
+            '사용' AS "TEXT_COL"
+        UNION ALL
+        SELECT
+            'Y' AS VALUE_COL,
+            '미사용' AS TEXT_COL
+    </select>
+	<!--UR01 권한 **-->
+	
+	<!--** UM01 메뉴-->
+	 <select id="UM01_LIST" parameterType="hashmap" resultType="DataMap">
+        SELECT COMPID     AS "COMPID"
+             , MENUID     AS "MENUID"
+             , MENULABEL  AS "MENULABEL"
+             , MENUNAME   AS "MENUNAME"
+             , MENUTYPE   AS "MENUTYPE"
+             , MAUTHTYPE  AS "MAUTHTYPE"
+             , PROGID     AS "PROGID"
+             , URI        AS "URI"
+             , PARAM      AS "PARAM"
+             , SORTORDER  AS "SORTORDER"
+             , CREATEUSER AS "CREATEUSER"
+             , CREATEDATE AS "CREATEDATE"
+             , UPDATEUSER AS "UPDATEUSER"
+             , UPDATEDATE AS "UPDATEDATE"
+             , DELETEYN   AS "DELETEYN"
+             , IMGPTH     AS "IMGPTH"
+          FROM MSTMENU
+         WHERE 1=1
+           AND COMPID = #{SES_USER_COMPANY}
+        <if test="MENUID != null and MENUID != ''">
+           AND MENUID LIKE #{MENUID}||'%'
+        </if>
+        <if test="MENUNAME != null and MENUNAME != ''">
+           AND MENUNAME LIKE #{MENUNAME}||'%'
+        </if>
+         ORDER BY MENUID
+    </select>
+    
+    <insert id="UM01_INSERT"  parameterType="hashmap">
+    INSERT INTO MSTMENU (
+                             COMPID, MENUID, MENULABEL, MENUNAME, MENUTYPE
+                           , MAUTHTYPE, PROGID, URI, PARAM, SORTORDER
+                           , CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE, DELETEYN, IMGPTH
+                          )
+                   VALUES (
+                             #{SES_USER_COMPANY}, #{MENUID}, #{MENUID}, #{MENUNAME}, ''
+                           , '', #{MENUID}, #{URI}, '', null
+                           , #{SES_USER_ID}, now(), #{SES_USER_ID}, now(), '', COALESCE(#{IMGPTH},'')
+                          )
+    </insert>
+    
+    <update id="UM01_UPDATE" parameterType="hashmap">
+        UPDATE MSTMENU
+           SET UPDATEDATE = now()
+             , UPDATEUSER = #{SES_USER_ID}
+             , MENUNAME = #{MENUNAME}
+             , URI = #{URI}
+             , IMGPTH = COALESCE(#{IMGPTH},'')
+        WHERE 1 = 1
+          AND MENUID = #{MENUID}
+          AND COMPID = #{SES_USER_COMPANY}
+    </update>
+    
+    <delete id="UM01_DELETE" parameterType="hashmap">
+        DELETE 
+          FROM MSTMENU
+         WHERE 1=1
+           AND MENUID = #{MENUID}
+           AND COMPID = #{SES_USER_COMPANY}
+         
+    </delete>
+	
+	<!--UM01 메뉴 **-->
+	
+	<!--** NR01 채번규칙-->
+    <select id="NUMOBJval_MAP" parameterType="hashmap" resultType="DataMap">
+        SELECT COUNT(*) AS "CNT"
+        FROM   NMOBJ
+		WHERE  1 = 1
+		AND    COMPKY = #{SES_USER_COMPANY}
+        AND    NUMOBJ = #{NUMOBJ}
+    </select>
+    
+    <select id="NR01_MAP" parameterType="hashmap" resultType="DataMap">
+        SELECT COMPKY AS "COMPKY"
+        	 , NUMOBJ AS "NUMOBJ"
+			 , SHORTX AS "SHORTX"
+			 , NUMBFR AS "NUMBFR"
+			 , NUMBTO AS "NUMBTO"
+			 , NUMBST AS "NUMBST"
+			 ,  TO_CHAR(TO_TIMESTAMP(CREDAT||CRETIM,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') AS "CREDAT"
+<!-- 			 , CREDAT AS "CREDAT" -->
+<!-- 			 , CRETIM AS "CRETIM" -->
+			 , CREUSR AS "CREUSR"
+			 , (SELECT MAX(NMLAST) FROM USRMA WHERE USRMA.USERID =NMOBJ.CREUSR) AS "NMLAST1"
+			 ,  TO_CHAR(TO_TIMESTAMP(LMODAT||LMOTIM,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') AS "LMODAT"
+<!-- 			 , LMODAT AS "LMODAT" -->
+<!-- 			 , LMOTIM AS "LMOTIM" -->
+			 , LMOUSR AS "LMOUSR"
+			 , (SELECT MAX(NMLAST) FROM USRMA WHERE USRMA.USERID =NMOBJ.LMOUSR)AS "NMLAST2"
+			 , INDBZL AS "INDBZL"
+			 , INDARC AS "INDARC"
+			 , UPDCHK AS "UPDCHK"
+        FROM   NMOBJ
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND    NUMOBJ = #{NUMOBJ}
+    </select>
+    
+    <update id="NR01UP_UPDATE" parameterType="hashmap">
+        UPDATE NMOBJ
+        SET    SHORTX = #{SHORTX},
+               NUMOBJ = #{NUMOBJ}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND    NUMOBJ=#{NUMOBJ}
+    </update>
+
+    <delete id="NR01DEL_DELETE" parameterType="hashmap">
+        DELETE FROM NMOBJ
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND    NUMOBJ=#{NUMOBJ}
+    </delete>
+    
+    <insert id="NR01I_INSERT" parameterType="hashmap">
+        INSERT INTO NMOBJ (
+             COMPKY	
+	        ,NUMOBJ
+	        ,SHORTX
+	        ,NUMBFR
+	        ,NUMBTO
+	        ,NUMBST
+	        ,CREDAT
+	        ,CRETIM
+	        ,CREUSR
+	        ,(SELECT MAX(NMLAST) 
+	          FROM   USRMA
+	          WHERE  USRMA.USERID = NMOBJ.CREUSR) AS NMLAST1
+	        ,LMODAT
+	        ,LMOTIM
+	        ,LMOUSR
+	        ,(SELECT MAX(NMLAST)
+	          FROM   USRMA
+	          WHERE  USRMA.USERID = NMOBJ.LMOUSR) AS NMLAST2
+	        ,INDBZL
+	        ,INDARC
+	        ,UPDCHK
+        )
+	        VALUES(
+	        #{SES_USER_COMPANY},
+	        #{NUMOBJ},
+	        #{SHORTXTO},
+	        #{NUMBFR},
+	        #{NUMBTO},
+	        #{NUMBST},
+	        #{NMLAST},
+	        TO_CHAR(now(), 'YYYYMMDD'),
+	        TO_CHAR(now(), 'HH24MISS'),
+	        #{SES_USER_ID},
+	        TO_CHAR(now(), 'YYYYMMDD'),
+	        TO_CHAR(now(), 'HH24MISS'),
+	        #{SES_USER_ID},
+	        #{NMLAST},
+	        #{INDBZL},
+	        #{INDARC},
+	        #{UPDCHK}::integer
+        )
+    </insert>
+	<!--NR01 채번규칙 **-->
+	
+	
+	<!-- **YD01 데이터사전-->
+	<select id="YD01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY" 
+			 , DDICKY AS "DDICKY" 
+			 , DATFTY AS "DATFTY" 
+		     , SHORTX AS "SHORTX" 
+		     , DBFILD AS "DBFILD" 
+		     , PDATTY AS "PDATTY" 
+		     , OBJETY AS "OBJETY" 
+		     , DBLENG AS "DBLENG" 
+		     , DBDECP AS "DBDECP" 
+		     , OUTLEN AS "OUTLEN" 
+		     , SHLPKY AS "SHLPKY" 
+		     , FLDALN AS "FLDALN" 
+		     , LABLGR AS "LABLGR" 
+		     , LABLKY AS "LABLKY" 
+		     , LBTXTY AS "LBTXTY" 
+		     , UCASOL AS "UCASOL" 
+		     , CREDAT AS "CREDAT" 
+		     , CRETIM AS "CRETIM" 
+		     , CREUSR AS "CREUSR" 
+		     , LMODAT AS "LMODAT" 
+		     , LMOTIM AS "LMOTIM" 
+		     , LMOUSR AS "LMOUSR" 
+		     , INDBZL AS "INDBZL" 
+		     , INDARC AS "INDARC" 
+		     , UPDCHK AS "UPDCHK" 
+		  FROM DFDIC
+		 WHERE COMPKY = #{SES_USER_COMPANY}
+        <if test="DDICKY != null and DDICKY != ''">
+           AND DDICKY LIKE #{DDICKY}||'%'
+        </if>
+        <if test="DATFTY != null and DATFTY != ''">
+           AND DATFTY LIKE #{DATFTY}||'%'
+        </if>
+		 ORDER BY DDICKY,DATFTY
+    </select> 
+    
+	<insert id="YD01_INSERT"  parameterType="hashmap">
+		INSERT INTO DFDIC(
+			 COMPKY ,DDICKY ,DATFTY ,SHORTX ,DBFILD
+		    ,PDATTY ,OBJETY ,DBLENG ,DBDECP ,OUTLEN
+		    ,SHLPKY ,FLDALN ,LABLGR ,LABLKY ,LBTXTY
+		    ,UCASOL ,INDBZL ,INDARC
+			,CREDAT ,CRETIM ,CREUSR
+			,LMODAT ,LMOTIM ,LMOUSR
+		)
+		VALUES(
+			 #{SES_USER_COMPANY} ,#{DDICKY} ,#{DATFTY} ,#{SHORTX} ,#{DBFILD}
+			,#{PDATTY} ,#{OBJETY} ,#{DBLENG}::integer ,#{DBDECP}::integer ,#{OUTLEN}::integer
+			,#{SHLPKY} ,#{FLDALN} ,#{LABLGR} ,#{LABLKY} ,#{LBTXTY}
+			,#{UCASOL} ,#{INDBZL} ,#{INDARC}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+			,TO_CHAR(NOW(),'YYYYMMDD') ,TO_CHAR(NOW(),'HH24MISS') ,#{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="YD01_UPDATE"  parameterType="hashmap">
+        UPDATE DFDIC SET 
+			   LMODAT = TO_CHAR(now(), 'YYYYMMDD')
+			,  LMOTIM = TO_CHAR(now(), 'HH24MISS')
+			,  LMOUSR = #{SES_USER_ID}
+			,  DDICKY = #{DDICKY}
+			,  DATFTY = #{DATFTY}
+			,  SHORTX = #{SHORTX}
+			,  DBFILD = #{DBFILD}
+			,  PDATTY = #{PDATTY}
+			,  OBJETY = #{OBJETY}
+			,  DBLENG = #{DBLENG}::integer
+			,  DBDECP = #{DBDECP}::integer
+			,  OUTLEN = #{OUTLEN}::integer
+			,  SHLPKY = #{SHLPKY}
+			,  FLDALN = #{FLDALN}
+			,  LABLGR = #{LABLGR}
+			,  LABLKY = #{LABLKY}
+			,  LBTXTY = #{LBTXTY}
+			,  UCASOL = #{UCASOL}
+			,  INDBZL = #{INDBZL}
+			,  INDARC = #{INDARC}
+        WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND	   DDICKY = #{DDICKY}
+    </update> 
+    
+	<delete id="YD01_DELETE"  parameterType="hashmap">
+		DELETE FROM DFDIC 
+        WHERE  COMPKY = #{SES_USER_COMPANY}
+        AND    DDICKY = #{DDICKY}
+	</delete>
+	<!--YD01 데이터사전** -->
+	
+	<!-- **[TF01] 적치전략 -->
+	<select id="TF01_TKFLKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT LPAD(CAST(CAST(COALESCE(MAX(TKFLKY), '0') AS NUMERIC) + 1 AS VARCHAR), 10, '0') AS TKFCNT 
+		FROM   TAFLH
+		WHERE  COMPKY = 'WDSCM'
+	</select>
+	
+	<select id="TF01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TKFLKY AS "TKFLKY"
+		   ,   SHORTX AS "SHORTX"
+		   ,   FN_GET_TKFTYP(COMPKY,TKFLKY,'01') AS "STEP01"
+		   ,   FN_GET_TKFTYP(COMPKY,TKFLKY,'02') AS "STEP02"
+		   ,   FN_GET_TKFTYP(COMPKY,TKFLKY,'03') AS "STEP03"
+		   ,   FN_GET_TKFTYP(COMPKY,TKFLKY,'04') AS "STEP04"
+		FROM   TAFLH
+		WHERE  COMPKY = 'WDSCM'
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="TF01_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"
+		   ,   TKFLKY AS "TKFLKY"
+		   ,   SETPNO AS "SETPNO"
+		   ,   TASKTY AS "TASKTY"
+		   ,   TTYCTL AS "TTYCTL"
+		FROM   TAFLI
+		WHERE  COMPKY = 'WDSCM'
+		AND    TKFLKY = #{TKFLKY}
+	</select>
+	
+	<insert id="TAFLH_INSERT" parameterType="hashmap">
+		INSERT INTO TAFLH(
+			  COMPKY
+			, TKFLKY
+			, SHORTX
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  'WDSCM'
+			, #{TKFLKY}
+			, COALESCE(#{SHORTX},'')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="TAFLH_UPDATE" parameterType="hashmap">
+		UPDATE TAFLH
+		SET    SHORTX = COALESCE(#{SHORTX},'')
+		WHERE  COMPKY = 'WDSCM'
+		AND    TKFLKY = #{TKFLKY}
+	</update>
+	
+	<delete id="TAFLH_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   TAFLH 
+		WHERE  COMPKY = 'WDSCM'
+	    AND    TKFLKY = #{TKFLKY} 
+	</delete>
+	
+	<insert id="TAFLI_INSERT" parameterType="hashmap">
+		INSERT INTO TAFLI(
+			  COMPKY
+			, TKFLKY
+			, STEPNO
+			, TASKTY
+			, TTYCTL
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  'WDSCM'
+			, #{TKFLKY}
+			, COALESCE(#{STEPNO},'')
+			, COALESCE(#{TASKTY},'')
+			, COALESCE(#{TTYCTL},'')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="TAFLI_UPDATE" parameterType="hashmap">
+		UPDATE TAFLI
+		SET    TASKTY = COALESCE(#{TASKTY},'')
+		  ,    TTYCTL = COALESCE(#{TTYCTL},'')
+		WHERE  COMPKY = 'WDSCM'
+		AND    TKFLKY = #{TKFLKY}
+		AND    STEPNO = #{STEPNO}
+	</update>
+	
+	<delete id="TAFLI_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   TAFLI 
+		WHERE  COMPKY = 'WDSCM'
+	    AND    TKFLKY = #{TKFLKY} 
+	</delete>
+	<!-- [TF01] 적치전략** -->
+	
+	<!-- **AL01] 할당전략 -->
+	<select id="AL01_ALSTKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT LPAD(CAST(CAST(COALESCE(MAX(ALSTKY), '0') AS NUMERIC) + 1 AS VARCHAR), 10, '0') AS "ALSTKY" 
+		FROM   ALSTH
+		WHERE  COMPKY = 'WDSCM'
+	</select>
+	
+	<select id="AL01_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COMPKY AS "COMPKY"
+		   ,   A.ALSTKY AS "ALSTKY"
+		   ,   A.SHORTX AS "SHORTX"
+		   ,   B.STEPNO AS "STEPNO"
+		   ,   B.ALFTKY AS "ALFTKY"
+		   ,   B.SSORKY AS "SSORKY"
+		FROM   ALSTH A
+		       INNER JOIN ALSTI B ON  A.COMPKY = B.COMPKY
+			                      AND A.ALSTKY = B.ALSTKY
+		WHERE  A.COMPKY = 'WDSCM'
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="AL01_ITEM_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"
+		   ,   ALSTKY AS "ALSTKY"
+		   ,   SETPNO AS "SETPNO"
+		   ,   ALFTKY AS "ALFTKY"
+		   ,   SSORKY AS "SSORKY"
+		FROM   ALSTI
+		WHERE  COMPKY = 'WDSCM'
+		AND    ALSTKY = #{ALSTKY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<insert id="ALSTH_INSERT" parameterType="hashmap">
+		INSERT INTO ALSTH(
+			  COMPKY
+			, ALSTKY
+			, SHORTX
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK	
+		)VALUES(
+			  'WDSCM'
+			, #{ALSTKY}
+			, COALESCE(#{SHORTX},'')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="ALSTH_UPDATE" parameterType="hashmap">
+		UPDATE ALSTH
+		SET    SHORTX = COALESCE(#{SHORTX},'')
+		WHERE  COMPKY = 'WDSCM'
+		AND    ALSTKY = #{ALSTKY}
+	</update>
+	
+	<delete id="ALSTH_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   ALSTH
+		WHERE  COMPKY = 'WDSCM'
+	    AND    ALSTKY = #{ALSTKY} 
+	</delete>
+	
+	<insert id="ALSTI_INSERT" parameterType="hashmap">
+		INSERT INTO ALSTI(
+			  COMPKY
+			, ALSTKY
+			, STEPNO
+			, ALFTKY
+			, SSORKY
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  'WDSCM'
+			, #{ALSTKY}
+			, COALESCE(#{STEPNO},'')
+			, COALESCE(#{ALFTKY},'')
+			, COALESCE(#{SSORKY},'')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+	
+	<update id="ALSTI_UPDATE" parameterType="hashmap">
+		UPDATE ALSTI
+		SET    ALFTKY = COALESCE(#{ALFTKY},'')
+		  ,    SSORKY = COALESCE(#{SSORKY},'')
+		WHERE  COMPKY = 'WDSCM'
+		AND    ALSTKY = #{ALSTKY}
+		AND    STEPNO = #{STEPNO}
+	</update>
+	
+	<delete id="ALSTI_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   ALSTI
+		WHERE  COMPKY = 'WDSCM'
+		AND    ALSTKY = #{ALSTKY} 
+	</delete>
+	<!-- [AL01] 할당전략** -->
+	
+	<!-- **[AC01] 가입코드 등록 -->
+	<select id="AC01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT APLCOD AS "APLCOD"
+		   ,   COMPNM AS "COMPNM"
+		   ,   BIZNUM AS "BIZNUM"
+		   ,   MNGRNM AS "MNGRNM"
+		   ,   TELNUM AS "TELNUM"
+		   ,   COMPYN AS "COMPYN"
+		   ,   CREDAT AS "CREDAT"
+		   ,   CRETIM AS "CRETIM"
+		   ,   CREUSR AS "CREUSR"
+		FROM   MSTAP
+		WHERE  1=1
+		<if test="APLCOD != null and APLCOD != ''">
+		AND    APLCOD = #{APLCOD}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="AC01_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT APLCOD AS "APLCOD"
+		   ,   COMPNM AS "COMPNM"
+		   ,   BIZNUM AS "BIZNUM"
+		   ,   MNGRNM AS "MNGRNM"
+		   ,   TELNUM AS "TELNUM"
+		   ,   COMPYN AS "COMPYN"
+		   ,   CREDAT AS "CREDAT"
+		   ,   CRETIM AS "CRETIM"
+		   ,   CREUSR AS "CREUSR"
+		FROM   MSTAP
+		WHERE  APLCOD = #{APLCOD}
+	</select>
+	
+	<select id="AC01_APLCOD_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS CNT 
+		FROM   MSTCOMP
+		WHERE  APLCOD = #{APLCOD}
+		AND    COMPYN = 'N'
+	</select>
+	
+	<select id="AC01_COMPKY_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPID AS "COMPID" 
+		FROM   MSTCOMP
+		WHERE  APLCOD = #{APLCOD}
+	</select>
+	
+	<insert id="MSTAP_INSERT" parameterType="hashmap">
+		INSERT INTO MSTAP(
+			  APLCOD
+			, COMPNM
+			, BIZNUM
+			, MNGRNM
+			, TELNUM
+			, CREDAT
+			, CRETIM
+			, CREUSR
+		)VALUES(
+			  #{APLCOD}
+			, #{COMPNM}
+			, #{BIZNUM}
+			, #{MNGRNM}
+			, #{TELNUM}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	<delete id="MSTAP_DELETE" parameterType="hashmap">
+		DELETE 
+		FROM   MSTAP
+		WHERE  APLCOD = #{APLCOD}
+	</delete>
+	<!-- [AC01] 가입코드 등록** -->
+	
+	<insert id="MEMBERSHIP_DEDAULT_INSERT" parameterType="hashmap">
+		INSERT INTO MSTCOMP(
+			  COMPID
+			, COMPNAME
+			, MANAGER
+			, TEL1
+			, BIZNUMBER
+			, APLCOD
+			, AUTOSORT
+			, CREATEDATE
+			, UPDATEDATE
+			, DELETEYN
+		)VALUES(
+			  #{COMPKY}
+			, #{COMPNM}
+			, #{MNGRNM}
+			, #{TELNUM}
+			, #{BIZNUM}
+			, #{APLCOD}
+			, 1
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, 'N'
+		)
+	</insert>
+	
+	<select id="MEMBERSHIP_COMPKY_CHECK_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   MSTCOMP
+		WHERE  COMPID = #{COMPKY}   
+	</select>
+	
+	<select id="MEMBERSHIP_USERID_CHECK_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COUNT(1) AS "CNT"
+		FROM   USRMA
+		WHERE  USERID = #{USERID}
+	</select>
+	
+	<insert id="SYSTEM_WAHMA_INSERT"  parameterType="hashmap">
+		INSERT INTO WAHMA(
+			  COMPKY
+			, WAREKY
+			, NAME01 
+			, NAME02
+			, TELN01
+			, CREDAT 
+			, CRETIM 
+			, CREUSR
+			, LMODAT 
+			, LMOTIM 
+			, LMOUSR
+		)
+		VALUES(
+			  #{COMPKY}
+			, #{WAREKY}
+			, #{NAME01} 
+			, #{NAME02} 
+			, #{TELN01}
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, #{USERID}
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, #{USERID}
+		)
+	</insert>
+	
+	<insert id="SYSTEM_USRMA_INSERT"  parameterType="hashmap">
+		INSERT INTO USRMA(
+			  COMPKY
+			, USERID
+			, PASSWD
+			, NMLAST 
+			, MENUKY
+			, PDAMKY
+			, LLOGWH
+			, CREDAT 
+			, CRETIM 
+			, CREUSR
+			, LMODAT 
+			, LMOTIM 
+			, LMOUSR
+			, UPDCHK
+		)
+		VALUES(
+			  #{COMPKY}
+			, #{USERID}
+			, #{PASSWD}
+			, #{NAME02} 
+			, 'ADMIN'
+			, 'ADMIN'
+			, #{LLOGWH}
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, 0
+		)
+	</insert>
+	
+	<insert id="SYSTEM_OWNER_INSERT"  parameterType="hashmap">
+		INSERT INTO OWNER(
+			  COMPKY
+			, OWNRKY
+			, NAME01 
+			, CREDAT 
+			, CRETIM 
+			, CREUSR
+			, LMODAT 
+			, LMOTIM 
+			, LMOUSR
+			, UPDCHK
+		)
+		VALUES(
+			  #{COMPKY}
+			, #{OWNRKY}
+			, #{NAME01} 
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, 0
+		)
+	</insert>
+	
+	<insert id="SYSTEM_OWNWC_INSERT"  parameterType="hashmap">
+		INSERT INTO OWNWC(
+			  COMPKY
+			, OWNRKY
+			, WAREKY
+			, CREDAT 
+			, CRETIM 
+			, CREUSR
+			, LMODAT 
+			, LMOTIM 
+			, LMOUSR
+			, UPDCHK
+		)
+		VALUES(
+			  #{COMPKY}
+			, #{OWNRKY}
+			, #{WAREKY} 
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, TO_CHAR(NOW(),'YYYYMMDD') 
+			, TO_CHAR(NOW(),'HH24MISS') 
+			, 'SYSTEM'
+			, 0
+		)
+	</insert>
+	
+	<insert id="SYSTEM_AREMA_INSERT"  parameterType="hashmap">
+		INSERT INTO AREMA(
+			  COMPKY, WAREKY, AREAKY, AREATY, SHORTX
+			, CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+			, UPDCHK
+		)
+		SELECT #{COMPKY} AS COMPKY
+		   ,   #{WAREKY} AS WAREKY
+		   ,   AREAKY
+		   ,   AREATY
+		   ,   SHORTX
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS CREDAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS CRETIM
+		   ,   #{USERID} AS CREUSR
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS LMODAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS LMOTIM
+		   ,   #{USERID} AS LMOUSR
+		   ,   0
+		FROM   AREMA
+		WHERE  COMPKY = 'WDSCM'
+		AND    WAREKY = 'WDSCM'
+	</insert>
+	
+	<insert id="SYSTEM_ZONMA_INSERT"  parameterType="hashmap">
+		INSERT INTO ZONMA(
+			  COMPKY, WAREKY, ZONEKY, ZONETY, SHORTX, AREAKY
+			, CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+			, UPDCHK
+		)
+		SELECT #{COMPKY} AS COMPKY
+		   ,   #{WAREKY} AS WAREKY
+		   ,   ZONEKY
+		   ,   ZONETY
+		   ,   SHORTX
+		   ,   AREAKY
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS CREDAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS CRETIM
+		   ,   #{USERID} AS CREUSR
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS LMODAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS LMOTIM
+		   ,   #{USERID} AS LMOUSR
+		   ,   0
+		FROM   ZONMA
+		WHERE  COMPKY = 'WDSCM'
+		AND    WAREKY = 'WDSCM'
+	</insert>
+	
+	<insert id="SYSTEM_LOCMA_INSERT"  parameterType="hashmap">
+		INSERT INTO LOCMA(
+			  COMPKY, WAREKY, LOCAKY, LOCATY, SHORTX
+			, TASKTY, ZONEKY, AREAKY, MIXSKU
+			, CREDAT, CRETIM, CREUSR
+			, LMODAT, LMOTIM, LMOUSR
+			, UPDCHK	
+		)
+		SELECT #{COMPKY} AS COMPKY
+		   ,   #{WAREKY} AS WAREKY
+		   ,   LOCAKY
+		   ,   LOCATY
+		   ,   SHORTX
+		   ,   TASKTY
+		   ,   ZONEKY
+		   ,   AREAKY
+		   ,   MIXSKU
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS CREDAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS CRETIM
+		   ,   #{USERID} AS CREUSR
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS LMODAT
+		   ,   TO_CHAR(NOW(), 'HH24MISS') AS LMOTIM
+		   ,   #{USERID} AS LMOUSR
+		   ,   0
+		FROM   LOCMA
+		WHERE  COMPKY = 'WDSCM'
+		AND    WAREKY = 'WDSCM'
+	</insert>
+	
+	<select id="MEMBERSHIP_OPTION_SET_HEAD_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT OPGKEY AS "OPGKEY"
+		   ,   OPTGNM AS "OPTGNM"
+		   ,   SELTYP AS "SELTYP"
+		   ,   SORTNO AS "SORTNO"
+		FROM   MNOPH
+		ORDER BY 
+		       SORTNO
+	</select>
+	
+	<select id="MEMBERSHIP_OPTION_SET_ITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT OPGKEY AS "OPGKEY"
+		   ,   OPTKEY AS "OPTKEY"
+		   ,   OPTTNM AS "OPTTNM"
+		   ,   SHORTX AS "SHORTX"
+		FROM   MNOPI
+		WHERE  OPGKEY = #{OPGKEY}
+		ORDER BY 
+		       SORTNO
+	</select>
+	
+	<insert id="SYSTEM_MENU_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUGL(
+			   COMPID
+		   ,   MENUGID
+		   ,   MENUID
+		   ,   SORTORDER
+		   ,   PMENUID
+		   ,   DELETEYN
+		)
+		SELECT #{COMPKY} AS COMPID
+		   ,   MENUGID
+		   ,   MENUID
+		   ,   SORTORDER
+		   ,   PMENUID
+		   ,   'N'       AS DELETEYN
+		FROM   MSTMENUGL
+		WHERE  COMPID  = 'WDSCM'
+		AND    MENUGID = #{MENUGID}
+		ORDER BY 
+		       SORTORDER
+	</insert>
+	
+	<insert id="SYSTEM_USER_MENU_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUGL(
+			   COMPID
+		   ,   MENUGID
+		   ,   MENUID
+		   ,   SORTORDER
+		   ,   PMENUID
+		   ,   DELETEYN
+		)VALUES(
+			   #{COMPID}
+		   ,   #{MENUGID}
+		   ,   #{MENUID}
+		   ,   #{SORTORDER}::NUMERIC
+		   ,   #{PMENUID}
+		   ,   'N'
+		)
+	</insert>	
+	
+	<select id="MEMBERSHIP_PRCS_GRP_SAVE_DEFAULT_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_GRP_SAVE_DEFAULT(#{COMPKY}, #{COMPNM}, #{USERID}, #{MNGRNM}, #{BIZNUM}, #{TELNUM}, #{PASSWD}, #{APLCOD}) AS "RESULT"
+	</select>
+	
+	<select id="MEMBERSHIP_OPTION_MENU_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	MENUID AS "MENUID"
+			,   MNUSRT AS "MNUSRT"
+			,   PMNUID AS "PMNUID"
+			,   DOCUTY AS "DOCUTY"
+			,   DOCGRP AS "DOCGRP"
+		FROM    MNOPR
+		WHERE   OPGKEY = #{OPGKEY}
+		AND     OPTKEY = #{OPTKEY}
+	</select>
+	
+	<select id="MEMBERSHIP_OPTION_TKFLKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT	TKFLKY AS "TKFLKY"
+		FROM    DOCTM
+		WHERE   DOCUTY = #{DOCUTY}
+	</select>
+	
+	<select id="MEMBERSHIP_OPTION_ALSTKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT	ALSTKY AS "ALSTKY"
+		FROM    DOCTM
+		WHERE   DOCUTY = #{DOCUTY}
+	</select>
+	
+	<insert id="MEMBERSHIP_OPTION_DOCRL_INSERT"  parameterType="hashmap">
+		INSERT INTO DOCRL(
+			  COMPKY
+			, DOCUTY
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK 
+		)VALUES(
+			  #{COMPKY}
+			, #{DOCUTY}
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+		    , TO_CHAR(NOW(), 'HH24MISS')
+		    , #{USERID}
+		    , TO_CHAR(NOW(), 'YYYYMMDD')
+		    , TO_CHAR(NOW(), 'HH24MISS')
+		    , #{USERID}
+		    , 0
+		)
+	</insert>
+	
+	<update id="MEMBERSHIP_MSTCOMP_TK_UPDATE"  parameterType="hashmap">
+		UPDATE MSTCOMP
+		SET    TKFLKY = #{TKFLKY}
+		  ,    ALSTKY = #{ALSTKY}
+		WHERE  COMPID = #{COMPKY}
+	</update>
+	
+	<select id="MEMBERSHIP_PRCS_GRP_SAVE_OPTION_MAP"  parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_GRP_SAVE_OPTION(#{COMPKY}, #{USERID}, #{KEYPRM}) AS "RESULT"
+	</select>
+	
+	<select id="MEMBERSHIP_PRICE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT GRADEID   AS "GRADEID"
+		   ,   GRADENAME AS "GRADENAME"
+		   ,   BSCAMT    AS "BSCAMT"
+		   ,   TSKCNT    AS "TSKCNT"
+		   ,   TSKDAT    AS "TSKDAT"
+		   ,   EXCDAT    AS "EXCDAT"
+		   ,   EXCCNT    AS "EXCCNT"
+		   ,   EXCAMT    AS "EXCAMT"
+		   ,   CRRCOD    AS "CRRCOD"
+		   ,   CULTYP    AS "CULTYP"
+		FROM   MSTGRADE 
+		ORDER BY 
+		       SORTORDER
+	</select>
+	
+	<update id="MEMBERSHIP_PRICE_UPDATE"  parameterType="hashmap">
+		UPDATE MSTCOMP
+		SET    GRADEID = #{GRADEID}
+		WHERE  COMPID = #{COMPID}
+	</update>
+	
+	<select id="MEMBERSHIP_RESULT01_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPID    AS "COMPID"
+		   ,   COMPNAME  AS "COMPNM"
+		   ,   MANAGER   AS "MNGRNM" 
+		   ,   TEL1      AS "TELNUM"
+		   ,   BIZNUMBER AS "BIZNUM"
+		FROM   MSTCOMP
+		WHERE  COMPID = #{COMPID}
+	</select>
+	
+	<select id="MEMBERSHIP_RESULT02_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COMPKY AS "COMPKY"
+		   ,   USERID AS "USERID"
+		FROM   USRMA
+		WHERE  COMPKY = #{COMPID}
+		AND    MENUKY = 'ADMIN'
+	</select>
+	
+	<select id="MEMBERSHIP_RESULT03_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.OPTGNM AS "OPTGNM"
+		   ,   ARRAY_TO_STRING(ARRAY_AGG(A.OPTTNM ORDER BY A.SORT1, A.SORT2),', ') AS "OPTTNM" 
+		FROM(
+			SELECT A.SORTNO AS SORT1
+			   ,   B.SORTNO AS SORT2
+			   ,   A.OPTGNM
+			   ,   B.OPTTNM 
+			FROM   MNOPH A 
+			       INNER JOIN MNOPI B ON      A.OPGKEY  = B.OPGKEY
+			       INNER JOIN MNOPR C ON      B.OPGKEY  = C.OPGKEY
+			                          AND     B.OPTKEY  = C.OPTKEY
+			       INNER JOIN MSTMENUGL D ON  C.MENUID  = D.MENUID
+			                              AND D.COMPID  = #{COMPID}
+			                              AND D.MENUGID = 'ADMIN'
+			GROUP BY
+			       A.SORTNO, B.SORTNO, A.OPTGNM, B.OPTTNM
+		) A
+		GROUP BY 
+		       A.OPTGNM, A.SORT1
+		ORDER BY 
+		       A.SORT1
+	</select>
+	
+	<select id="MEMBERSHIP_RESULT04_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT B.GRADEID   AS "GRADEID"
+		   ,   B.GRADENAME AS "GRADENAME"
+		   ,   B.BSCAMT    AS "BSCAMT"
+		   ,   B.TSKCNT    AS "TSKCNT"
+		   ,   B.TSKDAT    AS "TSKDAT"
+		   ,   B.EXCDAT    AS "EXCDAT"
+		   ,   B.EXCCNT    AS "EXCCNT"
+		   ,   B.EXCAMT    AS "EXCAMT"
+		   ,   B.CRRCOD    AS "CRRCOD"
+		   ,   B.CULTYP    AS "CULTYP"
+		FROM   MSTCOMP A
+		       INNER JOIN MSTGRADE B ON A.GRADEID = B.GRADEID
+		WHERE  A.COMPID = #{COMPID}
+	</select>
+	
+	<select id="MEMBERSHIP_INIT_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_GRP_INIT_MEMBER(#{COMPID}, #{TYPE}) AS "COMPKY"
+	</select>
+	
+	<update id="MEMBERSHIP_REUSLT_UPDATE" parameterType="hashmap">
+		UPDATE MSTCOMP 
+		SET    COMPYN = 'Y'
+		  ,    UPDATEDATE = TO_CHAR(NOW(), 'YYYYMMDD')
+		WHERE  COMPID = #{COMPID}
+	</update>
+	
+	<update id="MSTAP_REUSLT_UPDATE" parameterType="hashmap">
+		UPDATE MSTAP 
+		SET    COMPYN = 'Y'
+		WHERE  APLCOD = #{APLCOD}
+	</update>
+	
+	<select id="MEMBERSHIP_OPTION_CHECKED_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.OPGKEY||'_'||B.OPTKEY AS "OPTKEY"
+		FROM   MNOPH A 
+		       INNER JOIN MNOPI B ON      A.OPGKEY = B.OPGKEY
+		       INNER JOIN MNOPR C ON      B.OPGKEY = C.OPGKEY
+		                          AND     B.OPTKEY = C.OPTKEY
+		       INNER JOIN MSTMENUGL D ON  C.MENUID = D.MENUID
+		                              AND D.COMPID = #{COMPKY}
+		                              AND D.MENUGID = 'ADMIN'
+		GROUP BY
+		       A.OPGKEY, B.OPTKEY, B.OPTTNM, A.SORTNO, B.SORTNO 
+		ORDER BY 
+		       A.SORTNO, B.SORTNO
+	</select>
+	
+	<select id="MEMBERSHIP_PRICE_CHECKED_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT COALESCE(GRADEID, '') AS "GRADEID"
+		FROM   MSTCOMP
+		WHERE  COMPID = #{COMPKY}
+	</select>
+	
+	<select id="MENU_SEQ_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT MENUID AS "MENUID"
+		FROM   MSTMENUGL 
+		WHERE  COMPID  = #{COMPID} 
+		AND    MENUGID = #{MENUGID}
+	</select>
+	
+	<select id="MNOPH_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT OPGKEY AS "OPGKEY"
+		   ,   OPTGNM AS "OPTGNM"
+		   ,   SELTYP AS "SELTYP"
+		   ,   SORTNO AS "SORTNO"
+		FROM   MNOPH
+		ORDER BY
+		       SORTNO
+	</select>
+	
+	<select id="MNOPI_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT OPGKEY AS "OPGKEY"
+		   ,   OPTKEY AS "OPTKEY"
+		   ,   OPTTNM AS "OPTTNM"
+		   ,   SHORTX AS "SHORTX"
+		   ,   SORTNO AS "SORTNO"
+		FROM   MNOPI
+		WHERE  OPGKEY = #{OPGKEY}
+		ORDER BY
+		       SORTNO
+	</select>
+	
+	<select id="MNOPR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.OPGKEY   AS "OPGKEY" 
+		   ,   A.OPTKEY   AS "OPTKEY"
+		   ,   A.MENUID   AS "MENUID"
+		   ,   B.MENUNAME AS "MENUNAME"
+		   ,   A.PMNUID   AS "PMNUID"
+		   ,   C.MENUNAME AS "PMNUNAME"
+		   ,   A.MNUSRT   AS "MNUSRT"
+		   ,   A.SEQ      AS "SEQ"
+		   ,   A.DOCUTY   AS "DOCUTY"
+		   ,   D.SHORTX   AS "DOCUNM"
+		   ,   A.DOCGRP   AS "DOCGRP"
+		FROM   MNOPR A
+		       INNER JOIN MSTMENU B ON A.MENUID = B.MENUID
+		       INNER JOIN MSTMENU C ON A.PMNUID = C.MENUID
+		       LEFT OUTER JOIN DOCTM D ON A.DOCUTY = D.DOCUTY
+		WHERE  OPGKEY = #{OPGKEY}
+		AND    OPTKEY = #{OPTKEY}
+	</select>
+	
+	<select id="MSTMENU_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT A.MENUGID   AS "MENUGID"
+			,  A.MENUID    AS "MENUID"
+			,  B.MENUNAME  AS "MENUNAME"
+			,  A.PMENUID   AS "PMENUID"
+			,  C.MENUNAME  AS "PMNUNAME"
+			,  A.SEQ       AS "SEQ"
+			,  A.SORTORDER AS "SORTORDER"
+			,  D.DOCUTY    AS "DOCUTY"
+			,  D.SHORTX    AS "DOCUNM"
+			,  D.IFTBLN    AS "DOCGRP"
+		FROM   MSTMENUGL A 
+		       LEFT OUTER JOIN MSTMENU B ON  A.MENUID  = B.MENUID 
+		                                 AND B.COMPID  = 'WDSCM'
+		       LEFT OUTER JOIN MSTMENU C ON  A.PMENUID = C.MENUID
+		                                 AND B.COMPID  = 'WDSCM' 
+		       LEFT OUTER JOIN DOCTM   D ON  A.MENUID  = D.MENUID                                                   
+		WHERE  A.COMPID  = 'WDSCM'
+		AND    A.MENUGID = 'WDSCM'
+		AND    A.MENUID  = #{MENUID}
+	</select>
+	
+	<insert id="MNOPH_INSERT" parameterType="hashmap">
+		INSERT INTO MNOPH(
+			  OPGKEY 
+			, OPTGNM
+		    , SELTYP
+		    , SORTNO
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		)VALUES(
+			  #{OPGKEY} 
+			, #{OPTGNM}
+			, #{SELTYP}
+			, #{SORTNO}::NUMERIC
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="MNOPH_UPDATE" parameterType="hashmap">
+		UPDATE MNOPH
+		SET    OPTGNM = #{OPTGNM}
+		  ,    SELTYP = #{SELTYP}
+		  ,    SORTNO = #{SORTNO}::NUMERIC
+		  ,    LMODAT = TO_CHAR(NOW(), 'YYYYMMDD')
+		  ,    LMOTIM = TO_CHAR(NOW(), 'HH24MISS')
+		  ,    LMOUSR = #{SES_USER_ID}
+		  ,    UPDCHK = UPDCHK + 1
+		WHERE  OPGKEY = #{OPGKEY}
+	</update>
+	
+	<delete id="MNOPH_DELETE" parameterType="hashmap">
+		DELETE
+		FROM   MNOPH
+		WHERE  OPGKEY = #{OPGKEY}
+	</delete>
+	
+	<insert id="MNOPI_INSERT" parameterType="hashmap">
+		INSERT INTO MNOPI(
+			  OPGKEY 
+			, OPTKEY
+			, OPTTNM
+		    , SHORTX
+		    , SORTNO
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		)VALUES(
+			  #{OPGKEY} 
+			, #{OPTKEY}
+			, #{OPTTNM}
+			, COALESCE(#{SHORTX}, '')
+			, #{SORTNO}::NUMERIC
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	<update id="MNOPI_UPDATE" parameterType="hashmap">
+		UPDATE MNOPI
+		SET    OPTTNM = #{OPTTNM}
+		  ,    SHORTX = COALESCE(#{SHORTX}, '')
+		  ,    SORTNO = #{SORTNO}::NUMERIC
+		  ,    LMODAT = TO_CHAR(NOW(), 'YYYYMMDD')
+		  ,    LMOTIM = TO_CHAR(NOW(), 'HH24MISS')
+		  ,    LMOUSR = #{SES_USER_ID}
+		  ,    UPDCHK = UPDCHK + 1
+		WHERE  OPGKEY = #{OPGKEY}
+		AND    OPTKEY = #{OPTKEY}
+	</update>
+	
+	<delete id="MNOPI_DELETE" parameterType="hashmap">
+		DELETE
+		FROM   MNOPI
+		WHERE  OPGKEY = #{OPGKEY}
+		<if test="OPTKEY != null and OPTKEY != ''">
+		AND    OPTKEY = #{OPTKEY}
+		</if>
+	</delete>
+	
+	<insert id="MNOPR_INSERT" parameterType="hashmap">
+		INSERT INTO MNOPR(
+			  OPGKEY 
+			, OPTKEY
+			, MENUID
+			, PMNUID
+			, MNUSRT
+			, SEQ
+			, DOCUTY
+			, DOCGRP
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		)VALUES(
+			  #{OPGKEY} 
+			, #{OPTKEY}
+			, #{MENUID}
+			, #{PMNUID}
+			, #{MNUSRT}::NUMERIC
+			, #{SEQ}::NUMERIC
+			, COALESCE(#{DOCUTY}, '')
+			, COALESCE(#{DOCGRP}, '')
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(), 'YYYYMMDD')
+			, TO_CHAR(NOW(), 'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	<delete id="MNOPR_DELETE" parameterType="hashmap">
+		DELETE
+		FROM   MNOPR
+		WHERE  OPGKEY = #{OPGKEY}
+		<if test="OPTKEY != null and OPTKEY != ''">
+		AND    OPTKEY = #{OPTKEY}
+		</if>
+		<if test="MENUID != null and MENUID != ''">
+		AND    MENUID = #{MENUID}
+		</if>
+	</delete>
+	
+	<select id="MEMBERSHIP_PRCS_IN_MST_CCLDT_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_IN_MST_CCLDT(#{COMPID}) AS "RESULT"
+	</select>
+	
+	<select id="PRCS_BAT_DAY_CCL_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PRCS_BAT_DAY_CCL() AS "RESULT"
+	</select>
+	
+	<select id="MT01_01_MAP" parameterType="hashmap" resultType="DataMap">
+		WITH MST AS(
+			SELECT 1  AS NUM
+			     , '' AS COMPID
+			     , '' AS COMPNM
+			     , '' AS MNGRID
+			     , '' AS MNGRNM
+			     , '' AS APLCOD
+			     , '' AS REGDAT
+			     , '' AS STRDAT
+			     , '' AS ENDDAT
+			     , '' AS PODDAT
+			     , '' AS PAYDAT
+		),
+		CMP AS (
+			SELECT 1         AS NUM
+			   ,   COMPID    AS COMPID
+			   ,   COMPNAME  AS COMPNM
+			   ,   MNGRID    AS MNGRID
+			   ,   MANAGER   AS MNGRNM 
+			   ,   APLCOD    AS APLCOD
+			   ,   TO_CHAR(TO_DATE(UPDATEDATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS REGDAT
+			FROM   MSTCOMP
+			WHERE  COMPID = #{SES_USER_COMPANY}
+		),
+		DAT AS (
+			SELECT 1 AS NUM
+			   ,   STRDAT
+			   ,   ENDDAT
+			   ,   TO_CHAR(TO_DATE(A.STRDAT, 'YYYYMMDD'), 'YYYY-MM-DD') || ' ~ ' || TO_CHAR(TO_DATE(A.ENDDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS PODDAT
+			   ,   TO_CHAR(TO_DATE(A.PAYDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS PAYDAT    
+			FROM   (
+				SELECT STRDAT, ENDDAT, PAYDAT 
+				FROM   CCLDT
+				WHERE  COMPID = #{SES_USER_COMPANY}
+				ORDER BY CCLKEY DESC
+				LIMIT 1
+			) A
+		)
+		SELECT COALESCE(B.COMPID, A.COMPID) AS "COMPID"
+		   ,   COALESCE(B.COMPNM, A.COMPNM) AS "COMPNM"
+		   ,   COALESCE(B.MNGRID, A.MNGRID) AS "MNGRID"
+		   ,   COALESCE(B.MNGRNM, A.MNGRNM) AS "MNGRNM"
+		   ,   COALESCE(B.APLCOD, A.APLCOD) AS "APLCOD"
+		   ,   COALESCE(B.REGDAT, A.REGDAT) AS "REGDAT"
+		   ,   COALESCE(C.STRDAT, A.STRDAT) AS "STRDAT"
+		   ,   COALESCE(C.ENDDAT, A.ENDDAT) AS "ENDDAT"
+		   ,   COALESCE(C.PODDAT, A.PODDAT) AS "PODDAT"
+		   ,   COALESCE(C.PAYDAT, A.PAYDAT) AS "PAYDAT"
+		FROM   MST A
+		       LEFT OUTER JOIN CMP B ON A.NUM = B.NUM
+		       LEFT OUTER JOIN DAT C ON A.NUM = C.NUM
+	</select>
+	
+	<select id="MT01_02_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ROW_NUMBER() OVER(ORDER BY A.SORT1)||'. ' AS "NUM"
+		   ,   A.OPTGNM AS "OPTGNM"
+		   ,   ARRAY_TO_STRING(ARRAY_AGG(A.OPTTNM ORDER BY A.SORT1, A.SORT2),', ') AS "OPTTNM" 
+		FROM(
+			SELECT A.SORTNO AS SORT1
+			   ,   B.SORTNO AS SORT2
+			   ,   A.OPTGNM
+			   ,   B.OPTTNM 
+			FROM   MNOPH A 
+			       INNER JOIN MNOPI B ON      A.OPGKEY  = B.OPGKEY
+			       INNER JOIN MNOPR C ON      B.OPGKEY  = C.OPGKEY
+			                          AND     B.OPTKEY  = C.OPTKEY
+			       INNER JOIN MSTMENUGL D ON  C.MENUID  = D.MENUID
+			                              AND D.COMPID  = #{SES_USER_COMPANY}
+			                              AND D.MENUGID = 'ADMIN'
+			GROUP BY
+			       A.SORTNO, B.SORTNO, A.OPTGNM, B.OPTTNM
+		) A
+		GROUP BY 
+		       A.OPTGNM, A.SORT1
+	</select>
+	
+	<select id="MT01_03_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT B.GRADENAME AS "GRADENAME"
+		   ,   B.BSCAMT    AS "BSCAMT"
+		   ,   B.TSKCNT    AS "TSKCNT"
+		   ,   B.TSKDAT    AS "TSKDAT"
+		   ,   B.EXCDAT    AS "EXCDAT"
+		   ,   B.EXCCNT    AS "EXCCNT"
+		   ,   B.EXCAMT    AS "EXCAMT"
+		   ,   B.CRRCOD    AS "CRRCOD"
+		   ,   B.CULTYP    AS "CULTYP"
+		FROM   MSTCOMP A
+		       INNER JOIN MSTGRADE B ON A.GRADEID = B.GRADEID
+		WHERE  A.COMPID = #{SES_USER_COMPANY}
+	</select>
+	
+	<select id="MT01_04_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT CAST(#{TSKCNT} AS NUMERIC) AS "BISCMT"
+		   ,   TODCMT AS "USECMT"
+		   ,   EXCCMT AS "ADDCMT"
+		   ,   ADDAMT AS "ADDAMT"
+		FROM   DDCCL
+		WHERE  COMPID = #{SES_USER_COMPANY}
+		AND    CALDAT = TO_CHAR(NOW(), 'YYYYMMDD')
+	</select>
+	
+	<select id="MT01_05_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH DCL AS (
+			SELECT CALDAT, TODCMT, EXCCMT, ADDAMT, EXCAMT
+			FROM   DDCCL
+			WHERE  COMPID = #{SES_USER_COMPANY}
+			AND    CALDAT BETWEEN #{STRDAT} AND #{ENDDAT}
+		)
+		SELECT TO_CHAR(TO_DATE(A.CALDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS "CALDAT"
+		   ,   COALESCE(B.TODCMT, A.TODCMT) AS "TOCCMT"
+		   ,   COALESCE(B.EXCCMT, A.EXCCMT) AS "EXCCMT"
+		   ,   COALESCE(B.ADDAMT, A.ADDAMT) AS "ADDAMT"
+		   ,   COALESCE(B.EXCAMT, 0)        AS "EXCAMT" 
+		FROM   TBL_GET_DATE(#{STRDAT},#{ENDDAT}) A
+		       LEFT OUTER JOIN DCL B ON A.CALDAT = B.CALDAT
+	</select>
+	
+	<select id="MT01_06_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH MCL AS(
+			SELECT R.CALMON
+			    ,  SUM(R.STOCMT) AS STOCMT
+			    ,  SUM(R.SEXCMT) AS SEXCMT
+			    ,  SUM(R.SADAMT) AS SADAMT
+			FROM(
+				SELECT CALMON, STOCMT, SEXCMT, SADAMT 
+				FROM   MMCCL
+				WHERE  CALMON BETWEEN #{STRMON} AND #{ENDMON}
+				AND    COMPID = #{SES_USER_COMPANY}
+				UNION ALL
+				SELECT TO_CHAR(TO_DATE(CALDAT, 'YYYYMMDD'), 'YYYYMM') AS CALMON
+				   ,   TODCMT
+				   ,   EXCCMT
+				   ,   ADDAMT
+				FROM   DDCCL
+				WHERE  COMPID = #{SES_USER_COMPANY}
+				AND    CALDAT = TO_CHAR(NOW(), 'YYYYMMDD')
+			) R
+			GROUP BY R.CALMON
+		)
+		SELECT TO_CHAR(TO_DATE(A.CALMON,'YYYYMM'),'YYYY-MM') AS "CALMON"
+		   ,   COALESCE(B.STOCMT, A.STOCMT) AS "STOCMT"
+		   ,   COALESCE(B.SEXCMT, A.SEXCMT) AS "SEXCMT"
+		   ,   COALESCE(B.SADAMT, A.SADAMT) AS "SADAMT"
+		FROM   TBL_GET_MONTH(#{STRMON},#{ENDMON}) A
+		       LEFT OUTER JOIN MCL B ON A.CALMON = B.CALMON
+	</select>
+	
+	<select id="MT02_COMPANY_POP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COMPID     AS "COMPID"
+		   ,   A.COMPNAME   AS "COMPNM"
+		   ,   A.MANAGER    AS "MNGRNM"
+		FROM   MSTCOMP A
+		       INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+		                          AND B.ENDMAK = 'N'
+		       INNER JOIN MSTGRADE C ON A.GRADEID = C.GRADEID                   
+		WHERE  A.COMPYN = 'Y'
+	</select>
+	
+	<select id="MT02_INFO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.COMPID     AS "COMPID"
+		   ,   A.COMPNAME   AS "COMPNM"
+		   ,   A.MNGRID     AS "MNGRID"
+		   ,   A.MANAGER    AS "MNGRNM"
+		   ,   B.CCLKEY     AS "CCLKEY"
+		   ,   A.APLCOD     AS "APLCOD"
+		   ,   TO_CHAR(TO_DATE(A.UPDATEDATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS "JOINDT"
+		   ,   B.STRDAT     AS "STRDAT"
+		   ,   B.ENDDAT     AS "ENDDAT"
+		   ,   TO_CHAR(TO_DATE(B.STRDAT, 'YYYYMMDD'), 'YYYY-MM-DD') || ' ~ ' || TO_CHAR(TO_DATE(B.ENDDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS "PODDAT"
+		   ,   TO_CHAR(TO_DATE(B.PAYDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS "PAYDAT"
+		   ,   B.CCLCMP     AS "CCLCMP"
+		   ,   A.GRADEID    AS "GRDEID"
+		   ,   C.GRADENAME  AS "GRDENM"
+		   ,   C.BSCAMT     AS "BSCAMT"
+		   ,   C.TSKCNT     AS "TSKCNT"
+		   ,   C.EXCAMT     AS "EXCAMT"
+		FROM   MSTCOMP A
+		       INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+		                          AND B.ENDMAK = 'N'
+		       INNER JOIN MSTGRADE C ON A.GRADEID = C.GRADEID                   
+		WHERE  A.COMPYN = 'Y'
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<select id="MT02_OPTION_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH MST AS(
+			SELECT A.COMPID
+			   ,   A.COMPNAME
+			   ,   CAST(RPAD(CAST(ROW_NUMBER() OVER(ORDER BY A.UPDATEDATE) AS VARCHAR),6,'0') AS NUMERIC) AS CMPSRT
+		    FROM   MSTCOMP A
+		       INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+		                          AND B.ENDMAK = 'N'
+			WHERE  A.COMPYN = 'Y'
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>
+		),
+		OPT AS(
+			SELECT D.COMPID
+			   ,   A.SORTNO AS SORT1
+			   ,   B.SORTNO AS SORT2
+			   ,   A.OPTGNM
+			   ,   B.OPTTNM
+			FROM   MNOPH A 
+			       INNER JOIN MNOPI B ON      A.OPGKEY  = B.OPGKEY
+			       INNER JOIN MNOPR C ON      B.OPGKEY  = C.OPGKEY
+			                          AND     B.OPTKEY  = C.OPTKEY
+			       INNER JOIN MSTMENUGL D ON  C.MENUID  = D.MENUID
+			                              AND  D.MENUGID = 'ADMIN'
+			GROUP BY
+			       D.COMPID, A.SORTNO, B.SORTNO, A.OPTGNM, B.OPTTNM 
+		)
+		SELECT A.COMPID AS "COMPID"
+		    ,  A.SORT1  AS "SORT"
+		    ,  CASE WHEN A.COMPNM = '' THEN <![CDATA['&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;']]>
+		                                    ||(CASE WHEN A.SORT1 = 0 THEN '' ELSE CAST(A.SORT1 AS VARCHAR) END)||'.  '|| A.OPTGNM||' : '
+		            ELSE '회사 : ' || A.COMPNM
+		       END AS "OPTGNM"
+		    ,  A.OPTTNM AS "OPTTNM"
+		FROM(
+			SELECT COMPID   AS COMPID
+			   ,   COMPNAME AS COMPNM
+			   ,   0        AS SORT1
+			   ,   ''       AS OPTGNM
+			   ,   ''       AS OPTTNM
+			   ,   CMPSRT   AS CMPSRT
+			FROM   MST
+			UNION ALL
+			SELECT A.COMPID
+			   ,   A.COMPNAME
+			   ,   A.SORT1
+			   ,   A.OPTGNM
+			   ,   ARRAY_TO_STRING(ARRAY_AGG(A.OPTTNM ORDER BY A.SORT1, A.SORT2),', ') AS "OPTTNM" 
+			   ,   A.CMPSRT
+			FROM (
+				SELECT A.COMPID AS COMPID
+				   ,   '' AS COMPNAME
+				   ,   B.SORT1
+				   ,   B.OPTGNM
+				   ,   B.SORT2
+				   ,   B.OPTTNM
+				   ,   A.CMPSRT
+				FROM   MST A 
+				       INNER JOIN OPT B ON A.COMPID = B.COMPID
+			) A
+			GROUP BY A.COMPID
+			     ,   A.OPTGNM
+			     ,   A.SORT1
+			     ,   A.COMPNAME
+			     ,   A.CMPSRT
+			ORDER BY 
+				  CMPSRT, SORT1
+		) A
+	</select>
+	
+	<select id="MT02_PAY_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH MST AS(      
+			SELECT A.COMPID
+			   ,   A.COMPNAME
+			   ,   B.CCLKEY
+			   ,   B.STRDAT
+			   ,   B.ENDDAT
+			   ,   TO_CHAR(TO_DATE(B.STRDAT, 'YYYYMMDD'), 'YYYY-MM-DD') || ' ~ ' || TO_CHAR(TO_DATE(B.ENDDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS PODDAT
+			   ,   B.PAYDAT
+			   ,   B.CCLCMP
+			   ,   A.GRADEID
+			   ,   C.BSCAMT
+			   ,   C.TSKCNT
+			   ,   C.EXCAMT
+			FROM   MSTCOMP A
+			       INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+			                          AND B.ENDMAK = 'N'
+			       INNER JOIN MSTGRADE C ON A.GRADEID = C.GRADEID                   
+			WHERE  A.COMPYN = 'Y'
+			<choose>
+			<when test='(PAY_STRDAT != null and PAY_STRDAT != "") and (PAY_ENDDAT != null and PAY_ENDDAT != "")'>
+			AND    B.PAYDAT BETWEEN #{PAY_STRDAT} AND #{PAY_ENDDAT}
+			</when>
+			<when test='PAY_STRDAT != null and PAY_STRDAT != ""'>
+			AND    B.PAYDAT = #{PAY_STRDAT}
+			</when>
+			<when test='PAY_ENDDAT != null and PAY_ENDDAT != ""'>
+			AND    B.PAYDAT = #{PAY_ENDDAT}
+			</when>
+			</choose>
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>
+		)
+		SELECT A.COMPID    AS "COMPID"
+		   ,   A.COMPNAME  AS "COMPNM"
+		   ,   A.CCLKEY    AS "CCLKEY"
+		   ,   A.STRDAT    AS "STRDAT"
+		   ,   A.ENDDAT    AS "ENDDAT"
+		   ,   A.PODDAT    AS "PODDAT"
+		   ,   TO_CHAR(TO_DATE(A.PAYDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS "PAYDAT"
+		   ,   A.CCLCMP    AS "CCLCMP"
+		   ,   B.STOCMT + COALESCE(C.TODCMT, 0) AS "STOCMT"
+		   ,   B.SEXCMT + COALESCE(C.EXCCMT, 0) AS "SEXCMT"
+		   ,   B.SADAMT + COALESCE(C.ADDAMT, 0) AS "SADAMT"
+		   ,   A.BSCAMT + (B.SADAMT + COALESCE(C.ADDAMT, 0)) AS "PAYAMT"
+		FROM   MST A
+		       INNER JOIN PYCCL B ON  A.COMPID = B.COMPID
+		                          AND A.CCLKEY = B.CCLKEY
+		       LEFT OUTER JOIN(
+		      	 SELECT A.COMPID
+		      	    ,   A.CCLKEY
+			        ,   SUM(A.TODCMT) AS TODCMT
+			        ,   SUM(A.EXCCMT) AS EXCCMT
+			        ,   SUM(A.ADDAMT) AS ADDAMT
+			     FROM   DDCCL A
+			            INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+			                               AND A.CCLKEY = B.CCLKEY
+			     WHERE  A.CALDAT = TO_CHAR(NOW(), 'YYYYMMDD')
+	     		 AND    TO_CHAR(NOW(), 'YYYYMMDD') BETWEEN B.STRDAT AND B.ENDDAT
+	     		 <choose>
+				 <when test='(PAY_STRDAT != null and PAY_STRDAT != "") and (PAY_ENDDAT != null and PAY_ENDDAT != "")'>
+				 AND    B.PAYDAT BETWEEN #{PAY_STRDAT} AND #{PAY_ENDDAT}
+				 </when>
+				 <when test='PAY_STRDAT != null and PAY_STRDAT != ""'>
+				 AND    B.PAYDAT = #{PAY_STRDAT}
+				 </when>
+				 <when test='PAY_ENDDAT != null and PAY_ENDDAT != ""'>
+				 AND    B.PAYDAT = #{PAY_ENDDAT}
+				 </when>
+				 </choose>
+	     		 <if test="RANGE_SQL != null and RANGE_SQL != ''">
+				 ${RANGE_SQL}
+				 </if>
+			     GROUP BY 
+			     		A.COMPID, A.CCLKEY
+		       ) C ON  A.COMPID = C.COMPID
+		           AND A.CCLKEY = C.CCLKEY                   
+	</select>
+	
+	<select id="MT02_DAY_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH MST AS(
+			SELECT A.COMPID   AS COMPID
+			   ,   B.COMPNAME AS COMPNM
+			   ,   C.CALDAT   AS CALDAT
+			   ,   C.TODCMT   AS TODCMT
+			   ,   C.EXCCMT   AS EXCCMT
+			   ,   C.ADDAMT   AS ADDAMT
+			FROM   CCLDT A
+			       INNER JOIN MSTCOMP B ON A.COMPID = B.COMPID
+			       LEFT OUTER JOIN TBL_GET_DATE(#{STRDAT},#{ENDDAT}) C ON 1=1
+			WHERE 1=1
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>       
+		)
+		SELECT A.COMPID AS "COMPID"
+		   ,   A.COMPNM AS "COMPNM"
+		   ,   TO_CHAR(TO_DATE(A.CALDAT, 'YYYYMMDD'), 'YYYY-MM-DD') AS "CALDAT"
+		   ,   COALESCE(B.TODCMT, A.TODCMT) AS "TODCMT"
+		   ,   COALESCE(B.EXCCMT, A.EXCCMT) AS "EXCCMT"
+		   ,   COALESCE(B.ADDAMT, A.ADDAMT) AS "ADDAMT"
+		FROM   MST A 
+		       LEFT OUTER JOIN DDCCL B ON  A.COMPID = B.COMPID
+		                               AND A.CALDAT = B.CALDAT
+	</select>
+	
+	<select id="MT02_REAL_LIST" parameterType="hashmap" resultType="DataMap">
+		WITH MST AS(
+			SELECT B.COMPID
+			   ,   C.TSKCNT
+			   ,   0 AS TODCMT
+			   ,   0 AS EXCCMT
+			   ,   0 AS ADDAMT
+			FROM   MSTCOMP A
+			       INNER JOIN CCLDT B ON  A.COMPID = B.COMPID
+			                          AND B.ENDMAK = 'N'
+			       INNER JOIN MSTGRADE C ON A.GRADEID = C.GRADEID                   
+			WHERE  A.COMPYN = 'Y'
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>
+		)                              
+		SELECT A.COMPID AS "COMPID"
+		   ,   A.TSKCNT AS "TSKCNT"
+		   ,   COALESCE(B.TODCMT, A.TODCMT) AS "TODCMT"
+		   ,   COALESCE(B.EXCCMT, A.EXCCMT) AS "EXCCMT"
+		   ,   COALESCE(B.ADDAMT, A.ADDAMT) AS "ADDAMT"
+		   ,   CASE WHEN A.EXCCMT > 0 THEN (A.TSKCNT + A.EXCCMT)
+		            ELSE A.TSKCNT
+		       END AS "MAXCNT"     
+		FROM   MST A
+		       LEFT OUTER JOIN DDCCL B ON  A.COMPID = B.COMPID 
+		                               AND B.CALDAT = TO_CHAR(NOW(), 'YYYYMMDD')
+	</select>
+	
+	<select id="AP00_COMP_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT APLCOD AS "APLCOD"
+		FROM   MSTCOMP 
+		WHERE  COMPID = #{COMPID}
+	</select>
+	
+	<select id="AP00_IFASN_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1)
+		FROM   IFASN
+		WHERE  COMPKY = #{COMPID}
+		AND    ASNTTY = #{ASNTTY}
+	</select>
+	
+	<select id="AP00_MAX_PO_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT MAX(CAST(SUBSTRING(SEBELN,3,LENGTH(SEBELN)) AS INT)) AS "MAXCNT"
+		FROM   IFASN 
+		WHERE  COMPKY = #{COMPID}
+		AND    ASNTTY = #{ASNTTY}
+	</select>
+	
+	<select id="AP00_BZPTN_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT PTNRKY AS "PTNRKY"
+		FROM   BZPTN 
+		WHERE  COMPKY = #{COMPID}
+		AND    PTNRTY = 'VD'
+	</select>
+	
+	<select id="AP00_DATA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT LPAD(CAST(A.NUM AS VARCHAR),6,'0') AS "SEBELP"
+		    ,  A.SKUKEY AS "SKUKEY"
+		    ,  TO_CHAR(NOW(), 'YYYYMMDD') AS "ASNDAT"
+		    ,  100 AS "QTYASN"
+		    ,  TO_CHAR(NOW() + '1 YEAR', 'YYYYMMDD') AS "LOTA02"
+		    ,  TO_CHAR(NOW(), 'YYYYMMDD') AS "LOTA03"
+		FROM(
+			SELECT ROW_NUMBER() OVER(ORDER BY SKUKEY) AS NUM
+			   ,   SKUKEY
+			FROM   SKUMA
+			WHERE  COMPKY = #{COMPID}
+		) A
+	</select>
+	
+	<select id="AP00_IFSHP_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1)
+		FROM   IFSHP
+		WHERE  COMPKY = #{COMPID}
+	</select>
+	
+	<select id="AP00_MAX_SO_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT MAX(CAST(SUBSTRING(SVBELN,3,LENGTH(SVBELN)) AS INT)) AS "MAXCNT"
+		FROM   IFSHP
+		WHERE  COMPKY = #{COMPID}
+	</select>
+	
+	<select id="AP00_BZPTN_SO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT PTNRKY AS "PTNRKY"
+		FROM   BZPTN
+		WHERE  COMPKY = #{COMPID}
+		AND    PTNRTY = 'PR'
+	</select>
+	
+	<select id="AP00_PTRCVR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT PTNRKY AS "PTNRKY"
+		FROM   BZPTN
+		WHERE  COMPKY = #{COMPID}
+		AND    PTNRTY = 'VH'
+	</select>
+	
+	<select id="AP00_SO_DATA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT LPAD(CAST(A.NUM AS VARCHAR),6,'0') AS "SPOSNR"
+		    ,  A.SKUKEY AS "SKUKEY"
+		    ,  TO_CHAR(NOW(), 'YYYYMMDD') AS "RQSHPD"
+		    ,  100 AS "QTYORD"
+		FROM(
+			SELECT ROW_NUMBER() OVER(ORDER BY SKUKEY) AS NUM
+			   ,   SKUKEY
+			FROM   SKUMA
+			WHERE  COMPKY = #{COMPID}
+		) A
+	</select>
+	
+	<select id="AP00_SVBELN_DATA_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT SHPOKY AS "SVBELN"
+		   ,   SHPOIT AS "SPOSNR"
+		   ,   TO_CHAR(NOW(), 'YYYYMMDD') AS "ASNDAT"
+		   ,   SKUKEY AS "SKUKEY"
+		   ,   10 AS "QTYASN"
+		FROM   SHPDI
+		WHERE  COMPKY = #{COMPID}
+		AND    STATIT IN('FSH', 'PSH')
+		ORDER BY 
+		       SHPOKY, SHPOIT
+		LIMIT  CAST(#{ROWCNT} AS INT)       
+	</select>
+</mapper>

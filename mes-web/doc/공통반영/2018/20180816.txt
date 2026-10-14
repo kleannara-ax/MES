@@ -1,0 +1,8 @@
+window tab 이동시 좌측 메뉴 focus가 가도록 변경
+ - left.jsp, main.jsp
+ 
+ left.jsp
+  - 메뉴에서 마우스 휠 클릭시 메뉴가 새창으로 보여지는 문제 해결
+  
+grid.js
+ - setColValue eventType false시  rowCheck 되지 않도록 변경  

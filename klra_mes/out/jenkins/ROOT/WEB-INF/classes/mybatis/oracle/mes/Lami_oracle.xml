@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Lam">
+	<select id="LAM01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_INV01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="LAM02_MAP" parameterType="hashmap" statementType="CALLABLE">
+        {
+            CALL SP_LAMI_INV02_S01(
+                #{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+                #{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+                #{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+            )
+        }
+	</select>
+	
+	<select id="LAM03_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_PC_ORDER_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="LAM04_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_SL_ORDER_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="LAM05_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_PC_WRKORDER_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="LAM06_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_SL_WRKORDER_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="LAM07_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_PC_RESULT_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_EDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="LAM08_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI_SL_RESULT_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_EDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="LAM09_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_LAMI09_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_EDATE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_GBN, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="MATNR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			M033.MATNR_FROM AS VALUE_COL,
+			M001.MATNR_NM AS TEXT_COL
+		FROM TB_MAS033 M033 INNER JOIN	TB_MAS001 M001
+				ON	M033.WERKS_FROM = M001.WERKS
+				AND	M033.MATNR_FROM = M001.MATNR
+		ORDER BY M033.MATNR_FROM
+	</select>
+</mapper>

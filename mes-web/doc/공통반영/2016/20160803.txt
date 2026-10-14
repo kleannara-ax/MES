@@ -1,0 +1,4 @@
+grid.js
+ - 그리드 select 클릭시 클릭 콜백 이벤트 타지 않는 오류 수정
+ - appendPage인 경우에도 gridListEventDataBindEnd 호출하도록 추가 
+ - 그리드의 삭제 버튼이 선택된 행을 삭제하는 옵션 추가. selectRowDeleteType : true

@@ -1,0 +1,380 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+
+*{box-sizing:border-box;}
+html{
+    height: 100%;
+    width: 100%;
+	margin: 0 auto;
+}
+body{
+	width: 100%;
+	height: 100%;
+	min-width:1660px;
+	position: relative;
+	
+}
+
+
+.signin input{
+  border:none;
+}
+
+
+.show{
+/*   height: 100%; */
+/*   width: 100%; */
+	min-width: 1660px;
+	width:100%;
+	height: 100%;
+	margin: 0 auto;
+}
+
+body.weddek .show{
+    background: url(/common/theme/webdek/images/login/web_bg.png) no-repeat center center/ cover;
+}
+
+
+
+.logos{
+  float: left;
+  position: relative;
+  top:50%;
+  transform: translateY(-50%);
+  left: 9%;
+  height:252px;
+  width: 700px;
+}
+
+.logos img{
+	position: absolute;
+	top:0;
+	left: 0;
+	/* height: 100%;
+	width: 100%; */
+	opacity : 0;
+	
+	/* animation 총 구간 길이 시간 */
+	animation-duration: .8s;
+	/* animation 변화 패턴 */
+	animation-timing-function: linear;
+	/* animation이 끝났을 때 최종 형태 */
+	animation-fill-mode: forwards;
+	/* animation 반복 횟수 */
+	animation-iteration-count: 1;
+	/* animation 방향*/
+	animation-direction: normal;
+}
+
+.logos img:nth-child(1){
+	/* animation keyframes 설정 이름 */
+	animation-name: fadeIn;
+	/* 딜레이 시간 (1초 뒤에 animation 실행) */
+	animation-delay: 0s;
+	top:15px;
+}
+
+.logos img:nth-child(2){
+	/* animation keyframes 설정 이름 */
+	animation-name: fadeIn;
+	/* 딜레이 시간 (1초 뒤에 animation 실행) */
+	animation-delay: .6s;
+	top: 60px;	
+}
+.logos img:nth-child(3){
+	/* animation keyframes 설정 이름 */
+	animation-name: fadeIn;
+	/* 딜레이 시간 (1초 뒤에 animation 실행) */
+	animation-delay: 1.2s;
+	top: 60px;
+	left: 110px;
+}
+.logos img:nth-child(4){
+	/* animation keyframes 설정 이름 */
+	animation-name: fadeIn;
+	/* 딜레이 시간 (1초 뒤에 animation 실행) */
+	animation-delay: 1.8s;
+	top:100px;
+	left: 260px;
+	width:550px;
+}
+
+.signin{
+	position: absolute; 
+	top: 55%; 
+	right: 9%;
+	transform: translateY(-50%);
+	width: 500px;
+	height: 350px;
+}
+
+.radio{
+  padding:10px 0 35px 0;
+}
+.radio input{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.radio label{
+  color: #fff;
+  font-size: 16px;
+  margin:0 12px 0 3px;
+}
+input{
+  display: block;
+  background-color: rgba(0, 0, 0, 0);
+  outline: 0;
+}
+.inputbox{
+	width: 500px;
+	height: 180px;
+}
+.inputbox *{
+	float: left;
+	height:60px;
+	line-height:60px;
+}
+
+.inputbox label{
+	display:block;
+	width: 120px;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+body.GCCL .inputbox label{
+	color: #eee;
+}
+
+
+body.weddek .idbox{
+    background-image: url('/common/theme/webdek/images//login/id_box2.png') !important;
+}
+body.weddek .pwbox{
+    background-image: url('/common/theme/webdek/images//login/password_box2.png') !important;
+}
+
+
+
+.idbox, .pwbox{
+    background-size:100% 100%;
+    margin-bottom: 30px;
+    width: 380px;
+    padding-left: 25%;
+    color : #000;
+    position: relative;
+    font-size: 18px;
+}
+
+.inputbox input:-webkit-autofill,
+.inputbox input:-webkit-autofill:hover, 
+.inputbox input:-webkit-autofill:focus, 
+.inputbox input:-internal-autofill-previewed,
+.inputbox input:-webkit-autofill:active,
+.inputbox input:-webkit-autofill::first-line{
+    color : #000;
+    font-size: 17px;
+    font-family: '맑은 고딕','Malgun Gothic',dotum,'돋움',sans-serif ;
+	-webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0) inset !important;
+  	transition: background-color 5000s ease-in-out 0s !important;
+}
+
+
+input::placeholder {
+	color: #ccc;
+}
+
+.float_btn{
+	height: 30px;
+	line-height: 30px;
+	clear: both;
+}
+
+.float_btn button{
+	display: block;
+	background: none;
+	color: #706f6f;
+	border: none;
+	outline: none;
+	font-size: 15px;
+	height: 30px;
+	line-height: 30px;
+}
+
+body.GCCL .float_btn button{
+	color: #eee;
+}
+
+.ezgenDW {
+	float:left;
+}
+
+.find_IDPW {
+	float:right;
+}
+
+.change_pw {
+	display: block;
+}
+
+ .login_btn{
+    height: 90px;
+    width: 250px;
+    margin: 50px auto 0;
+ }
+
+body.weddek .login_btn{
+    background: url(/common/theme/webdek/images/login/login_btn_bg.png) no-repeat;
+    background-size:100% 100%;
+}
+
+
+.login_btn input{
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+}
+input[type="button"]{
+   color: #fff;
+   font-size: 20px;
+   cursor: pointer;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.75);
+	padding: 10px 0px;
+	color: #b2b2b2;
+	font-size: 12px;
+}
+
+footer p {
+	display: inline-block;
+	float: left;
+	margin-left: 15px;
+}
+
+footer span {
+    display: inline-block;
+    float: right;
+    margin-right: 15px;
+}
+
+footer select {
+	width: 180px;
+	display: inline-block;
+	float: right;
+	margin-right: 15px;
+	background: none;
+	border: none;
+	outline: none;
+	color: #b2b2b2;
+	font-size: 12px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 800px) {
+	html{
+	width: 100%;
+	height: 100%;
+	}
+	body.GCLC .show{
+		background: url(/common/theme/webdek/images/login/login_bg_sp.png) repeat center center/cover; 
+	}
+	body.GCCL .show{
+		background: url(/common/theme/webdek/images/login/login_bg_GCCL_sp.png) repeat center center/cover; 
+	}
+	
+	body{
+	min-width: auto;
+	width: auto;
+	overflow: hidden;
+	}
+	
+	.show{
+	padding-top: 100px;
+	overflow: auto;
+	box-sizing:border-box;
+	min-width: 0;
+	width: 100%;
+	}
+	
+	.show .login_content{
+	width: 100%;
+	height: 100%;
+	}
+	
+	.logos{
+		float: none;
+		position:absolute;
+		top:0;
+		left: 48%;
+	    transform: translateY(0%) translateX(-50%) scale(0.4);
+		margin: 0;
+		width:800px;
+	}
+		
+	.signin{
+		position: relative;
+		margin: 0 auto;
+		right: 0;
+		top: 32%;
+		width:380px;
+	    transform: translateY(0%) scale(0.8);
+	}
+	
+	.signin .inputbox{
+		width:380px;
+	}
+	
+	.signin label{
+		display: none;
+	}
+	
+	body.GCCL .float_btn button{
+		color: #777;
+	}
+	
+	body.GCLC .login_btn{
+	    background: url(/common/theme/webdek/images/login/login_btn_sp.png) no-repeat;
+	    background-size:100% 100%;
+	}
+	
+	body.GCCL .login_btn{
+	    background: url(/common/theme/webdek/images/login/login_btn_sp_blue.png) no-repeat;
+	    background-size:100% 100%;
+	}
+	
+	.idbox, .pwbox{
+     	padding-left: 30%;
+	}
+	
+	
+	footer{display: none;}
+	
+}
+
+/*downloadPlatformApp.html*/
+.loadBg {position:absolute; left:0; right:0; top:0; bottom:0; }
+.loadBg A:link {text-decoration:none; color:#000000;}
+.loadBg A:visited {text-decoration:none; color:#000000;}
+.loadBg A:active {text-decoration:none; color:#000000;}
+.loadBg A:hover {text-decoration:none; color:#000000;}
+
+.textWrap {position:absolute; top:30%; left:35%;  font-size:20px; line-height:30px; text-align:center; border:2px solid #7db7b5; border-radius:20px; padding:50px}
+.textWrap h2 {font-size:23px;}
+.textWrap .brand {margin : 50px 0 0 0;}
+
+

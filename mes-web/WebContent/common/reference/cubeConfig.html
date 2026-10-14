@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom.css" />
+<link rel="stylesheet" type="text/css" href="css/cubefw.ref.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom.js"></script>
+<script type="text/javascript" src="js/cubefw.js"></script>
+<script type="text/javascript">
+	jQuery(function(){	
+		cubeUI.typeCheck();	
+	});
+</script>
+</head>
+<body class="cubeContentBody">
+	<div class="cubeTopMenu">
+		<span cubeDataType="button"><a href="/cubefw/reference/cubeReference.html">Reference</a></span>	
+	</div>
+	<div class="cubeTopLine"></div>	
+	<div class="cubeCenterCont">
+		<div class="cubeLeftMenu">
+		<div class="cubeSubMenu" cubeDataType="accordion">
+			<h1>
+				Reference
+			</h1>
+			<ul cubeDataType="menu">
+				<li><a href="/cubefw/reference/cubeMap.html">CubeMap</a></li>
+				<li><a href="/cubefw/reference/cubeConfig.html">CubeConfig</a></li>
+				<li><a href="/cubefw/reference/cubeCommon.html">CubeCommon</a></li>
+				<li><a href="/cubefw/reference/cubeGridRow.html">CubeGridRow</a></li>
+				<li><a href="/cubefw/reference/cubeNet.html">CubeNet</a></li>
+				<li><a href="/cubefw/reference/cubeBind.html">CubeBind</a></li>
+				<li><a href="/cubefw/reference/cubeUI.html">CubeUI</a></li>
+				<li><a href="/cubefw/reference/cubeBoard.html">CubeBoard</a></li>
+				<li><a href="/cubefw/reference/cubeValidate.html">CubeValidate</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="cubeRightCont">
+			<span class="cubeTitleNav">HOME &gt; Cubefw Reference &gt; CubeConfig</span>
+			<div id="contents">
+				<ul class="referenceList">
+					<li class="refTit">
+						<h1>CubeConfig</h1>	
+					</li>
+					<li>
+						<h2>CubeConfig.PERFORMANCE_TRACE_ADVICE</h2>
+						<p>Boolean. 데이터 바인드 성능을 화면에 출력할지 결정한다.</p>
+					</li>
+					<li>
+						<h2>CubeConfig.MOBILE_THEME_H / MOBILE_THEME_C / MOBILE_THEME_F</h2>
+						<p>jquery mobiel theme type set</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_TYPE_ATT</h2>
+						<p>"cubeSearchType"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_HELP</h2>
+						<p>"cubeSearchHelp"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_CODE_ATT</h2>
+						<p>"cubeSearchCode"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_HELP_ID_TAIL</h2>
+						<p>"SearchHelp"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_HELP_DIALOG_ID</h2>
+						<p>"cubeSearchHelpDialog"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_PARAM_ID</h2>
+						<p>"cubeSearchParamId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_SQL_COLNAME_ATT</h2>
+						<p>"cubeSearchSqlColname"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_SINGLE</h2>
+						<p>"cubeSearchSingle"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_SINGLE_DIALOG_ID</h2>
+						<p>"cubeSearchSingleDialog"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_SINGLE_TABLE_ID</h2>
+						<p>"cubeSearchSingleTableId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_SINGLE_BUTTON_ID</h2>
+						<p>"cubeSearchSingleButtonId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_RANGE</h2>
+						<p>"cubeSearchRange"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_RANGE_DIALOG_ID</h2>
+						<p>"cubeSearchRangeDialog"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_RANGE_TABLE_ID</h2>
+						<p>"cubeSearchRangeTableId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SEARCH_RANGE_BUTTON_ID</h2>
+						<p>"cubeSearchRangeButtonId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_GRID_ATT</h2>
+						<p>grid 속성 부여. "cubeDataGrid"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_ATT</h2>
+						<p>grid row 속성 부여. "cubeDataRow"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_DELETE_BTN</h2>
+						<p>grid delete button 자동 생성. "cubeDataRowDeleteBtn"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_COPY_BTN</h2>
+						<p>grid row copy button 자동 생성. "cubeDataRowCopyBtn"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_PRINT_NUM</h2>
+						<p>grid row number view. "cubeDataRowPrintNum"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_ATT</h2>
+						<p>grid row state. "cubeDataRowState"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_START</h2>
+						<p>grid scan row state. "S"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_READ</h2>
+						<p>grid data bind row. "R"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_UPDATE</h2>
+						<p>grid data change row. "U"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_CREATE</h2>
+						<p>grid add row. "C"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_STATE_DELETE</h2>
+						<p>grid delete row. "D"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_CLASS</h2>
+						<p>grid row class name - 기본 속성을 hidden으로 설정하여 데이터 바인더 이전에 화면에 노출되는 것을 방지. "cubeDataGrid"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_CREATE_VALUE</h2>
+						<p>grid row bind 에서는 readonly이지만 데이터 추가시는 입력이 가능하도록 변경되는 컬럼. "cubeDataCreateValue"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_VALUE</h2>
+						<p>checkbos, radio, select등 데이터가 바인드 되더라도 단순한 value변경 만으로 데이터 표현이 어려운 경우 해당 att에 있는 값으로 value를 셋팅함. "cubeDataValue"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_NAME_HEAD</h2>
+						<p>grid row data bind string head. "CUBE_COL_"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_NAME_TAIL</h2>
+						<p>grid row data bind string tail. "_*"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_ROWNUM</h2>
+						<p>radio는 동일한 name값으로 그룹핑 되므로 row별 이름을 다르게 주기위해 row num을 자동으로 매핑해주는 기능. "CUBE_DATA_ROWNUM"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_LABEL_ATT</h2>
+						<p>grid excel down column label mapping. "cubeDataColLabel"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_EXCEL_REQUEST_KEY</h2>
+						<p>해당 request가 excel 데이터 요청임을 서버에 알리기 위한 request param. "cubeDataExcelRequest"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_EXCEL_FILENAME</h2>
+						<p>grid xecel down file name. "cubeDataGridExcel"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_EXCEL_LABEL_KEY</h2>
+						<p>excel에 사용된 label 데이터를 전달하기 위한 request param. "cubeDataExcelLabel"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_EXCEL_LABEL_ORDER_KEY</h2>
+						<p>excel 생성시 컬럼 순서를 전달하기 위한 request param. "cubeDataExcelLabelOrder"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COMBO_ATT</h2>
+						<p>grid row data combo view. "cubeDataCombo"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_SEARCH_COMBO_ATT</h2>
+						<p>grid row data dynamic search combo view. "cubeDataSearchCombo"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COMMON_COMBO_ATT</h2>
+						<p>grid row data common code combo view. "cubeDataCommonCombo"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COMBO_SELECTED_TEXT_TAIL</h2>
+						<p>grid row data 추출시 combo에 표시된 text를 추출하기 위해 해당 combo의 name뒤에 붙이는 키. "_CUBECOMBOTEXT"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_GRID_PAGING_ATT</h2>
+						<p>특정 grid의 페이징 번호 정보를 표시하기 위한 속성. "cubeDataGridPaging"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_GRID_PAGEINFO_ATT</h2>
+						<p>특정 grid의 페이징 통합 정보를 표시하기 위한 속성. "cubeDataGridPageinfo"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_DEFAULT_COUNT</h2>
+						<p>한 페이지당 표시개수. 10</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_NUM_LIST_DEFAULT_COUNT</h2>
+						<p>페이징 번호 표시개수. 10</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_SELECT_NUM_ATT</h2>
+						<p>조회된 페이지 번호. "cubeListPageNum"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_COUNT_NUM_ATT</h2>
+						<p>페이지 수. "cubeListPageCount"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_TOTAL_COUNT_ATT</h2>
+						<p>전체 카운트. "cubeListPageTotalCount"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_MAX_ATT</h2>
+						<p>최고 페이지 번호. "cubeListPageMax"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_SELECT_NUM_KEY</h2>
+						<p>서버에 전달한 선택 페이지 번호 request param. "cubeListPageNumKey"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.LIST_PAGE_COUNT_NUM_KEY</h2>
+						<p>서버에 전달한 페이지당 데이타 개수. "cubeListPageCountKey"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.IMAGE_THUMBNAIL_SIZE_KEY</h2>
+						<p>이미지 업로드시 저장한 썸내일 이미지 속성. "cubeImageThumbnailSize"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_CHECKBOX_OFF_ATT</h2>
+						<p>checkbox의 경우 체크 해지시 저장하고 싶은 value를 지정. "cubeDataCheckBoxOff"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_ATT</h2>
+						<p>UI Type 설정 속성. "cubeDataType"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_DATE</h2>
+						<p>달력지정. "date"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_SELECTDATE</h2>
+						<p>연, 월 선택이 가능한 달력지정. "selectDate"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BUTTON</h2>
+						<p>Button 지정. "button"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_EDITOR</h2>
+						<p>Web Editor 지정. "editor"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_TREE</h2>
+						<p>Tree 지정. "tree"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TREE_OPTION_ATT</h2>
+						<p>Tree에서 필요한 속성 지정(ajax url, root title, open id). "cubeDataTreeOption"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TREE_TITLE_KEY</h2>
+						<p>Tree 데이터 요청시 root에 표시할 title속성을 전달한 request param. "cubeDataTreeTitle"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TREE_OPEN_ID_KEY</h2>
+						<p>Tree 데이터 요청시 open해서 표시할 항목의 아이디를 전달한 request param. "cubeDataTreeOpenId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_READ_EDITOR</h2>
+						<p>Web editor에서 저장한 내용을 표현하기 위한 editor지정. "readEditor"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_CALENDAR</h2>
+						<p>full calendar 지정. "calendar"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_TAB</h2>
+						<p>tab 지정. "tab"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_MENU</h2>
+						<p>menu 지정. "menu"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_ACCORDION</h2>
+						<p>accordion 지정. "accordion"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD</h2>
+						<p>게시판 지정. "board"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD_GRID_ATT</h2>
+						<p>게시판 내에 표현되는 grid 지정. "cubeDataBoardGrid"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_FILE_GRID_ATT</h2>
+						<p>게시판 내에 표현되는 file grid 지정. "cubeDataFileGrid"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_COMMENT_GRID_ATT</h2>
+						<p>게시판 내에 표현되는 comment grid 지정. "cubeDataCommentGrid"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD_CODE_ATT</h2>
+						<p>게시판 내에 표현되는 board code를 저장하는 속성. "cubeDataBoardCode"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD_TYPE_ATT</h2>
+						<p>게시판 내에 표현되는 board type을 저장하는 속성. "cubeDataBoardType"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD_CONTENT_ID_ATT</h2>
+						<p>게시판 내에 표현되는 board content id를 저장하는 속성. "cubeDataBoardContentId"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_BOARD_LIST_TYPE_ATT</h2>
+						<p>게시판 내에 표현되는 board list type을 저장하는 속성. "cubeDataBoardListType"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.CALENDAR_BTN_ATTR</h2>
+						<p>full calendar navigation button 지정. "cubeCalendarBtn"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.CALENDAR_DATE_ATTR</h2>
+						<p>full calendar date view 지정. "cubeCalendarDate</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_GRID_BUTTON</h2>
+						<p>grid내 표현되는 button 지정. "gridButton</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_MOBILE_NEXT</h2>
+						<p>mobile의 next button 지정. "mNext"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_MOBILE_BACK</h2>
+						<p>mobile의 back button 지정. "mBack"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_MOBILE_HOME</h2>
+						<p>mobile의 home button 지정. "mHome"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_TYPE_MOBILE_BTN</h2>
+						<p>mobile의 button 지정. "mBtn</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_BOARD_CODE_ATT</h2>
+						<p>Board 표현시 필요한 옵션 지정(board list id, view type, content id). "cubeDataBoardCode"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_FILE_COUNT_ATT</h2>
+						<p>Board에 첨부된 파일의 개수를 저장하는 attr. "cubeDataFileCount"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_VALIDATE_ATT</h2>
+						<p>화면 입력값에 대한 유효성 체크 내용을 설정. "cubeDataValidate"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_VALIDATE_MSG</h2>
+						<p>CubeMap. 다국어 지원을 위한 데이터 입력.</p>
+					</li>
+					<li>
+						<h2>CubeConfig.WEEK_NAME</h2>
+						<p>full calendar에 표시될 요일.</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATE_AM / CubeConfig.DATE_PM</h2>
+						<p>calendar에 표시. 오전/오후</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_LABEL_ATT</h2>
+						<p>validate 메시지 표시에 필요한 label 지정. "cubeDataLabel"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SELECT_OPTION_DATA_ATT</h2>
+						<p>data연동한 select의 option을 표시 하기 위한 속성. "cubeSelectDataOption"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SELECT_DATA_VALUE_COLUMN</h2>
+						<p>combo완성시 value에 해당하는 column id. "VALUE_COL"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.SELECT_DATA_TEXT_COLUMN</h2>
+						<p>combo완성시 text에 해당하는 column id. "TEXT_COL"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_COLUMN_DIVISION_CHAR</h2>
+						<p>데이터 통합전송시 컬럼을 구분하기위한 구분자. "↑"</p>
+					</li>
+					<li>
+						<h2>CubeConfig.DATA_ROW_DIVISION_CHAR</h2>
+						<p>데이터 통합전송시 행을 구분하기 위한 구분자. "↓"</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cubeFooterLine"></div>
+	<div class="cubeFooter">
+		<img src="/cubefw/images/cubefw.jpg" height="25" alt="SMCube" align="left"/>
+		152-743 서울시 구로구 구로3동 197-5 삼성IT밸리 1108호 (주)에스엠큐브 TEL:02)6465-8311 FAX:02)6465-8313<br/>
+		Copyright (c) 2011 SMCube Co.,Ltd All Rights Reserved. Contact Us
+	</div>
+</body>
+</html>

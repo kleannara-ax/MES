@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Inventory">
+	
+	<!-- **SD01-->
+	<select id="SD01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ST.WAREKY AS "WAREKY"
+		     , ST.OWNRKY AS "OWNRKY"
+		     , ST.SKUKEY AS "SKUKEY" 
+		     , SM.DESC01 AS "DESC01"
+		     , COALESCE(SUM(ST.QTSIWH),0) AS "TOTQTY"   -- 전체수량
+		     , SM.DUOMKY AS "UOMKEY"
+		  FROM STKKY ST
+		       INNER JOIN SKUMA SM 
+		               ON SM.OWNRKY = ST.OWNRKY
+		              AND SM.SKUKEY = ST.SKUKEY
+		              AND SM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUWC SW
+		               ON SW.WAREKY = ST.WAREKY
+		              AND SW.OWNRKY = ST.OWNRKY
+		              AND SW.SKUKEY = ST.SKUKEY
+		              AND SW.COMPKY = ST.COMPKY
+		 WHERE  ST.COMPKY = #{SES_USER_COMPANY}
+		    AND ST.QTSIWH > 0
+		<if test="OWNRKY != null and OWNRKY != ''">
+			AND ST.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="WAREKY != null and WAREKY != ''">
+			AND ST.WAREKY = #{WAREKY}
+        </if>
+		<if test="SKUKEY != null and SKUKEY != ''">
+			AND ST.SKUKEY = #{SKUKEY}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 GROUP BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.SKUKEY
+		        , SM.DESC01
+		        , SM.DUOMKY
+		 ORDER BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.SKUKEY
+	</select>
+	<!--SD01 **-->
+	
+	<!-- **SD02-->
+	<select id="SD02_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ST.WAREKY AS "WAREKY"
+		     , ST.OWNRKY AS "OWNRKY"
+		     , ST.SKUKEY AS "SKUKEY" 
+		     , SM.DESC01 AS "DESC01"
+	         , ST.AREAKY AS "AREAKY"
+	         , ST.ZONEKY AS "ZONEKY"
+	         , ST.LOCAKY AS "LOCAKY"
+		     , COALESCE(SUM(ST.QTSIWH),0) AS "TOTQTY"   -- 전체수량
+		     , SM.DUOMKY AS "UOMKEY"
+		  FROM STKKY ST
+		       INNER JOIN SKUMA SM 
+		               ON SM.OWNRKY = ST.OWNRKY
+		              AND SM.SKUKEY = ST.SKUKEY
+		              AND SM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUWC SW
+		               ON SW.WAREKY = ST.WAREKY
+		              AND SW.OWNRKY = ST.OWNRKY
+		              AND SW.SKUKEY = ST.SKUKEY
+		              AND SW.COMPKY = ST.COMPKY
+		 WHERE  ST.COMPKY = #{SES_USER_COMPANY}
+		    AND ST.QTSIWH > 0
+		<if test="OWNRKY != null and OWNRKY != ''">
+			AND ST.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="WAREKY != null and WAREKY != ''">
+			AND ST.WAREKY = #{WAREKY}
+        </if>
+		<if test="AREAKY != null and AREAKY != ''">
+			AND ST.AREAKY = #{AREAKY}
+        </if>
+		<if test="ZONEKY != null and ZONEKY != ''">
+			AND ST.ZONEKY = #{ZONEKY}
+        </if>
+		<if test="LOCAKY != null and LOCAKY != ''">
+			AND ST.LOCAKY = #{LOCAKY}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 GROUP BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.SKUKEY
+		        , SM.DESC01
+		        , SM.DUOMKY
+		        , ST.AREAKY
+				, ST.ZONEKY
+				, ST.LOCAKY
+		 ORDER BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.AREAKY
+				, ST.ZONEKY
+				, ST.LOCAKY
+		        , ST.SKUKEY
+	</select>
+	<!--SD02 **-->
+	
+	<!-- **SD03-->
+	<select id="SD03_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ST.WAREKY AS "WAREKY"
+		     , ST.OWNRKY AS "OWNRKY"
+		     , ST.SKUKEY AS "SKUKEY" 
+		     , SM.DESC01 AS "DESC01"
+	         , ST.LOTA01 AS "LOTA01"
+	         , ST.LOTA02 AS "LOTA02"
+	         , ST.LOTA03 AS "LOTA03"
+	         , ST.LOTNUM AS "LOTNUM"
+		     , COALESCE(SUM(ST.QTSIWH),0) AS "TOTQTY"   -- 전체수량
+		     , SM.DUOMKY AS "UOMKEY"
+		  FROM STKKY ST
+		       INNER JOIN SKUMA SM 
+		               ON SM.OWNRKY = ST.OWNRKY
+		              AND SM.SKUKEY = ST.SKUKEY
+		              AND SM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUWC SW
+		               ON SW.WAREKY = ST.WAREKY
+		              AND SW.OWNRKY = ST.OWNRKY
+		              AND SW.SKUKEY = ST.SKUKEY
+		              AND SW.COMPKY = ST.COMPKY
+		 WHERE  ST.COMPKY = #{SES_USER_COMPANY}
+		    AND ST.QTSIWH > 0
+		<if test="OWNRKY != null and OWNRKY != ''">
+			AND ST.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="WAREKY != null and WAREKY != ''">
+			AND ST.WAREKY = #{WAREKY}
+        </if>
+		<if test="SKUKEY != null and SKUKEY != ''">
+			AND ST.SKUKEY = #{SKUKEY}
+        </if>
+		<if test="LOTA01 != null and LOTA01 != ''">
+			AND ST.LOTA01 = #{LOTA01}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 GROUP BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.SKUKEY
+		        , SM.DESC01
+		        , SM.DUOMKY
+		        , ST.LOTA01
+		        , ST.LOTA02
+		        , ST.LOTA03
+				, ST.LOTNUM
+		 ORDER BY ST.WAREKY
+		        , ST.OWNRKY
+		        , ST.SKUKEY
+		        , ST.LOTA01
+		        , ST.LOTA02
+		        , ST.LOTA03
+				, ST.LOTNUM
+	</select>
+	<!--SD03 **-->
+
+	<!--** MV01-->
+	<select id="MV01_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		       ' ' AS "TASKKY"
+		     , WH.WAREKY AS "WAREKY"
+		     , WH.NAME01 AS "WAREKYNM"
+		     , DT.DOCUTY AS "TASOTY"
+<!-- 		     , DT.SHORTX AS "TASOTYNM" -->
+		     , TO_CHAR(now(),'YYYYMMDD') AS "DOCDAT"
+		     , DC.DOCCAT AS "DOCCAT"
+		     , DC.SHORTX AS "DOCCATNM"
+		     , ' ' AS "DRELIN"
+		     , ST.CMCDVL AS "STATDO"
+		     , ST.CDESC1 AS "STATDONM"
+		     , 0 AS "QTTAOR"
+		     , 0 AS "QTCOMP"
+		     , ' ' AS "TSPKEY"
+		     , ' ' AS "DOORKY"
+		     , ' ' AS "KEEPTS"
+		     , WH.WAREKY AS "WARETG"
+		     , WH.NAME01 AS "WARETGNM"
+		     , ' ' AS "DOCTXT"
+		     , TO_CHAR(now(), 'YYYY-MM-DD') AS "CREDAT"
+		     , TO_CHAR(now(), 'HH:MI:SS') AS "CRETIM"
+		     , #{SES_USER_ID} AS "CREUSR"
+		     , TO_CHAR(now(), 'YYYY-MM-DD') AS "LMODAT"
+		     , TO_CHAR(now(), 'HH:MI:SS') AS "LMOTIM"
+		     , #{SES_USER_ID} AS "LMOUSR"
+		  FROM WAHMA WH
+		       LEFT OUTER JOIN DOCCM DC
+		                    ON DC.DOCCAT = '300'
+		       LEFT OUTER JOIN DOCTM DT
+		                    ON  DC.DOCCAT = DT.DOCCAT
+		                    AND DT.DOCUTY = '320'
+		       LEFT OUTER JOIN CMCDV ST
+		                    ON ST.CMCDKY = 'STATDO'
+		                   AND ST.CMCDVL = 'NEW'
+		  WHERE 1 = 1
+		  AND   WH.WAREKY = #{SES_WAREKY}
+		  AND   WH.COMPKY = #{SES_USER_COMPANY}
+	</select>
+	
+	<select id="MV01SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT     ' '       AS "TASKKY"
+			     , ' '       AS "TASKIT"
+			     , ' '       AS "CONFIRM"
+			     , SY.STOKKY AS "STOKKY"
+			     , 'MV'      AS "TASKTY"
+			     , ''		 AS "RSNCOD"
+			     , ''		 AS "TASRSN"
+			     , 'NEW'     AS "STATIT"
+			     , SY.STOKKY AS "STOKKY"
+			     , SY.COMPKY AS "COMPKY"
+				 , SY.WAREKY AS "WAREKY"
+				 , SY.OWNRKY AS "OWNRKY"
+				 , SY.LOTNUM AS "LOTNUM"
+				 , SY.SKUKEY AS "SKUKEY"
+				 , SY.DESC01 AS "DESC01"
+				 , SY.AREAKY AS "AREAKY"
+				 , SY.ZONEKY AS "ZONEKY"
+				 , SY.LOCAKY AS "LOCAKY"
+				 , SY.QTSIWH AS "QTSIWH"
+				 , SY.QTSALO AS "QTSALO"
+				 , SY.QTSPMO AS "QTSPMO"
+				 , SY.QTSPMI AS "QTSPMI"
+				 , SY.QTSBLK AS "QTSBLK"
+				 , SY.QTYUOM AS "QTYUOM"
+				 , SY.MEASKY AS "MEASKY"
+				 , SY.UOMKEY AS "UOMKEY"
+				 , SY.QTPUOM AS "QTPUOM"
+				 , SY.DUOMKY AS "DUOMKY"
+				 , SY.QTDUOM AS "QTDUOM"
+				 , SY.LOTA01 AS "LOTA01"
+		   		 , V.CDESC1  AS "LT01NM"
+				 , SY.LOTA02 AS "LOTA02"
+				 , SY.LOTA03 AS "LOTA03"
+				 , SY.LOTA04 AS "LOTA04"
+				 , SY.LOTA05 AS "LOTA05"
+				 , SY.SEBELN AS "SEBELN"
+				 , SY.SEBELP AS "SEBELP"
+				 , SY.SVBELN AS "SVBELN"
+				 , SY.SPOSNR AS "SPOSNR"
+				 , SY.SHPOKY AS "SHPOKY"
+				 , SY.SHPOIT AS "SHPOIT"
+				 , SY.TASKKY AS "TASKKY"
+				 , SY.TASKIT AS "TASKIT"
+				 , SY.EANCOD AS "EANCOD"
+				 , SY.GTINCD AS "GTINCD"
+			     , LA.ZONEKY AS "ZONEKY"
+				 , SY.QTSIWH AS "QTTAOR"
+				 , 0		 AS "QTCOMP"
+			     , 0		 AS "QTSPUM"
+			     , 0		 AS "QTSDUM"
+				 , ''		 AS "LOCATG"
+			     , SY.LOCAKY AS "LOCASR"
+			     , ' '       AS "LOCAAC"
+			     , SY.DUOMKY AS "SUOMKY"
+			  FROM STKKY SY
+			       INNER JOIN LOCMA LA
+			               ON LA.WAREKY = SY.WAREKY
+			              AND LA.LOCAKY = SY.LOCAKY
+			              AND LA.COMPKY = SY.COMPKY
+						  AND LA.AREAKY != 'SHP'
+	               INNER JOIN CMCDV V 
+	               		   ON SY.LOTA01 = V.CMCDVL
+                          AND V.CMCDKY = 'LOTA01'	
+			 WHERE 1 = 1
+			   AND SY.QTSIWH <![CDATA[>]]> 0
+		       AND SY.COMPKY = #{SES_USER_COMPANY}
+			<if test="WAREKY != null and WAREKY != ''">
+		       AND SY.WAREKY = #{WAREKY}
+	       </if>
+			<if test="OWNRKY != null and OWNRKY != ''">
+			   AND SY.OWNRKY = #{OWNRKY}
+		   </if>
+			<if test="STOKKY != null and STOKKY != ''">
+			   AND SY.STOKKY = #{STOKKY}
+		   </if>
+			<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+			</if>
+			ORDER BY SY.LOCAKY, SY.SKUKEY, SY.STOKKY
+	</select>
+	
+	<select id="STKKY_LOT_CHK_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT STOKKY AS "STOKKY"
+		     , QTSIWH AS "QTSIWH"
+		FROM   STKKY
+		WHERE  1 = 1
+		AND    COMPKY = #{COMPKY}
+		AND    LOCAKY = #{LOCATG}
+		AND    LOTNUM = #{LOTNUM}
+		AND    LOTA01 = #{LOTA01}
+		AND    STOKKY != #{STOKKY}
+	</select>
+	
+	<select id="MV02_STKKY_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT S.STOKKY AS "STOKKY"
+		   ,   S.COMPKY AS "COMPKY"
+		   ,   S.WAREKY AS "WAREKY"
+		   ,   S.OWNRKY AS "OWNRKY"
+		   ,   S.LOTNUM AS "LOTNUM"
+		   ,   S.SKUKEY AS "SKUKEY"
+		   ,   S.DESC01 AS "DESC01"
+		   ,   S.AREAKY AS "AREAKY"
+		   ,   S.ZONEKY AS "ZONEKY"
+		   ,   S.LOCAKY AS "LOCAKY"
+		   ,   S.QTSIWH AS "QTSIWH"
+		   ,   S.QTSALO AS "QTSALO"
+		   ,   S.QTSPMO AS "QTSPMO"
+		   ,   S.QTSPMI AS "QTSPMI"
+		   ,   S.QTSBLK AS "QTSBLK"
+		   ,   S.QTYUOM AS "QTYUOM"
+		   ,   S.MEASKY AS "MEASKY"
+		   ,   S.UOMKEY AS "UOMKEY"
+		   ,   S.QTPUOM AS "QTPUOM"
+		   ,   S.DUOMKY AS "DUOMKY"
+		   ,   S.QTDUOM AS "QTDUOM"
+		   ,   S.LOTA01 AS "LOTA01"
+		   ,   S.LOTA02 AS "LOTA02"
+		   ,   S.LOTA03 AS "LOTA03"
+		   ,   S.LOTA04 AS "LOTA04"
+		   ,   S.LOTA05 AS "LOTA05"
+		   ,   S.SEBELN AS "SEBELN"
+		   ,   S.SEBELP AS "SEBELP"
+		   ,   S.SVBELN AS "SVBELN"
+		   ,   S.SPOSNR AS "SPOSNR"
+		   ,   S.SHPOKY AS "SHPOKY"
+		   ,   S.SHPOIT AS "SHPOIT"
+		   ,   S.TASKKY AS "TASKKY"
+		   ,   S.TASKIT AS "TASKIT"
+		   ,   S.EANCOD AS "EANCOD"
+		   ,   S.GTINCD AS "GTINCD"
+		   ,   #{LOCATG} AS "LOCATG"
+		FROM   STKKY S
+	    WHERE  S.STOKKY = #{STKNUM}
+	    AND    S.COMPKY = #{COMPKY}
+	    AND    S.LOCAKY = #{LOCASR}
+	</select>
+	
+	
+	
+	<select id="MV_DT_COMBO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DOCUTY AS "VALUE_COL"
+		     , SHORTX AS "TEXT_COL"
+		FROM   DOCTM DT
+		WHERE  1 = 1
+		AND    IFTBLN = 'MV'
+		ORDER BY DOCUTY
+	</select>
+	<!--MV01 **-->
+	
+	
+	<!--** MV02-->
+	<select id="MV02_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TH.TASKKY AS "TASKKY"
+		     , TH.WAREKY AS "WAREKY"
+		     , TH.TASOTY AS "TASOTY"
+		     , TH.DOCDAT AS "DOCDAT"
+		     , TH.DOCCAT AS "DOCCAT"
+		     , TH.DRELIN AS "DRELIN"
+		     , TH.STATDO AS "STATDO"
+		     , (SELECT SHORTX FROM DOCTM WHERE DOCUTY = TH.TASOTY) AS "ADJDSC"
+		     , (SELECT SHORTX FROM DOCTM WHERE DOCUTY = TH.TASOTY) AS "TASSTX"
+		     , SUM(TI.QTTAOR) AS "QTTAOR"
+		     , SUM(TI.QTCOMP) AS "QTCOMP"
+		     , TH.TSPKEY AS "TSPKEY"
+		     , TH.DOORKY AS "DOORKY"
+		     , TH.PTNRKY AS "PTNRKY"
+		     , TH.CREDAT AS "CREDAT"
+		     , TH.CRETIM AS "CRETIM"
+		     , TH.CREUSR AS "CREUSR"
+		     , TH.LMODAT AS "LMODAT"
+		     , TH.LMOTIM AS "LMOTIM"
+		     , TH.LMOUSR AS "LMOUSR"
+		     , TH.INDBZL AS "INDBZL"
+		     , TH.INDARC AS "INDARC"
+		     , TH.UPDCHK AS "UPDCHK"
+		     , TH.KEEPTS AS "KEEPTS"                
+		     , ' ' AS "RECVKY"
+		     , ' ' AS "SHPOKY"                
+		     , ' ' AS "SHPMTY"
+		     , ' ' AS "SHPMTYNM"
+		     , ' ' AS "SHSTATDO"
+		     , ' ' AS "SHSTATDONM"
+		     , ' ' AS "DPTNKY"
+		     , ' ' AS "DPTNKYNM"               
+		     , MAX(TI.SEBELN) AS "SEBELN"
+		     , MAX(TI.SZMBLNO) AS "SZMBLNO"
+		     , MAX(TI.SZMIPNO) AS "SZMIPNO"
+		     , MAX(TI.STRAID) AS "STRAID"
+		     , MAX(TI.SVBELN) AS "SVBELN"
+		     , MAX(TI.STKNUM) AS "STKNUM"
+		     , MAX(TI.STDLNR) AS "STDLNR"
+		     , MAX(TI.SSORNU) AS "SSORNU"
+		     , MAX(TI.SMBLNR) AS "SMBLNR"
+		     , MAX(TI.SXBLNR) AS "SXBLNR"
+		     , MAX(TI.AREAKY) AS "AREAKY"
+		     , TH.DOCTXT AS "DOCTXT"
+		  FROM TASDH TH 
+		       INNER JOIN TASDI TI
+		               ON TH.TASKKY = TI.TASKKY
+		              AND TH.COMPKY = TI.COMPKY
+		 WHERE 1 = 1
+		 AND   TH.COMPKY = #{SES_USER_COMPANY}
+		 AND   TH.WAREKY = #{WAREKY}
+		 AND   TH.TASOTY = '321'
+		 AND   TH.STATDO = 'NEW'
+		<if test="OWNRKY != null and OWNRKY != ''">
+		 AND   TI.OWNRKY = #{OWNRKY}
+		</if>
+		<if test="TASKKY != null and TASKKY != ''">
+		   AND TH.TASKKY = #{TASKKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 GROUP BY TH.TASKKY, TH.WAREKY, TH.TASOTY, TH.DOCDAT, TH.DOCCAT,
+		          TH.DRELIN, TH.STATDO, TH.QTTAOR, TH.QTCOMP, TH.TSPKEY,
+		          TH.DOORKY, TH.PTNRKY, TH.CREDAT, TH.CRETIM, TH.CREUSR, 
+		          TH.LMODAT, TH.LMOTIM, TH.LMOUSR, TH.INDBZL, TH.INDARC, 
+		          TH.UPDCHK, TH.KEEPTS, TH.WARETG, TH.DOCTXT
+		 ORDER BY TH.TASKKY DESC
+	</select>
+	
+	<select id="MV02SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TH.WAREKY  AS "WAREKY"
+		     , TI.COMPKY  AS "COMPKY"    
+			 , TI.TASKKY  AS "TASKKY"    
+			 , TI.TASKIT  AS "TASKIT"    
+			 , TI.TASKTY  AS "TASKTY"    
+			 , TI.STATIT  AS "STATIT"    
+			 , 0          AS "QTTAOR"     
+			 , TI.QTTAOR  AS "QTTAOR_OR"     
+			 , (SELECT COALESCE(MAX(QTSIWH),0)
+			      FROM STKKY ST
+			     WHERE 1=1
+			       AND ST.COMPKY = TI.COMPKY
+			       AND ST.LOCAKY = TI.LOCASR
+			       AND ST.STOKKY = TI.STKNUM) AS "QTSIWH"
+			 , TI.QTCOMP  AS "QTCOMP"    
+			 , TI.OWNRKY  AS "OWNRKY"    
+			 , TI.SKUKEY  AS "SKUKEY"    
+			 , TI.LOTNUM  AS "LOTNUM"    
+			 , TI.ACTCDT  AS "ACTCDT"    
+			 , TI.SMEAKY  AS "SMEAKY"    
+			 , TI.SUOMKY  AS "SUOMKY"    
+			 , TI.QTYUOM  AS "QTYUOM"    
+			 , TI.QTSPUM  AS "QTSPUM"    
+			 , TI.SDUOKY  AS "SDUOKY"    
+			 , TI.QTSDUM  AS "QTSDUM"    
+			 , TI.STEPNO  AS "STEPNO"    
+			 , TI.LOCASR  AS "LOCASR"    
+			 , TI.LOCATG  AS "LOCATG"    
+			 , TI.LOCAAC  AS "LOCAAC"    
+			 , TI.REFDKY  AS "REFDKY"    
+			 , TI.REFDIT  AS "REFDIT"    
+			 , TI.REFCAT  AS "REFCAT"    
+			 , TI.REFDAT  AS "REFDAT"    
+			 , TI.ASNDKY  AS "ASNDKY"    
+			 , TI.ASNDIT  AS "ASNDIT"    
+			 , TI.RECVKY  AS "RECVKY"    
+			 , TI.RECVIT  AS "RECVIT"    
+			 , TI.SHPOKY  AS "SHPOKY"    
+			 , TI.SHPOIT  AS "SHPOIT"    
+			 , TI.SADJKY  AS "SADJKY"    
+			 , TI.SADJIT  AS "SADJIT"    
+			 , TI.PHYIKY  AS "PHYIKY"    
+			 , TI.PHYIIT  AS "PHYIIT"    
+			 , TI.DESC01  AS "DESC01"    
+			 , TI.LOTA01  AS "LOTA01"
+	   		 , V.CDESC1   AS "LT01NM"    
+			 , TI.LOTA02  AS "LOTA02"    
+			 , TI.LOTA03  AS "LOTA03"    
+			 , TI.LOTA04  AS "LOTA04"    
+			 , TI.LOTA05  AS "LOTA05"    
+			 , TI.SEBELN  AS "SEBELN"    
+			 , TI.SEBELP  AS "SEBELP"    
+			 , TI.SVBELN  AS "SVBELN"    
+			 , TI.SPOSNR  AS "SPOSNR"    
+			 , TI.SZMBLNO AS "SZMBLNO"   
+			 , TI.SZMIPNO AS "SZMIPNO"   
+			 , TI.STDLNR  AS "STDLNR"    
+			 , TI.EANCOD  AS "EANCOD"    
+			 , TI.GTINCD  AS "GTINCD"    
+			 , TI.STKNUM  AS "STKNUM"    
+			 , TI.CREDAT  AS "CREDAT"    
+			 , TI.CRETIM  AS "CRETIM"    
+			 , TI.CREUSR  AS "CREUSR"    
+			 , TI.LMODAT  AS "LMODAT"    
+			 , TI.LMOTIM  AS "LMOTIM"    
+			 , TI.LMOUSR  AS "LMOUSR"    
+			 , TI.UPDCHK  AS "UPDCHK"	
+			 , LA.AREAKY  AS "AREAKY"
+			 , LA.ZONEKY  AS "ZONEKY"
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY AND TI.COMPKY = TH.COMPKY
+		       INNER JOIN LOCMA LA ON LA.WAREKY = TH.WAREKY AND LA.LOCAKY = TI.LOCAAC AND LA.COMPKY = TI.COMPKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY AND SM.COMPKY = TI.COMPKY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY AND SW.COMPKY = TI.COMPKY
+               INNER JOIN CMCDV V  ON TI.LOTA01 = V.CMCDVL  AND V.CMCDKY = 'LOTA01'	
+		 WHERE TH.TASKKY = #{TASKKY}
+		   AND TH.COMPKY = #{SES_USER_COMPANY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 ORDER BY TI.TASKKY, TI.TASKIT
+	</select>
+	
+	<update id="TASDH_UPDATE" parameterType="hashmap">
+		UPDATE TASDH
+		SET    STATDO = #{STATDO}
+			 , LMODAT = TO_CHAR(NOW(),'YYYYMMDD')
+			 , LMOTIM = TO_CHAR(NOW(),'HH24MISS')
+			 , LMOUSR = #{SES_USER_ID}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+	</update>
+	
+	<update id="TASDI_UPDATE" parameterType="hashmap">
+		UPDATE TASDI
+		SET    QTCOMP = #{QTTAOR}::NUMERIC
+			 , LMODAT = TO_CHAR(NOW(),'YYYYMMDD')
+			 , LMOTIM = TO_CHAR(NOW(),'HH24MISS')
+			 , LMOUSR = #{SES_USER_ID}
+		WHERE  COMPKY = #{SES_USER_COMPANY}
+		AND    TASKKY = #{TASKKY}
+		AND    TASKIT = #{TASKIT}
+	</update>
+	<!--MV02 **-->
+	
+	
+	<!--** MV09-->
+	<select id="MV09_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TH.TASKKY AS "TASKKY"
+		     , TH.WAREKY AS "WAREKY"
+		     , TH.TASOTY AS "TASOTY"
+		     , TH.DOCDAT AS "DOCDAT"
+		     , TH.DOCCAT AS "DOCCAT"
+		     , TH.DRELIN AS "DRELIN"
+		     , TH.STATDO AS "STATDO"
+		     , (SELECT SHORTX FROM DOCTM WHERE DOCUTY = TH.TASOTY) AS "ADJDSC"
+		     , (SELECT SHORTX FROM DOCTM WHERE DOCUTY = TH.TASOTY) AS "TASSTX"
+		     , SUM(TI.QTTAOR) AS "QTTAOR"
+		     , SUM(TI.QTCOMP) AS "QTCOMP"
+		     , TH.TSPKEY AS "TSPKEY"
+		     , TH.DOORKY AS "DOORKY"
+		     , TH.PTNRKY AS "PTNRKY"
+		     , TH.CREDAT AS "CREDAT"
+		     , TH.CRETIM AS "CRETIM"
+		     , TH.CREUSR AS "CREUSR"
+		     , TH.LMODAT AS "LMODAT"
+		     , TH.LMOTIM AS "LMOTIM"
+		     , TH.LMOUSR AS "LMOUSR"
+		     , TH.INDBZL AS "INDBZL"
+		     , TH.INDARC AS "INDARC"
+		     , TH.UPDCHK AS "UPDCHK"
+		     , TH.KEEPTS AS "KEEPTS"                
+		     , ' ' AS "RECVKY"
+		     , ' ' AS "SHPOKY"                
+		     , ' ' AS "SHPMTY"
+		     , ' ' AS "SHPMTYNM"
+		     , ' ' AS "SHSTATDO"
+		     , ' ' AS "SHSTATDONM"
+		     , ' ' AS "DPTNKY"
+		     , ' ' AS "DPTNKYNM"               
+		     , MAX(TI.SEBELN) AS "SEBELN"
+		     , MAX(TI.SZMBLNO) AS "SZMBLNO"
+		     , MAX(TI.SZMIPNO) AS "SZMIPNO"
+		     , MAX(TI.STRAID) AS "STRAID"
+		     , MAX(TI.SVBELN) AS "SVBELN"
+		     , MAX(TI.STKNUM) AS "STKNUM"
+		     , MAX(TI.STDLNR) AS "STDLNR"
+		     , MAX(TI.SSORNU) AS "SSORNU"
+		     , MAX(TI.SMBLNR) AS "SMBLNR"
+		     , MAX(TI.SXBLNR) AS "SXBLNR"
+		     , MAX(TI.AREAKY) AS "AREAKY"
+		     , TH.DOCTXT AS "DOCTXT"
+		  FROM TASDH TH 
+		       INNER JOIN TASDI TI
+		               ON TH.TASKKY = TI.TASKKY
+		              AND TH.COMPKY = TI.COMPKY
+		 WHERE 1 = 1
+		 AND   TH.COMPKY = #{SES_USER_COMPANY}
+		 AND   TH.WAREKY = #{WAREKY}
+		 AND   TH.DOCCAT = '300'
+		<if test="OWNRKY != null and OWNRKY != ''">
+		 AND   TI.OWNRKY = #{OWNRKY}
+		</if>
+		<if test="TASKKY != null and TASKKY != ''">
+		   AND TH.TASKKY = #{TASKKY}
+		</if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 GROUP BY TH.TASKKY, TH.WAREKY, TH.TASOTY, TH.DOCDAT, TH.DOCCAT,
+		          TH.DRELIN, TH.STATDO, TH.QTTAOR, TH.QTCOMP, TH.TSPKEY,
+		          TH.DOORKY, TH.PTNRKY, TH.CREDAT, TH.CRETIM, TH.CREUSR, 
+		          TH.LMODAT, TH.LMOTIM, TH.LMOUSR, TH.INDBZL, TH.INDARC, 
+		          TH.UPDCHK, TH.KEEPTS, TH.WARETG, TH.DOCTXT
+		 ORDER BY TH.TASKKY DESC
+	</select>
+	
+	<select id="MV09SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT TH.WAREKY  AS "WAREKY"
+		     , TI.COMPKY  AS "COMPKY"    
+			 , TI.TASKKY  AS "TASKKY"    
+			 , TI.TASKIT  AS "TASKIT"    
+			 , TI.TASKTY  AS "TASKTY"    
+			 , TI.STATIT  AS "STATIT"    
+			 , TI.QTTAOR  AS "QTTAOR"    
+			 , TI.QTCOMP  AS "QTCOMP"    
+			 , TI.OWNRKY  AS "OWNRKY"    
+			 , TI.SKUKEY  AS "SKUKEY"    
+			 , TI.LOTNUM  AS "LOTNUM"    
+			 , TI.ACTCDT  AS "ACTCDT"    
+			 , TI.SMEAKY  AS "SMEAKY"    
+			 , TI.SUOMKY  AS "SUOMKY"    
+			 , TI.QTYUOM  AS "QTYUOM"    
+			 , TI.QTSPUM  AS "QTSPUM"    
+			 , TI.SDUOKY  AS "SDUOKY"    
+			 , TI.QTSDUM  AS "QTSDUM"    
+			 , TI.STEPNO  AS "STEPNO"    
+			 , TI.LOCASR  AS "LOCASR"    
+			 , TI.LOCATG  AS "LOCATG"    
+			 , TI.LOCAAC  AS "LOCAAC"    
+			 , TI.REFDKY  AS "REFDKY"    
+			 , TI.REFDIT  AS "REFDIT"    
+			 , TI.REFCAT  AS "REFCAT"    
+			 , TI.REFDAT  AS "REFDAT"    
+			 , TI.ASNDKY  AS "ASNDKY"    
+			 , TI.ASNDIT  AS "ASNDIT"    
+			 , TI.RECVKY  AS "RECVKY"    
+			 , TI.RECVIT  AS "RECVIT"    
+			 , TI.SHPOKY  AS "SHPOKY"    
+			 , TI.SHPOIT  AS "SHPOIT"    
+			 , TI.SADJKY  AS "SADJKY"    
+			 , TI.SADJIT  AS "SADJIT"    
+			 , TI.PHYIKY  AS "PHYIKY"    
+			 , TI.PHYIIT  AS "PHYIIT"    
+			 , TI.DESC01  AS "DESC01"    
+			 , TI.LOTA01  AS "LOTA01"
+	   		 , V.CDESC1   AS "LT01NM"    
+			 , TI.LOTA02  AS "LOTA02"    
+			 , TI.LOTA03  AS "LOTA03"    
+			 , TI.LOTA04  AS "LOTA04"    
+			 , TI.LOTA05  AS "LOTA05"    
+			 , TI.SEBELN  AS "SEBELN"    
+			 , TI.SEBELP  AS "SEBELP"    
+			 , TI.SVBELN  AS "SVBELN"    
+			 , TI.SPOSNR  AS "SPOSNR"    
+			 , TI.SZMBLNO AS "SZMBLNO"   
+			 , TI.SZMIPNO AS "SZMIPNO"   
+			 , TI.STDLNR  AS "STDLNR"    
+			 , TI.EANCOD  AS "EANCOD"    
+			 , TI.GTINCD  AS "GTINCD"    
+			 , TI.STKNUM  AS "STKNUM"    
+			 , TI.CREDAT  AS "CREDAT"    
+			 , TI.CRETIM  AS "CRETIM"    
+			 , TI.CREUSR  AS "CREUSR"    
+			 , TI.LMODAT  AS "LMODAT"    
+			 , TI.LMOTIM  AS "LMOTIM"    
+			 , TI.LMOUSR  AS "LMOUSR"    
+			 , TI.UPDCHK  AS "UPDCHK"	
+			 , LA.AREAKY  AS "AREAKY"
+			 , LA.ZONEKY  AS "ZONEKY"
+		  FROM TASDH TH
+		       INNER JOIN TASDI TI ON TI.TASKKY = TH.TASKKY AND TI.COMPKY = TH.COMPKY
+		       INNER JOIN LOCMA LA ON LA.WAREKY = TH.WAREKY AND LA.LOCAKY = TI.LOCATG AND LA.COMPKY = TI.COMPKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = TI.OWNRKY AND SM.SKUKEY = TI.SKUKEY AND SM.COMPKY = TI.COMPKY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = TH.WAREKY AND SW.OWNRKY = TI.OWNRKY AND SW.SKUKEY = TI.SKUKEY AND SW.COMPKY = TI.COMPKY
+               INNER JOIN CMCDV V  ON TI.LOTA01 = V.CMCDVL  AND V.CMCDKY = 'LOTA01'	
+		 WHERE TH.TASKKY = #{TASKKY}
+		   AND TH.COMPKY = #{SES_USER_COMPANY}
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		 ORDER BY TI.TASKKY, TI.TASKIT
+	</select>
+	<!--MV09 **-->
+	
+	
+	<!-- **SJ04-->
+	<select id="SJ04_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT '' AS "SADJKY"
+		     , #{WAREKY} AS "WAREKY"
+		     , '402' AS "ADJUTY"
+		     , COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = '402'), ' ') AS "ADJSTX"
+		     , '' AS "ADJDSC"
+		     , TO_CHAR(now(),'YYYYMMDD') AS "DOCDAT"
+		     , '400' AS "DOCCAT"
+		     , COALESCE((SELECT SHORTX FROM DOCCM WHERE DOCCAT = '400'), ' ') AS "DOCCATNM"
+		     , '402' AS ADJUCA
+		     , COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = '402'), ' ') AS "ADJUCANM"
+		     , '' AS "DOCTXT"
+		     , TO_CHAR(now(),'YYYY-MM-DD') AS "CREDAT"
+		     , TO_CHAR(now(),'HH24:MI:SS') AS "CRETIM"
+		     , #{SES_USER_ID} AS "CREUSR"
+		     , TO_CHAR(now(),'YYYY-MM-DD') AS "LMODAT"
+		     , TO_CHAR(now(),'HH24:MI:SS') AS "LMOTIM"
+		     , #{SES_USER_ID} AS "LMOUSR"
+	</select>
+	
+	
+	<select id="SJ04SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ST.COMPKY  AS "COMPKY"
+		   ,   ST.STOKKY  AS "STOKKY"
+		   ,   ST.WAREKY  AS "WAREKY"
+		   ,   ST.OWNRKY  AS "OWNRKY"
+		   ,   ST.LOTNUM  AS "LOTNUM"
+		   ,   ''         AS "ALOTNUM"
+		   ,   ST.SKUKEY  AS "SKUKEY"
+		   ,   ST.DESC01  AS "DESC01"
+		   ,   ST.AREAKY  AS "AREAKY"
+		   ,   ST.ZONEKY  AS "ZONEKY"
+		   ,   ST.LOCAKY  AS "LOCAKY"
+		   ,   ST.QTSIWH  AS "QTSIWH"
+		   ,   ST.QTSALO  AS "QTSALO"
+		   ,   ST.QTSPMO  AS "QTSPMO"
+		   ,   ST.QTSPMI  AS "QTSPMI"
+		   ,   ST.QTSBLK  AS "QTSBLK"
+		   ,   ST.QTYUOM  AS "QTYUOM"
+		   ,   ST.MEASKY  AS "MEASKY"
+		   ,   ST.UOMKEY  AS "UOMKEY"
+		   ,   ST.QTPUOM  AS "QTPUOM"
+		   ,   ST.DUOMKY  AS "DUOMKY"
+		   ,   ST.QTDUOM  AS "QTDUOM"
+		   ,   ST.LOTA01  AS "LOTA01"
+		   ,   V.CDESC1   AS "LT01NM"
+		   ,   ST.LOTA02  AS "LOTA02"
+		   ,   ST.LOTA03  AS "LOTA03"
+		   ,   ST.LOTA04  AS "LOTA04"
+		   ,   ST.LOTA05  AS "LOTA05"
+             , ST.LOTA01  AS "ALOTA01"
+             , ST.LOTA02  AS "ALOTA02"
+             , ST.LOTA03  AS "ALOTA03"
+             , ST.LOTA04  AS "ALOTA04"
+             , ST.LOTA05  AS "ALOTA05"
+		   ,   ST.SEBELN  AS "SEBELN"
+		   ,   ST.SEBELP  AS "SEBELP"
+		   ,   ST.SVBELN  AS "SVBELN"
+		   ,   ST.SPOSNR  AS "SPOSNR"
+		   ,   ST.SHPOKY  AS "SHPOKY"
+		   ,   ST.SHPOIT  AS "SHPOIT"
+		   ,   ST.TASKKY  AS "TASKKY"
+		   ,   ST.TASKIT  AS "TASKIT"
+		   ,   ST.EANCOD  AS "EANCOD"
+		   ,   ST.GTINCD  AS "GTINCD"
+           ,   ST.QTSIWH  AS "QTADJU"
+           ,   '' 		  AS "RSNADJ"
+           ,   ''		  AS "ADJRSN"
+		  FROM STKKY ST 
+		       INNER JOIN LOCMA LM ON LM.WAREKY = ST.WAREKY AND LM.LOCAKY = ST.LOCAKY AND LM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = ST.OWNRKY AND SM.SKUKEY = ST.SKUKEY AND SM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = ST.WAREKY AND SW.OWNRKY = ST.OWNRKY AND SW.SKUKEY = ST.SKUKEY AND SW.COMPKY = ST.COMPKY
+               INNER JOIN CMCDV V  ON ST.LOTA01 = V.CMCDVL AND V.CMCDKY = 'LOTA01'	
+		 WHERE ST.COMPKY = #{SES_USER_COMPANY}
+		   AND ST.QTSIWH - (ST.QTSALO + ST.QTSBLK) >0
+		   AND ST.AREAKY NOT IN ('SYS', 'SHP')
+		   AND ST.WAREKY = #{WAREKY}
+		<if test="OWNRKY != null and OWNRKY != ''">
+			AND ST.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="STOKKY != null and STOKKY != ''">
+			AND ST.STOKKY = #{STOKKY}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	<!--SJ04 **-->
+	
+	<!-- **SJ05-->
+	<select id="SJ05_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT   ' ' AS "SADJKY"
+		         , #{WAREKY} AS "WAREKY"
+		         , '490' AS "ADJUTY"
+		         , COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = '490'), ' ') AS "ADJSTX"
+		         , ' ' AS "ADJDSC"
+		         , TO_CHAR(now(),'YYYYMMDD') AS "DOCDAT"
+		         , '400' AS "DOCCAT"
+		         , COALESCE((SELECT SHORTX FROM DOCCM WHERE DOCCAT = '400'), ' ') AS "DOCCATNM"
+		         , '490' AS ADJUCA
+		         , COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = '490'), ' ') AS "ADJUCANM"
+		         , ' ' AS "DOCTXT"
+		         , TO_CHAR(now(),'YYYY-MM-DD') AS "CREDAT"
+		         , TO_CHAR(now(),'HH24:MI:SS') AS "CRETIM"
+		         , #{SES_USER_ID} AS "CREUSR"
+		         , TO_CHAR(now(),'YYYY-MM-DD') AS "LMODAT"
+		         , TO_CHAR(now(),'HH24:MI:SS') AS "LMOTIM"
+		         , #{SES_USER_ID} AS "LMOUSR"
+	</select>
+	
+	<select id="SJ05SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT ST.COMPKY  AS "COMPKY"
+		   ,   ST.STOKKY  AS "STOKKY"
+		   ,   ST.WAREKY  AS "WAREKY"
+		   ,   ST.OWNRKY  AS "OWNRKY"
+		   ,   ST.LOTNUM  AS "LOTNUM"
+		   ,   ''         AS "ALOTNUM"
+		   ,   ST.SKUKEY  AS "SKUKEY"
+		   ,   ST.DESC01  AS "DESC01"
+		   ,   ST.AREAKY  AS "AREAKY"
+		   ,   ST.ZONEKY  AS "ZONEKY"
+		   ,   ST.LOCAKY  AS "LOCAKY"
+		   ,   ST.QTSIWH  AS "QTSIWH"
+		   ,   ST.QTSALO  AS "QTSALO"
+		   ,   ST.QTSPMO  AS "QTSPMO"
+		   ,   ST.QTSPMI  AS "QTSPMI"
+		   ,   ST.QTSBLK  AS "QTSBLK"
+		   ,   ST.QTYUOM  AS "QTYUOM"
+		   ,   ST.MEASKY  AS "MEASKY"
+		   ,   ST.UOMKEY  AS "UOMKEY"
+		   ,   ST.QTPUOM  AS "QTPUOM"
+		   ,   ST.DUOMKY  AS "DUOMKY"
+		   ,   ST.QTDUOM  AS "QTDUOM"
+		   ,   ST.LOTA01  AS "LOTA01"
+		   ,   V.CDESC1   AS "LT01NM"
+		   ,   ST.LOTA02  AS "LOTA02"
+		   ,   ST.LOTA03  AS "LOTA03"
+		   ,   ST.LOTA04  AS "LOTA04"
+		   ,   ST.LOTA05  AS "LOTA05"
+             , ST.LOTA01  AS "ALOTA01"
+             , ST.LOTA02  AS "ALOTA02"
+             , ST.LOTA03  AS "ALOTA03"
+             , ST.LOTA04  AS "ALOTA04"
+             , ST.LOTA05  AS "ALOTA05"
+		   ,   ST.SEBELN  AS "SEBELN"
+		   ,   ST.SEBELP  AS "SEBELP"
+		   ,   ST.SVBELN  AS "SVBELN"
+		   ,   ST.SPOSNR  AS "SPOSNR"
+		   ,   ST.SHPOKY  AS "SHPOKY"
+		   ,   ST.SHPOIT  AS "SHPOIT"
+		   ,   ST.TASKKY  AS "TASKKY"
+		   ,   ST.TASKIT  AS "TASKIT"
+		   ,   ST.EANCOD  AS "EANCOD"
+		   ,   ST.GTINCD  AS "GTINCD"
+           ,   ST.QTSIWH  AS "AQTADJU"
+           ,   0  		  AS "QTADJU"
+           ,   '' 		  AS "RSNADJ"
+           ,   ''		  AS "ADJRSN"
+		  FROM STKKY ST 
+		       INNER JOIN LOCMA LM ON LM.WAREKY = ST.WAREKY AND LM.LOCAKY = ST.LOCAKY AND LM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUMA SM ON SM.OWNRKY = ST.OWNRKY AND SM.SKUKEY = ST.SKUKEY AND SM.COMPKY = ST.COMPKY
+		       INNER JOIN SKUWC SW ON SW.WAREKY = ST.WAREKY AND SW.OWNRKY = ST.OWNRKY AND SW.SKUKEY = ST.SKUKEY AND SW.COMPKY = ST.COMPKY
+               INNER JOIN CMCDV V  ON ST.LOTA01 = V.CMCDVL AND V.CMCDKY = 'LOTA01'	
+		 WHERE ST.COMPKY = #{SES_USER_COMPANY}
+		   AND ST.QTSIWH - (ST.QTSALO + ST.QTSBLK) >0
+		   AND ST.AREAKY NOT IN ('SYS', 'SHP')
+		   AND ST.WAREKY = #{WAREKY}
+		<if test="OWNRKY != null and OWNRKY != ''">
+			AND ST.OWNRKY = #{OWNRKY}
+        </if>
+		<if test="STOKKY != null and STOKKY != ''">
+			AND ST.STOKKY = #{STOKKY}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+	</select>
+	
+	<!-- **SJ09-->
+	<select id="SJ09_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT H.COMPKY AS "COMPKY"
+			,  H.SADJKY AS "SADJKY"
+			,  H.WAREKY AS "WAREKY"
+			,  H.ADJUTY AS "ADJUTY"
+			,  COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = H.ADJUTY), ' ') AS "ADJSTX"
+			,  H.DOCDAT AS "DOCDAT"
+			,  H.DOCCAT AS "DOCCAT"
+			,  COALESCE((SELECT SHORTX FROM DOCCM WHERE DOCCAT = H.DOCCAT), ' ') AS "DOCCATNM"
+			,  H.ADJUCA AS "ADJUCA"
+			,  COALESCE((SELECT SHORTX FROM DOCTM WHERE DOCUTY = H.ADJUTY), ' ') AS "ADJUCANM"
+			,  H.DOCTXT AS "DOCTXT"
+			,  H.CREDAT AS "CREDAT"
+			,  H.CRETIM AS "CRETIM"
+			,  H.CREUSR AS "CREUSR"
+			,  H.LMODAT AS "LMODAT"
+			,  H.LMOTIM AS "LMOTIM"
+			,  H.LMOUSR AS "LMOUSR"
+		  FROM ADJDH H
+		       INNER JOIN ADJDI I ON I.SADJKY = H.SADJKY AND i.COMPKY = H.COMPKY
+		 WHERE 1 = 1
+		   AND H.COMPKY = #{SES_USER_COMPANY}
+		   AND H.ADJUTY LIKE '4%' 
+		<if test="WAREKY != null and WAREKY != ''">
+		   AND H.WAREKY = #{WAREKY}
+        </if>
+		<if test="SADJKY != null and SADJKY != ''">
+		   AND H.SADJKY = #{SADJKY}
+  SADJKY</if>
+		<if test="RASADJKYL != SADJKYnd RANGE_SQL != ''">
+		  ${RANGE_SQL}
+		</if>
+		 GROUP BY H.COMPKY, H.SADJKY, H.WAREKY, H.ADJUTY, H.DOCDAT
+				, H.DOCCAT, H.ADJUCA, H.DOCTXT, H.CREDAT, H.CRETIM
+				, H.CREUSR, H.LMODAT, H.LMOTIM, H.LMOUSR
+		 ORDER BY H.SADJKY DESC
+	</select>
+	
+	<select id="SJ09SUB_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT I.SADJKY  AS "SADJKY"
+		     , I.SADJIT  AS "SADJIT"
+		     , I.RSNADJ  AS "RSNADJ"
+		     , I.STOKKY  AS "STOKKY"
+		     , I.LOTNUM  AS "LOTNUM"
+		     , I.LOCAKY  AS "LOCAKY"
+		     , I.TRNUID  AS "TRNUID"
+		     , I.SECTID  AS "SECTID"
+		     , I.PACKID  AS "PACKID"
+		     , I.QTADJU  AS "QTADJU"
+		     , I.QTBLKD  AS "QTBLKD"
+		     , I.QTYUOM  AS "QTYUOM"
+		     , I.TRUNTY  AS "TRUNTY"
+		     , I.MEASKY  AS "MEASKY"
+		     , I.UOMKEY  AS "UOMKEY"
+		     , I.QTPUOM  AS "QTPUOM"
+		     , I.DUOMKY  AS "DUOMKY"
+		     , I.QTDUOM  AS "QTDUOM"
+		     , I.SUBSIT  AS "SUBSIT"
+		     , I.SUBSFL  AS "SUBSFL"
+		     , I.REFDKY  AS "REFDKY"
+		     , I.REFDIT  AS "REFDIT"
+		     , I.REFCAT  AS "REFCAT"
+		     , I.OWNRKY  AS "OWNRKY"
+		     , I.SKUKEY  AS "SKUKEY"
+	   		 , V.CDESC1  AS "LT01NM"
+		     , I.LOTA01  AS "LOTA01"
+		     , I.LOTA02  AS "LOTA02"
+		     , I.LOTA03  AS "LOTA03"
+		     , I.LOTA04  AS "LOTA04"
+		     , I.LOTA05  AS "LOTA05"
+		     , I.LOTA06  AS "LOTA06"
+		     , I.LOTA07  AS "LOTA07"
+		     , I.LOTA08  AS "LOTA08"
+		     , I.LOTA09  AS "LOTA09"
+		     , I.LOTA10  AS "LOTA10"
+		     , I.LOTA11  AS "LOTA11"
+		     , I.LOTA12  AS "LOTA12"
+		     , I.LOTA13  AS "LOTA13"
+		     , I.LOTA14  AS "LOTA14"
+		     , I.LOTA15  AS "LOTA15"
+		     , I.LOTA16  AS "LOTA16"
+		     , I.LOTA17  AS "LOTA17"
+		     , I.LOTA18  AS "LOTA18"
+		     , I.LOTA19  AS "LOTA19"
+		     , I.LOTA20  AS "LOTA20"
+		     , I.AWMSNO  AS "AWMSNO"
+		     , I.AREAKY  AS "AREAKY"
+		     , I.DESC01  AS "DESC01"
+		     , I.DESC02  AS "DESC02"
+		     , I.ASKU02  AS "ASKU02"
+		     , I.ASKU03  AS "ASKU03"
+		     , I.ASKU04  AS "ASKU04"
+		     , I.ASKU05  AS "ASKU05"
+		     , I.EANCOD  AS "EANCOD"
+		     , I.GTINCD  AS "GTINCD"
+		     , I.SKUG01  AS "SKUG01"
+		     , I.SKUG02  AS "SKUG02"
+		     , I.SKUG03  AS "SKUG03"
+		     , I.SKUG04  AS "SKUG04"
+		     , I.SKUG05  AS "SKUG05"
+		     , I.GRSWGT  AS "GRSWGT"
+		     , I.NETWGT  AS "NETWGT"
+		     , I.WGTUNT  AS "WGTUNT"
+		     , I.LENGTH  AS "LENGTH"
+		     , I.WIDTHW  AS "WIDTHW"
+		     , I.HEIGHT  AS "HEIGHT"
+		     , I.CUBICM  AS "CUBICM"
+		     , I.CAPACT  AS "CAPACT"
+		     , I.WORKID  AS "WORKID"
+		     , I.WORKNM  AS "WORKNM"
+		     , I.HHTTID  AS "HHTTID"
+		     , I.SMANDT  AS "SMANDT"
+		     , I.SEBELN  AS "SEBELN"
+		     , I.SEBELP  AS "SEBELP"
+		     , I.SZMBLNO AS "SZMBLNO"
+		     , I.SZMIPNO AS "SZMIPNO"
+		     , I.STRAID  AS "STRAID"
+		     , I.SVBELN  AS "SVBELN"
+		     , I.SPOSNR  AS "SPOSNR"
+		     , I.STKNUM  AS "STKNUM"
+		     , I.STPNUM  AS "STPNUM"
+		     , I.SWERKS  AS "SWERKS"
+		     , I.SLGORT  AS "SLGORT"
+		     , I.SDATBG  AS "SDATBG"
+		     , I.STDLNR  AS "STDLNR"
+		     , I.SSORNU  AS "SSORNU"
+		     , I.SSORIT  AS "SSORIT"
+		     , I.SMBLNR  AS "SMBLNR"
+		     , I.SZEILE  AS "SZEILE"
+		     , I.SMJAHR  AS "SMJAHR"
+		     , I.SXBLNR  AS "SXBLNR"
+		     , I.ADJRSN  AS "ADJRSN"
+		     , I.SAPSTS  AS "SAPSTS"
+		     , 0         AS "QTYGAP"
+		     , SY.ZONEKY AS "ZONEKY"
+		     , SM.ABCANV AS "ABCANVEMF"
+		     , SW.ABCANV AS "ABCANVWMS"
+<!-- 		     , BN.NAME01 AS SKUG05NM -->
+<!-- 		     , AM.LSTRTY -->
+		     , SM.ASKU01
+		     , SM.QTYMON
+		  FROM ADJDH H
+		      INNER JOIN ADJDI I ON I.SADJKY = H.SADJKY
+		      LEFT OUTER JOIN LOCMA S ON S.WAREKY = H.WAREKY AND S.LOCAKY = I.LOCAKY AND S.COMPKY = H.COMPKY
+<!-- 		      LEFT OUTER JOIN AREMA AM ON AM.WAREKY = H.WAREKY AND AM.AREAKY = S.AREAKY  -->
+<!-- 		      LEFT OUTER JOIN BZPTN BN ON BN.OWNRKY = I.OWNRKY AND BN.PTNRKY = I.SKUG05 AND BN.PTNRTY = 'VD' -->
+		      LEFT OUTER JOIN SKUMA SM ON SM.OWNRKY = I.OWNRKY AND SM.SKUKEY = I.SKUKEY AND SM.COMPKY = H.COMPKY
+		      LEFT OUTER JOIN SKUWC SW ON SW.WAREKY = H.WAREKY AND SW.OWNRKY = I.OWNRKY AND SW.SKUKEY = SM.SKUKEY AND SW.COMPKY = H.COMPKY
+		      LEFT OUTER JOIN STKKY SY ON SY.STOKKY = I.STOKKY AND SY.SKUKEY = I.SKUKEY AND SY.COMPKY = H.COMPKY
+	          INNER JOIN CMCDV V ON SY.LOTA01 = V.CMCDVL AND V.CMCDKY = 'LOTA01'	
+		 WHERE 1 = 1
+		   AND H.COMPKY = #{SES_USER_COMPANY}
+		<if test="SADJKY != null and SADJKY != ''">
+		   AND H.SADJKY = #{SADJKY}
+        </if>
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		  ${RANGE_SQL}
+		</if>
+		ORDER BY I.SADJKY,I.SADJIT
+	</select>
+	<!--SJ09 **-->
+	
+	<insert id="ADJDH_INSERT" parameterType="hashmap">
+		INSERT INTO ADJDH(
+			  COMPKY
+			, SADJKY
+			, WAREKY
+			, ADJUTY
+			, DOCDAT
+			, DOCCAT
+			, ADJUCA
+			, DOCTXT
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{SADJKY}
+			, #{WAREKY}
+			, #{ADJUTY}
+			, COALESCE(#{DOCDAT}, ' ')
+			, COALESCE(#{DOCCAT}, ' ')
+			, COALESCE(#{ADJUCA}, ' ')
+			, COALESCE(#{DOCTXT}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	
+	<insert id="ADJDI_INSERT" parameterType="hashmap">
+		INSERT INTO ADJDI(
+			  COMPKY
+			, OWNRKY
+			, SADJKY
+			, SADJIT
+			, STOKKY
+			, SKUKEY
+			, DESC01
+			, LOTNUM
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOCAKY
+			, QTADJU
+			, MEASKY
+			, UOMKEY
+			, QTPUOM
+			, DUOMKY
+			, QTDUOM
+			, AREAKY
+			, REFDKY
+			, REFDIT
+			, REFCAT
+			, SEBELN
+			, SEBELP
+			, RSNADJ
+			, ADJRSN
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{OWNRKY}
+			, #{SADJKY}
+			, #{SADJIT}
+			, #{STOKKY}
+			, #{SKUKEY}
+			, #{DESC01}
+			, #{LOTNUM}
+			, #{LOTA01}
+			, #{LOTA02}
+			, #{LOTA03}
+			, #{LOCAKY}
+			, #{QTADJU}::NUMERIC
+			, #{MEASKY}
+			, #{UOMKEY}
+			, #{QTPUOM}::NUMERIC
+			, #{DUOMKY}
+			, #{QTDUOM}::NUMERIC
+			, #{AREAKY}
+			, #{REFDKY}
+			, #{REFDIT}
+			, #{REFCAT}
+			, #{SEBELN}
+			, #{SEBELP}
+			, #{RSNADJ}
+			, #{ADJRSN}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+		)
+	</insert>
+	
+	
+	<select id="LOTNUM_SET_OBJECT" parameterType="hashmap" resultType="String">
+				SELECT FN_GET_LOTNUMBER(
+				  #{SES_USER_COMPANY}
+				, #{WAREKY}
+				, #{OWNRKY}
+				, #{SKUKEY}
+				, COALESCE(#{SEBELN},'')
+				, COALESCE(#{SEBELP},'')
+				, COALESCE(#{LOTA02},'')
+				, COALESCE(#{LOTA03},'')
+				, COALESCE(#{LOTA04}, ' ')
+			    , COALESCE(#{LOTA05}, ' ')
+				, TO_CHAR(NOW(),'YYYYMMDD')
+			)
+	</select>
+	
+	
+	<insert id="STKKY_AJ_INSERT" parameterType="hashmap">
+		INSERT INTO STKKY(
+			  COMPKY
+			, STOKKY
+			, WAREKY
+			, LOTNUM
+			, LOCAKY
+			, QTSIWH
+			, QTSALO
+			, QTSPMO
+			, QTSPMI
+			, QTSBLK
+			, QTYUOM
+			, MEASKY
+			, UOMKEY
+			, QTPUOM
+			, DUOMKY
+			, REFDKY
+			, REFDIT
+			, REFDAT
+			, ASNDKY
+			, ASNDIT
+			, RECVKY
+			, RECVIT
+			, SHPOKY
+			, SHPOIT
+			, TASKKY
+			, TASKIT
+			, SADJKY
+			, SADJIT
+			, PHYIKY
+			, PHYIIT
+			, OWNRKY
+			, SKUKEY
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, DESC01
+			, ZONEKY
+			, AREAKY
+			, SEBELN
+			, SEBELP
+			, SZMBLNO
+			, SZMIPNO
+			, SVBELN
+			, SPOSNR
+			, STKNUM
+			, STPNUM
+			, STDLNR
+			, EANCOD
+			, GTINCD
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{SES_USER_COMPANY}
+			, #{STOKKY}
+			, #{WAREKY}
+			, COALESCE(#{LOTNUM}, ' ')
+			, #{LOCAKY}
+			, #{QTSIWH}::NUMERIC
+			, #{QTSALO}::NUMERIC
+			, #{QTSPMO}::NUMERIC
+			, #{QTSPMI}::NUMERIC
+			, #{QTSBLK}::NUMERIC
+			, #{QTYUOM}::NUMERIC
+			, COALESCE(#{MEASKY}, ' ')
+			, COALESCE(#{UOMKEY}, ' ')
+			, #{QTPUOM}::NUMERIC
+			, COALESCE(#{DUOMKY}, ' ')
+			, COALESCE(#{REFDKY}, ' ')
+			, COALESCE(#{REFDIT}, ' ')
+			, COALESCE(#{REFDAT}, ' ')
+			, COALESCE(#{ASNDKY}, ' ')
+			, COALESCE(#{ASNDIT}, ' ')
+			, COALESCE(#{RECVKY}, ' ')
+			, COALESCE(#{RECVIT}, ' ')
+			, COALESCE(#{SHPOKY}, ' ')
+			, COALESCE(#{SHPOIT}, ' ')
+			, COALESCE(#{TASKKY}, ' ')
+			, COALESCE(#{TASKIT}, ' ')
+			, COALESCE(#{SADJKY}, ' ')
+			, COALESCE(#{SADJIT}, ' ')
+			, COALESCE(#{PHYIKY}, ' ')
+			, COALESCE(#{PHYIIT}, ' ')
+			, COALESCE(#{OWNRKY}, ' ')
+			, COALESCE(#{SKUKEY}, ' ')
+			, COALESCE(#{LOTA01}, ' ')
+			, COALESCE(#{LOTA02}, ' ')
+			, COALESCE(#{LOTA03}, ' ')
+			, COALESCE(#{LOTA04}, ' ')
+			, COALESCE(#{LOTA05}, ' ')
+			, COALESCE(#{DESC01}, ' ')
+			, COALESCE(#{ZONEKY}, ' ')
+			, COALESCE(#{AREAKY}, ' ')
+			, COALESCE(#{SEBELN}, ' ')
+			, COALESCE(#{SEBELP}, ' ')
+			, COALESCE(#{SZMBLNO}, ' ')
+			, COALESCE(#{SZMIPNO}, ' ')
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')
+			, COALESCE(#{STKNUM}, ' ')
+			, COALESCE(#{STPNUM}, ' ')
+			, COALESCE(#{STDLNR}, ' ')
+			, COALESCE(#{EANCOD}, ' ')
+			, COALESCE(#{GTINCD}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{SES_USER_ID}
+			, 0
+		)
+	</insert>
+</mapper>

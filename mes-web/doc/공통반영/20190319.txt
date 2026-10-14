@@ -1,0 +1,8 @@
+SqlUtil.java
+ - range에서 20개가 넘어가는 조회 조건을 붙이는 경우 발생하는 오류 수정
+ 
+grid.js
+ - range내에서 search help 호출시 multi select가 가능하도록 변경
+ 
+SessionIntercepter.java
+ - 로그인한 사용자 meneu만 접근 가능한 기능에서 search help 오류 수정

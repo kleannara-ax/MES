@@ -1,0 +1,1 @@
+ - ui.js : Vareant 버튼 추가시 searchArea가 싸고 있는 경우 조회 필수 조건에 걸리는 오류 개선

@@ -1,0 +1,132 @@
+﻿<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>getUploadStatus</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">BasicFileUploadManager</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>getUploadStatus</h2>
+            <p class="dscrpt">업로드 상태를 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>String <span class="fname">getUploadStatus</span> ( )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname"></span></p>
+            <p class="paradsc"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt">업로드 상태를 String 타입으로 반환합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <table class="paradsc2" border="1" cellspacing="0" width="300" bordercolordark="white" bordercolorlight="#999999">
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">COMPLETE</p>
+                    </td>
+                    <td width="215">
+                        <p>전송 완료 상태입니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">WAIT</p>
+                    </td>
+                    <td width="215">
+                        <p>전송 대기 상태입니다.</p>
+                    </td>
+                </tr>
+               <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">TRANSFER</p>
+                    </td>
+                    <td width="215">
+                        <p>전송 중 상태입니다.</p>
+                    </td>
+                </tr>
+               <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">FAILURE</p>
+                    </td>
+                    <td width="215">
+                        <p>전송 실패 상태입니다.</p>
+                    </td>
+                </tr>
+          	</table> 
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Javascript</p>
+<pre class="scodedsc">
+/** 
+* 전송창이 닫힐 때 호출됩니다.
+*/ 
+var onCloseMonitorWindowCu = function () { 
+	window.focus(); 
+    document.getElementById("monitorBgLayer").style.display = "none";
+    document.getElementById("monitorLayer").style.display = "none";    
+
+    <b>
+	// 데이터 처리 페이지로 업로드 결과를 전송합니다. 
+	// onEndUploadCu 나 onCloseMonitorWindowCu 이벤트 시점에 처리하시면 되며, onCloseMonitorWindowCu 시에는 getUploadStatus()를 사용하여 업로드 상태를 체크해 주십시오.
+	if(cuManager.getUploadStatus() == "COMPLETE") {
+    </b>
+		/**
+		* 업로드된 전체 파일의 정보를 가져옵니다. 
+		* 서버측에서 JSON 타입으로 반환했을 경우는 JSON 타입으로 가져오는 것을 권장하며, 그 외의 경우는 개별 파일 정보를 조합할 delimiter 문자(또는 문자열)를 입력해 주십시오.
+		*/
+		var uploadedFilesInfo = cuManager.getUploadedFilesInfo("JSON"); 
+		//var uploadedFilesInfo = cuManager.getUploadedFilesInfo("|"); 
+
+		/**
+        * 필요 시, 아래처럼 사용해 주십시오. (JSON으로 넘오올 경우)
+		var obj = jQuery.parseJSON(uploadedFilesInfo); 
+		alertTimeout(obj.length); 
+		alertTimeout(obj[0].Name); 
+		*/
+			
+		// 데이터 처리 페이지로 업로드 결과를 전송합니다.
+		document.dataForm.uploadedFilesInfo.value = uploadedFilesInfo; 
+		document.dataForm.submit(); 
+	}
+}
+
+/**
+* Flash로부터 호출되는 Javascript 콜백함수 내에서 alert 창을 띄우기 위한 처리로 Chrome, Firefox, Safari 브라우저의 일부 버전에 해당됩니다. 
+*/
+var alertTimeout = function (params) {
+    window.focus();
+    setTimeout(function () { alert(params) }, 100);
+}
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,22 @@
+--------------------------------------------------------
+--  DDL for Trigger TR_CHANGE_SOURCE_HIST
+--------------------------------------------------------
+
+  CREATE OR REPLACE EDITIONABLE TRIGGER "KNRAMES"."TR_CHANGE_SOURCE_HIST" 
+AFTER CREATE ON knrames.SCHEMA
+
+DECLARE
+BEGIN
+IF DICTIONARY_OBJ_TYPE IN ('PROCEDURE','FUNCTION', 'PACKAGE','PACKAGE BODY', 'TYPE') THEN
+ INSERT INTO SOURCE_HIST
+  SELECT SYSDATE, USER_SOURCE.*, SYS_CONTEXT('USERENV', 'IP_ADDRESS'),sys_context('userenv','session_user'), sys_context('userenv','sid'), sys_context('userenv','os_user') FROM USER_SOURCE WHERE TYPE = ORA_DICT_OBJ_TYPE
+  AND NAME = ORA_DICT_OBJ_NAME;
+  END IF;
+
+  EXCEPTION
+   WHEN OTHERS THEN
+   RAISE_APPLICATION_ERROR(-20000, SQLERRM);
+   END;
+
+/
+ALTER TRIGGER "KNRAMES"."TR_CHANGE_SOURCE_HIST" ENABLE;

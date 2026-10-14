@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sap">
+	<select id="mes_sap_work_insert" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK50_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DECISION_RTN, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST_01, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{P_RS_LIST_02, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+</mapper>

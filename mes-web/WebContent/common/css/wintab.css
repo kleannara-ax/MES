@@ -1,0 +1,121 @@
+@charset 'utf-8';
+
+/* .tab.type1 { height:25px; margin-left:37px; overflow:hidden; background:url("/common/images/bg_tab1.png") repeat-x left top;} */
+.tab.type1 {height:25px; margin-left:37px; overflow:hidden; background: white; }
+.tab.type1 a { float:left; min-width:111px; height:25px; line-height:25px; text-indent:10px; border-right:1px solid #c2c8d7; color:#555;}
+.tab.type1 a span { display:block; height:25px; margin-right:10px; background:url("/common/images/ico_tab_off_close.png") no-repeat right center;}
+.tab.type1 a.active { background:#fff;}
+.tab.type1 a.active span { background-image:url("/common/images/ico_tab_on_close.png");}
+
+.lnbCloser { position:absolute; left:0; top:0; z-index:100; width:37px; height:25px; background:url("/common/images/bg1.png") repeat-x left top; border:1px solid #c2c8d7; border-bottom: 1px solid #395c9c; border-top-width:0; border-left-width:0;}
+
+/* 추가 */
+.all_close{
+	float:left;
+	line-height:25px;
+	height:100%;
+	width:100%;
+	vertical-align: middle;
+	padding: 0 0px;
+	border-right:1px solid #c2c8d7; 
+}
+
+.all_close img{
+	width:100%;
+	height:100%;
+}
+
+.tab_list{
+	float:left;
+	line-height:25px;
+	height:50px;
+	vertical-align: middle;
+	padding: 0 0px;
+/* 	border-right:1px solid #c2c8d7; */ 
+	background: url("/common/images/bg1.png") repeat-x left top;
+	border: 1px solid #c2c8d7;
+    border-bottom: 1px solid #395c9c;
+    z-index: 100;
+}
+
+.tabListPop{
+	height:500px;
+	vertical-align: middle;
+	padding: 0 0px;
+/* 	border-right:1px solid #c2c8d7; */ 
+	border: 1px solid #c2c8d7;
+    border-bottom: 1px solid #395c9c;
+    z-index: 10000;
+}
+.all_close img {
+	cursor:pointer;
+}
+/* 추가끝 */
+/*Tab*/
+.menu-info{
+	float: left;
+	line-height: 25px;
+	height: 25px;
+	font-size: 11px;
+	font-weight: bold;
+	vertical-align: middle;
+	padding: 0;
+	cursor: pointer;
+}
+.tab.type1 li{
+	position:relative;
+	z-index:1;
+	float:left; 
+	/* min-width:111px; */ 
+	/* height:25px; */
+	line-height:22px; 
+	/* text-indent:10px; */ 
+	/* outline :1px solid #c2c8d7; */
+	color:#555;
+	cursor: pointer;
+	margin-top : 3px;
+	background: #dde1e6;
+	background: url("/common/images/tab_top_off_left.png") no-repeat left top;
+	margin-left:-7px;
+	font-weight:bold;
+	
+}
+.tab.type1 li:first-child {margin-left:2px !important}
+.tab.type1 li .tab_right {
+	background: url("/common/images/tab_top_off_right.png") no-repeat right top;
+	margin-left:16px;
+}
+.tab.type1 li span{
+	display: inline-block;
+	/* width:85px; */
+	width: auto;
+	height: 22px;
+	margin-right:-9px;
+	/* 추가 */
+	padding:0 22px 0 10px;
+	background: url("/common/images/ico_tab_off_close.png") no-repeat right 7px;
+}
+.tab.type1 li img{
+	cursor: pointer;
+	/* 추가 */
+	margin:0 10px 2px 0;
+}
+.tab.type1 .active{
+	position:relative;
+	z-index:20 !important;
+	/* border-top : 3px solid #699bf8; */
+	/* border-left : 1px solid #c2c8d7; */
+	line-height:22px; 
+	/* background: white; */
+	margin-top : 3px;
+	/* background-color:#699bf8; */
+	background-image: url("/common/images/tab_top_on_left.png");
+	color:#fff;
+	font-weight:bold;
+}
+.tab.type1 .active span {
+	background: url("/common/images/ico_tab_top1_on_close.png") no-repeat right 7px;
+}
+.tab.type1 .active .tab_right {
+	background: url("/common/images/tab_top_on_right.png") no-repeat right top;
+}

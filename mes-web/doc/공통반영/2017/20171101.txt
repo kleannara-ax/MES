@@ -1,0 +1,2 @@
+grid 영역선택 상태에서 전체 체크박스 동작시 선택된 영역의 row만 적용되는 기능 추가
+ - setGrid option : selectedRowCheckType = true;

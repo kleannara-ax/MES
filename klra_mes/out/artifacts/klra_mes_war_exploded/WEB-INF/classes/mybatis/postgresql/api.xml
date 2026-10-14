@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Api">
+	<select id="API_COMPANY_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   MSTCOMP
+		WHERE  COMPID = #{COMPID}
+		AND    COMPYN = 'Y'
+	</select>
+	
+	<select id="API_APLCOD_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   MSTAP
+		WHERE  APLCOD = #{APLCOD}
+	</select>
+	
+	<select id="API_DOCTM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DOCUTY AS "DOCUTY"
+	    FROM   DOCTM 
+	    WHERE  DOCCAT = '000'
+	</select>
+	
+	<select id="API_BZPTN_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT PTNRKY AS "PTNRKY"
+		   ,   NAME01 AS "NAME01"
+		FROM   BZPTN 
+		WHERE  COMPKY = #{COMPID}
+		AND    PTNRKY = #{PTNRKY}
+	</select>
+	
+	<select id="API_SKUMA_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT SKUKEY AS "SKUKEY"
+		   ,   DESC01 AS "DESC01"
+		   ,   DUOMKY AS "UOMKEY"
+		FROM   SKUMA 
+		WHERE  COMPKY = #{COMPID}
+		AND    SKUKEY = #{SKUKEY}
+	</select>
+	
+	<select id="API_SHP_COUNT" parameterType="hashmap" resultType="Integer">
+		SELECT COUNT(1) AS "CNT"
+		FROM   SHPDH A   
+		       INNER JOIN SHPDI B ON  A.COMPKY = B.COMPKY
+			                      AND A.SHPOKY = B.SHPOKY
+		WHERE  A.COMPKY = #{COMPID}
+		AND    A.SHPOKY = #{SHPOKY}
+		AND    B.SHPOIT = #{SHPOIT}
+		AND    A.STATDO IN('FSH','PSH') 
+	</select>
+	
+	<select id="API_SHP_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT A.SHPOKY AS "SHPOKY"
+		   ,   A.DPTNKY AS "RPTNKY"
+		   ,   A.DNAME1 AS "RPTNNM"
+		   ,   C.LOTNUM AS "AWMSNO"
+		   ,   D.LOTA02 AS "LOTA02"
+		   ,   D.LOTA03 AS "LOTA03"
+		   ,   D.LOTA04 AS "PTNRKY"
+		   ,   D.LOTA05 AS "PTNRNM"
+		FROM   SHPDH A
+		       INNER JOIN SHPDI B ON  A.COMPKY = B.COMPKY
+		                          AND A.SHPOKY = B.SHPOKY
+		       INNER JOIN TASDI C ON  B.COMPKY = C.COMPKY
+		                          AND B.SHPOKY = C.SHPOKY
+		                          AND B.SHPOIT = C.SHPOIT
+		                          AND B.SKUKEY = C.SKUKEY
+		       INNER JOIN LOTAT D ON  C.COMPKY = D.COMPKY
+		                          AND A.WAREKY = D.WAREKY
+		                          AND C.SKUKEY = D.SKUKEY
+		                          AND C.LOTNUM = D.LOTNUM
+		WHERE  A.COMPKY = #{COMPID}
+		AND    A.SHPOKY = #{SHPOKY}
+		AND    B.SHPOIT = #{SHPOIT}
+		AND    A.STATDO IN('FSH','PSH') 
+		LIMIT  1
+	</select>
+	
+	<select id="API_ASNKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT NEXTVAL('seq_ifasn') AS "IASNKY"
+	</select>
+	
+	<insert id="API_ASN_INSERT"  parameterType="hashmap">
+		INSERT INTO IFASN(
+			  IASNKY
+			, ASNTTY
+			, COMPKY
+			, WAREKY
+			, OWNRKY
+			, SEBELN
+			, SEBELP
+			, SVBELN
+			, SPOSNR
+			, DOCDAT
+			, ASNDAT
+			, PTNRKY
+			, PTNRNM
+			, RPTNKY
+			, RPTNNM
+			, SKUKEY
+			, DESC01
+			, QTYASN
+			, UOMKEY
+			, LOTA01
+			, LOTA02
+			, LOTA03
+			, LOTA04
+			, LOTA05
+			, SZMBLNO 
+			, SZMIPNO 
+			, STDLNR
+			, AWMSNO
+			, DOCTXT
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{IASNKY}
+			, #{ASNTTY} 
+			, #{COMPID} 
+			, #{WAREKY} 
+			, #{OWNRKY}
+			, #{SEBELN} 
+			, #{SEBELP} 
+			, COALESCE(#{SVBELN}, ' ') 
+			, COALESCE(#{SPOSNR}, ' ') 
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, COALESCE(#{ASNDAT}, ' ')
+			, COALESCE(#{PTNRKY}, ' ') 
+			, COALESCE(#{PTNRNM}, ' ') 
+			, COALESCE(#{RPTNKY}, ' ') 
+			, COALESCE(#{RPTNNM}, ' ') 
+			, COALESCE(#{SKUKEY}, ' ') 
+			, COALESCE(#{DESC01}, ' ') 
+			, #{QTYASN}::NUMERIC 
+			, COALESCE(#{UOMKEY}, ' ') 
+			, COALESCE(#{LOTA01}, ' ') 
+			, COALESCE(#{LOTA02}, ' ') 
+			, COALESCE(#{LOTA03}, ' ') 
+			, COALESCE(#{LOTA04}, ' ') 
+			, COALESCE(#{LOTA05}, ' ') 
+			, COALESCE(#{SZMBLNO}, ' ') 
+			, COALESCE(#{SZMIPNO}, ' ') 
+			, COALESCE(#{STDLNR}, ' ')
+			, COALESCE(#{AWMSNO}, ' ')
+			, COALESCE(#{DOCTXT}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{USERID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{USERID}
+			, 0
+		)
+	</insert>
+	
+	<select id="API_SHPKY_OBJECT" parameterType="hashmap" resultType="String">
+		SELECT NEXTVAL('seq_ifshp') AS "ISHPKY"
+	</select>
+	
+	<insert id="API_SHP_INSERT"  parameterType="hashmap">
+		INSERT INTO IFSHP(
+			  ISHPKY
+			, SVBELN
+			, SPOSNR  
+			, SHPMTY
+			, COMPKY
+			, WAREKY
+			, OWNRKY
+			, SEBELN
+			, SEBELP
+			, DOCDAT
+			, RQSHPD
+			, PTNRKY
+			, PTNRNM
+			, PTRCVR
+			, PTRCNM
+			, SKUKEY
+			, DESC01
+			, QTYORD
+			, UOMKEY
+			, DOCTXT
+			, ORDCLS
+			, CRESHP
+			, CREDAT
+			, CRETIM
+			, CREUSR
+			, LMODAT
+			, LMOTIM
+			, LMOUSR
+			, UPDCHK
+		)VALUES(
+			  #{ISHPKY}
+			, COALESCE(#{SVBELN}, ' ')
+			, COALESCE(#{SPOSNR}, ' ')  
+			, COALESCE(#{SHPMTY}, ' ')
+			, COALESCE(#{COMPID}, ' ')
+			, COALESCE(#{WAREKY}, ' ')
+			, COALESCE(#{OWNRKY}, ' ')
+			, COALESCE(#{SEBELN}, ' ')
+			, COALESCE(#{SEBELP}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, COALESCE(#{RQSHPD}, ' ')
+			, COALESCE(#{PTNRKY}, ' ')
+			, COALESCE(#{PTNRNM}, ' ')
+			, COALESCE(#{PTRCVR}, ' ')
+			, COALESCE(#{PTRCNM}, ' ')
+			, COALESCE(#{SKUKEY}, ' ')
+			, COALESCE(#{DESC01}, ' ')
+			, #{QTYORD}::NUMERIC
+			, COALESCE(#{UOMKEY}, ' ')
+			, COALESCE(#{DOCTXT}, ' ')
+			, COALESCE(#{ORDCLS}, ' ')
+			, COALESCE(#{CRESHP}, ' ')
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{USERID}
+			, TO_CHAR(NOW(),'YYYYMMDD')
+			, TO_CHAR(NOW(),'HH24MISS')
+			, #{USERID}
+			, 0
+		)
+	</insert>
+	
+	<select id="PRCS_GRP_API_ASN_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT CODE AS "CODE", MSG AS "MSG" FROM PRCS_GRP_API_ASN(#{COMPID}, #{ASNTTY}, #{ASNKEY})
+	</select>
+	
+	<select id="API_RCV_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT B.SEBELN AS "SEBELN"
+		   ,   B.SEBELP AS "SEBELP"
+		   ,   CASE WHEN B.QTYRCV = 0 AND COALESCE(C.QTYDIF, 0) = 0 THEN '미작업'
+		            WHEN (B.QTYASN - B.QTYRCV) = 0 AND COALESCE(C.QTYDIF, 0) = 0 THEN '입고완료'
+		            WHEN (B.QTYASN - B.QTYRCV) > 0 AND COALESCE(C.QTYDIF, 0) = 0 THEN '부분입고'
+		            WHEN COALESCE(C.QTYDIF, 0) > 0 AND (B.QTYASN - COALESCE(C.QTYDIF, 0)) = 0 THEN '적치완료'
+		            WHEN COALESCE(C.QTYDIF, 0) > 0 AND (B.QTYASN - COALESCE(C.QTYDIF, 0)) > 0 THEN '부분적치'
+		       END  AS  "STATIT"     
+		   ,   B.LOTA04 AS "LOTA04"
+		   ,   B.LOTA05 AS "LOTA05"
+		   ,   A.DOCDAT AS "DOCDAT"
+		   ,   B.SKUKEY AS "SKUKEY"
+		   ,   B.DESC01 AS "DESC01"
+		   ,   B.QTYASN::INT AS "QTYASN"
+		   ,   B.QTYRCV::INT AS "QTYRCV"
+		   ,   COALESCE(C.QTYDIF::INT, 0) AS "QTYTSK"
+		   ,   B.UOMKEY AS "UOMKEY"
+		   ,   B.LOTA02 AS "LOTA02"
+		   ,   B.LOTA03 AS "LOTA03"
+		FROM   ASNDH A 
+		       INNER JOIN ASNDI B ON  A.COMPKY = B.COMPKY
+		                          AND A.ASNDKY = B.ASNDKY
+		       LEFT OUTER JOIN RECDI C ON  B.COMPKY = C.COMPKY
+		                               AND B.ASNDKY = C.REFDKY
+		                               AND B.ASNDIT = C.REFDIT
+		WHERE  A.COMPKY = #{COMPID}
+		AND    A.ASNTTY = #{ASNTTY}
+		<choose>
+		<when test='(STRDAT != null and STRDAT != "") and (ENDDAT != null and ENDDAT != "")'>
+		AND    A.DOCDAT BETWEEN #{STRDAT} AND #{ENDDAT}
+		</when>
+		<when test='STRDAT != null and STRDAT != ""'>
+		AND    A.DOCDAT = #{STRDAT}
+		</when>
+		<when test='ENDDAT != null and ENDDAT != ""'>
+		AND    A.DOCDAT = #{ENDDAT}
+		</when>
+		</choose>
+		<if test='SEBELN != null and SEBELN != ""'>
+		AND    B.SEBELN = #{SEBELN}
+		</if>
+		<if test='SEBELP != null and SEBELP != ""'>
+		AND    B.SEBELP = #{SEBELP}
+		</if>
+		ORDER BY B.SEBELN, B.SEBELP
+	</select>
+	
+	<select id="API_SHP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.SVBELN AS "SVBELN"
+			,  A.SPOSNR AS "SPOSNR" 
+			,  CASE WHEN SHPOKY = '' THEN 'WAVE 생성 전'
+			        WHEN QTALOC = 0 THEN '미작업'
+			        WHEN QTALOC > 0 AND (QTYORD - QTALOC) = 0 AND QTJCMP = 0 AND QTSHPD = 0 THEN '할당완료'
+			        WHEN QTALOC > 0 AND (QTYORD - QTALOC) > 0 AND QTJCMP = 0 AND QTSHPD = 0 THEN '부분할당'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0) AND (QTYORD - QTJCMP) = 0  AND QTSHPD = 0 THEN '피킹완료'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0) AND (QTYORD - QTJCMP) > 0  AND QTSHPD = 0 THEN '부분피킹'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0 AND QTSHPD > 0) AND (QTYORD - QTSHPD) = 0 THEN '출고완료'
+			        WHEN (QTALOC > 0 AND QTJCMP > 0 AND QTSHPD > 0) AND (QTYORD - QTSHPD) > 0 THEN '부분출고'
+			   END AS "STATDO"
+			,  A.RQSHPD AS "RQSHPD"
+			,  A.PTNRKY AS "PTNRKY"
+			,  A.PTNRNM AS "PTNRNM"
+			,  A.PTRCVR AS "PTRCVR"
+			,  A.PTRCNM AS "PTRCNM"
+			,  A.SKUKEY AS "SKUKEY"
+			,  A.DESC01 AS "DESC01"
+			,  A.QTYORD AS "QTYORD"
+			,  A.QTALOC AS "QTALOC"
+			,  A.QTJCMP AS "QTJCMP"  
+			,  A.QTSHPD AS "QTSHPD"
+			,  A.SHPOKY AS "SHPOKY"
+			,  A.SHPOIT AS "SHPOIT"
+		FROM(
+			SELECT A.SVBELN
+			   ,   A.SPOSNR
+			   ,   A.RQSHPD
+			   ,   A.PTNRKY
+			   ,   A.PTNRNM
+			   ,   A.PTRCVR
+			   ,   A.PTRCNM
+			   ,   A.SKUKEY
+			   ,   A.DESC01
+			   ,   A.QTYORD :: INT
+			   ,   COALESCE(B.QTALOC :: INT, 0) AS QTALOC
+			   ,   COALESCE(B.QTJCMP :: INT, 0) AS QTJCMP  
+			   ,   COALESCE(B.QTSHPD :: INT, 0) AS QTSHPD
+			   ,   COALESCE(B.SHPOKY,'') AS SHPOKY
+			   ,   COALESCE(B.SHPOIT,'') AS SHPOIT
+			FROM   IFSHP A
+			       LEFT OUTER JOIN SHPDI B ON  A.COMPKY = B.COMPKY
+			                               AND A.SVBELN = B.SVBELN
+			                               AND A.SPOSNR = B.SPOSNR
+			WHERE  A.COMPKY = #{COMPID}
+			<choose>
+			<when test='(STRDAT != null and STRDAT != "") and (ENDDAT != null and ENDDAT != "")'>
+			AND    A.RQSHPD BETWEEN #{STRDAT} AND #{ENDDAT}
+			</when>
+			<when test='STRDAT != null and STRDAT != ""'>
+			AND    A.RQSHPD = #{STRDAT}
+			</when>
+			<when test='ENDDAT != null and ENDDAT != ""'>
+			AND    A.RQSHPD = #{ENDDAT}
+			</when>
+			</choose>
+			<if test='SEBELN != null and SEBELN != ""'>
+			AND    A.SVBELN = #{SVBELN}
+			</if>
+			<if test='SEBELP != null and SEBELP != ""'>
+			AND    A.SPOSNR = #{SPOSNR}
+			</if>
+		) A
+		ORDER BY A.SVBELN, A.SPOSNR
+	</select>
+</mapper>

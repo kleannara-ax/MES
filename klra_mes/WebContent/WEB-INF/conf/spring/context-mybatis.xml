@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/mybatis/${jdbc.db}/*.xml</value>
+				<value>classpath:/mybatis/${jdbc.db}/**/*.xml</value>
+				<value>classpath:/mybatis/${jdbc.db}/**/**/*.xml</value>
+			</list>
+		</property>
+		<property name="configLocation" value="/WEB-INF/conf/mybatis/mybatis-config.xml"/>
+		<property name="plugins">
+			<array>
+				<bean class="project.common.handler.DataMapInterceptor" />
+			</array>
+		</property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="project.mes.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="REUSE" />
+	</bean>
+	
+	<bean id="batchSession" class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="BATCH" />
+	</bean>
+	
+	<!-- MariaDB SqlSessionFactory (별도로 추가) -->
+	<bean id="mariaSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="dataSource" ref="mariaDataSource"/>
+	    <property name="mapperLocations">
+	        <list>
+	            <value>classpath:/mybatis/mariadb/*.xml</value>
+	        </list>
+	    </property>
+	    <property name="configLocation" value="/WEB-INF/conf/mybatis/mybatis-config.xml"/>
+	</bean>
+	
+	<!-- MariaDB 전용 SqlSession -->
+	<bean id="mariaSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg ref="mariaSqlSessionFactory"/>
+	</bean>
+</beans>

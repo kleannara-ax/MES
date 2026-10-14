@@ -1,0 +1,13 @@
+grid.js
+ - total 숫자 포멧 적용 기능 개선
+ - bigData : false 의 경우에도 데량 데이처 처리가 가능하도록 개선(view)
+ - sort 중간에 변경 가능하도록 변경
+ - 일반 checkbox도 전체 체크하는 함수 추가 : gridList. dataCheckAll(gridId, colName, checkType) 
+ 
+ GCol fn 속성 추가. 기술한 함수를 호출해서 html 코드를 표시
+ - grid.js
+ - configData.js
+ 
+ setColValue 에서 포멧이 적용되지 않는 오류수정. 숫자값을 적용해도 사용 가능하도록 변경
+  - grid.js
+  - ui.js

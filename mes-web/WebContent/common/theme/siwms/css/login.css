@@ -1,0 +1,46 @@
+@charset 'utf-8';
+
+.bg {position:absolute; left:0; right:0; top:0; bottom:0; overflow:hidden; background:url("/common/theme/darkness/images/login/bgbg.png") no-repeat center center; background-size:100% 100%;filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='arrow-big-right.png', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='/common/theme/darkness/images/login/bgbg.png', sizingMethod='scale')";}
+.loginWrap {position:absolute; top:40%; left:50%; width:459px; margin:-190px 0 0 -229px;}
+.loginWrap > .innerWrap { position:relative; padding:31px 0 31px 30px; height:245px; /* background:url("/common/theme/darkness/images/login/bg2.png")*/ background:rgba(255,255,255,0.08) ;  border-radius:5px;}
+.loginWrap .logo { padding:0 0 70px; text-align:center;}
+.loginWrap .id input,
+.loginWrap .pw input { width:212px; padding:0 10px 0 57px; height:47px; line-height:47px; background-color:#fff; color:#555; font-size:14px; border:0 none; border-radius:3px; background-position:15px center; background-repeat:no-repeat;}
+.loginWrap .id { padding:0 0 10px;}
+.loginWrap .id input { background-image:url("/common/theme/darkness/images/login/ico_id.png");}
+.loginWrap .pw { padding:0 0 10px;}
+.loginWrap .pw input { background-image:url("/common/theme/darkness/images/login/ico_pw.png");}
+.loginWrap .changePassword { position:absolute; right:31px; top:88px;}
+.loginWrap .changePassword a {
+	display:block; width:108px; height:47px; text-align:center; border-radius:5px; height:47px; line-height:47px;
+	font-size:12px; color:#fff;
+	background: #214e8f; /* Old browsers */
+	background: -moz-linear-gradient(top,  #214e8f 0%, #193a6b 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#214e8f), color-stop(100%,#193a6b)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #214e8f 0%,#193a6b 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #214e8f 0%,#193a6b 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #214e8f 0%,#193a6b 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #214e8f 0%,#193a6b 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#214e8f', endColorstr='#193a6b',GradientType=0 ); /* IE6-9 */
+}
+.loginWrap .changePassword a img { margin-left:5px;}
+.loginWrap .selectWrap { padding:0 0 10px;}
+.loginWrap .selectWrap select{width:400px; height:47px; padding:0 10px}
+.loginWrap .login { position:absolute; right:31px; top:31px;}
+.loginWrap .login > input {
+	width:108px; height:104px; line-height:104px; border:0 none; border-radius:5px; color:#fff; font-size:16px; font-weight:bold; cursor:pointer; font-style:italic;
+	background: #8282FF; /* Old browsers */
+/* 	background: -moz-linear-gradient(top,  #203557 0%, #182741 100%); FF3.6+
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#203557), color-stop(100%,#182741)); Chrome,Safari4+
+	background: -webkit-linear-gradient(top,  #203557 0%,#182741 100%); Chrome10+,Safari5.1+
+	background: -o-linear-gradient(top,  #203557 0%,#182741 100%); Opera 11.10+
+	background: -ms-linear-gradient(top,  #203557 0%,#182741 100%); IE10+
+	background: linear-gradient(to bottom,  #203557 0%,#182741 100%); W3C
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#203557', endColorstr='#182741',GradientType=0 ); IE6-9 */
+}
+.loginWrap .contact { margin:100px 0 0 65px;}
+.loginWrap .contact .tit { padding:20px 0 0; color:#fff; font-size:11px; opacity:0.5; filter:alpha(opacity=50);}
+.loginWrap .contact p.copywrite { padding:8px 0 0; color:#fff; font-size:11px; opacity:0.5; filter:alpha(opacity=50);}
+
+.contentLoading { position:fixed; left:0; top:0; bottom:0; right:0; z-index:999999; background:#fff url("/common/theme/darkness/images/loading.jpg") no-repeat center center; opacity:0.85;display: none;}

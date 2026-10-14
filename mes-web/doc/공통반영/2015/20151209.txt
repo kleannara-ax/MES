@@ -1,0 +1,24 @@
+쿼리 DB저장 동작을 위한 기능 추가
+ - org.springframework.orm.ibatis 전체
+ - com.common.ibatis 전체
+ - context-sqlmap.xml
+ 
+ 불필요 JS 파일 제거
+  - common/js 일부파일
+  - popHead.jsp
+  - searchHead.jsp
+ 
+ 그리드 컬럼, 로우 글자색 및 배경색 변경 기능 추가
+  - Sample.jsp - gridListColTextColorChange : 컬럼 색상 변경, 변경하려는 색상의 CLASS return (GRID_COLOR_TEXT_RED_CLASS, GRID_COLOR_TEXT_BLUE_CLASS, GRID_COLOR_TEXT_YELLOW_CLASS)
+                  - gridListColBgColorChange : 컬럼 배경색 변경 (GRID_COLOR_BG_RED_CLASS, GRID_COLOR_BG_BLUE_CLASS, GRID_COLOR_BG_YELLOW_CLASS)
+                  - gridListRowTextColorChange : 로우 색상 변경
+                  - gridListRowBgColorChange : 로우 배경색 변경
+ - content_body.css
+ - configData.js
+ - grid.js
+ 
+ 기타 개선
+  - input,js : Get Vareant 시 range에 조회값 누적되는 오류 수정
+  - CommonController.java - Save Variant 시 default param에 대한 제거 기능 오류 수정
+  - grid.js : 셀 복사해서 붙여넣기 시 row갯수가 붙여넣는 크기에 맞게 자동으로 늘어나는 기능 추가
+  - FileUtil.java : 라벨, 메세지 js생성시 encoding깨지는 현상 수정

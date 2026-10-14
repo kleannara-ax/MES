@@ -1,0 +1,1 @@
+RequestMap, DataMap 병행 사용으로 인한 빈번한 CastException을 방지하기 위해 DataMap으로 통합

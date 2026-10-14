@@ -1,0 +1,4 @@
+숫자입력 기능 강화
+ - commonUtil.js, configData.js, grid.js, ui.js
+ - 방향키, back space, del 키등이 정상 동작하도록 기능 추가
+ - grid 에서도 동작 가능하도록 추가

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Aprove">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	
+	<select id="FWAPLM0010_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT APKEY
+		     , APNAME
+		     , APDESC
+		     , APPATH
+		  FROM FWAPLM0010
+		 WHERE 1 = 1 
+		<isNotEmpty property="APKEY">
+		   AND APKEY = #APKEY#
+		</isNotEmpty>
+	</select>
+	
+	<select id="FWAPLM0010_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT APKEY
+		     , APNAME
+		     , APDESC
+		     , APPATH
+		  FROM FWAPLM0010
+		 WHERE APKEY = #APKEY#
+	</select>
+	
+	<insert id="FWAPLM0010_INSERT" parameterClass="Map">
+		INSERT INTO FWAPLM0010
+		(
+		    APKEY, APNAME, APDESC, APPATH
+		  , CREDAT, CRETIM ,CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		)
+		VALUES(
+		    #APKEY#, #APNAME#, #APDESC#, #APPATH#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		)
+	</insert>
+	
+	<update id="FWAPLM0010_UPDATE" parameterClass="Map">
+		UPDATE FWAPLM0010
+		   SET APNAME = #APNAME#
+		     , APDESC = #APDESC#
+		     , APPATH = #APPATH#
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APKEY = #APKEY#
+	</update>
+	
+	<delete id="FWAPLM0010_DELETE" parameterClass="Map">
+		UPDATE FWAPLM0010
+		   SET DELKEY = 'Y'
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APKEY = #APKEY#
+	</delete>
+	
+	<select id="FWAPLI0010_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT AM.APKEY
+		     , AM.APUSER
+		     , AM.SORTKEY
+		     , AM.ALDESC
+		     , UM.NAME
+		     , UM.GRADE
+		     , UM.DEPART
+		  FROM FWAPLI0010 AM
+		       LEFT OUTER JOIN APUSERVIEW UM ON AM.APUSER = UM.USERID
+		 WHERE AM.APKEY = #APKEY#
+		 ORDER BY AM.SORTKEY
+	</select>
+	
+	<insert id="FWAPLI0010_INSERT" parameterClass="Map">
+		INSERT INTO FWAPLI0010
+		(
+		    APKEY, APUSER, SORTKEY, ALDESC
+		  , CREDAT, CRETIM ,CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		)
+		VALUES(
+		    #APKEY#, #APUSER#, #SORTKEY#, #ALDESC#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		)
+	</insert>
+	
+	<update id="FWAPLI0010_UPDATE" parameterClass="Map">
+		UPDATE FWAPLI0010
+		   SET LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		<isNotEmpty property="SORTKEY">
+		     , SORTKEY = #SORTKEY#
+		</isNotEmpty> 
+		<isNotEmpty property="ALDESC">
+		     , ALDESC = #ALDESC#
+		</isNotEmpty> 
+		 WHERE APKEY = #APKEY# 
+		   AND APUSER = #APUSER#
+	</update>
+	
+	<delete id="FWAPLI0010_DELETE" parameterClass="Map">
+		UPDATE FWAPLI0010
+		   SET DELKEY = 'Y'
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APKEY = #APKEY# 
+		   AND APUSER = #APUSER#
+	</delete>
+	
+	<select id="FWAPLIVIEW_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT AM.APKEY
+		     , AM.APUSER
+		     , AM.SORTKEY
+		     , AM.ALDESC
+		     , UM.NAME
+		     , UM.GRADE
+		     , UM.DEPART
+		  FROM FWAPLI0010 AM
+		       LEFT OUTER JOIN APUSERVIEW UM ON AM.APUSER = UM.USERID
+		 WHERE AM.APKEY = #APKEY#
+		 ORDER BY AM.SORTKEY
+	</select>
+	
+	<select id="APUSERVIEW_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT UM.USERID
+		     , UM.NAME
+		     , UM.GRADE
+		     , UM.DEPART
+		  FROM APUSERVIEW UM
+		 WHERE 1 = 1 
+		<isNotEmpty property="USERID">
+		   AND UM.USERID = #USERID#
+		</isNotEmpty>
+	</select>
+	
+	<select id="FWAPRM0010_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT TO_CHAR(RM.APRKEY) AS APRKEY
+		     , RM.APKEY
+		     , RM.REDESC
+		     , RM.LINKKEY
+		     , RM.APRTYPE
+		     , LM.APPATH
+		     , RI.SORTKEY
+		     , RI.APRTYPE AS IAPRTYPE
+		     , TO_CHAR(NVL((SELECT COUNT(1) FROM FWAPRI0010 RL WHERE RL.APRKEY = RM.APRKEY AND RL.SORTKEY != '00' AND RL.SORTKEY &lt; RI.SORTKEY AND RL.APRTYPE = 'N'),0)) AS LASTAPUSER
+		  FROM FWAPRM0010 RM 
+		       INNER JOIN FWAPLM0010 LM ON LM.APKEY = RM.APKEY
+		       INNER JOIN FWAPRI0010 RI ON RI.APRKEY = RM.APRKEY AND RI.APUSER = #SES_USER_ID#
+		 WHERE RM.APRKEY = #APRKEY#
+	</select>
+	
+	<select id="FWAPRM0010_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT RM.APRKEY
+		     , RM.APKEY
+		     , RM.REDESC
+		     , RM.LINKKEY
+		     , RM.APRTYPE
+		     , RM.APRTYPE AS TYPEVIEW
+		     , RM.CREUSR
+		     , RM.CREDAT 
+		     , RM.CRETIM
+		  FROM FWAPRI0010 RI
+		       INNER JOIN FWAPRM0010 RM ON RI.APRKEY = RM.APRKEY
+		 WHERE RM.DELKEY = 'N'
+		   AND RI.APUSER = #SES_USER_ID#
+		 ORDER BY RM.CREDAT, RM.CRETIM
+	</select>
+	
+	<update id="FWAPRM0010TYPE_UPDATE" parameterClass="Map">
+		UPDATE FWAPRM0010
+		   SET APRTYPE = #APRTYPE#
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APRKEY = #APRKEY#
+	</update>
+	
+	<delete id="FWAPRM0010_DELETE" parameterClass="Map">
+		UPDATE FWAPRM0010
+		   SET DELKEY = 'Y'
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APRKEY = #APRKEY#
+	</delete>
+	
+	<select id="FWAPRI0010_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT RM.APRKEY
+		     , RM.APKEY
+		     , RM.REDESC
+		     , RM.LINKKEY
+		     , RI.APUSER
+		     , RI.APRTYPE
+		     , RI.SORTKEY
+		     , RI.ARDESC
+		  FROM FWAPRM0010 RM
+		       LEFT OUTER JOIN FWAPRI0010 RI ON RI.APRKEY = RM.APRKEY
+		 WHERE RM.APRKEY = #APRKEY#
+		 ORDER BY RI.SORTKEY
+	</select>
+	
+	<select id="FWAPRI0010TYPE_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT COUNT(1) AS CNT
+		  FROM FWAPRI0010 RL 
+		 WHERE RL.APRKEY = #APRKEY#
+		   AND RL.SORTKEY != '00' 
+		   AND RL.APRTYPE = 'N'
+	</select>
+	
+	<update id="FWAPRI0010TYPE_UPDATE" parameterClass="Map">
+		UPDATE FWAPRI0010
+		   SET APRTYPE = #APRTYPE#
+		     , ARDESC = #ARDESC#
+		     , LMODAT = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		     , LMOTIM = TO_CHAR(SYSDATE, 'HH24MISS')
+		     , LMOUSR = #SES_USER_ID#
+		 WHERE APRKEY = #APRKEY#
+		   AND APUSER = #SES_USER_ID#
+	</update>
+	
+	<insert id="FWAPRM0010_INSERT" parameterClass="Map">
+		<selectKey keyProperty="APRKEY" resultClass="Integer">
+		SELECT FWAPRM0010_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO FWAPRM0010
+		(
+		    APRKEY,	APKEY, REDESC, LINKKEY
+		  , CREDAT, CRETIM ,CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		)
+		VALUES(
+		    #APRKEY#, #APKEY#, #REDESC#, #LINKKEY#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		  , TO_CHAR(SYSDATE, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'HH24MISS'), #SES_USER_ID#
+		)
+	</insert>
+	
+	<insert id="FWAPRI0010_INSERT" parameterClass="Map">
+		INSERT INTO FWAPRI0010
+		(
+		    APRKEY, APUSER, SORTKEY
+		  , CREDAT, CRETIM ,CREUSR
+		  , LMODAT, LMOTIM, LMOUSR
+		)
+		SELECT #APRKEY# AS APRKEY 
+		     , #SES_USER_ID# AS APUSER
+		     , '00' AS SORTKEY
+		     , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+		     , TO_CHAR(SYSDATE, 'HH24MISS') AS CRETIM
+		     , 'DEV' AS CREUSR
+		     , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+		     , TO_CHAR(SYSDATE, 'HH24MISS') AS LMOTIM
+		     , 'DEV' AS LMOUSR
+		  FROM DUAL 
+		UNION ALL
+		SELECT #APRKEY# AS APRKEY 
+		     , APUSER
+		     , SORTKEY
+		     , TO_CHAR(SYSDATE, 'YYYYMMDD') AS CREDAT
+		     , TO_CHAR(SYSDATE, 'HH24MISS') AS CRETIM
+		     , #SES_USER_ID# AS CREUSR
+		     , TO_CHAR(SYSDATE, 'YYYYMMDD') AS LMODAT
+		     , TO_CHAR(SYSDATE, 'HH24MISS') AS LMOTIM
+		     , #SES_USER_ID# AS LMOUSR
+		  FROM FWAPLI0010
+		 WHERE APKEY = #APKEY#
+	</insert>
+</sqlMap>

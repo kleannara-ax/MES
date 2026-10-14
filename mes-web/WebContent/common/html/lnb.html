@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=1150">
+<link rel="stylesheet" type="text/css" href="/common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="/common/css/lnb.css">
+<script type="text/javascript" src="/common/js/jquery.js"></script>
+<script>
+(function() {
+
+	$(function() {
+
+		var lnbTrigger = $('.lnbCloser')
+			, lnb = $('.lnb')
+			, tab = $('.tab.type1')
+			, contHeader = $('.contentHeader')
+			, content = $('.content')
+			, depth1Trigger = lnb.find('.list').children('li')
+			, depth2List = depth1Trigger.children('ul')
+			, depth2Trigger = depth2List.children('li')
+			, depth3List = depth2Trigger.children('ul')
+			, motionTime = 0.35
+			, xDist = 190;
+
+
+		depth1Trigger.each(function() {
+			var _this = $(this)
+				, thisTrigger = _this.children('a')
+				, thisDepth2List = _this.children('ul');
+
+			thisTrigger.on({
+				click : function() {
+					if ( thisDepth2List.is(':hidden') ) {
+						depth1Trigger.removeClass('active');
+						_this.addClass('active');
+
+						depth2List.not(thisDepth2List).stop().slideUp(200);
+						thisDepth2List.stop().slideDown(200);
+					} else {
+						_this.removeClass('active');
+						thisDepth2List.stop(true, true).slideUp(200);
+					}
+				}
+			});
+		});
+
+		depth2Trigger.each(function() {
+			var _this = $(this)
+				, thisTrigger = _this.children('a')
+				, thisDepth3List = _this.children('ul');
+
+			if ( thisDepth3List.length ) {
+				_this.addClass('hasDepth')
+			}
+
+			thisTrigger.on({
+				click : function() {
+					if ( thisDepth3List.is(':hidden') ) {
+						depth2Trigger.removeClass('active');
+						_this.addClass('active');
+
+						depth3List.not(thisDepth3List).stop().slideUp(200);
+						thisDepth3List.stop().slideDown(200);
+					} else {
+						_this.removeClass('active');
+						thisDepth3List.stop(true, true).slideUp(200);
+					}
+				}
+			});
+		});
+	});
+})();
+</script>
+<script type="text/javascript">
+	function changePage(title, url){
+		window.top.changePage(title, url);
+	}
+</script>
+</head>
+<body>
+<!-- lnb --->
+<div class="lnb">
+	<h2><span>마스터관리</span></h2>
+	<ul class="list">
+		<li>
+			<a href="#" onclick="changePage('title', 'url')"><span>즐겨찾기</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>마스터관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>입하관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>출하관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>재고관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>운임정산</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>보고서</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>WOS</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#"><span>시스템관리</span></a>
+			<ul>
+				<li><a href="#">구성</a></li>
+				<li>
+					<a href="#">구성</a>
+					<ul>
+						<li><a href="#">3뎁스</a></li>
+						<li><a href="#">3뎁스</a></li>
+					</ul>
+				</li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+				<li><a href="#">구성</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+<!-- //lnb -->
+
+</body>
+</html>

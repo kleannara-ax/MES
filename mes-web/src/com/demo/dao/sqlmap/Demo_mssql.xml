@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Demo">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+
+	<select id="DEMOHEAD_LIST" parameterClass="Map" resultClass="DataMap">
+			SELECT  WAREKY
+				   ,' ' AS CHECKDATA
+				   ,ROW_NUMBER() OVER( ORDER BY Z.ZONEKY ) AS TMPNUM 
+			       ,ZONEKY
+			       ,ZONETY
+			       ,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'ZONETY' AND C.CMCDVL = Z.ZONETY) AS ZONETYT
+			       ,SHORTX
+			       ,AREAKY
+			       ,(SELECT SHORTX FROM AREMA A WHERE A.WAREKY = Z.WAREKY AND A.AREAKY = Z.AREAKY) AS AREAKYT 
+				   ,CONVERT(CHAR(10),CREDAT,112) AS CREDAT
+			 	   ,REPLACE(CONVERT(CHAR(10),CRETIM,24),':','') AS CRETIM
+			       ,CREUSR
+				   ,CONVERT(CHAR(10),LMODAT,112) AS LMODAT
+			 	   ,REPLACE(CONVERT(CHAR(10),LMOTIM,24),':','') AS LMOTIM
+			       ,LMOUSR
+			       ,INDBZL
+			       ,INDARC
+			       ,UPDCHK
+			FROM ZONMA Z
+			WHERE 1=1 
+		<isNotEmpty property="WAREKY">
+			AND Z.WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	<select id="DEMOITEM_COUNT" parameterClass="Map" resultClass="Integer">
+		SELECT 
+			COUNT(*)
+		FROM LOCMA A 
+		WHERE 1=1 
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	<select id="DEMOITEM_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY
+			,LOCAKY
+			,LOCATY
+			,SHORTX
+			,TASKTY
+			,ZONEKY
+			,AREAKY
+			,(SELECT CDESC1 FROM CMCDV C WHERE CMCDKY = 'LOCATY' AND C.CMCDVL = A.LOCATY) AS LOCATYT
+			,TKZONE
+			,FACLTY
+			,ARLVLL
+			,INDCPC
+			,INDTUT
+			,IBROUT
+			,OBROUT
+			,RPROUT
+			,STATUS
+			,(SELECT CDESC1 FROM CMCDV C WHERE C.CMCDKY = 'STATUS' AND C.CMCDVL = A.STATUS) AS STATUST
+			,ABCANV
+			,LENGTH
+			,WIDTHW
+			,HEIGHT
+			,CUBICM
+			,MAXCPC
+			,MAXQTY
+			,MAXWGT
+			,MAXLDR
+			,MAXSEC
+			,MIXSKU
+			,MIXLOT
+			,RPNCAT
+			,INDQTC
+			,QTYCHK
+			,NEDSID
+			,INDUPA
+			,INDUPK
+			,AUTLOC
+			,CREDAT
+			,CRETIM
+			,CREUSR
+			,' ' AS CUSRNM
+			,LMODAT
+			,LMOTIM
+			,LMOUSR
+			,' ' AS LUSRNM
+			,INDBZL AS INDBZL
+			,INDARC AS INDARC
+			,UPDCHK AS UPDCHK
+		FROM LOCMA A 
+		WHERE 1=1 
+		<isNotEmpty property="WAREKY">
+			AND WAREKY = #WAREKY# 
+		</isNotEmpty>
+		<isNotEmpty property="ZONEKY">
+			AND ZONEKY = #ZONEKY# 
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+	</select>
+	<insert id="DEMOITEM_INSERT" parameterClass="Map">
+		INSERT INTO ZONMA (WAREKY,AREAKY,ZONEKY,ZONETY,SHORTX,CREDAT,CRETIM,CREUSR,LMODAT,LMOTIM,LMOUSR) 
+ 		VALUES (#WAREKY#,#AREAKY#,#ZONEKY#,#ZONETY#,#SHORTX#,
+ 		CONVERT(CHAR(10),GETDATE(),112),REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),#SES_USER_ID#,
+ 		CONVERT(CHAR(10),GETDATE(),112),REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),#SES_USER_ID#)
+	</insert>
+	
+	<delete id="DEMOITEM_DELETE" parameterClass="Map">
+		DELETE FROM ZONMA 
+		 WHERE WAREKY = #WAREKY# 
+	       AND ZONEKY = #ZONEKY#
+	</delete>
+	
+	<update id="DEMOITEM_UPDATE" parameterClass="Map">
+		UPDATE ZONMA SET 
+			<isNotEmpty property="ZONETY">
+				 ZONETY = #ZONETY#,
+			</isNotEmpty>
+			<isNotEmpty property="SHORTX">			
+				 SHORTX = #SHORTX#,
+			</isNotEmpty> 
+			<isNotEmpty property="AREAKY">			
+				 AREAKY = #AREAKY#,
+			</isNotEmpty>
+			LMODAT = CONVERT(CHAR(10),GETDATE(),112),
+			LMOTIM = REPLACE(CONVERT(CHAR(10),GETDATE(),24),':',''),
+			LMOUSR = #SES_USER_ID#
+		WHERE WAREKY = #WAREKY# 
+			AND ZONEKY = #ZONEKY# 
+	</update>
+	<select id="DEMOITEM_VALIDATION" parameterClass="Map" resultClass="DataMap"> 
+		SELECT
+		  CASE
+		    WHEN A.AREAKY IS NULL THEN CONCAT('MASTER_M0255',' ', P.AREAKY )
+		    WHEN Z.ZONEKY IS NOT NULL THEN CONCAT('VALID_M0103', ' ', P.ZONEKY )
+		    ELSE 'OK'
+		  END AS MSG
+		FROM(
+		    	$VALIDATION_SQL$ 
+		    ) P 
+		    LEFT OUTER JOIN AREMA A ON A.WAREKY = P.WAREKY AND A.AREAKY = P.AREAKY
+		    LEFT OUTER JOIN ZONMA Z ON Z.ZONEKY = P.ZONEKY AND Z.WAREKY = P.WAREKY
+		WHERE 1=1
+		   OR A.AREAKY IS NULL
+		   OR Z.ZONEKY IS NOT NULL
+	</select>
+</sqlMap>

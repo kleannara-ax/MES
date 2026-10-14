@@ -1,0 +1,2 @@
+layout save시 sort되어 있는 경우 head item구조에서 처음 조회시 head 첫행 선택시 다른 줄도 선택되는 오류 해결
+ - grid.js

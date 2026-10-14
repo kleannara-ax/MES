@@ -1,0 +1,5 @@
+Excel download시 숫자 타입인 경우 천단위 ,사용하도록 변경
+ - ExcelView.java, ExcelXView.java
+ 
+Excel download시 font지정 가능하도록 변경
+ - CommonConfig.java : public final static String DATA_EXCEL_FONT_NAME = "Verdana";

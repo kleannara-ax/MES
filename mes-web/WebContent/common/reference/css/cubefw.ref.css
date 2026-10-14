@@ -1,0 +1,315 @@
+@CHARSET "UTF-8";
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 12px;
+	font-family: inherit;
+	vertical-align: baseline;
+	color: #666666;
+	font-family: 돋음, Dotum, Baekmuk Dotum, 굴림, gulim, Undotum, Apple Gothic, Latin font, sans-serif;
+}
+
+body {
+	line-height: 1em;
+	color: black;
+	background: white;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: #666666;
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+
+blockquote, q {
+	quotes: "" "";
+}
+
+.cubeContentBody{
+	position: relative;
+}
+
+.cubeCenterCont{
+	position: relative;
+	float: left;
+	width: 100%;	
+}
+
+.cubeRightCont{
+	position: relative;
+	margin-top: 10px;
+	float: left;
+	width: 800px;
+}
+
+.cubeTitleNav{
+	display: block;
+	right: 0px;
+	top:20px;
+}
+
+.cubeTopMenu{
+	width: 100%;
+	margin-left: 20px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+.cubeLeftMenu{
+	position: relative;
+	float: left;
+	width: 224px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	border-right: 1px solid #D7D7D7;
+}
+
+.cubeSubMenu{
+	margin-top: 10px;
+	margin-bottom: 40px;
+	padding-right: 10px;
+}
+
+.cubeTopLine{
+	clear: both;
+	border-bottom: 1px solid #D7D7D7;
+	padding-bottom: 10px;
+}
+
+.cubeFooterLine{
+	clear: both;
+	border-bottom: 1px solid #D7D7D7;
+	padding-top: 10px;
+}
+
+.cubeFooter{
+	position: relative;
+	clear: both;
+	width: 990px;
+	padding: 20px 0;
+}
+
+.cubeContents{
+	position: relative;
+	float: left;
+	width: 100%;
+	padding: 20px 0;
+}
+
+table.normalTable {
+	width: 100%;
+	border-left: 1px solid #E5E5E5;
+	border-bottom: 1px solid #E5E5E5;
+}
+
+table.normalTable td, table.normalTable th {
+	border-right: 1px solid #E5E5E5;
+	border-top: 1px solid #E5E5E5;
+	vertical-align: middle;
+	padding: 3px;
+}
+
+table.normalTable th {
+	font-weight: bold;
+	background-color: #EFEFEF;
+	text-align: center;
+}
+
+input.readonlyColumn {
+	font-style: italic;
+	border: 1px solid #DDDDDD;
+	background-color: #EFEFEF;
+}
+
+.cubeTree ul{
+	padding-left: 20px;
+}
+
+.cubeBoardList{
+	display: block;
+	widows: 100%;
+	text-align: right;
+}
+
+.cubePaging{
+	margin: 10px 0;
+}
+
+.cubePaging a:HOVER{
+	color: blue;
+}
+
+.cubeCenter{
+	text-align: center;
+}
+
+.cubeLeft{
+	text-align: left;
+}
+
+.cubeRight{
+	text-align: right;
+}
+
+table.cubeBoardTable {
+	width: 100%;
+	border-bottom: 2px solid #E5E5E5;
+}
+
+table.cubeBoardTable td, table.cubeBoardTable th {
+	border-top: 1px solid #E5E5E5;
+	vertical-align: middle;
+	padding: 5px;
+	line-height: 1.5em;
+	text-align: center;
+}
+
+table.cubeBoardTable th {
+	font-weight: bold;
+	background-color: #EFEFEF;
+}
+
+table.cubeBoardTable td.tit {
+	text-align: left;
+}
+
+table.cubeBoardTable td.cubeBoardCont {
+	text-align: left;
+	padding: 15px 0;
+}
+
+.cubeBoardContent{
+	line-height: 1.5em;
+	
+}
+
+.buttonWrap{
+	margin: 10px 0;
+}
+
+.cubeFileName{
+	background: url("/cubefw/css/images/icons_attfile.gif") center left no-repeat;
+	padding-left: 15px;
+}
+
+.cubeCommtentWriteWrap{
+	width: 100%;
+}
+
+.cubeCommtentWriteWrap td{
+	position: relative;
+	vertical-align: top;
+}
+
+.cubeCommtentWriteWrap td.cubeCommentResigist{
+	vertical-align: middle;
+	text-align: right;
+}
+
+.cubeCommentEditor{
+	width: 99%;
+}
+
+.cubeCommentWrap{
+	width: 100%;
+	background: #f9f9f9;
+}
+
+.cubeCommentWrap li{
+	padding: 10px 20px;
+}
+
+.commentList{
+	width: 100%;
+}
+
+.commentList td{
+	padding: 10px 0 4px 0;
+	border-bottom: 1px solid #D6D6D6; 
+	line-height: 1.5em;
+}
+
+.commentList .date{
+	color: #777777;
+	font-size :12px;
+}
+
+
+.referenceList{
+	line-height: 1.5em;
+	padding: 10px;
+}
+
+.referenceList li{
+	padding: 15px 10px 5px 10px;
+	border-bottom: 1px solid #EEE;
+}
+
+.referenceList li.refTit{
+	border-bottom: 1px solid #bbb;
+}
+
+.referenceList li.refTit h1{
+	font-size: 30px;
+	font-weight: bold;
+	padding-bottom: 3px;
+	line-height: 1.2em;
+}
+
+.referenceList h2 a{
+	font-size: 15px;
+	font-weight: bold;
+	color: #0F67A1;
+}
+
+.referenceList h2{
+	font-size: 15px;
+	font-weight: bold;
+	color: #0F67A1;
+}
+
+.referenceList p{
+	padding-top: 5px;
+}
+
+.referenceList h3{
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.referenceList .box{
+	border: 1px solid #aaa;
+	padding: 10px;
+	background: #eee;
+	margin-top: 5px;
+}

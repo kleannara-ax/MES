@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="klra_mes:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/ROOT_war</output-path>
+    <root id="archive" name="ROOT.war">
+      <element id="artifact" artifact-name="klra_mes:war exploded" />
+    </root>
+  </artifact>
+</component>

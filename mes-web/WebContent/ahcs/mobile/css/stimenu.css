@@ -1,0 +1,250 @@
+/*Sliding Text and Icon Menu Style*/
+
+@import url('fonts.css');
+
+
+.sti-menu{
+	position: relative;
+	width: 98%;
+	display: inline-table;
+	margin-left: auto;
+	margin-right: auto;
+}
+.sti-menu li{
+	float:left;
+	width:100px;
+	height:100px;
+	list-style: none;
+}
+.sti-menu li a{
+	display:inline-block;
+	overflow:hidden;
+	background:#fff;
+	text-align:center;
+	height:100%;
+	width:100%;
+	position:relative;
+	-moz-box-shadow:1px 1px 2px #ddd;
+	-webkit-box-shadow:1px 1px 2px #ddd;
+	box-shadow:1px 1px 2px #ddd;
+}
+.sti-menu li a h2{
+	color:#000;
+	font-family:'Malgun Gothic', '맑은 고딕', sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	text-transform:uppercase;
+	position:absolute;
+	padding:10px;
+	width:100px;
+	top:20px;
+	left:0px;
+}
+.sti-menu li a h3{
+	font-family:'Malgun Gothic', '맑은 고딕', sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-weight:bold;
+	color: #111;
+	position: relative;
+	top:38px;
+	text-align: center;
+	width:50px;
+	padding:10px;
+}
+.singline{
+	font-size: 12px;
+    font-weight: bold;
+    color: #3a3a3a;
+	white-space: nowrap;
+	text-align: left;
+}
+
+
+/*메인 아이콘 위치값 */
+.silver-flat-button.icon:before {
+	position: relative;
+	top: 0;
+	left: 0;
+	text-align: center;
+    content: "";
+    width:40px;
+    height:40px;
+    background: url(../imges/ac-icons.png) 0 644px no-repeat;
+}
+
+.silver-flat-button.checklist.icon:before { background-position: 0 0; }
+.silver-flat-button.checklist.icon:hover:before,
+.silver-flat-button.checklist.icon:focus:before,
+.silver-flat-button.checklist.icon:active:before { background-position: 0 0; }
+
+.silver-flat-button.deliverycontrol.icon:before { background-position: -40px 0 ; }
+.silver-flat-button.deliverycontrol.icon:hover:before,
+.silver-flat-button.deliverycontrol.icon:focus:before,
+.silver-flat-button.deliverycontrol.icon:active:before { background-position: -40px 0 ; }
+
+.silver-flat-button.rawapproval.icon:before { background-position:-80px 0; }
+.silver-flat-button.rawapproval.icon:hover:before,
+.silver-flat-button.rawapproval.icon:focus:before,
+.silver-flat-button.rawapproval.icon:active:before { background-position:-80px 0; }
+
+.silver-flat-button.deliverysearch.icon:before {  background-position:-120px 0; }
+.silver-flat-button.deliverysearch.icon:hover:before,
+.silver-flat-button.deliverysearch.icon:focus:before,
+.silver-flat-button.deliverysearch.icon:active:before { background-position:-120px 0; }
+
+.silver-flat-button.listsearch.icon:before { background-position:-160px 0; }
+.silver-flat-button.listsearch.icon:hover:before,
+.silver-flat-button.listsearch.icon:focus:before,
+.silver-flat-button.listsearch.icon:active:before { background-position:-160px 0; }
+
+.silver-flat-button.pclientsearch.icon:before { background-position:-200px 0; }
+.silver-flat-button.pclientsearch.icon:hover:before,
+.silver-flat-button.pclientsearch.icon:focus:before,
+.silver-flat-button.pclientsearch.icon:active:before { background-position:-200px 0; }
+
+.silver-flat-button.tclientsearch.icon:before { background-position:-240px 0; }
+.silver-flat-button.tclientsearch.icon:hover:before,
+.silver-flat-button.tclientsearch.icon:focus:before,
+.silver-flat-button.tclientsearch.icon:active:before { background-position:-240px 0; }
+
+.silver-flat-button.executives.icon:before { background-position:-280px 0; }
+.silver-flat-button.executives.icon:hover:before,
+.silver-flat-button.executives.icon:focus:before,
+.silver-flat-button.executives.icon:active:before { background-position:-280p 0x; }
+
+.silver-flat-button.order.icon:before { background-position:-320px 0; }
+.silver-flat-button.order.icon:hover:before,
+.silver-flat-button.order.icon:focus:before,
+.silver-flat-button.order.icon:active:before { background-position:-320px 0; }
+
+.silver-flat-button.exchange.icon:before { background-position:-360px 0; }
+.silver-flat-button.exchange.icon:hover:before,
+.silver-flat-button.exchange.icon:focus:before,
+.silver-flat-button.exchange.icon:active:before { background-position:-360px 0; }
+
+.silver-flat-button.processing.icon:before { background-position:-400px 0; }
+.silver-flat-button.processing.icon:hover:before,
+.silver-flat-button.processing.icon:focus:before,
+.silver-flat-button.processing.icon:active:before { background-position:-400px 0; }
+
+.silver-flat-button.apporserach.icon:before { background-position:-440px 0; }
+.silver-flat-button.apporserach.icon:hover:before,
+.silver-flat-button.apporserach.icon:focus:before,
+.silver-flat-button.apporserach.icon:active:before { background-position:-440px 0; }
+
+.silver-flat-button.approvesing.icon:before { background-position:-480px 0; }
+.silver-flat-button.approvesing.icon:hover:before,
+.silver-flat-button.approvesing.icon:focus:before,
+.silver-flat-button.approvesing.icon:active:before { background-position:-480px 0; }
+
+.silver-flat-button.estimate.icon:before { background-position:-520px 0; }
+.silver-flat-button.estimate.icon:hover:before,
+.silver-flat-button.estimate.icon:focus:before,
+.silver-flat-button.estimate.icon:active:before { background-position:-520px 0; }
+
+.silver-flat-button.new.icon:before { background-position:-560px 0; }
+.silver-flat-button.new.icon:hover:before,
+.silver-flat-button.new.icon:focus:before,
+.silver-flat-button.new.icon:active:before { background-position:-560px 0; }
+
+
+/* Button disable */
+.silver-flat-button[disabled], .silver-flat-button[disabled]:hover, .silver-flat-button.disabled, .silver-flat-button.disabled:hover 
+	{
+		background: #ccc;
+		color: #aaa;
+		border-color: #aaa;
+		text-shadow: none;
+		position: absolute;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		cursor: not-allowed;
+}
+.silver-flat-button[disabled].icon:before {
+	position: absolute;
+	top: 1em;
+	left: 2.2em;
+    content: "";
+    width:40px;
+    height:40px;
+    background: url(../imges/ac-icons.png) 0 644px no-repeat;
+}
+
+.silver-flat-button[disabled].checklist.icon:before { background-position: 0 0; }
+.silver-flat-button[disabled].checklist.icon:hover:before,
+.silver-flat-button[disabled].checklist.icon:focus:before,
+.silver-flat-button[disabled].checklist.icon:active:before { background-position: 0 0; }
+
+.silver-flat-button[disabled].deliverycontrol.icon:before { background-position: -40px 0 ; }
+.silver-flat-button[disabled].deliverycontrol.icon:hover:before,
+.silver-flat-button[disabled].deliverycontrol.icon:focus:before,
+.silver-flat-button[disabled].deliverycontrol.icon:active:before { background-position: -40px 0 ; }
+
+.silver-flat-button[disabled].rawapproval.icon:before { background-position:-80px 0; }
+.silver-flat-button[disabled].rawapproval.icon:hover:before,
+.silver-flat-button[disabled].rawapproval.icon:focus:before,
+.silver-flat-button[disabled].rawapproval.icon:active:before { background-position:-80px 0; }
+
+.silver-flat-button[disabled].deliverysearch.icon:before {  background-position:-120px 0; }
+.silver-flat-button[disabled].deliverysearch.icon:hover:before,
+.silver-flat-button[disabled].deliverysearch.icon:focus:before,
+.silver-flat-button[disabled].deliverysearch.icon:active:before { background-position:-120px 0; }
+
+.silver-flat-button[disabled].listsearch.icon:before { background-position:-160px 0; }
+.silver-flat-button[disabled].listsearch.icon:hover:before,
+.silver-flat-button[disabled].listsearch.icon:focus:before,
+.silver-flat-button[disabled].listsearch.icon:active:before { background-position:-160px 0; }
+
+.silver-flat-button[disabled].pclientsearch.icon:before { background-position:-200px 0; }
+.silver-flat-button[disabled].pclientsearch.icon:hover:before,
+.silver-flat-button[disabled].pclientsearch.icon:focus:before,
+.silver-flat-button[disabled].pclientsearch.icon:active:before { background-position:-200px 0; }
+
+.silver-flat-button[disabled].tclientsearch.icon:before { background-position:-240px 0; }
+.silver-flat-button[disabled].tclientsearch.icon:hover:before,
+.silver-flat-button[disabled].tclientsearch.icon:focus:before,
+.silver-flat-button[disabled].tclientsearch.icon:active:before { background-position:-240px 0; }
+
+.silver-flat-button[disabled].executives.icon:before { background-position:-280px 0; }
+.silver-flat-button[disabled].executives.icon:hover:before,
+.silver-flat-button[disabled].executives.icon:focus:before,
+.silver-flat-button[disabled].executives.icon:active:before { background-position:-280p 0x; }
+
+.silver-flat-button[disabled].order.icon:before { background-position:-320px 0; }
+.silver-flat-button[disabled].order.icon:hover:before,
+.silver-flat-button[disabled].order.icon:focus:before,
+.silver-flat-button[disabled].order.icon:active:before { background-position:-320px 0; }
+
+.silver-flat-button[disabled].exchange.icon:before { background-position:-360px 0; }
+.silver-flat-button[disabled].exchange.icon:hover:before,
+.silver-flat-button[disabled].exchange.icon:focus:before,
+.silver-flat-button[disabled].exchange.icon:active:before { background-position:-360px 0; }
+
+.silver-flat-button[disabled].processing.icon:before { background-position:-400px 0; }
+.silver-flat-button[disabled].processing.icon:hover:before,
+.silver-flat-button[disabled].processing.icon:focus:before,
+.silver-flat-button[disabled].processing.icon:active:before { background-position:-400px 0; }
+
+.silver-flat-button[disabled].apporserach.icon:before { background-position:-440px 0; }
+.silver-flat-button[disabled].apporserach.icon:hover:before,
+.silver-flat-button[disabled].apporserach.icon:focus:before,
+.silver-flat-button[disabled].apporserach.icon:active:before { background-position:-440px 0; }
+
+.silver-flat-button[disabled].approvesing.icon:before { background-position:-480px 0; }
+.silver-flat-button[disabled].approvesing.icon:hover:before,
+.silver-flat-button[disabled].approvesing.icon:focus:before,
+.silver-flat-button[disabled].approvesing.icon:active:before { background-position:-480px 0; }
+
+.silver-flat-button[disabled].estimate.icon:before { background-position:-520px 0; }
+.silver-flat-button[disabled].estimate.icon:hover:before,
+.silver-flat-button[disabled].estimate.icon:focus:before,
+.silver-flat-button[disabled].estimate.icon:active:before { background-position:-520px 0; }
+
+.silver-flat-button[disabled].new.icon:before { background-position:-560px 0; }
+.silver-flat-button[disabled].new.icon:hover:before,
+.silver-flat-button[disabled].new.icon:focus:before,
+.silver-flat-button[disabled].new.icon:active:before { background-position:-560px 0; }
+
+

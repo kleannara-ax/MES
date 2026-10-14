@@ -1,0 +1,1114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.mes.dao.quality.QualityMapper">
+
+    <select id="selectCodeValueByText" resultType="DataMap">
+        SELECT *
+        FROM CMCDV
+        WHERE 1=1
+            AND CMCDKY = #{CMCDKY}
+            AND CDESC1 = #{CDESC1}
+    </select>
+
+    <!--설비조회-->
+    <select id="MACHINE_LIST" parameterType="hashmap" resultType="DataMap">
+        SELECT DISTINCT
+            M12.MACH_CD     AS VALUE_COL,
+            M12.MACH_NM     AS TEXT_COL
+        FROM TB_MAS012 M12
+            left join TB_MAS013 M13 on M12.PROC_CD = M13.PROC_CD
+        WHERE 1=1
+        <if test="WERKS != null and WERKS != ''">
+            AND M13.WERKS = #{WERKS}
+        </if>
+        <if test="PROC_CD != null and PROC_CD != ''">
+            AND M12.PROC_CD = #{PROC_CD}
+        </if>
+        AND TRIM(M12.MACH_CD) IS NOT NULL
+        ORDER BY M12.MACH_CD
+    </select>
+
+    <!--사용-->
+    <!-- 합지롤 검사항목 조회(TB_MAS014) -->
+    <select id="selectInspItemList" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+        select INSP_ITEM_CD, MAP_COL_ID, INPT_TYP
+        from tb_mas014 M014
+        WHERE 1 = 1
+          AND M014.INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+          AND M014.PROD_GRP_CD = FN_GET_PROD_GRP('P200', '')
+          AND M014.USE_YN = 'Y'
+          AND M014.INSP_ITEM_GRP_CD IS NOT NULL
+    </select>
+
+    <!-- 마지막 prc_seqno -->
+    <select id="getLastPrcSeqNo" parameterType="hashmap" resultType="int">
+        select NVL(MAX(PRC_SEQNO), 0) AS PRC_SEQNO
+        from TB_QLT020
+        where 1=1
+            and WERKS = #{WERKS}
+            and MATNR = #{MATNR}
+            and MSRM_DATE = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+            and INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+    </select>
+
+    <!--사용-->
+    <!-- 엑셀 업로드 임시 insert -->
+    <insert id="insertStagingList" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO TB_QLT_STAGING (
+            BATCH_ID, ROW_SEQ, PROG_ID, REG_ID, REG_DT,
+            VAL01, VAL02, VAL03, VAL04, VAL05, VAL06, VAL07, VAL08, VAL09, VAL10,
+            VAL11, VAL12, VAL13, VAL14, VAL15, VAL16, VAL17, VAL18, VAL19, VAL20,
+            VAL21, VAL22, VAL23, VAL24, VAL25, VAL26, VAL27, VAL28, VAL29, VAL30
+            ) VALUES (
+            #{item.BATCH_ID}, #{item.ROW_SEQ}, #{item.PROG_ID}, #{item.REG_ID}, SYSDATE,
+            #{item.VAL01}, #{item.VAL02}, #{item.VAL03}, #{item.VAL04}, #{item.VAL05},
+            #{item.VAL06}, #{item.VAL07}, #{item.VAL08}, #{item.VAL09}, #{item.VAL10},
+            #{item.VAL11}, #{item.VAL12}, #{item.VAL13}, #{item.VAL14}, #{item.VAL15},
+            #{item.VAL16}, #{item.VAL17}, #{item.VAL18}, #{item.VAL19}, #{item.VAL20},
+            #{item.VAL21}, #{item.VAL22}, #{item.VAL23}, #{item.VAL24}, #{item.VAL25},
+            #{item.VAL26}, #{item.VAL27}, #{item.VAL28}, #{item.VAL29}, #{item.VAL30}
+            )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <!--사용-->
+    <!-- 검사 헤더 insert -->
+    <insert id="insertInspHeader" parameterType="hashmap">
+        MERGE INTO TB_QLT020 T
+            USING DUAL ON (
+                    T.WERKS                 = #{WERKS}
+                    AND T.MATNR             = #{MATNR}
+                    and T.INSP_ITEM_GRP_CD  = #{INSP_ITEM_GRP_CD}
+                    AND T.MSRM_DATE         = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+                <if test="LOT_NO != null and LOT_NO != ''">
+                    AND T.LOT_NO           = #{LOT_NO}
+                </if>
+                )
+            WHEN MATCHED THEN
+                UPDATE SET
+                    MSRM_ID     = #{MSRM_NM}
+                    , PRC_SEQNO = #{PRC_SEQNO}
+                    , FNL_JDGM  = #{FNL_JDGM}
+                    , RMK       = #{RMK}
+                    , UPDID     = #{REG_ID}
+                    , UPDDATE   = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (WERKS, MATNR, MSRM_DATE, PRC_SEQNO, INSP_ITEM_GRP_CD, MSRM_ID, LOT_NO, IND_BCD, LOT_NO_M, FNL_JDGM, REGID, REGDATE, RMK)
+                    VALUES (#{WERKS}, #{MATNR}, TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+                           , #{PRC_SEQNO}, #{INSP_ITEM_GRP_CD}, #{MSRM_NM}, #{LOT_NO}, #{IND_BCD}, #{LOT_NO_M}, #{FNL_JDGM}, #{REG_ID}, SYSDATE, #{RMK})
+    </insert>
+
+    <!--사용-->
+    <!-- 검사 결과 insert -->
+    <insert id="insertInspResult" parameterType="java.util.List">
+        INSERT INTO TB_QLT021 (
+            INSP_ITEM_GRP_CD,
+            MATNR,
+            WERKS,
+            MSRM_DATE,
+            PRC_SEQNO,
+            INSP_ITEM_CD,
+            RST_VAL,
+            RST_SEL,
+            RST_TXT,
+            RMK,
+            FIT_YN,
+            REGDATE,
+            REGID
+        )
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT
+                #{item.INSP_ITEM_GRP_CD},
+                #{item.MATNR},
+                #{item.WERKS},
+                TO_DATE(#{item.MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS'),
+                #{item.PRC_SEQNO},
+                #{item.INSP_ITEM_CD},
+                #{item.RST_VAL},
+                #{item.RST_SEL},
+                #{item.RST_TXT},
+                #{item.RMK},
+                #{item.FIT_YN},
+                SYSDATE,
+                #{item.REG_ID}
+            FROM DUAL
+        </foreach>
+    </insert>
+
+    <!--사용-->
+    <!-- 공정상태 update -->
+    <update id="updateInventoryStatus">
+        UPDATE TB_INV001
+        SET STCK_STA    = #{STCK_STA}
+          , FNL_JDGM    = #{FNL_JDGM}
+          , MSRM_DATE   = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+          , PRC_SEQNO   = #{PRC_SEQNO}
+          , INSPR_ID    = #{REG_ID}
+          , UPDDATE     = SYSDATE
+          , UPDID       = #{REG_ID}
+        WHERE 1=1
+            and WERKS       = #{WERKS}
+            AND IND_BCD     = #{IND_BCD}
+            AND MATNR       = #{MATNR}
+    </update>
+
+    <!--사용-->
+    <!-- 부적합 cnt -->
+    <select id="selectNonConformityCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_QLT024
+        WHERE INSP_ITEM_GRP_CD  = #{INSP_ITEM_GRP_CD}
+          AND MATNR             = #{MATNR}
+          AND WERKS             = #{WERKS}
+          AND MSRM_DATE         = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+          and PRC_SEQNO         = #{PRC_SEQNO}
+    </select>
+
+    <!--사용-->
+    <!-- 부적합 insert -->
+    <insert id="insertNonConformityHistory" parameterType="map">
+        INSERT INTO TB_QLT024 (
+            INSP_ITEM_GRP_CD,
+            MATNR,
+            WERKS,
+            MSRM_DATE,
+            PRC_SEQNO,
+            PRC_MTD,
+            FNL_JDGM,
+            RMK,
+            LOT_NO,
+            IND_BCD,
+            STOR_LOC_CD, /* 부적합은 보통 NULL 처리하여 강제이송 */
+            REGDATE,
+            REGID
+        ) VALUES (
+                     #{INSP_ITEM_GRP_CD},
+                     #{MATNR},
+                     #{WERKS},
+                     TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS'),
+                     #{PRC_SEQNO},
+                     #{PRC_MTD},
+                     #{FNL_JDGM},
+                     #{RMK},
+                     #{LOT_NO},
+                     #{IND_BCD},
+                     NULL,
+                     SYSDATE,
+                     #{REG_ID}
+                 )
+    </insert>
+
+    <!--사용-->
+    <!-- 부적합 delete -->
+    <delete id="deleteNonConformityHistory" parameterType="map">
+        DELETE FROM TB_QLT024
+        WHERE INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+          AND MATNR            = #{MATNR}
+          AND WERKS            = #{WERKS}
+          AND MSRM_DATE        = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+          and PRC_SEQNO        = #{PRC_SEQNO}
+    </delete>
+
+    <!--사용-->
+    <!-- 합지롤 검사 결과 헤더 delete -->
+    <delete id="deleteInspHeader" parameterType="dataMap">
+        delete from tb_qlt020
+        where 1=1
+            and INSP_ITEM_GRP_CD    = #{INSP_ITEM_GRP_CD}
+            and WERKS               = #{WERKS}
+            and MATNR               = #{MATNR}
+            and MSRM_DATE           = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+            and PRC_SEQNO           = #{PRC_SEQNO}
+    </delete>
+
+    <!--사용-->
+    <!-- 합지롤 검사 결과 delete -->
+    <delete id="deleteInspResult" parameterType="dataMap">
+        delete from tb_qlt021
+        where 1=1
+            and INSP_ITEM_GRP_CD    = #{INSP_ITEM_GRP_CD}
+            and WERKS               = #{WERKS}
+            and MATNR               = #{MATNR}
+            and MSRM_DATE           = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS')
+            and PRC_SEQNO           != #{PRC_SEQNO}
+    </delete>
+
+    <!--사용-->
+    <!-- 합지롤 검사 조회 -->
+    <select id="selectLamiRollInspList" parameterType="hashmap" statementType="CALLABLE" resultType="DataMap">
+        SELECT /*+ LEADING(W001 I001 Q020 Q021 M001 M014 M016 US I010 M012 M012_TRA)
+                    USE_NL(I001 Q020 Q021 M001 M014 M016 US I010 M012 M012_TRA)
+                    INDEX(W001 TB_WRK001_WERKS_PRFM_DT_index)
+                    INDEX(I010 TB_INV010_LOT_NO_M_IDX)
+                    NO_HASH_JOIN NO_MERGE_SJ */
+            Q020.PRC_SEQNO                                                              AS PRC_SEQNO,
+            -- 1. 담당 및 시간 (TB_QLT020, TB_WRK001)
+            TO_CHAR(Q020.MSRM_DATE, 'YYYYMMDD')                                         AS MSRM_DATE,
+            TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'HH24'))                                  AS TIME_HOUR,
+            TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'MI'))                                    AS TIME_MIN,
+            NVL(US.NMLAST,      ' ')                                                    AS MSRM_NM,     -- 또는 INSPR_ID
+            NVL(W001.WRK_CLASS, ' ')                                                    AS WRK_CLASS,
+
+            -- 2. 제품 사양 (TB_WRK001, TB_INV001)
+            NVL(M012.MACH_CD,   ' ')                                                    AS MACH_CD,
+            NVL(M012.MACH_NM,   ' ')                                                    AS MACH_NM,
+            NVL(M012_TRA.MACH_CD,   ' ')                                                AS MACH_CD_TRA,
+            NVL(M012_TRA.MACH_NM,   ' ')                                                AS MACH_NM_TRA,
+            --         (SELECT MAX(MACH_CD) FROM TB_INV010 WHERE LOT_NO_M = I001.LOT_NO AND ROWNUM = 1) AS MACH_NM_TRA,
+
+            NVL(W001.WIDTH,       0)                                                    AS WIDTH,
+            NVL(I001.LOT_NO,    ' ')                                                    AS LOT_NO,
+            NVL(M001.MATNR,  ' ')                                                       AS MATNR,
+            NVL(M001.MATNR_NM,  ' ')                                                    AS MATNR_NM,
+
+            -- 3. 측정값 및 기준치 (이미지 순서대로 전체 항목)
+            -- [평량]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN Q021.RST_VAL END), 0)     AS BS_WGT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN M016.LOW_VAL END), 0)     AS BS_WGT_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN M016.UPP_VAL END), 0)     AS BS_WGT_MAX,
+            -- [백색도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '백색도' THEN Q021.RST_VAL END), 0)    AS WHITE,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '백색도' THEN M016.LOW_VAL END), 0)    AS WHITE_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '백색도' THEN M016.UPP_VAL END), 0)    AS WHITE_MAX,
+            -- [파열강도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN Q021.RST_VAL END), 0)   AS BURST,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN M016.LOW_VAL END), 0)   AS BURST_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN M016.UPP_VAL END), 0)   AS BURST_MAX,
+            -- [MD]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'MD' THEN Q021.RST_VAL END), 0)     AS MD,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'MD' THEN M016.LOW_VAL END), 0)     AS MD_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'MD' THEN M016.UPP_VAL END), 0)     AS MD_MAX,
+            -- [CD]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'CD' THEN Q021.RST_VAL END), 0)     AS CD,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'CD' THEN M016.LOW_VAL END), 0)     AS CD_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'CD' THEN M016.UPP_VAL END), 0)     AS CD_MAX,
+            -- [wet-cd]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'Wet-CD' THEN Q021.RST_VAL END), 0) AS WET_CD,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'Wet-CD' THEN M016.LOW_VAL END), 0) AS WET_CD_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'Wet-CD' THEN M016.UPP_VAL END), 0) AS WET_CD_MAX,
+            -- [흡수도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '흡수도' THEN Q021.RST_VAL END), 0)    AS ABSORB,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '흡수도' THEN M016.LOW_VAL END), 0)    AS ABSORB_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '흡수도' THEN M016.UPP_VAL END), 0)    AS ABSORB_MAX,
+            -- [신장율]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '신장율' THEN Q021.RST_VAL END), 0)   AS ELONG,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '신장율' THEN M016.LOW_VAL END), 0)   AS ELONG_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '신장율' THEN M016.UPP_VAL END), 0)   AS ELONG_MAX,
+            -- [두께]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN Q021.RST_VAL END), 0)     AS THICK,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN M016.LOW_VAL END), 0)     AS THICK_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN M016.UPP_VAL END), 0)     AS THICK_MAX,
+            -- [물풀림성]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '물풀림성' THEN Q021.RST_VAL END), 0)   AS WET_SOLVE,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '물풀림성' THEN M016.LOW_VAL END), 0)   AS WET_SOLVE_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '물풀림성' THEN M016.UPP_VAL END), 0)   AS WET_SOLVE_MAX,
+            -- [투기도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '투기도' THEN Q021.RST_VAL END), 0)    AS AIR_PERM,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '투기도' THEN M016.LOW_VAL END), 0)    AS AIR_PERM_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '투기도' THEN M016.UPP_VAL END), 0)    AS AIR_PERM_MAX,
+
+            -- 4. 육안검사 항목
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '핀홀상태' THEN Q021.RST_TXT END), '-')   AS PINHOLE,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '핀홀상태' THEN M016.STD_SEL END), '-')   AS PINHOLE_STD_SEL,
+
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '반점상태' THEN Q021.RST_TXT END), '-')   AS SPOT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '반점상태' THEN M016.STD_SEL END), '-')   AS SPOT_STD_SEL,
+
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '형광검출' THEN Q021.RST_TXT END), '-')   AS FLUORO,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '형광검출' THEN M016.STD_SEL END), '-')   AS FLUORO_STD_SEL,
+
+            -- 5. 최종판정
+            NVL(Q020.FNL_JDGM,  ' ')                                                     AS FNL_JDGM,
+            NVL(Q020.RMK,       ' ')                                                     AS RMK
+        FROM TB_WRK001 W001
+            JOIN TB_MAS001 M001 ON W001.WERKS = M001.WERKS AND W001.MATNR = M001.MATNR
+            JOIN TB_INV001 I001 ON  W001.WERKS = I001.WERKS AND W001.IND_BCD = I001.IND_BCD
+            join TB_QLT020 Q020 ON Q020.WERKS               = I001.WERKS
+                                AND Q020.MATNR              = I001.MATNR
+                                AND Q020.MSRM_DATE          = I001.MSRM_DATE
+                                AND Q020.PRC_SEQNO          = I001.PRC_SEQNO
+                                and Q020.INSP_ITEM_GRP_CD   = 'H1' -- HL 합지롤 검사
+                                and Q020.DOC_NO IS NULL -- 현업에서 사용중인 합지롤검사 랑 구분되는게 doc_no 뿐임 만약에 이걸로안되면 별도로 구분값을 insert 시켜서 그 값으로 구분짓게해야함 일단 DOC_NO
+            JOIN TB_QLT021 Q021 ON  Q021.WERKS              = Q020.WERKS
+                                AND Q021.MATNR              = Q020.MATNR
+                                AND Q021.MSRM_DATE          = Q020.MSRM_DATE
+                                AND Q021.PRC_SEQNO          = Q020.PRC_SEQNO
+                                AND Q021.INSP_ITEM_GRP_CD   = Q020.INSP_ITEM_GRP_CD
+            JOIN TB_MAS014 M014 ON M014.INSP_ITEM_GRP_CD    = Q021.INSP_ITEM_GRP_CD
+                                AND M014.INSP_ITEM_CD       = Q021.INSP_ITEM_CD
+                                AND M014.PROD_GRP_CD        = FN_GET_PROD_GRP(#{WERKS}, '')
+                                AND M014.USE_YN = 'Y'
+            LEFT JOIN TB_MAS016 M016 ON Q021.WERKS              = M016.WERKS
+                                    AND Q021.MATNR              = M016.MATNR
+                                    AND Q021.INSP_ITEM_GRP_CD   = M016.INSP_ITEM_GRP_CD
+                                    AND Q021.INSP_ITEM_CD       = M016.INSP_ITEM_CD
+            LEFT JOIN USRMA US              ON US.NMLAST = Q020.MSRM_ID
+            LEFT JOIN TB_INV010 I010        ON I010.WERKS = I001.WERKS AND I010.LOT_NO_M = I001.LOT_NO
+            LEFT JOIN TB_MAS012 M012        ON M012.MACH_CD = I001.MACH_CD
+            LEFT JOIN TB_MAS012 M012_TRA    ON M012_TRA.MACH_CD = I010.MACH_CD
+        WHERE 1=1
+            AND NVL(W001.CNL_YN, 'N') = 'N'
+        <if test="WERKS != null and WERKS != ''">
+            AND W001.WERKS = #{WERKS}
+        </if>
+        <if test="RANGE_SQL != null and RANGE_SQL != ''">
+            ${RANGE_SQL}
+        </if>
+        <if test="MACH_CD != null and MACH_CD != ''">
+            AND W001.MACH_CD = #{MACH_CD}
+        </if>
+        <if test="LOT_NO != null and LOT_NO != ''">
+            AND W001.LOT_NO = #{LOT_NO}
+        </if>
+        <if test="MATNR_NM != null and MATNR_NM != ''">
+            AND M001.MATNR_NM like '%' || #{MATNR_NM} || '%'
+        </if>
+        GROUP BY Q020.MSRM_DATE, Q020.PRC_SEQNO, US.NMLAST, W001.WRK_CLASS,
+                I001.LOT_NO, M001.MATNR, MATNR_NM, Q020.FNL_JDGM, Q020.RMK, W001.WIDTH,
+                M012_TRA.MACH_NM, M012.MACH_NM, M012.MACH_CD, M012_TRA.MACH_CD
+        order by I001.LOT_NO
+    </select>
+
+    <!-- 완제품(물성) 검사 -->
+    <!-- 완제품(물성) 검사 -->
+    <!-- 완제품(물성) 검사 -->
+    <!-- 완제품(물성) 검사 조회 -->
+    <select id="selectFinProdInspList" parameterType="hashmap" statementType="CALLABLE" resultType="DataMap">
+        SELECT /*+ LEADING(W001 I001 Q020 Q021 M001 M014 M016 M012 M012_TRA)
+                    USE_NL(I001 Q020 Q021 M001 M014 M016 M012 M012_TRA)
+                    INDEX(W001 TB_WRK001_WERKS_PRFM_DT_index)
+                    NO_HASH_JOIN NO_MERGE_SJ */
+            Q020.PRC_SEQNO                                                              AS PRC_SEQNO,
+            -- 1. 담당 및 시간 (TB_QLT020, TB_WRK001)
+            TO_CHAR(Q020.MSRM_DATE, 'YYYYMMDD')                                         AS MSRM_DATE,
+            TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'HH24'))                                  AS TIME_HOUR,
+            TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'MI'))                                    AS TIME_MIN,
+
+            NVL(Q020.MSRM_ID,   ' ')                                                    AS MSRM_NM,
+            NVL(W001.WRK_CLASS, ' ')                                                    AS WRK_CLASS,
+
+            -- 2. 제품 사양
+            NVL(M012.MACH_NM,   ' ')                                                    AS MACH_NM,
+            NVL(I001.LOT_NO,    ' ')                                                    AS LOT_NO_RA,
+            NVL(Q020.LOT_NO_M,  ' ')                                                    AS LOT_NO_AA,
+            NVL(M001.MATNR,     ' ')                                                    AS MATNR,
+            NVL(M001.MATNR_NM,  ' ')                                                    AS MATNR_NM,
+
+            -- 3. 측정값 및 기준치 (이미지 순서대로 전체 항목)
+            -- [겹수]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '겹수' THEN Q021.RST_VAL END), 0)           AS LAYER_CNT,
+--             NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '겹수' THEN M016.LOW_VAL END), 0)           AS LAYER_CNT_MIN,
+--             NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '겹수' THEN M016.UPP_VAL END), 0)           AS LAYER_CNT_MAX,
+            -- [롤]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '롤' THEN Q021.RST_VAL END), 0)             AS ROLL_CNT,
+--             NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '롤' THEN M016.LOW_VAL END), 0)             AS ROLL_CNT_MIN,
+--             NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '롤' THEN M016.UPP_VAL END), 0)             AS ROLL_CNT_MAX,
+            -- [지폭]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '지폭' THEN Q021.RST_VAL END), 0)           AS WIDTH,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '지폭' THEN M016.LOW_VAL END), 0)           AS WIDTH_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '지폭' THEN M016.UPP_VAL END), 0)           AS WIDTH_MAX,
+            -- [절취간격]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취간격' THEN Q021.RST_VAL END), 0)         AS CUT_INT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취간격' THEN M016.LOW_VAL END), 0)         AS CUT_INT_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취간격' THEN M016.UPP_VAL END), 0)         AS CUT_INT_MAX,
+            -- [직경]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '직경' THEN Q021.RST_VAL END), 0)           AS DIAM,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '직경' THEN M016.LOW_VAL END), 0)           AS DIAM_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '직경' THEN M016.UPP_VAL END), 0)           AS DIAM_MAX,
+            -- [감축직경]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축직경' THEN Q021.RST_VAL END), 0)         AS RED_DIAM,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축직경' THEN M016.LOW_VAL END), 0)         AS RED_DIAM_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축직경' THEN M016.UPP_VAL END), 0)         AS RED_DIAM_MAX,
+            -- [감축율]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축율' THEN Q021.RST_VAL END), 0)           AS RED_RATE,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축율' THEN M016.LOW_VAL END), 0)           AS RED_RATE_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축율' THEN M016.UPP_VAL END), 0)           AS RED_RATE_MAX,
+            -- [길이/매수]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이/매수' THEN Q021.RST_VAL END), 0)        AS LEN_CNT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이/매수' THEN M016.LOW_VAL END), 0)        AS LEN_CNT_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이/매수' THEN M016.UPP_VAL END), 0)        AS LEN_CNT_MAX,
+            -- [평량]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN Q021.RST_VAL END), 0)           AS BS_WGT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN M016.LOW_VAL END), 0)           AS BS_WGT_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN M016.UPP_VAL END), 0)           AS BS_WGT_MAX,
+            -- [파강]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN Q021.RST_VAL END), 0)           AS BREAK,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN M016.LOW_VAL END), 0)           AS BREAK_MIN,
+--             NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN M016.UPP_VAL END), 0)           AS BREAK_MAX,
+            -- [절취강도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취강도' THEN Q021.RST_VAL END), 0)         AS CUT_STR,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취강도' THEN M016.LOW_VAL END), 0)         AS CUT_STR_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취강도' THEN M016.UPP_VAL END), 0)         AS CUT_STR_MAX,
+            -- [두께평균]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN Q021.RST_VAL END), 0)         AS THK_AVG,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN M016.LOW_VAL END), 0)         AS THK_AVG_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN M016.UPP_VAL END), 0)         AS THK_AVG_MAX,
+            -- [테일강도]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '테일실강도' THEN Q021.RST_VAL END), 0)         AS TAIL_STR,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '테일실강도' THEN M016.LOW_VAL END), 0)         AS TAIL_STR_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '테일실강도' THEN M016.UPP_VAL END), 0)         AS TAIL_STR_MAX,
+            -- [길이]
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이' THEN Q021.RST_VAL END),      0)          AS LENGTH,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이' THEN M016.LOW_VAL END),      0)          AS LENGTH_MIN,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '길이' THEN M016.UPP_VAL END),      0)          AS LENGTH_MAX,
+
+            -- 4. 육안검사 항목 (이미지 우측 항목들)
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취선상태' THEN Q021.RST_TXT END),   ' ')       AS CUT_LINE,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '테일겹분리' THEN Q021.RST_TXT END),   ' ')       AS TAIL_SPLT,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '이물질혼입' THEN Q021.RST_TXT END),   ' ')       AS CONTAM,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '엠보싱상태' THEN Q021.RST_TXT END),   ' ')       AS EMBOSS,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '포장상태' THEN Q021.RST_TXT END),     ' ')       AS PACK_STS,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '냄새' THEN Q021.RST_TXT END),         ' ')      AS SMELL,
+            NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '형광검출유/무' THEN Q021.RST_TXT END), ' ')       AS FLUORO,
+
+            -- 5. 판정 및 비고
+            NVL(Q020.FNL_JDGM,  ' ')                                                     AS FNL_JDGM,
+            NVL(Q020.RMK,       ' ')                                                     AS RMK
+
+        FROM TB_WRK001 W001
+            JOIN TB_MAS001 M001 ON W001.WERKS = M001.WERKS AND W001.MATNR = M001.MATNR
+            JOIN TB_INV001 I001 ON W001.WERKS = I001.WERKS AND W001.IND_BCD = I001.IND_BCD
+            JOIN (SELECT
+                    WERKS,
+                    MATNR,
+                    MSRM_DATE,
+                    PRC_SEQNO,
+                    INSP_ITEM_GRP_CD,
+                    MSRM_ID,
+                    LOT_NO_M,
+                    FNL_JDGM,
+                    RMK,
+                    ROW_NUMBER() OVER (
+                    PARTITION BY WERKS, MATNR, MSRM_DATE, INSP_ITEM_GRP_CD
+                    ORDER BY PRC_SEQNO DESC
+                    ) AS RN
+                    FROM TB_QLT020
+                    WHERE INSP_ITEM_GRP_CD = 'H3'
+                        ) Q020 ON Q020.WERKS               = I001.WERKS
+                                AND Q020.MATNR              = I001.MATNR
+                                AND Q020.MSRM_DATE          = I001.MSRM_DATE
+                                AND Q020.PRC_SEQNO          = I001.PRC_SEQNO
+                                AND Q020.RN                 = 1 -- 가장 높은 PRC_SEQNO만 매칭
+            JOIN TB_QLT021 Q021 ON  Q021.WERKS              = Q020.WERKS
+                                AND Q021.MATNR              = Q020.MATNR
+                                AND Q021.MSRM_DATE          = Q020.MSRM_DATE
+                                AND Q021.PRC_SEQNO          = Q020.PRC_SEQNO
+                                AND Q021.INSP_ITEM_GRP_CD   = Q020.INSP_ITEM_GRP_CD
+
+            JOIN TB_MAS014 M014 ON M014.INSP_ITEM_GRP_CD    = Q021.INSP_ITEM_GRP_CD
+                                AND M014.INSP_ITEM_CD       = Q021.INSP_ITEM_CD
+                                AND M014.PROD_GRP_CD        = FN_GET_PROD_GRP(#{WERKS}, '')
+                                AND M014.USE_YN = 'Y'
+            LEFT JOIN TB_MAS016 M016 ON Q021.WERKS              = M016.WERKS
+                                    AND Q021.MATNR              = M016.MATNR
+                                    AND Q021.INSP_ITEM_GRP_CD   = M016.INSP_ITEM_GRP_CD
+                                    AND Q021.INSP_ITEM_CD       = M016.INSP_ITEM_CD
+            LEFT JOIN TB_MAS012 M012 ON M012.MACH_CD = W001.MACH_CD
+        WHERE 1=1
+            AND NVL(W001.CNL_YN, 'N') = 'N'
+        <if test="WERKS != null and WERKS != ''">
+            AND W001.WERKS = #{WERKS}
+        </if>
+        <if test="RANGE_SQL != null and RANGE_SQL != ''">
+            ${RANGE_SQL}
+        </if>
+        GROUP BY
+            Q020.MSRM_DATE, Q020.PRC_SEQNO, Q020.MSRM_ID, W001.WRK_CLASS,
+            W001.MACH_CD, I001.LOT_NO, I001.MATNR, Q020.FNL_JDGM, Q020.RMK,
+            M012.MACH_NM, M001.MATNR_NM, Q020.LOT_NO_M, M001.MATNR
+        order by Q020.MSRM_DATE, I001.LOT_NO
+    </select>
+
+    <select id="getFinProdInfo" resultType="DataMap" parameterType="DataMap">
+        SELECT *
+        FROM (
+                 SELECT LOT_NO, IND_BCD
+                 FROM TB_INV010
+                 WHERE 1=1
+                   AND MATNR            = #{MATNR}
+                   AND LOT_NO_M         = #{LOT_NO_M}
+                   AND NVL(CNL_YN, 'N') = 'N'
+                 ORDER BY REGDATE DESC
+             )
+        WHERE ROWNUM = 1
+    </select>
+
+    <!--검사여부 체크-->
+    <select id="inspectionExistCheck" resultType="DataMap" parameterType="DataMap">
+        SELECT 'Y'
+        FROM DUAL
+        WHERE EXISTS (SELECT 1
+                      from TB_INV001
+                      where 1 = 1
+                        and LOT_NO = #{LOT_NO}
+                        and IND_BCD = #{ind_bcd}
+                        and MSRM_DATE = TO_DATE(#{MSRM_DATE}, 'YYYY-MM-DD HH24:MI:SS'))
+    </select>
+
+    <!-- 완제품(물성) 검사 업로드 임시 저장 (Temp) -->
+    <insert id="insertFinProdInspTemp">
+
+    </insert>
+
+    <!-- 완제품(물성) 검사 저장 -->
+    <insert id="insertFinProdInsp">
+
+    </insert>
+
+    <select id="selectQltProdSpecList" parameterType="hashmap" statementType="CALLABLE" resultType="DataMap">
+        SELECT
+            PROD_KEY,
+            WERKS,
+            MACH_CD,
+            MSRM_DATE,
+            MSRM_TIME,
+            -- PIVOT 결과 컬럼 매핑 (별칭을 명확히 NM, RT로 줄였습니다)
+            -- 원료명 NVL 처리 (null이면 빈 문자열)
+            NVL("1_NM", ' ') AS MAT_NM_1, NVL("1_QT", 0) AS USE_QTY_1, NVL("1_RT", 0) AS MIX_RATE_1,
+            NVL("2_NM", ' ') AS MAT_NM_2, NVL("2_QT", 0) AS USE_QTY_2, NVL("2_RT", 0) AS MIX_RATE_2,
+            NVL("3_NM", ' ') AS MAT_NM_3, NVL("3_QT", 0) AS USE_QTY_3, NVL("3_RT", 0) AS MIX_RATE_3,
+            NVL("4_NM", ' ') AS MAT_NM_4, NVL("4_QT", 0) AS USE_QTY_4, NVL("4_RT", 0) AS MIX_RATE_4,
+            NVL("5_NM", ' ') AS MAT_NM_5, NVL("5_QT", 0) AS USE_QTY_5, NVL("5_RT", 0) AS MIX_RATE_5,
+            NVL("6_NM", ' ') AS MAT_NM_6, NVL("6_QT", 0) AS USE_QTY_6, NVL("6_RT", 0) AS MIX_RATE_6,
+            NVL("7_NM", ' ') AS MAT_NM_7, NVL("7_QT", 0) AS USE_QTY_7, NVL("7_RT", 0) AS MIX_RATE_7,
+            NVL("8_NM", ' ') AS MAT_NM_8, NVL("8_QT", 0) AS USE_QTY_8, NVL("8_RT", 0) AS MIX_RATE_8,
+            -- 총사용량 합계 계산
+            (NVL("1_QT", 0) + NVL("2_QT", 0) + NVL("3_QT", 0) + NVL("4_QT", 0) +
+             NVL("5_QT", 0) + NVL("6_QT", 0) + NVL("7_QT", 0) + NVL("8_QT", 0))         AS TOTAL_USE,
+            -- 총비율 합계 계산
+            (NVL("1_RT", 0) + NVL("2_RT", 0) + NVL("3_RT", 0) + NVL("4_RT", 0) +
+             NVL("5_RT", 0) + NVL("6_RT", 0) + NVL("7_RT", 0) + NVL("8_RT", 0)) || '%'  AS TOTAL_RATE
+        FROM (
+                 -- 1. 데이터 소스 및 가상 순번 생성
+                 SELECT
+                     PROD_KEY, WERKS, MACH_CD, MSRM_DATE, MSRM_TIME, MAT_NM, MIX_RATE, USE_QTY, MAT_SEQ
+                 FROM TB_QLT_PROD_SPEC A
+        WHERE 1=1
+            AND A.WERKS = #{WERKS}
+        <if test="RANGE_SQL != null and RANGE_SQL != ''">
+            ${RANGE_SQL}
+        </if>
+        <if test="MAT_NM_LB != null and MAT_NM_LB != ''">
+            AND EXISTS (
+                SELECT 1
+                FROM TB_QLT_PROD_SPEC B
+                WHERE B.WERKS = A.WERKS
+                    AND B.PROD_KEY = A.PROD_KEY
+                    AND B.KPGBN = 'LBKP'
+                    AND B.MAT_NM LIKE '%' || #{MAT_NM_LB} || '%'
+            )
+        </if>
+        <if test="MAT_NM_NB != null and MAT_NM_NB != ''">
+            AND EXISTS (
+                SELECT 1
+                FROM TB_QLT_PROD_SPEC C
+                WHERE C.WERKS = A.WERKS
+                    AND C.PROD_KEY = A.PROD_KEY
+                    AND C.KPGBN = 'NBKP'
+                    AND C.MAT_NM LIKE '%' || #{MAT_NM_NB} || '%'
+            )
+        </if>
+             )
+-- 2. PIVOT 실행 (별칭을 짧게 NM, RT로 설정)
+                 PIVOT (
+                 MAX(MAT_NM) AS NM,
+                     MAX(MIX_RATE) AS RT,
+                     MAX(USE_QTY) AS QT
+                 FOR MAT_SEQ IN (1, 2, 3, 4, 5, 6, 7, 8)
+                 ) PVT
+-- 3. 정렬
+        ORDER BY MSRM_DATE DESC
+    </select>
+
+    <select id="DefectDetail_LIST" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+        SELECT
+            CMCDVL AS VALUE_COL,
+            CDESC1 AS TEXT_COL
+        FROM CMCDV
+        WHERE CMCDKY = #{GRP_CD}
+            AND USARG1 = #{DETAIL_CD}
+        ORDER BY CMCDVL DESC,USARG1
+    </select>
+
+
+    <select id="selectVisualChecklList" parameterType="hashmap" resultType="DataMap">
+        select seq          as SEQ,
+               PROD_MM      as PROD_MM,
+               NO           as NO,
+               prod_date    as PRD_DATE,
+               prod_time    as PRD_TIME,
+               prod_line    as MACHINE,
+               inspector    as INSP_USER,
+               LOT_NO       as LOT_NO_RA,
+               item_code    as MATNR,
+               item_name    as MATNR_NM,
+               defect_grp   AS DEFECT_GRP,
+               defect_dtl   AS DEFECT_DTL,
+               defect_qty   AS DEFECT_QTY,
+               UNIT         AS QLT_UNIT,
+               0            AS EA_CONV_QTY,
+               defect_act   AS DEFECT_ACT,
+               remark       AS RMK,
+               reg_dt       AS REG_DT,
+               reg_user     AS REG_USER
+        from TB_QLT_DEFECT
+        where 1 = 1
+        <if test="RANGE_SQL != null and RANGE_SQL != ''">
+            ${RANGE_SQL}
+        </if>
+        <if test="MACHINE != null and MACHINE != ''">
+            AND prod_line LIKE '%' || #{MACHINE} || '%'
+        </if>
+    </select>
+
+    <update id="updateVisualCheck" parameterType="java.util.List">
+        MERGE INTO TB_QLT_DEFECT T
+        USING (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT
+            #{item.SEQ}             AS SEQ,
+            #{item.PROD_MM}         AS PROD_MM,
+            #{item.NO}              AS NO,
+            #{item.PRD_DATE}        AS PROD_DATE,
+            #{item.PRD_TIME}        AS PROD_TIME,
+            #{item.MACHINE}         AS PROD_LINE,
+            #{item.LOT_NO_RA}       AS LOT_NO,
+            #{item.MATNR}           AS ITEM_CODE,
+            #{item.DEFECT_GRP}      AS DEFECT_GRP,
+            #{item.DEFECT_DTL}      AS DEFECT_DTL,
+            #{item.DEFECT_QTY}      AS DEFECT_QTY,
+            #{item.QLT_UNIT}        AS UNIT,
+            #{item.DEFECT_ACT}      AS DEFECT_ACT,
+            #{item.RMK}             AS REMARK,
+            #{item.REG_ID}          AS REG_USER
+            FROM DUAL
+        </foreach>
+        ) S
+        ON (
+            T.SEQ = S.SEQ
+        )
+        WHEN MATCHED THEN
+        UPDATE SET
+        T.PROD_MM       = S.PROD_MM,
+        T.NO            = S.NO,
+        T.PROD_TIME     = S.PROD_TIME,
+        T.DEFECT_GRP    = S.DEFECT_GRP,
+        T.DEFECT_DTL    = S.DEFECT_DTL,
+        T.DEFECT_QTY    = S.DEFECT_QTY,
+        T.UNIT          = S.UNIT,
+        T.DEFECT_ACT    = S.DEFECT_ACT,
+        T.REMARK        = S.REMARK,
+        T.REG_DT        = SYSDATE,
+        T.REG_USER      = S.REG_USER
+    </update>
+
+    <!-- MyBatis 예시 -->
+    <delete id="deleteVisualCheck" parameterType="java.util.List">
+        DELETE FROM TB_QLT_DEFECT
+        WHERE SEQ IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.SEQ}
+        </foreach>
+    </delete>
+
+    <!-- 외관순회검사 저장 -->
+    <insert id="insertVisualCheck" parameterType="java.util.List">
+        insert into TB_QLT_DEFECT (PROD_MM, NO, PROD_DATE, PROD_TIME, PROD_LINE, INSPECTOR, LOT_NO, ITEM_CODE, ITEM_NAME, DEFECT_GRP,
+                                   DEFECT_DTL, DEFECT_QTY, UNIT, DEFECT_ACT, REMARK, REG_DT, REG_USER)
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT
+            #{item.PROD_MM},
+            #{item.NO},
+            #{item.PRD_DATE},
+            #{item.PRD_TIME},
+            #{item.MACHINE},
+            #{item.INSP_USER},
+            #{item.LOT_NO_RA},
+            #{item.MATNR},
+            #{item.MATNR_NM},
+            #{item.DEFECT_GRP},
+            #{item.DEFECT_DTL},
+            TO_NUMBER(TRIM(#{item.DEFECT_QTY, jdbcType=VARCHAR})),
+            #{item.QLT_UNIT},
+            #{item.DEFECT_ACT},
+            #{item.RMK},
+            SYSDATE,
+            #{item.REG_ID}
+            FROM DUAL
+        </foreach>
+    </insert>
+
+    <select id="getEaConvQty" resultType="DataMap">
+        SELECT FN_CHG_UNIT(
+                       #{P_MATNR},
+                       #{P_WERKS},
+                       #{P_BEF_UNIT},
+                       #{P_AFT_UNIT},
+                       #{P_QTY})
+            as ea_conv_qty
+        from dual
+    </select>
+
+    <select id="selectMatnrList" parameterType="java.util.List" resultType="DataMap">
+        SELECT distinct
+            inv001.LOT_NO           AS LOT_NO,
+            inv001.MATNR            AS MATNR,
+            mas001.MATNR_NM         AS MATNR_NM
+        FROM tb_inv001 inv001
+            left join tb_mas001 mas001 on inv001.MATNR = mas001.MATNR
+        WHERE 1=1
+            AND LOT_NO IN
+            <foreach collection="list" item="lotNo" open="(" separator="," close=")">
+                #{lotNo}
+            </foreach>
+    </select>
+
+    <select id="selectInspectionSpec" parameterType="hashmap" resultType="DataMap">
+        select WERKS,
+               MATNR,
+               m014.INSP_ITEM_GRP_CD,
+               m014.INSP_ITEM_CD,
+               INSP_ITEM_NM,
+               MAP_COL_ID,
+               STD_VAL,
+               UPP_VAL,
+               LOW_VAL,
+               STD_SEL,
+               USE_YN
+        FROM tb_mas014 m014
+             INNER JOIN tb_mas016 m016 ON m014.INSP_ITEM_GRP_CD = m016.INSP_ITEM_GRP_CD
+                                          AND m014.INSP_ITEM_CD = m016.INSP_ITEM_CD
+        WHERE 1=1
+            AND WERKS = #{WERKS}
+            AND m014.INSP_ITEM_GRP_CD = #{INSP_ITEM_GRP_CD}
+            AND MATNR = #{MATNR}
+            AND USE_YN = 'Y'
+    </select>
+
+    <!-- 생산사양 -->
+    <!-- 생산사양 -->
+    <!-- 생산사양 -->
+    <insert id="insertQltProdSpec" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="item" index="index">
+            INTO TB_QLT_PROD_SPEC (
+                PROD_KEY,
+                MAT_SEQ,
+                WERKS,
+                MACH_CD,
+                MSRM_DATE,
+                KPGBN,
+                MAT_NM,
+                MIX_RATE,
+                USE_QTY,
+                REGDATE
+            ) VALUES (
+                #{item.PROD_KEY},
+                #{item.MAT_SEQ},
+                #{item.WERKS},
+                #{item.MACH_CD},
+                #{item.MSRM_DATE},
+                #{item.KPGBN},
+                #{item.MAT_NM},
+                TO_NUMBER(#{item.MIX_RATE}),
+                TO_NUMBER(#{item.USE_QTY}),
+                SYSDATE
+            )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <update id="updateQltProdSpec" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="DECLARE BEGIN" close="; END;" separator=";">
+            MERGE INTO TB_QLT_PROD_SPEC T
+            USING DUAL
+            ON (
+                T.PROD_KEY = #{item.PROD_KEY}
+                AND T.MAT_SEQ = #{item.MAT_SEQ}
+                AND T.KPGBN = #{item.KPGBN}
+                AND T.WERKS = #{item.WERKS}
+            )
+            WHEN MATCHED THEN
+                UPDATE SET
+                    MACH_CD   = #{item.MACH_CD},
+                    MSRM_DATE = #{item.MSRM_DATE},
+                    MAT_NM    = #{item.MAT_NM},
+                    MIX_RATE  = TO_NUMBER(#{item.MIX_RATE}),
+                    USE_QTY   = TO_NUMBER(#{item.USE_QTY}),
+                    REGDATE   = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (
+                    PROD_KEY, MAT_SEQ, WERKS, MACH_CD, MSRM_DATE,
+                    KPGBN, MAT_NM, MIX_RATE, USE_QTY, REGDATE
+                ) VALUES (
+                    #{item.PROD_KEY}, #{item.MAT_SEQ}, #{item.WERKS}, #{item.MACH_CD}, #{item.MSRM_DATE},
+                    #{item.KPGBN}, #{item.MAT_NM}, TO_NUMBER(#{item.MIX_RATE}), TO_NUMBER(#{item.USE_QTY}), SYSDATE
+                )
+        </foreach>
+    </update>
+
+    <delete id="deleteProdSpec" parameterType="java.util.List">
+        DELETE FROM TB_QLT_PROD_SPEC
+        WHERE PROD_KEY IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.PROD_KEY}
+        </foreach>
+    </delete>
+
+    <delete id="deleteSingleProdSpec" parameterType="DataMap">
+        DELETE FROM TB_QLT_PROD_SPEC
+        WHERE PROD_KEY = #{PROD_KEY}
+          AND MAT_SEQ  = #{MAT_SEQ}
+          AND KPGBN    = #{KPGBN}
+          AND WERKS    = #{WERKS}
+    </delete>
+
+    <select id="selectMaxProdKeySeq" parameterType="DataMap" resultType="String">
+        SELECT
+            LPAD(NVL(MAX(TO_NUMBER(SUBSTR(PROD_KEY, -2))), 0) + 1, 2, '0') AS NEXT_SEQ
+        FROM TB_QLT_PROD_SPEC
+        WHERE WERKS     = #{WERKS}
+          AND MACH_CD   = #{MACH_CD}
+          AND MSRM_DATE = #{MSRM_DATE}
+    </select>
+
+
+    <!-- 추적성 -->
+    <!-- 추적성 -->
+    <!-- 추적성 -->
+    <!-- 추적성 조회 -->
+    <select id="selectQltLotTraceList" parameterType="hashmap" statementType="CALLABLE" resultType="DataMap">
+        WITH PROD_SPEC AS (
+            SELECT
+                PROD_KEY,
+                WERKS,
+                MACH_CD,
+                -- 날짜 포맷 (데이터가 8자리라면 YYYYMMDD)
+                TO_CHAR(TO_DATE(MSRM_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS MSRM_DATE,
+                -- PIVOT 결과 컬럼 매핑 (별칭을 명확히 NM, RT로 줄였습니다)
+                -- 원료명 NVL 처리 (null이면 빈 문자열)
+                NVL("1_NM", ' ') AS MAT_NM_1, NVL("1_QT", 0) AS USE_QTY_1, NVL("1_RT", 0) AS MIX_RATE_1,
+                NVL("2_NM", ' ') AS MAT_NM_2, NVL("2_QT", 0) AS USE_QTY_2, NVL("2_RT", 0) AS MIX_RATE_2,
+                NVL("3_NM", ' ') AS MAT_NM_3, NVL("3_QT", 0) AS USE_QTY_3, NVL("3_RT", 0) AS MIX_RATE_3,
+                NVL("4_NM", ' ') AS MAT_NM_4, NVL("4_QT", 0) AS USE_QTY_4, NVL("4_RT", 0) AS MIX_RATE_4,
+                NVL("5_NM", ' ') AS MAT_NM_5, NVL("5_QT", 0) AS USE_QTY_5, NVL("5_RT", 0) AS MIX_RATE_5,
+                NVL("6_NM", ' ') AS MAT_NM_6, NVL("6_QT", 0) AS USE_QTY_6, NVL("6_RT", 0) AS MIX_RATE_6,
+                NVL("7_NM", ' ') AS MAT_NM_7, NVL("7_QT", 0) AS USE_QTY_7, NVL("7_RT", 0) AS MIX_RATE_7,
+                NVL("8_NM", ' ') AS MAT_NM_8, NVL("8_QT", 0) AS USE_QTY_8, NVL("8_RT", 0) AS MIX_RATE_8,
+                -- 총사용량 합계 계산
+                (NVL("1_QT", 0) + NVL("2_QT", 0) + NVL("3_QT", 0) + NVL("4_QT", 0) +
+                NVL("5_QT", 0) + NVL("6_QT", 0) + NVL("7_QT", 0) + NVL("8_QT", 0))         AS TOTAL_USE,
+                -- 총비율 합계 계산
+                (NVL("1_RT", 0) + NVL("2_RT", 0) + NVL("3_RT", 0) + NVL("4_RT", 0) +
+                NVL("5_RT", 0) + NVL("6_RT", 0) + NVL("7_RT", 0) + NVL("8_RT", 0)) || '%'  AS TOTAL_RATE
+                ,REGDATE
+            FROM (
+            -- 1. 데이터 소스 및 가상 순번 생성
+            SELECT PROD_KEY, WERKS, MACH_CD, MSRM_DATE, MAT_NM, MIX_RATE, USE_QTY, MAT_SEQ, REGDATE
+            FROM TB_QLT_PROD_SPEC A
+            WHERE 1=1
+                AND A.WERKS = #{WERKS}
+<!--            <if test="RANGE_SQL != null and RANGE_SQL != ''">-->
+<!--                ${RANGE_SQL}-->
+<!--            </if>-->
+            <if test="MAT_NM_LB != null and MAT_NM_LB != ''">
+                AND EXISTS (
+                    SELECT 1
+                    FROM TB_QLT_PROD_SPEC B
+                    WHERE B.WERKS = A.WERKS
+                        AND B.PROD_KEY = A.PROD_KEY
+                        AND B.KPGBN = 'LBKP'
+                        AND B.MAT_NM LIKE '%' || #{MAT_NM_LB} || '%'
+                )
+            </if>
+            <if test="MAT_NM_NB != null and MAT_NM_NB != ''">
+                AND EXISTS (
+                    SELECT 1
+                    FROM TB_QLT_PROD_SPEC C
+                    WHERE C.WERKS = A.WERKS
+                        AND C.PROD_KEY = A.PROD_KEY
+                        AND C.KPGBN = 'NBKP'
+                        AND C.MAT_NM LIKE '%' || #{MAT_NM_NB} || '%'
+                )
+            </if>
+            )
+            -- 2. PIVOT 실행 (별칭을 짧게 NM, RT로 설정)
+            PIVOT (
+                MAX(MAT_NM)     AS NM,
+                MAX(MIX_RATE)   AS RT,
+                MAX(USE_QTY)    AS QT
+                FOR MAT_SEQ IN (1, 2, 3, 4, 5, 6, 7, 8)
+            ) PVT
+            -- 3. 정렬
+            ORDER BY MSRM_DATE DESC
+        )
+        , QLT03 AS (
+            SELECT /*+ LEADING(W001 I001 Q020 Q021 M001 M014 M016 US I010 M012 M012_TRA)
+                USE_NL(I001 Q020 Q021 M001 M014 M016 US I010 M012 M012_TRA)
+                INDEX(W001 TB_WRK001_WERKS_PRFM_DT_index)
+                INDEX(I010 TB_INV010_LOT_NO_M_IDX)
+                NO_HASH_JOIN NO_MERGE_SJ */
+                PRD_END_DATE,
+                Q020.PRC_SEQNO AS PRC_SEQNO,
+                -- 1. 담당 및 시간 (TB_QLT020, TB_WRK001)
+                TO_CHAR(Q020.MSRM_DATE, 'YYYYMMDD') AS MSRM_DATE,
+                TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'HH24')) AS TIME_HOUR,
+                TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'MI')) AS TIME_MIN,
+                NVL(US.NMLAST, ' ') AS MSRM_NM, -- 또는 INSPR_ID
+                NVL(W001.WRK_CLASS, ' ') AS WRK_CLASS,
+
+                -- 2. 제품 사양 (TB_WRK001, TB_INV001)
+                NVL(M012.MACH_CD, ' ') AS MACH_CD,
+                NVL(M012.MACH_NM, ' ') AS MACH_NM,
+                NVL(M012_TRA.MACH_CD, ' ') AS MACH_CD_TRA,
+                NVL(M012_TRA.MACH_NM, ' ') AS MACH_NM_TRA,
+
+                NVL(I001.LOT_NO, ' ') AS LOT_NO_M,
+                NVL(M001.MATNR, ' ') AS MATNR,
+                NVL(M001.MATNR_NM, ' ') AS MATNR_NM,
+
+                -- 3. 측정값 및 기준치 (이미지 순서대로 전체 항목)
+                -- [평량]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN Q021.RST_VAL END), 0) AS BS_WGT,
+                -- [백색도]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '백색도' THEN Q021.RST_VAL END), 0) AS WHITE,
+                -- [파열강도]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN Q021.RST_VAL END), 0) AS BURST,
+                -- [MD]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'MD' THEN Q021.RST_VAL END), 0) AS MD,
+                -- [CD]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = 'CD' THEN Q021.RST_VAL END), 0) AS CD,
+                -- [신장율]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '신장율' THEN Q021.RST_VAL END), 0) AS ELONG,
+                -- [두께]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN Q021.RST_VAL END), 0) AS THICK
+            FROM TB_WRK001 W001
+                JOIN TB_MAS001 M001 ON W001.WERKS = M001.WERKS AND W001.MATNR = M001.MATNR
+                JOIN TB_INV001 I001 ON W001.WERKS = I001.WERKS AND W001.IND_BCD = I001.IND_BCD
+                join TB_QLT020 Q020 ON Q020.WERKS = I001.WERKS
+                                    AND Q020.MATNR = I001.MATNR
+                                    AND Q020.MSRM_DATE = I001.MSRM_DATE
+                                    AND Q020.PRC_SEQNO = I001.PRC_SEQNO
+                                    and Q020.INSP_ITEM_GRP_CD = 'H1' -- HL 합지롤 검사
+                JOIN TB_QLT021 Q021 ON Q021.WERKS = Q020.WERKS
+                                    AND Q021.MATNR = Q020.MATNR
+                                    AND Q021.MSRM_DATE = Q020.MSRM_DATE
+                                    AND Q021.PRC_SEQNO = Q020.PRC_SEQNO
+                                    AND Q021.INSP_ITEM_GRP_CD = Q020.INSP_ITEM_GRP_CD
+                JOIN TB_MAS014 M014 ON M014.INSP_ITEM_GRP_CD = Q021.INSP_ITEM_GRP_CD
+                                    AND M014.INSP_ITEM_CD = Q021.INSP_ITEM_CD
+                                    AND M014.PROD_GRP_CD = FN_GET_PROD_GRP(#{WERKS}, '')
+                                    AND M014.USE_YN = 'Y'
+                LEFT JOIN TB_MAS016 M016 ON Q021.WERKS = M016.WERKS
+                                    AND Q021.MATNR = M016.MATNR
+                                    AND Q021.INSP_ITEM_GRP_CD = M016.INSP_ITEM_GRP_CD
+                                    AND Q021.INSP_ITEM_CD = M016.INSP_ITEM_CD
+                LEFT JOIN USRMA US ON US.NMLAST = Q020.MSRM_ID
+                LEFT JOIN TB_INV010 I010 ON I010.WERKS = I001.WERKS AND I010.LOT_NO_M = I001.LOT_NO
+                LEFT JOIN TB_MAS012 M012 ON M012.MACH_CD = I001.MACH_CD
+                LEFT JOIN TB_MAS012 M012_TRA ON M012_TRA.MACH_CD = I010.MACH_CD
+            WHERE 1=1
+                AND NVL(W001.CNL_YN, 'N') = 'N'
+                <if test="WERKS != null and WERKS != ''">
+                    AND W001.WERKS = #{WERKS}
+                </if>
+                <if test="RANGE_SQL != null and RANGE_SQL != ''">
+                    ${RANGE_SQL}
+                </if>
+                <if test="MACH_CD != null and MACH_CD != ''">
+                    AND W001.MACH_CD = #{MACH_CD}
+                </if>
+                <if test="LOT_NO != null and LOT_NO != ''">
+                    AND W001.LOT_NO = #{LOT_NO}
+                </if>
+                <if test="MATNR_NM != null and MATNR_NM != ''">
+                    AND M001.MATNR_NM like '%' || #{MATNR_NM} || '%'
+                </if>
+            GROUP BY Q020.MSRM_DATE, Q020.PRC_SEQNO, US.NMLAST, W001.WRK_CLASS,
+                I001.LOT_NO, M001.MATNR, MATNR_NM, Q020.FNL_JDGM, Q020.RMK, W001.WIDTH,
+                M012_TRA.MACH_NM, M012.MACH_NM, M012.MACH_CD, M012_TRA.MACH_CD
+                ,PRD_END_DATE
+            order by I001.LOT_NO
+        )
+        , QLT05 AS (
+            SELECT /*+ LEADING(W001 I001 Q020 Q021 M001 M014 M016 US M012 M012_TRA)
+                USE_NL(I001 Q020 Q021 M001 M014 M016 US M012 M012_TRA)
+                INDEX(W001 TB_WRK001_WERKS_PRFM_DT_index)
+                NO_HASH_JOIN NO_MERGE_SJ */
+                PRD_END_DATE,
+                Q020.PRC_SEQNO AS PRC_SEQNO,
+                -- 1. 담당 및 시간 (TB_QLT020, TB_WRK001)
+                TO_CHAR(Q020.MSRM_DATE, 'YYYYMMDD') AS MSRM_DATE,
+                TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'HH24')) AS TIME_HOUR,
+                TO_NUMBER(TO_CHAR(Q020.MSRM_DATE, 'MI')) AS TIME_MIN,
+
+                NVL(US.NMLAST, ' ') AS MSRM_NM,
+                NVL(W001.WRK_CLASS, ' ') AS WRK_CLASS,
+
+                -- 2. 제품 사양
+                NVL(M012.MACH_NM, ' ') AS MACH_NM,
+                NVL(I001.LOT_NO, ' ') AS LOT_NO,
+                NVL(M001.MATNR_NM, ' ') AS MATNR_NM,
+
+                -- 3. 측정값 및 기준치 (이미지 순서대로 전체 항목)
+                -- [직경]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '직경' THEN Q021.RST_VAL END), 0) AS DIAM,
+                -- [감축율]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '감축율' THEN Q021.RST_VAL END), 0) AS RED_RATE,
+                -- [평량]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '평량' THEN Q021.RST_VAL END), 0) AS BS_WGT_TRA,
+                -- [파강]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '파열강도' THEN Q021.RST_VAL END), 0) AS BREAK,
+                -- [절취강도]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '절취강도' THEN Q021.RST_VAL END), 0) AS CUT_STR,
+                -- [두께평균]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '두께' THEN Q021.RST_VAL END), 0) AS THK_AVG,
+                -- [테일강도]
+                NVL(MAX(CASE WHEN M014.INSP_ITEM_NM = '테일실강도' THEN Q021.RST_VAL END), 0) AS TAIL_STR
+            FROM TB_WRK001 W001
+                JOIN TB_MAS001 M001 ON W001.WERKS = M001.WERKS AND W001.MATNR = M001.MATNR
+                JOIN TB_INV001 I001 ON W001.WERKS = I001.WERKS AND W001.IND_BCD = I001.IND_BCD
+                JOIN TB_QLT020 Q020 ON Q020.WERKS = I001.WERKS
+                    AND Q020.MATNR = I001.MATNR
+                    AND Q020.MSRM_DATE = I001.MSRM_DATE
+                    AND Q020.PRC_SEQNO = I001.PRC_SEQNO
+                    and Q020.INSP_ITEM_GRP_CD = 'H3' -- HL 완제품 검사(물성)
+                JOIN TB_QLT021 Q021 ON Q021.WERKS = Q020.WERKS
+                    AND Q021.MATNR = Q020.MATNR
+                    AND Q021.MSRM_DATE = Q020.MSRM_DATE
+                    AND Q021.PRC_SEQNO = Q020.PRC_SEQNO
+                    AND Q021.INSP_ITEM_GRP_CD = Q020.INSP_ITEM_GRP_CD
+                JOIN TB_MAS014 M014 ON M014.INSP_ITEM_GRP_CD = Q021.INSP_ITEM_GRP_CD
+                    AND M014.INSP_ITEM_CD = Q021.INSP_ITEM_CD
+                    AND M014.PROD_GRP_CD = FN_GET_PROD_GRP(#{WERKS}, '')
+                    AND M014.USE_YN = 'Y'
+                LEFT JOIN TB_MAS016 M016 ON Q021.WERKS = M016.WERKS
+                    AND Q021.MATNR = M016.MATNR
+                    AND Q021.INSP_ITEM_GRP_CD = M016.INSP_ITEM_GRP_CD
+                    AND Q021.INSP_ITEM_CD = M016.INSP_ITEM_CD
+                JOIN USRMA US ON US.USERID = Q020.MSRM_ID
+                LEFT JOIN TB_MAS012 M012 ON M012.MACH_CD = W001.MACH_CD
+            WHERE 1=1
+                AND NVL(W001.CNL_YN, 'N') = 'N'
+                <if test="WERKS != null and WERKS != ''">
+                    AND W001.WERKS = #{WERKS}
+                </if>
+                <if test="RANGE_SQL != null and RANGE_SQL != ''">
+                    ${RANGE_SQL}
+                </if>
+            GROUP BY Q020.MSRM_DATE, Q020.PRC_SEQNO, Q020.MSRM_ID, W001.WRK_CLASS,
+                    W001.MACH_CD, I001.LOT_NO, I001.MATNR, Q020.FNL_JDGM, Q020.RMK,
+                    US.NMLAST, M012.MACH_NM, M001.MATNR_NM
+                    ,PRD_END_DATE
+            order by I001.LOT_NO
+        )
+        SELECT *
+        FROM PROD_SPEC PS
+            LEFT OUTER JOIN QLT03 ON PS.MACH_CD = QLT03.MACH_CD
+                                AND PS.REGDATE <![CDATA[ < ]]> QLT03.PRD_END_DATE
+    </select>
+</mapper>

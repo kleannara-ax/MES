@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom.css" />
+<link rel="stylesheet" type="text/css" href="css/cubefw.ref.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom.js"></script>
+<script type="text/javascript" src="js/cubefw.js"></script>
+<script type="text/javascript">
+	jQuery(function(){	
+		cubeUI.typeCheck();	
+	});
+</script>
+</head>
+<body class="cubeContentBody">
+	<div class="cubeTopMenu">
+		<span cubeDataType="button"><a href="/cubefw/reference/cubeReference.html">Reference</a></span>	
+	</div>
+	<div class="cubeTopLine"></div>	
+	<div class="cubeCenterCont">
+		<div class="cubeLeftMenu">
+		<div class="cubeSubMenu" cubeDataType="accordion">
+			<h1>
+				Reference
+			</h1>
+			<ul cubeDataType="menu">
+				<li><a href="/cubefw/reference/cubeMap.html">CubeMap</a></li>
+				<li><a href="/cubefw/reference/cubeConfig.html">CubeConfig</a></li>
+				<li><a href="/cubefw/reference/cubeCommon.html">CubeCommon</a></li>
+				<li><a href="/cubefw/reference/cubeGridRow.html">CubeGridRow</a></li>
+				<li><a href="/cubefw/reference/cubeNet.html">CubeNet</a></li>
+				<li><a href="/cubefw/reference/cubeBind.html">CubeBind</a></li>
+				<li><a href="/cubefw/reference/cubeUI.html">CubeUI</a></li>
+				<li><a href="/cubefw/reference/cubeBoard.html">CubeBoard</a></li>
+				<li><a href="/cubefw/reference/cubeValidate.html">CubeValidate</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="cubeRightCont">
+			<span class="cubeTitleNav">HOME &gt; Cubefw Reference &gt; CubeBind</span>
+			<div id="contents">
+				<ul class="referenceList">
+					<li class="refTit">
+						<h1>CubeBind</h1>	
+						<p>데이터 처리를 위한 객체</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.cubeDataGridMap</a></h2>
+						<p>CubeMap. grid 객체를 저장</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.cubeDataGridRowMap</a></h2>
+						<p>CubeMap. grid에 bind될 row객체를 저장</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.cubeDataGridPagingMap</a></h2>
+						<p>CubeMap. grid에 연결된 paging객체를 저장</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.cubeDataGridPageinfoMap</a></h2>
+						<p>CubeMap. grid에 연결된 page info객체를 저장</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.comboScan(areaId)</a></h2>
+						<p>combo 자동완성 기능 적용</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.searchComboScan(tmpRowHtml)</a></h2>
+						<p>
+							데이터 변화에 따라 새로운 combo data를 메핑해야 하는 경우 사용.<br/>
+							cubeDataSearchCombo="모듈,sql id,request param id" - VALUE_COL, TEXT_COL<br/>
+							request param id 객체의 value를 추출하여 CODE키로 전송
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridScan(areaId)</a></h2>
+						<p>areaId 내에 포함된 grid를 찾아서 사용 가능하도록 준비시킴</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridInfoSave($grid, rowAttr)</a></h2>
+						<p>
+							$grid를 grid로 사용 가능하도록 준비시킴<br/>
+							rowAttr - default cubeConfig.DATA_ROW_ATT
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridRowPrintNum(gridId, num)</a></h2>
+						<p>
+							gridId의 grid에 출력된 row의 개수를 저장한다.<br/>
+							row추가시 첫 row인지 판단하는 근거가 된다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridNewRow(gridId)</a></h2>
+						<p>gridId에 새로운 row를 추가해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridAddRow(gridId)</a></h2>
+						<p>gridId에 row를 추가한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridRowCopy(copyBtn, gridId)</a></h2>
+						<p>copyBtn이 포함된 row를 복사해서 추가해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridBind(gridId, data, editGridType, groupCount, appendType)</a></h2>
+						<p>
+							gridId에 data를 bind한다.<br/>
+							editGridType - grid가 edit가능한지 설정한다.<br/>
+							groupCount - row obj가 data의 여러 행을 처리하는 경우 개수를 설정한다.<br/>
+							appendType - true인 경우 기존 데이터를 삭제하지 않고 계속 추가한다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.bindGridBeforeView($dataRow, createType)</a></h2>
+						<p>
+							edit grid인 경우 row들의 데이터 화면 표시를 위해 처리해준다.<br/>
+							new row인 경우 createType을 true로 지정한다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridRowStateChange($row, stateAttr)</a></h2>
+						<p>해당 row의 상태를 stateAttr값으로 변경해 준다. CRUD</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridRowDelete(deleteBtn)</a></h2>
+						<p>해당 row를 삭제해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.dataBind(data, areaId)</a></h2>
+						<p>data를 areaId내이 객체 id들과 bind한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.dataNameBind(map, areaId, tail)</a></h2>
+						<p>
+							map에 있는 데이터를 areaId내이 객체 name들과 bind한다.<br/>
+							name의 중복등으로 구분을 위한 tail이 붙어 있는 경우 key+tail로 name을 찾아 bind한다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.dataIdBind(map, areaId, tail)</a></h2>
+						<p>
+							map에 있는 데이터를 areaId내이 객체 id들과 bind한다.<br/>
+							id의 중복등으로 구분을 위한 tail이 붙어 있는 경우 key+tail로 id를 찾아 bind한다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.dataClear(areaId)</a></h2>
+						<p>areaId에 있는 입력값들을 삭제한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageInfoBind(gridId)</a></h2>
+						<p>grid의 paging정보를 해당 gird를 바라보고 있는 grid info에 적용해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageCountChange(gridId, count)</a></h2>
+						<p>gird의 page count(한페이지당 출력 개수)를 변경한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageCountReset(gridId, count)</a></h2>
+						<p>gird의 page count(한페이지당 출력 개수)를 설정한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageBind(gridId, data)</a></h2>
+						<p>grid paging을 만들어 준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageData(gridId, map)</a></h2>
+						<p>grid paging을 위한 정보를 map에 담아 리턴해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridPageChange(gridId, pageNum)</a></h2>
+						<p>grid page를 변경해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.sendGridParamData(gridId, map)</a></h2>
+						<p>edit grid에 데이터를 추출해 map에 담아준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.sendParamData(map, areaId)</a></h2>
+						<p>데이터 전송을 위해 areaId에 있는 데이터를 map에 저장해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.paramDataFilter(map, $dataRange)</a></h2>
+						<p>$dataRange에 있는 입력값들을 map에 저장해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.selectBind(selectId, data)</a></h2>
+						<p>combo에 data를 자동으로 셋팅해준다. VAL_COL, TEXT_COL</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.gridExcelRequest(url, map, gridId)</a></h2>
+						<p>
+							excel file download를 요청한다.<br/>
+							url로 map데이터를 통한 요청을 하며, excel file생성을 위한 정보를 gridId내에서 가져온다.
+						</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.calendarBind(calendarId, data)</a></h2>
+						<p>fullCalendar에 데이터를 셋팅해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.calendarDataRemove(calendarId, eventObj)</a></h2>
+						<p>fullCalendar에 데이터를 삭제해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.calendarNav(calendarId, type)</a></h2>
+						<p>fullCalendar에서 nav버튼 동작을 처리한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.calendarDateSet(calendarId)</a></h2>
+						<p>변경된 fullCalendar에서 날자를 표시해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.dateSet(dateId, type, num)</a></h2>
+						<p>dateId에서 연월일을 변경해준다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeBind.toString()</a></h2>
+						<p>return "CubeBind"</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cubeFooterLine"></div>
+	<div class="cubeFooter">
+		<img src="/cubefw/images/cubefw.jpg" height="25" alt="SMCube" align="left"/>
+		152-743 서울시 구로구 구로3동 197-5 삼성IT밸리 1108호 (주)에스엠큐브 TEL:02)6465-8311 FAX:02)6465-8313<br/>
+		Copyright (c) 2011 SMCube Co.,Ltd All Rights Reserved. Contact Us
+	</div>
+</body>
+</html>

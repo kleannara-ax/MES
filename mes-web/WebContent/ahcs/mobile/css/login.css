@@ -1,0 +1,201 @@
+@import url(http://fonts.googleapis.com/css?family=roboto);
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+table{border-collapse:collapse;border-spacing:0;}
+/* start editing from here */
+a{text-decoration:none;}
+.txt-rt{text-align:right;}/* text align right */
+.txt-lt{text-align:left;}/* text align left */
+.txt-center{text-align:center;}/* text align center */
+.float-rt{float:right;}/* float right */
+.float-lt{float:left;}/* float left */
+.clear{clear:both;}/* clear float */
+
+
+nav.vertical ul li{	display: block;}/* vertical menu */
+nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
+img{max-width: 100%;}
+
+article{
+	font-family: 'roboto', sans-serif;
+	font-size: 1.000em;
+	color: #565656;
+	width: 90%;
+	margin: auto;
+
+}
+.underline{
+	margin: 0;
+	padding: 1.250em;
+	border-bottom: 1px solid #F00; 
+}
+
+.noline{
+	position: relative;
+	left: -0.3em;
+	margin: 0;
+	padding: 1.250em 0 1.250em 0;
+}
+article img{
+	margin: 0.625em 0;
+	padding: 0.313em;
+	border: 1px solid #eee;
+}
+
+.acimg{
+	background: #ed1c24;
+	max-height: 350px;
+}
+
+.acimg img{
+	max-width: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+a{ color: #38A4D8;}
+a:hover{ color: #2489b9;}
+
+label.inline{
+	display:inline-block;
+	
+}
+.ac-log-form div{
+	margin: 0;
+}
+.ac-log-form label{
+	font-size: 0.875em;
+	line-height: 0.875em;
+	margin-bottom: 0.2em;
+	
+}
+.ac-log-form input[type=text],
+.ac-log-form input[type=password]{
+	border: none;
+	outline: 0;
+	font-size: 0.875em;
+	line-height: 0.875em;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 70%;
+} 
+
+
+.ac-log-form input[type=text]:focus, 
+.ac-log-form input[type=text]:active,
+.ac-log-form input[type=password]:active, 
+.ac-log-form input[type=password]:focus, {
+  outline: 0;
+  border: none;
+  box-shadow: none;
+ 
+}
+
+.ac-log-form input[type=submit]{
+	border: none;
+	margin: 0;
+	cursor: pointer;
+	font-size: 1.125em;
+	padding: 1.000em;
+	width: 100%;
+	background:  #3c3d3e;
+	color: #fff;
+	font-weight: 500;
+}
+.ac-log-form input[type=submit]:hover{
+	cursor: pointer;
+	background: #ed1c24;
+	color: #fff;
+}
+.ac-log-form label span{
+	color:  #ed1c24;
+	padding-left: 2em;
+	padding-top: 1em;
+}
+.idicon{
+	background-image:url(../imges/login.png);
+	background-repeat: no-repeat;
+	background-size: 1.250em 1.350em;  
+}
+.pwicon{
+	background-image:url(../imges/login_02.png);
+	background-repeat: no-repeat;
+	background-size: 1.250em 1.350em; 
+}
+
+.tasks-list-item {
+  display: block;
+  line-height: 24px;
+  font-size: 14px;
+  padding: 1em 1em 1em 1.8em;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.tasks-list-item + .tasks-list-item {
+  border-top: 1px solid #999;
+}
+
+.tasks-list-cb {
+  display: none;
+}
+
+.tasks-list-mark {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #C00;
+  border-radius: 0;
+}
+.tasks-list-mark:before {
+  content: '';
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -5px 0 0 -6px;
+  height: 4px;
+  width: 8px;
+  border: solid #C00;
+  border-width: 0 0 4px 4px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.tasks-list-cb:checked ~ .tasks-list-mark {
+  border-color: #999;
+}
+.tasks-list-cb:checked ~ .tasks-list-mark:before {
+  display: block;
+}
+
+footer{
+	position: relative;
+	bottom: 0;
+	width:100%;
+	overflow:hidden;
+	background: #FFF;
+	color: #4d4d4d;
+}
+footer p{	
+	font-size: 0.750em;
+	text-align: center;
+}
+.copy{
+	padding: 2em;
+}
+.copy a{
+	color:#c52525;
+}

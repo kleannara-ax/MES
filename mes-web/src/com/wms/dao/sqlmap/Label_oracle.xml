@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsLabel">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+
+	<!-- ============================================================================================================= -->
+	<!-- == [LB01] BEGIN -->
+	<!-- ============================================================================================================= -->
+	<select id="PRTSEQ_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT LPAD(SEQ_PRTSEQ.NEXTVAL, 10, '0') AS PRTSEQ
+		  FROM DUAL
+	</select>
+	
+	<select id="LB01_PALLET_ID_SINGLE_SEQ_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT TO_CHAR(SYSDATE,'YYMMDD') || LPAD(SEQ_TRNUID.NEXTVAL, 8, '0') AS TRNUID
+		  FROM DUAL
+	</select>
+	
+	<insert id="LB01_PALLET_ID_SINGLE_PRTLG_INSERT" parameterClass="Map">
+		INSERT INTO PRTLG
+		(
+		    PRTSEQ, QTYPRT, PRTTYP
+		  , WAREKY, OWNRKY, SKUKEY
+		  , TRNUID
+		  , LOTA11, LOTA12
+		  , QTYBOX, QTYREM
+		  , UOMKEY
+		  , CREDAT, CRETIM, CREUSR
+		)
+		SELECT #PRTSEQ#, 1 AS QTYPRT, 'PALLET_ID' AS PRTTYP
+		     , #WAREKY#, #OWNRKY#, #SKUKEY#
+		     , #TRNUID#
+		     , #LOTA11#, #LOTA12#
+		     , $QTYTOT$, $QTIPSU$
+		     , NVL((
+		             SELECT DUOMKY
+		               FROM SKUMA
+		              WHERE OWNRKY = #OWNRKY#
+		                AND SKUKEY = #SKUKEY#
+		           ),' ') AS UOMKEY
+		     , #DATE#, #TIME#, #USERID#
+		  FROM DUAL
+	</insert>
+	<!-- ============================================================================================================= -->
+	<!-- == [LB01] END -->
+	<!-- ============================================================================================================= -->
+
+	<!-- == [PT01] BEGIN -->
+	<insert id="PT01_PALLET_ID_PRTLG_INSERT" parameterClass="Map">
+		INSERT INTO PRTLG
+		(
+		    PRTSEQ, QTYPRT, PRTTYP
+		  , WAREKY, OWNRKY, SKUKEY
+		  , TRNUID
+		  , LOTA11, LOTA12
+		  , QTYBOX, QTYREM
+		  , UOMKEY
+		  , CREDAT, CRETIM, CREUSR
+		)
+		SELECT #PRTSEQ#, 1 AS QTYPRT, 'PALLET_ID' AS PRTTYP
+		     , #WAREKY#, #OWNRKY#, #SKUKEY#
+		     , #TRNUTG#
+		     , #LOTA11#, #LOTA12#
+		     , #QTSAVLB#, #QTTAOR#
+		     , NVL((
+		             SELECT DUOMKY
+		               FROM SKUMA
+		              WHERE OWNRKY = #OWNRKY#
+		                AND SKUKEY = #SKUKEY#
+		           ),' ') AS UOMKEY
+		     ,TO_CHAR(SYSDATE,'YYYYMMDD'), TO_CHAR(SYSDATE,'HH24MISS'), #SES_USER_ID#
+		  FROM DUAL
+	</insert>
+
+	<!-- == [PT01] END -->
+
+
+
+
+
+<!-- 지번바코드라벨 -->
+<!-- LB02 SQL START -->
+	<!-- LB02 GRID SELECT START -->
+	<select id="LB02_LIST" parameterClass="Map" resultClass="DataMap">
+		<!-- ADMIN.LOCATION.FINDLOCATIONS -->
+		SELECT     A.WAREKY    AS WAREKY
+                ,A.LOCAKY    AS LOCAKY
+                <!-- ,(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'LOCATY' AND CMCDVL = A.LOCATY AND ROWNUM = 1) AS LOCATYT -->
+                ,#LOCATY# AS LOCATY
+                ,A.SHORTX AS SHORTX
+                ,A.TASKTY AS TASKTY
+                ,A.ZONEKY AS ZONEKY
+                ,A.ZONEKY AS ZONEKY2
+                ,A.AREAKY AS AREAKY
+                ,A.TKZONE AS TKZONE
+                ,A.FACLTY AS FACLTY
+                ,A.ARLVLL AS ARLVLL
+                ,A.INDCPC AS INDCPC
+                ,A.INDTUT AS INDTUT
+                ,A.IBROUT AS IBROUT
+                ,A.OBROUT AS OBROUT
+                ,A.RPROUT AS RPROUT
+                <!-- ,A.STATUS AS STATUS -->
+                ,#STATUS# AS STATUS
+                <!-- ,(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'STATUS' AND CMCDVL = A.STATUS AND ROWNUM = 1) AS STATUST -->
+                ,A.ABCANV AS ABCANV
+                ,A.LENGTH AS LENGTH 
+                ,A.WIDTHW AS WIDTHW
+                ,A.HEIGHT AS HEIGHT
+                ,A.CUBICM AS CUBICM
+                ,A.MAXCPC AS MAXCPC
+                ,A.MAXQTY AS MAXQTY
+                ,A.MAXWGT AS MAXWGT
+                ,A.MAXLDR AS MAXLDR
+                ,A.MAXSEC AS MAXSEC
+                ,A.MIXSKU AS MIXSKU
+                ,A.MIXLOT AS MIXLOT
+                ,A.RPNCAT AS RPNCAT
+                ,A.INDQTC AS INDQTC
+                ,A.QTYCHK AS QTYCHK
+                ,A.NEDSID AS NEDSID
+                ,A.INDUPA AS INDUPA
+                ,A.INDUPK AS INDUPK
+                ,A.AUTLOC AS AUTLOC
+                ,A.CREDAT AS CREDAT
+                ,A.CRETIM AS CRETIM
+                ,A.CREUSR AS CREUSR
+                ,(SELECT NMLAST FROM USRMA WHERE USERID = A.CREUSR AND ROWNUM = 1) AS CUSRNM
+                ,A.LMODAT AS LMODAT
+                ,A.LMOTIM AS LMOTIM
+                ,A.LMOUSR AS LMOUSR
+                ,(SELECT NMLAST FROM USRMA WHERE USERID = A.LMOUSR AND ROWNUM = 1 ) AS LUSRNM
+        FROM    LOCMA A 
+        WHERE    1 = 1
+		AND		A.WAREKY = #WAREKY#
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		<!-- 창고 -->
+		<isNotEmpty property="AREAKY">
+		AND   A.AREAKY= #AREAKY#
+		</isNotEmpty>
+		<!-- 로케이션유형 -->
+		<isNotEmpty property="LOCATY">
+		AND   A.LOCATY= #LOCATY#
+		</isNotEmpty>
+		<!-- 상태 -->
+		<isNotEmpty property="STATUS">
+		AND   A.STATUS = #STATUS#
+		</isNotEmpty>
+		<!-- 입고가능 -->
+		<isEqual property="INDUPA" compareValue="V">
+		   AND A.INDUPA = #INDUPA#
+		</isEqual>
+		<!-- 파킹가능 -->
+		<isEqual property="INDUPK" compareValue="V">
+		   AND A.INDUPK = #INDUPK#
+		</isEqual>
+		
+	</select>
+	<!-- LB02 GRID SELECT END -->
+<!-- //지번바코드라벨 -->
+
+<!-- 팔렛바코드 출력 이력 -->
+<!-- LB09 SQL START -->
+	<!-- LB09 GRID SELECT START -->
+	<select id="LB09_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT B.REFDKY AS REFDKY,
+		       B.BARCOD AS BARCOD,
+		       B.WAREKY AS WAREKY,
+		       B.SKUKEY AS SKUKEY,
+		       B.DESC01 AS DESC01,
+		       B.DESC02 AS DESC02,
+		       B.PRTDAT AS PRTDAT,
+		       B.QTDUOM AS QTDUOM,
+		       B.QTDBOX AS QTDBOX,
+		       B.QTDREM AS QTDREM,
+		       B.QTDPRT AS QTDPRT,
+		       B.LOTA05 AS LOTA05,
+		       B.CREDAT AS CREDAT,
+		       B.CRETIM AS CRETIM,
+		       B.CREUSR AS CREUSR,
+		       CU.NMLAST AS CUSRNM,
+		       B.LMODAT AS LMODAT,
+		       B.LMOTIM AS LMOTIM,
+		       B.LMOUSR AS LMOUSR,
+		       LU.NMLAST AS LUSRNM
+		  FROM BARCD B 
+		       LEFT OUTER JOIN USRMA CU
+		               ON CU.USERID = B.CREUSR
+		       LEFT OUTER JOIN USRMA LU
+		               ON LU.USERID = B.CREUSR
+		 WHERE B.WAREKY = #WAREKY#
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>				
+	</select>
+	<!-- LB09 GRID SELECT END -->
+<!-- //팔렛바코드 출력 이력 -->
+	<select id="LB01PLT_OBJECT" parameterClass="Map" resultClass="String">
+		SELECT 'VP'||LPAD(SEQ_VP_BARCODE.NEXTVAL,7,0) FROM DUAL
+	</select>
+	
+	<insert id="LB01_INSERT" parameterClass="Map">
+<!--       <selectKey keyProperty="REFDKY" resultClass="String"> -->
+<!--       	   SELECT SEQ_IMF_BARCD.NEXTVAL FROM DUAL  -->
+<!--       </selectKey>  -->
+<!--       <selectKey keyProperty="BARCOD" resultClass="String"> -->
+<!--           SELECT 'VP'||SUBSTR(TO_CHAR(SYSDATE,'YYYYMMDD'),3,7)||LPAD(SEQ_VP_BARCODE.NEXTVAL,7,0) FROM DUAL -->
+<!--        </selectKey> -->
+      INSERT INTO BARCD
+           (
+        	REFDKY
+           ,BARCOD
+           ,WAREKY
+           ,SKUKEY
+           ,DESC01
+           ,DESC02
+           ,PRTDAT
+           ,QTDUOM
+           ,QTDBOX
+           ,QTDREM
+           ,QTDPRT
+           ,CREDAT
+           ,CRETIM
+           ,CREUSR
+           ,LMODAT
+           ,LMOTIM
+           ,LMOUSR
+           ,LOTA05
+           ,LOTA02
+     	 )
+        VALUES
+           (
+            SEQ_BCDREFDKY.NEXTVAL
+           ,#BARCOD#
+           ,#WAREKY#
+           ,#SKUKEY# 
+           ,NVL(#DESC01#, ' ')
+           ,NVL(#DESC02#, ' ')
+           ,TO_CHAR(SYSDATE,'YYYYMMDD')
+           ,NVL(#QTDUOM#, 0)
+           ,NVL(#QTDBOX#, 0)
+           ,NVL(#QTDREM#, 0)
+           ,NVL(#QTDPRT#, 0)
+           ,TO_CHAR(SYSDATE,'YYYYMMDD')
+           ,TO_CHAR(SYSDATE,'HH24MISS')
+           ,#SES_USER_ID#
+           ,TO_CHAR(SYSDATE,'YYYYMMDD')
+           ,TO_CHAR(SYSDATE,'HH24MISS')
+           ,#SES_USER_ID#
+           ,' '
+           ,' '
+      )
+   </insert>
+
+	<select id="LB01PRINT_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT	REFDKY
+		FROM	BARCD
+		WHERE     ROWNUM = 1
+		ORDER BY REFDKY DESC
+	</select>
+	
+	<select id="SKUKEYval_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT COUNT(*)CNT
+		  FROM SKUMA 
+		 WHERE 1 = 1 
+           AND SKUKEY = #SKUKEY#
+	</select>
+	
+	<select id="DESC01VALUE_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT   SM.SKUKEY AS SKUKEY	
+		        ,SM.DESC01 AS DESC01	
+		        ,SM.DESC02 AS DESC02
+		        ,SM.QTDUOM AS QTDUOM
+                ,MI.UOMKEY AS UOMKEY
+		        ,MI.QTPUOM AS QTPUOM
+		        ,'BOX'	   AS UOMKEYBOX
+        		,(SELECT QTPUOM FROM MEASI WHERE WAREKY = #WAREKY# AND UOMKEY = 'BOX') AS QTPUOMBOX
+		        ,MI.QTPUOM / SM.QTDUOM AS QTDBOX
+		        ,MOD(MI.QTPUOM,SM.QTDUOM) AS QTDREM
+		  FROM  SKUMA SM, SKUWC SW, MEASI MI
+		 WHERE  SM.OWNRKY = SW.OWNRKY	
+		   AND  SM.SKUKEY = SW.SKUKEY
+		   AND  MI.WAREKY = SW.WAREKY
+		   AND  MI.MEASKY =  SW.MEASKY 
+		   AND  MI.UOMKEY = 'PL'
+		   AND  SM.OWNRKY = #OWNRKY#	
+		   AND  SW.WAREKY = #WAREKY#
+		   AND  (SM.SKUKEY = NVL(#SKUKEY#, ' ') OR SM.SKUKEY = NVL(#PT_SKUKEY#, ' '))
+	</select>
+	
+	<select id="BARCODVALUE_MAP" parameterClass="Map" resultClass="DataMap">
+		SELECT   REFDKY 
+	           , BARCOD
+	           , WAREKY
+	           , SKUKEY
+	           , DESC01
+	           , DESC02
+	           , PRTDAT
+	           , QTDUOM
+	           , QTDBOX
+	           , QTDREM
+	           , QTDPRT
+	           , CREDAT
+	           , CRETIM
+	           , CREUSR
+	       FROM  BARCD
+	      WHERE  WAREKY = #WAREKY#
+	        AND  BARCOD = #PT_BARCOD#
+	   ORDER BY  WAREKY, BARCOD
+	</select>
+</sqlMap>

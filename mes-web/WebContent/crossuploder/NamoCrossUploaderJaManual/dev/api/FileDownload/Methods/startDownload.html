@@ -1,0 +1,123 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>startDownload</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">FileDownload</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Methods</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>startDownload</h2>
+            <p class="dscrpt">파일 다운로드를 시작합니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath</span> )</pre>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath,</span> boolean <span class="paraname">attachment</span> )</pre>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath,</span> boolean <span class="paraname">attachment,</span> boolean <span class="paraname">resumable</span> )</pre>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath,</span> String <span class="paraname">fileNameAlias</span> )</pre>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath,</span> String <span class="paraname">fileNameAlias,</span> boolean <span class="paraname">attachment</span> )</pre>
+                <pre>void <span class="fname">startDownload</span> ( String <span class="paraname">filePath,</span> String <span class="paraname">fileNameAlias,</span> boolean <span class="paraname">attachment,</span> boolean <span class="paraname">resumable</span> )</pre>
+            </ul>
+            <h4>Parameters</h4>
+            <p class="para"><span class="paraname">filePath</span></p>
+            <p class="paradsc">[in] 다운로드 할 파일의 경로를 입력합니다.</p>
+ 			<p class="para"><span class="paraname">fileNameAlias</span></p>
+            <p class="paradsc">[in] 클라이언트 컴퓨터에 저장될 파일 이름(별칭)을 입력합니다. 영문이 아닐 경우, 웹서버 환경에 따라 적절히 인코딩 되어야 합니다.</p>
+            <p class="para"><span class="paraname">attachment</span></p>
+            <p class="paradsc">[in] 파일의 종류에 관계 없이 항상 파일로 저장할 수 있도록 설정합니다. 기본 값은 false입니다.</p>
+			<table class="paradsc2" border="1" cellspacing="0" width="300" bordercolordark="white" bordercolorlight="#999999">
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">true</p>
+                    </td>
+                    <td width="215">
+                        <p>파일의 종류에 관계 없이 항상 파일로 저장합니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">false</p>
+                    </td>
+                    <td width="215">
+                        <p>파일 종류 및 클라이언트 컴퓨터의 환경에 따라 파일이 웹브라우저에서 열릴 수 있습니다.</p>
+                    </td>
+                </tr>
+          	</table>
+ 			<p class="para"><span class="paraname">resumable</span></p>
+            <p class="paradsc">[in] 이어받기 모드를 설정합니다. 기본 값은 false입니다.</p>
+			<table class="paradsc2" border="1" cellspacing="0" width="300" bordercolordark="white" bordercolorlight="#999999">
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">true</p>
+                    </td>
+                    <td width="215">
+                        <p>파일 다운로드 시 이어받기 모드로 동작합니다. 클라이언트에서 이어받기 요청이 있어야 하며, 없을 경우 일반 다운로드 모드로 동작합니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="75" bgcolor="#EEEEEE">
+                        <p align="center">false</p>
+                    </td>
+                    <td width="215">
+                        <p>파일 다운로드 시 일반 다운로드 모드로 동작합니다.</p>
+                    </td>
+                </tr>
+          	</table>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Java</p>
+<pre class="scodedsc">
+FileDownload fileDownload = new FileDownload(request, response); 
+try { 
+	String filePath = "파일 경로"; 
+	String fileNameAlias = "파일 이름(별칭)"; 
+
+	// fileNameAlias는 웹서버 환경에 따라 적절히 인코딩 되어야 합니다.
+	fileNameAlias = URLEncoder.encode(fileNameAlias, "UTF-8"); 
+
+	// filePath에 지정된 파일을 fileNameAlias 이름으로 다운로드 합니다.  
+	<b>fileDownload.startDownload(filePath, fileNameAlias);</b>
+}
+catch(CrossUploaderException ex) { 
+	System.out.println("다운로드 중 예외 발생 : " + ex.getMessage()); 
+}
+catch(Exception ex) { 
+	System.out.println("다운로드 중 예외 발생 : " + ex.getMessage()); 	
+} 
+</pre>
+            <p class="dscrpt">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

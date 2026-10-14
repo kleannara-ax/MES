@@ -1,0 +1,2 @@
+grid.js
+ - gridList.setRowReadOnly 에서 false로 readonly를 푸는 경우에 selectdata에 데이터가 포함되지 않는 오류 수정

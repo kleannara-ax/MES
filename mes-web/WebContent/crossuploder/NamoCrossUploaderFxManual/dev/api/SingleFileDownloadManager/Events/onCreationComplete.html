@@ -1,0 +1,86 @@
+﻿<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>onCreationComplete</title>
+<meta name="author" content="Namo Interactive, Inc.">
+<link rel="stylesheet" href="../../../images/linkstyle.css">
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<table border="0" width="640">
+    <tr>
+        <td width="10%" bgcolor="#EEEEEE" bordercolor="#999999">
+            <p align="center" class="pme">SingleFileDownloadManager</p>
+        </td>
+        <td width="10%" bgcolor="#5A7FC1" bordercolor="#999999">
+            <p align="center" class="pme"><font color="white">Events</font></p>
+        </td>
+        <td width="10%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+        <td width="50%">
+            <p align="center" class="pme">&nbsp;</p>
+        </td>
+    </tr>
+</table>
+
+<table border="0" width="640">
+    <tr>
+        <td>
+            <h2>onCreationComplete</h2>
+            <p class="dscrpt">SingleFileDownloadManager 객체 생성 완료 시 호출됩니다.</p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Syntax</h4>
+            <ul>
+                <pre>void <span class="fname">onCreationComplete</span> ( )</pre>
+            </ul>
+            <h4>Parameters</h4>
+        	<p class="para"><span class="paraname"></span></p>
+            <p class="paradsc"></p>
+
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Return Values</h4>
+            <p class="dscrpt"></p>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Remarks</h4>
+            <P class="dscrpt"></P>
+            <p class="dscrpt">&nbsp;</p>
+            <h4>Sample Codes</h4>
+            <p class="scode">Javascript</p>
+<pre class="scodedsc">
+<b>[namocrossuploader.js]</b>
+/**
+* NamoCrossDownloader 객체에서 Javascript로 전송할 이벤트 함수 이름을 설정합니다.
+*/
+var getDownloadManagerEventNames = function () {
+    var flashvars = {};
+    <b>flashvars.onCreationComplete     = "onCreationCompleteCd";       // NamoCrossDownloader Manager 객체 생성 완료 시</b>
+    flashvars.onStartDownloadItem    = "onStartDownloadItemCd";      // 개별 파일의 다운로드 시작 시 (Single Download Only)
+    flashvars.onEndDownloadItem      = "onEndDownloadItemCd";        // 개별 파일의 다운로드 완료 시 (Single Download Only)
+    flashvars.onCancelDownloadItem   = "onCancelDownloadItemCd";     // 개별 파일의 다운로드 취소 시 (Single Download Only)
+    flashvars.onException            = "onExceptionCd";              // 예외 발생 시
+    return flashvars;
+}
+
+<b>[DownloadForm.html]</b>
+/**
+* NamoCrossDownloader의 Manager 객체 생성 완료 시 호출됩니다.
+*/
+var onCreationCompleteCd = function () {
+    cdManager = document.getElementById("crossDownloadManager");
+
+    // 다운로드 할 파일 추가
+    var fileURL = "http://218.153.118.35:8080/NamoCrossUploaderFxSamples/Download/SingleFileDownload/DownloadProcess.jsp";
+    cdManager.addFile({ fileId: "FILEID_0001", fileName: "나모크로스에디터3_제품소개서.pdf", fileURL: fileURL, fileSize: 2210715 });
+    cdManager.addFile({ fileId: "FILEID_0002", fileName: "ActiveSquare 7_brochure.pdf", fileURL: fileURL, fileSize: 2816868 });
+    cdManager.addFile({ fileId: "FILEID_0003", fileName: "130617_나모_펍트리_브로셔_130702.pdf", fileURL: fileURL, fileSize: 2717166 });
+}
+</pre>
+                <p class="dscrpt">
+                    &nbsp;</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

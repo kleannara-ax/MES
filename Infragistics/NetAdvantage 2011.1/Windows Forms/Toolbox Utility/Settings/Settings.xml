@@ -1,0 +1,26 @@
+﻿<Settings>
+  <SupportedVisualStudioVersions>
+    <VisualStudioVersion Name="Visual Studio 2005" Target="8.0" ProgId="8.0">
+      <SupportedClrVersions>
+        <ClrVersion>CLR20</ClrVersion>
+      </SupportedClrVersions>
+    </VisualStudioVersion>
+    <VisualStudioVersion Name="Visual Studio 2008" Target="9.0" ProgId="9.0">
+      <SupportedClrVersions>
+        <ClrVersion>CLR20</ClrVersion>
+        <ClrVersion>CLR35</ClrVersion>
+      </SupportedClrVersions>
+    </VisualStudioVersion>
+    <VisualStudioVersion Name="Visual Studio 2010" Target="10.0" ProgId="10.0">
+      <SupportedClrVersions>
+        <ClrVersion>CLR20</ClrVersion>
+        <ClrVersion>CLR35</ClrVersion>
+        <ClrVersion>CLR40</ClrVersion>
+      </SupportedClrVersions>
+    </VisualStudioVersion>
+  </SupportedVisualStudioVersions>
+  <SupportedProducts>
+    <SupportedProduct>Win</SupportedProduct>
+    <SupportedProduct>Web</SupportedProduct>
+  </SupportedProducts>
+</Settings>

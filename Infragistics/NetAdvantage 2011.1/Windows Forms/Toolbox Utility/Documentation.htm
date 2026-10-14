@@ -1,0 +1,200 @@
+<html>
+	<head>
+		<title>Infragistics® Toolbox Utility Readme</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<style>			
+			body {
+				background-image:url(background.jpg);
+				background-repeat:repeat-x;
+				margin-left: 0px;
+				margin-top: 0px;
+				margin-right: 0px;
+				margin-bottom: 0px;
+				font-size:11;
+				}
+			/* Font Definitions */ 
+			@font-face {font-family:Verdana; panose-1:2 11 6 4 3 5 4 4 2 4;}
+			@font-face {font-family:Georgia; panose-1:2 4 5 2 5 4 5 2 3 3;}
+			/* Style Definitions */ 
+			a:link {color:#4da2e4; text-decoration:underline;}
+			a:visited {color:#4da2e4; text-decoration:underline;}
+			a:hover { text-decoration: none; color: #1e2f4d;}
+			p.prodname {font-family:Verdana; color:black; font-size: 16pt; font-weight:bold;}
+			p.topheader {font-family:Verdana; color:black; font-size: 9pt; font-weight:bold; text-align:left;}
+			p.header {font-family:Verdana; color:black; font-size: 10pt; font-weight:bold;}
+			p.body {font-family:Verdana; color:black; font-size: 8pt; line-height:18px;}
+			div.body {font-family:Verdana; color:black; font-size: 8pt; line-height:18px;}
+			div.tablebody {font-family:Verdana; color:black; font-size: 7pt; line-height:18px;}
+			/* List Definitions */ 
+			ol {margin-bottom:0in;}
+			ul {margin-bottom:0in;}
+			
+			#wrapper {
+				margin-left: 40px;
+			}
+			#topLinks {
+				margin-left: 75px;
+			}
+		</style>
+	</head>
+	<body lang="EN-US" vLink="blue" link="blue" bgColor="white">
+		<table width="741" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td><img src="header.jpg" width="741" height="149"></td>
+          </tr>
+          <tr>
+            <td background="table_bg.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+              <td width="5%">&nbsp;</td>
+                    <td width="87%" class="topheader">
+						<p class="prodname" style="font-size: medium">Infragistics® Toolbox Utility</p>
+                    </td>
+                    <td width="8%" class="topheader">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="topheader">
+				    <br />
+					<p class="header">About the utility</p>
+		
+					<p class="body">The purpose of the Toolbox Utility is to automate the process of creating tabs containing the Infragistics controls in the Visual Studio toolbox.  The utility will create tabs for a specific product, version, and CLR of the Infragistics controls for a specific version of Visual Studio.  The utility will search for the Bin folders that contain the assemblies for the product being installed, and then follow a template to determine what tabs to create and what assemblies are added to each tab.</p>
+					
+					<p class="header">Requirements and Supported Environments</p>
+					<p class="body">The .NET Framework version 2.0.50727 or higher must be installed for the utility to function.</p>
+					
+					<p class=header>Command line options</p>
+                    <p class=body>
+                    Command line options:<br />
+                    <br />
+/?<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Brings up the help menu<br /><br />
+/u<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Indicates to remove the tabs based on the template used.<br /><br />
+/prompt<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Prompts the user to hit a key before the application finishes.<br /><br />
+/target:&lt;Visual Studio Target&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; The target of Visual Studio to create the toolbox for.&nbsp; If this 
+                        option is not set, all installed versions will be targeted.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /target:9.0<br /><br />
+/productname:&lt;Product Name&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; The type of product being installed.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /productname:win<br /><br />
+/clr:&lt;CLR&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; The CLR version of the product being installed.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /clr:CLR20<br /><br />
+/template:&lt;Path to template&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; The template to follow when creating or removing tabs.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /template:"Templates\MyTemplate.xml"<br /><br />
+/config:&lt;Path to config&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; A configuration file that contains settings to run the toolbox.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /config:"Config Files\InstallMyTools.xml"<br /><br />
+/binfolder:&lt;Path to assemblies&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Optional semi-colon deliminated list of paths to the folders the assemblies are in.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /binfolder:"C:\bin1";"C:\bin2"<br /><br />
+/productversion:&lt;ProductVersion&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; The version of the product being installed.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; Example: /productversion:9.2<br />
+                    </p>
+					
+					<p class="header">How the template works</p>
+					
+					<p class="body">A template is an XML file that specifies what tabs the utility should create and what assemblies should be included in each tab.  The XML schema is:
+					<br />
+                    <code>
+					&lt;Toolbox&gt;<br />
+	                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;Tab Name=""&gt;<br />
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Assembly Include="" /&gt;<br />
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Assembly Exclude="" /&gt;<br />
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Control Include="" /&gt;<br />
+		                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Control Exclude="" /&gt;<br />
+	                    &nbsp; &nbsp; &nbsp; &nA template is an XML file that specifies what tabs the utility 
+                        should create and what assemblies and controls should be included in each tab. 
+                        The XML schema is:
+					<br />
+                    <code>
+					    &lt;Toolbox&gt;priate value.  The property values that can be entered are:<br /> <br />
+                    $(var.Major)  -  This value will be updated with the major version number in the productversion specified. i.e. the "9" in "9.2" <br />
+                    $(var.Minor)  -  This value will be updated with the minor version number in the productversion specified. i.e. the "2" in "9.2" <br />
+                    <br />
+                    The "Assembly" element describes what assemblies will be included and excluded within that toolbox tab.  The expected value of these attributes is a regular expression string to match against the names of the assemblies.
+                    If an assembly matches with both an include and exclude statement, the assembly will not be added to the tab.
+                    </p>
+                    <p class="body">Example: <br />
+					This example will create multiple tabs that selectively include Windows Forms controls&lt;/Toolbox&gt;<br />
+                    </code>
+			        </p>
+					<p>
+					    The &quot;Name&quot; attribute is what the name of the toolbox tab will be. This attribute 
+                        can accept property values that will fill in the appropriate value. The property 
+                        values that can be entered are:<br /> <br />
+                        $(var.Major) - This value will be updated with the major version number in the 
+                        productversion specified. i.e. the &quot;9&quot; in &quot;9.2&quot; <br />
+                        $(var.Minor) - This value will be updated with the minor version number in the 
+                        productversion specified. i.e. the &quot;2&quot; in &quot;9.2&quot; <br />
+                    <br />
+                        The &quot;Assembly&quot; element describes what assemblies will be included and excluded 
+                        within that toolbox tab. The expected value of these attributes is a regular 
+                        expression string to match against the names of the assemblies. If an assembly 
+                        matches with both an include and exclude statement, the assembly will not be 
+                        added to the tab. If there are no &quot;Include&quot; attributes defined, then the utility 
+                        will assume all assemblies should be included.</p>
+                    <p>
+					    The &quot;Control&quot; assembly describes what specific controls will be included and 
+                        excluded within that toolbox tab.&nbsp; The expected value of these attrbitutes 
+                        is a regular expression string to match against the names of the controls.&nbsp; 
+                        If a control matches with both an include and exclude statement, the control 
+                        will not be added to the tab.&nbsp; If there are no &quot;Include&quot; attributes 
+                        defined, then the utility will assume all controls should be included.</p>
+                    <p class="body">Example: <br />
+					    This example will create multiple tabs that selectively include Windows Forms 
+                        controls to put the charting and CLR3x controls into their own tabs. This same 
+                        template can be used for any productversion entered, and the tab name will be 
+                        updated appropriately. fragistics3.*" /&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;/Tab&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- Create a tab for just the charting and gauge controls --&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;Tab Name="NetAdvantage $(var.Major).$(var.Minor) WinForms Charting"&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Assembly Include="Infragistics2.Win.UltraWinChart*" /&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;Assembly Include="Infragistics2.Win.UltraWinGauge*" /&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;/Tab&gt;<br />
+                    &lt;/Toolbox&gt;<br />
+					</code>
+					<br />
+					Through use of the template, multiple tabs can be created with the controls organized to your needs.
+					</p>
+                    
+                    <p class="header">How to run from a configuration file</p>
+                    <p class="body">
+                    The information to create the toolbox tabs can be loaded from a configuration file using the /config command line switch.  This can allow multiple products and versions to be installed with one run of the utility.&nbsp; 
+                        Each time that the utility is used to create or remove tabs, a configuration 
+                        file is generated in "My Documents\Infragistics\Tools\Toolbox Utility\CommandLine Settings".  The last 10 runs of the utility will be saved in this folder.
+                    <br />
+                    <br />
+                    Example:
+                    <br />
+                    This example will install the Windows Forms 9.2 CLR 2.0 controls into Visual Studio 2005.  It will install the assemblies found in the BinFolder location and use the "WinForms" template found in the Templates subfolder of the utility.
+                    <br />
+                    <br />
+                    <code>
+                    &lt;CommandLineSettings&gt;<br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;Product Name="Win" CLR="CLR20" Volume="9.2" VisualStudioVersion="8.0" Template="Templates\WinForms.xml"&gt; <br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;BinFolder&gt;C:\Program Files\Infragistics\NetAdvantage 2009.2\Windows Forms\Bin&lt;/BinFolder&gt; <br />
+                    &nbsp; &nbsp; &nbsp; &nbsp; &lt;/Product&gt; <br />
+                    &lt;/CommandLineSettings&gt;<br />
+                    </code>
+</p>
+					<p class="body">© Copyright $(CurrentYear) Infragistics, Inc., <br>
+					  Windsor Corporate Park, 50 Millstone Road, Building 200 - Suite 150, East Windsor, NJ 08520 USA<br>
+					  Voice (609) 448-2000, Fax (609) 448-2017, <a href="http://www.infragistics.com/">http://www.infragistics.com</a></p>				 </td>
+		        <td class="topheader">&nbsp;</td>
+		      </tr>
+            </table></td>
+          </tr>
+
+          <tr>
+            <td><img src="footer.jpg" width="741" height="55"></td>
+          </tr>
+        </table>
+		<p align="center">&nbsp;</p>
+		<div id="topLinks"></div>
+		</body>
+</html>

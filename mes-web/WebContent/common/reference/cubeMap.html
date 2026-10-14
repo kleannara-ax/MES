@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-custom.css" />
+<link rel="stylesheet" type="text/css" href="css/cubefw.ref.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui-custom.js"></script>
+<script type="text/javascript" src="js/cubefw.js"></script>
+<script type="text/javascript">
+	jQuery(function(){	
+		cubeUI.typeCheck();	
+	});
+</script>
+</head>
+<body class="cubeContentBody">
+	<div class="cubeTopMenu">
+		<span cubeDataType="button"><a href="/cubefw/reference/cubeReference.html">Reference</a></span>	
+	</div>
+	<div class="cubeTopLine"></div>	
+	<div class="cubeCenterCont">
+		<div class="cubeLeftMenu">
+		<div class="cubeSubMenu" cubeDataType="accordion">
+			<h1>
+				Reference
+			</h1>
+			<ul cubeDataType="menu">
+				<li><a href="/cubefw/reference/cubeMap.html">CubeMap</a></li>
+				<li><a href="/cubefw/reference/cubeConfig.html">CubeConfig</a></li>
+				<li><a href="/cubefw/reference/cubeCommon.html">CubeCommon</a></li>
+				<li><a href="/cubefw/reference/cubeGridRow.html">CubeGridRow</a></li>
+				<li><a href="/cubefw/reference/cubeNet.html">CubeNet</a></li>
+				<li><a href="/cubefw/reference/cubeBind.html">CubeBind</a></li>
+				<li><a href="/cubefw/reference/cubeUI.html">CubeUI</a></li>
+				<li><a href="/cubefw/reference/cubeBoard.html">CubeBoard</a></li>
+				<li><a href="/cubefw/reference/cubeValidate.html">CubeValidate</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class="cubeRightCont">
+			<span class="cubeTitleNav">HOME &gt; Cubefw Reference &gt; CubeMap</span>
+			<div id="contents">
+				<ul class="referenceList">
+					<li class="refTit">
+						<h1>CubeMap</h1>	
+						<p>데이터를 저장하고, JSON방식의 전송을 위한 데이터 변환 기능을 제공한다.</p>				
+					</li>
+					<li>
+						<h2><a href="put.html">CubeMap.put(key, value)</a></h2>
+						<p>데이터를 key, value 형태로 저장한다.</p>
+					</li>
+					<li>
+						<h2><a href="putMulti.html">CubeMap.putMulti(key, value)</a></h2>
+						<p>데이터를 저장시 동일한 key가 있는 경우 value를 구분자 ","로 연결하여 저장한다.</p>
+					</li>
+					<li>
+						<h2><a href="putMap.html">CubeMap.putMap(key, value)</a></h2>
+						<p>value가 CubeMap 형태인 경우 맴버필드인 map만 저장한다.</p>
+					</li>
+					<li>
+						<h2><a href="#">CubeMap.putMapList(key, value)</a></h2>
+						<p>value가 CubeMap을 포함한 List인 경우 포함된 CubeMap의 맴버필드인 map을 추출하여 List로 저장한다.</p>
+					</li>
+					<li>
+						<h2><a href="get.html">CubeMap.get(key)</a></h2>
+						<p>key로 저장된 value를 리턴한다.</p>
+					</li>
+					<li>
+						<h2><a href="containsKey.html">CubeMap.containsKey(key)</a></h2>
+						<p>key를 사용하고 있는지 판단한다.</p>
+					</li>
+					<li>
+						<h2><a href="containsValue.html">CubeMap.containsValue(value)</a></h2>
+						<p>value로 저장된 값이 있는지 판단한다.</p>
+					</li>
+					<li>
+						<h2><a href="isEmpty.html">CubeMap.isEmpty()</a></h2>
+						<p>map에 데이터가 없는지 판단한다.</p>
+					</li>
+					<li>
+						<h2><a href="clear.html">CubeMap.clear()</a></h2>
+						<p>map에 저장된 데이터를 모두 삭제한다.</p>
+					</li>
+					<li>
+						<h2><a href="remove.html">CubeMap.remove(key)</a></h2>
+						<p>key로 저장된 데이터를 삭제한다.</p>
+					</li>
+					<li>
+						<h2><a href="keys.html">CubeMap.keys()</a></h2>
+						<p>저장된 데이터 key를 List에 담아 리턴한다.</p>
+					</li>
+					<li>
+						<h2><a href="values.html">CubeMap.values()</a></h2>
+						<p>저장된 데이터 value를 List에 담아 리턴한다.</p>
+					</li>
+					<li>
+						<h2><a href="size.html">CubeMap.size()</a></h2>
+						<p>map에 저장된 데이터의 개수를 리턴한다.</p>
+					</li>
+					<li>
+						<h2><a href="jsonString.html">CubeMap.jsonString()</a></h2>
+						<p>map에 저장된 데이터를 JSON형태로 파싱하여 리턴한다.</p>
+					</li>
+					<li>
+						<h2><a href="toString.html">CubeMap.toString()</a></h2>
+						<p>map에 저장된 모든 데이터를 문자열로 리턴한다.</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cubeFooterLine"></div>
+	<div class="cubeFooter">
+		<img src="/cubefw/images/cubefw.jpg" height="25" alt="SMCube" align="left"/>
+		152-743 서울시 구로구 구로3동 197-5 삼성IT밸리 1108호 (주)에스엠큐브 TEL:02)6465-8311 FAX:02)6465-8313<br/>
+		Copyright (c) 2011 SMCube Co.,Ltd All Rights Reserved. Contact Us
+	</div>
+</body>
+</html>

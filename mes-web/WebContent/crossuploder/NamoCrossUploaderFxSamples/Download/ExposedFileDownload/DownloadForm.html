@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html> 
+<head>
+<title>Server-Side 로직과 연동 없이 웹상에 노출된 파일을 다운로드하는 예제입니다.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- 단순히 샘플 설명을 위한 화면 스타일입니다. 중요하지 않습니다. -->
+<link rel="stylesheet" type="text/css" href="../../css/common.css" />
+
+<!-- 
+	NamoCrossDownloader Client Flex Edition 이 동작하기 위한 필수 파일들입니다. 
+--> 
+<script type="text/javascript" src="../../js/swfobject.js"></script>
+<script type="text/javascript" src="../../js/namocrossuploader.js"></script>
+<!-- 모니터 창 출력을 위한 스타일입니다. 필요 시 프로젝트 디자인에 맞게 적절히 수정해 주십시오. -->
+<link rel="stylesheet" type="text/css" href="../../css/namocrossuploader.css" />
+
+<!-- JSON 파싱을 위해 jQuery 사용하고 있습니다. 필요 없을 시 삭제해 주십시오. -->
+<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript">
+    /**
+    * NamoCrossDownloader의 Manager 객체
+    */
+    var cdManager = null;
+
+	// HTML의 onload 이벤트 핸들러
+    var onInit = function () {
+        /**
+        * NamoCrossDownloader 객체를 생성합니다.
+        * 객체의 크기 변경, Javascript로 전송하는 이벤트 이름 변경 및 기타 설정은 함수 내부를 참조해 주십시오. 
+        * createNamoCrossDownloader 함수는 namocrossuploader.js 파일에 구현되어 있습니다. 
+        * 각각의 Id는 변경 가능합니다.
+        */
+        createNamoCrossDownloader(
+            "crossDownloadManager", // NamoCrossDownloader의 Manager 객체 Id
+            "flashContentManager",  // NamoCrossDownloader의 Manager 객체가 위치할 HTML Id (body 태크 내에 선언된 Id와 동일해야 함)
+            true                    // Single File Download 이면 true, Multiple File Download 이면 false
+            );
+    }
+
+	/**
+	* NamoCrossDownloader의 Manager 객체 생성 완료 시 호출됩니다.
+	*/
+    var onCreationCompleteCd = function () {
+        cdManager = document.getElementById("crossDownloadManager");
+
+        // 다운로드 할 파일 추가 (JSP 파일을 요청하지 않고, 다운로드 할 파일을 바로 요청합니다.)
+		var fileURL = getAbsolutePath("Download/DownloadFiles") + "ActiveSquare 7_brochure.pdf";
+        //var fileURL = "http://localhost:8080/NamoCrossUploaderFxSamples/Download/DownloadFiles/ActiveSquare 7_brochure.pdf";
+        cdManager.addFile({ fileId: "FILEID_0002", fileName: "ActiveSquare 7_brochure.pdf", fileURL: fileURL, fileSize: 2816868 });
+    }
+
+	/**
+	* 예외 발생 시 호출됩니다.
+	*/ 
+    var onExceptionCd = function (params) {
+        // 300~ : 일반적 예외
+        // 400~ : 시스템 예외
+        // 500~ : 서측에서 발생한 예외
+        // 필요한 예외정보만 고객에서 보여주십시오.
+		var obj = jQuery.parseJSON(params); 
+		alertTimeout("[예외 정보]\n" + "code : " + obj.code + "\n" + "message : " + obj.message + "\n" + "detailMessage : " + obj.detailMessage); 
+    }
+
+	/**
+	* 다운로드 시작 시 호출됩니다.
+	*/
+    var onStartDownloadItemCd = function (params) {
+	    var obj = jQuery.parseJSON(params); 
+	    alertTimeout("[파일 다운로드 시작]\n" + 
+	    "FileId : "	  + obj.fileId + "\n" +
+	    "FileName : " + obj.fileName + "\n" +
+	    "FileSize : " + obj.fileSize 
+	    ); 
+	} 
+
+	/**
+	* 다운로드 완료 시 호출됩니다.
+	*/
+    var onEndDownloadItemCd = function (params) {
+	    var obj = jQuery.parseJSON(params); 
+	    alertTimeout("[파일 다운로드 완료]\n" + 
+	    "FileId : "	  + obj.fileId + "\n" +
+	    "FileName : " + obj.fileName + "\n" +
+	    "FileSize : " + obj.fileSize 
+	    ); 
+	} 
+
+    /**
+    * 다운로드 취소 시 호출됩니다.
+    */
+    var onCancelDownloadItemCd = function (params) {
+        /*
+        var obj = jQuery.parseJSON(params); 
+        alertTimeout("[파일 다운로드 취소]\n" + 
+        "FileId : "   + obj.fileId + "\n" +
+        "FileName : " + obj.fileName + "\n" +
+        "FileSize : " + obj.fileSize
+        ); 
+        */
+	}
+
+    /**
+    * Flash로부터 호출되는 Javascript 콜백함수 내에서 alert 창을 띄우기 위한 처리로 Chrome, Firefox, Safari 브라우저의 일부 버전에 해당됩니다. 
+    */
+    var alertTimeout = function (params) {
+        window.focus();
+        setTimeout(function () { alert(params) }, 100);
+    }
+
+</script>
+</head>
+
+<body onload="onInit()"> 
+	<div class="content_title_area">
+		<div class="content_title">샘플 설명</div>
+		<div class="content_desc">Server-Side 로직과 연동 없이 웹상에 노출된 파일을 다운로드하는 예제입니다. 다운로드 방식은 Single/Multiple File Download 모두 동일합니다.</div>
+		<div class="content_title">샘플 경로</div>
+		<div class="content_desc">NamoCrossUploaderFxSamples/Download/ExposedFileDownload</div>
+	</div><br />
+
+	<div class="form_area">
+        <!-- NamoCrossDownloader의 Manager 객체가 위치할 HTML Id -->
+        <div id="flashContentManager" style="display: none;">
+            <p>To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.</p>
+            <script type="text/javascript"> 
+                var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://"); 
+                document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+                                + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+            </script> 
+        </div>
+	</div>
+</body>
+</html>

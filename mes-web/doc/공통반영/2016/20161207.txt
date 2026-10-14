@@ -1,0 +1,12 @@
+SqlUtil.java
+ - 대용량 데이터 조회시 exception message 세부내용 나오게 수정
+
+조회시 SQLException이 발생하는 경우 alert으로 에러내용 보이게 처리.
+ - dataRequest.js, worker-ajax.js
+ - dataException.jsp, sessionEmpty.jsp
+ 
+left.css
+ - left menu 즐겨찾기 메뉴 삭제버튼 표시
+ 
+grid.js
+ - tree에서 tree text 표시부분 영역선택시 데이터 복사 오류 수정

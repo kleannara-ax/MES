@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+	<settings useStatementNamespaces="true"/>	
+	
+	<typeHandler javaType="java.lang.String" callback="org.springframework.orm.ibatis.support.ClobStringTypeHandler" jdbcType="CLOB"/>
+    
+    <sqlMap resource="com/common/dao/sqlmap/Common_mssql.xml"/>
+    <sqlMap resource="com/common/dao/sqlmap/System_mssql.xml"/>
+    
+    <sqlMap resource="com/wms/dao/sqlmap/Wms_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Admin_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Inbound_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Outbound_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Inventory_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Task_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Erpif_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/WmsPda_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Report_mssql.xml"/>
+    <sqlMap resource="com/wms/dao/sqlmap/Label_mssql.xml"/>
+    <sqlMap resource="com/demo/dao/sqlmap/Demo_mssql.xml"/>
+    
+    <sqlMap resource="com/tms/dao/sqlmap/Tms_mssql.xml"/>
+
+    <sqlMap resource="com/tms/dao/sqlmap/TmsAdmin_mssql.xml"/>
+    <sqlMap resource="com/tms/dao/sqlmap/GeoCoding_mssql.xml"/>    
+</sqlMapConfig>

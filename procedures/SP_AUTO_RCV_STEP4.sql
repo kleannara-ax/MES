@@ -1,0 +1,22 @@
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_AUTO_RCV_STEP4" 
+(
+    P_ORDER_NO          IN VARCHAR2
+    ,P_ORDER_TYPE       IN VARCHAR2
+    ,P_COMP_CD          IN VARCHAR2
+    ,P_PLANT_CD         IN VARCHAR2
+    ,P_MATNR            IN VARCHAR2
+    ,P_MATNR_NM         IN VARCHAR2
+    ,P_LOT_NO           IN VARCHAR2
+    ,P_IND_BCD          IN VARCHAR2
+    ,P_UNI              IN VARCHAR2
+    ,P_QTY              IN VARCHAR2
+    ,P_MACH_CD          IN VARCHAR2
+    ,P_RESULT           OUT VARCHAR2
+)
+AS 
+
+BEGIN
+  NULL;
+END SP_AUTO_RCV_STEP4;
+/

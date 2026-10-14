@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+/* @import "top_red.css"; */
+
+
+.content_top{position:relative;width:100%;height:100%; overflow:hidden;}
+/* logo */
+.logos {position: relative; height:80px; width:280px; float: left; background-color: #39405a;}
+.GCCL, .GCLC {display: block; width: 100%; height: 100%; box-sizing:border-box; float: left;}
+.logos a{display: block; width: 100%; height: 100%; box-sizing:border-box;}
+
+.logos a {padding: 13px 28px;}
+/* .GCLC a {padding: 14px 25px;} */
+/* .GCCL a {padding: 5px 20px;} */
+/* .GCLS a {padding: 7px 20px;} */
+.logos a span{display: block; overflow: hidden;background-size: auto 100%; width: 100%; height: 100%;}
+
+/* .GCLC span{background:url("/common/theme/webdek/images/GHUB_main_logo.png") no-repeat 0 0;} */
+/* .GCCL span{background:url("/common/theme/webdek/navy/logo_gccl.png") no-repeat 0 0; } */
+/* .GCLS span{background:url("/common/theme/webdek/images/GC-Labs_eng.png") no-repeat 0 0;} */
+
+.btn_ghost a {display:block;/*  width:20px;  */height:12px; }
+
+.header_tab {margin-top: 20px; display: block; float: left; height: 60px; line-height: 60px; }
+.header_tab li {display: inline-block; margin-left: 15px; width: 80px; text-align: center; }
+
+.header_tab li a{display:inline-block; font-size: 14px; color: #777; font-weight: bold; height: 100%; width: 100%; border-radius:25px 25px 0 0;padding: 0 10px; outline: none;}
+
+.header_right {display: block; float: right; margin-top: 6px;}
+.header_right li:first-of-type {padding: 0px !important;}

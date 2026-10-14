@@ -1,0 +1,35 @@
+/* 공통 그리드 search_pop_option 팝업 */
+.search_pop_option .pop_wrap{ width:605px;}/*팝업사이즈*/
+.search_pop_option .tab_box .tab_wrap.t1 .tab_btn{ left:0px;}/*t1 위치*/
+.search_pop_option .tab_box .tab_wrap.t2 .tab_btn{ left:125px;}/*t2 위치*/
+
+/* 공통 그리드 grid_pop_layout 팝업 */
+.grid_pop_layout .pop_wrap{ width:538px;}/*팝업사이즈*/
+
+/* 공통 그리드 grid_pop_layout 팝업 */
+.id_APMTM12P .pop_wrap{ width:843px !important;}/*팝업사이즈*/
+
+
+/* 공통 그리드 Get Variant/Save Variant 팝업 */
+#layer_pop4.GetVariant_pop_layout .pop_wrap,
+#layer_pop4.SaveVariant_pop_layout .pop_wrap{ width:368px;}/*팝업사이즈*/
+#layer_pop4.GetVariant_pop_layout .search_wrap .search_basics > dt,
+#layer_pop4.SaveVariant_pop_layout .search_wrap .search_basics > dt{ width:298px; padding:0px 194px 0px 17px;}
+#layer_pop4.GetVariant_pop_layout .search_wrap .search_basics > dt span,
+#layer_pop4.SaveVariant_pop_layout .search_wrap .search_basics > dt span{ width:87px;}
+#layer_pop4.GetVariant_pop_layout .search_wrap .search_basics > dd,
+#layer_pop4.SaveVariant_pop_layout .search_wrap .search_basics > dd{ width:172px; margin-left:-189px;}
+
+
+/* 공통 그리드 Get Variant/Save Variant 팝업 */
+#layer_pop4.fileupload_pop_layout .pop_wrap,
+#layer_pop4.fileupload_pop_layout .pop_wrap{ width:398px;}/*팝업사이즈*/
+
+
+/* 물류 > 출고 > 일반출고 > 출고지시 > 출력물 */
+.id_AWOBD04L .dl_col{ height:280px;}
+
+
+/* 영업 > 고객영업관리 > 고객사 부서 관리  */
+.id_SDTA10M .tab_box .tab_wrap.t1 .tab_btn{ left:0px;}
+.id_SDTA10M .tab_box .tab_wrap.t2 .tab_btn{ left:125px;}

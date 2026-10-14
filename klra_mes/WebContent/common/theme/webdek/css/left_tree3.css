@@ -1,0 +1,110 @@
+@charset "utf-8";
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+
+.lnb_wrap::-webkit-scrollbar {
+	width:18px;
+}
+.lnb_wrap::-webkit-scrollbar-thumb {
+	background-color: #4c78ea; /*스크롤바의 색상*/
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 50px;
+}
+.lnb_wrap::-webkit-scrollbar-track {
+	 background-color: #39405a; 
+}
+.left_wrap {
+	background-color: #39405a;	
+    border-right: 1px solid #39405a;
+}
+.tab_container {
+	background-color: #39405a;
+	background-image: none;
+}
+.tab_container fieldset {
+	border-bottom:none;
+}
+.tab a {
+	background-color: #39405a;
+	}
+.tab span {
+	background-size: 14px; 
+}
+.tab:nth-of-type(1) span {
+	background-image: url(/common/theme/webdek/images/icon_bottom_set.png);
+}
+.tab:nth-of-type(2) span {
+	background-image: url(/common/theme/webdek/images/star.png);
+}
+.tabs .my_menu.on span {
+	background-image: url(/common/theme/webdek/images/star.png);
+}
+.serch_input {
+    background-color: #252934;
+    border: 0px none;
+    border-radius: 20px;
+    box-sizing: border-box;
+    width: 214px;
+    height: 30px;
+    color: #fff;
+}
+.search_box .btn {
+    background: url(/common/theme/webdek/images/search.png) no-repeat center center;
+    background-color: transparent; 
+    background-size:13px;
+    border: 0px solid #e9ecf2;
+    border-left:none;
+}
+.sort_box button {
+    background: #4c78ea url(/common/theme/webdek/green/icon_folder_open.png)no-repeat 50% 50%;
+    background-size: 14px;
+    border-radius: 5px;
+    border: none;
+}
+.sort_box button.slide {
+	background: #4c78ea url(/common/theme/webdek/images/icon_folder_close_03.png)no-repeat 50% 50%;
+	background-size: 14px; 
+}
+.sort_box_fl {
+	float:right; 
+	box-sizing:border-box; 
+	width: 30px; 
+	height: 30px; 
+	margin-left:1px; 
+	border-radius: 2px;
+	display: none;
+}
+.sort_box_fl button {
+	width: 30px;
+	height: 30px;
+	background:#4c78ea url(/common/theme/webdek/images/sort.png)no-repeat 50% 50%;
+	background-size: 32px;
+	border-radius: 5px;
+	border: none;
+}
+.sort_box_fl button.complete{
+	background:#4c78ea url(/common/theme/webdek/images/btn_color.png)no-repeat 50% 50%;
+	background-size: 15px;
+}
+.quick_menu span.button.remove{
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background: url(/common/theme/webdek/images/error.png)no-repeat 50% 50%;
+	background-size: 15px;
+}
+h1.btn_sysmenu {
+	position: relative;
+	color : #fff;	
+}
+h1.btn_sysmenu:after {
+	content:'';
+	display: block;
+	position: absolute;
+	top:8px;
+	right:0;
+	width:2px;
+	height:14px;
+	background-color: #e9ecf2;
+}

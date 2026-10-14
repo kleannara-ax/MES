@@ -1,0 +1,21 @@
+@charset "utf-8";
+@import "layout.css";
+
+/*tab border content ui color css*/
+.tab_style02 li.ui-state-focus {background: none; border: none;}
+.ui-state-active {border-bottom: 4px solid #002849 !important;}
+.ui-datepicker-calendar tr td a:hover {background-color:#002849; color: white; font-weight: bold;}
+.ui-timepicker .ui-timepicker-hour-cell a:hover, .ui-timepicker .ui-timepicker-minute-cell a:hover {background-color: #002849; color: white; font-weight: bold; border-radius: 4px;}
+
+.btn_search{background: url(/common/theme/webdek/white/search.png) no-repeat center; background-size: contain; background-size: 15px auto;}/* btn search */
+.btn_color{color:#fff;border:1px solid #002849; background:url(/common/theme/webdek/images/icon_save.png) no-repeat 8px center; background-size: 12px auto; background-color:#002849;}
+.btn_add_arrow{color:#fff;border:1px solid #002849; background:url(/common/theme/webdek/images/icon_add_arrow.png) no-repeat 8px center; background-size: 12px auto; background-color:#002849;}
+.btn_del_arrow{margin-left: 5px; color:#fff;border:1px solid #002849; background:url(/common/theme/webdek/images/icon_del_arrow.png) no-repeat 8px center; background-size: 12px auto; background-color:#002849;}
+
+.btn_color, .basic_search, .basic_add_new, .basic_del, .basic_reset, .btn_add_arrow, .btn_del_arrow, .basic_copy, .btn_popup{padding: 2px 10px 2px 25px;}
+.btn_lit .txt_total span{color:#002849}
+
+
+
+
+

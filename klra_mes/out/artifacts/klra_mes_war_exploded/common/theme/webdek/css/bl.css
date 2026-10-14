@@ -1,0 +1,29 @@
+  tr > td[gf="D"] /* 컬럼의 속성이 일자 */
+, tr > td[gf="C"] /* 컬럼의 속성이 일자 */
+, tr > td[gf="T"] /* 컬럼의 속성이 시간 */
+, tr > td[gf="DT"] /* 컬럼의 속성이 일자시간 */
+, tr > td[gcolname$="_CD"] /* 접미사가 _CD로 끝나는 */
+, tr > td[gcolname$="_ID"] /* 접미사가 _ID로 끝나는 */
+, tr > td[gcolname$="_YN"] /* 접미사가 _ID로 끝나는 */
+, tr > td[gcolname="POST_NO"] /* 우편번호 */
+, tr > td[gcolname="CTTPC"]
+, tr > td[gcolname="CONO"]
+, tr > td[gcolname="SONO"]
+, tr > td[gcolname="EONO"]
+, tr > td[gcolname="TONO"]
+, tr > td[gcolname="RONO"]
+, tr > td[gcolname="IF_FLAG"]
+, tr > td[gcolname="IF_ACT_FLAG"]
+, tr > td[gcolname="WAYBILL_NO"]
+, tr > td[gcolname="VISIT_STRT_TM"]
+, tr > td[gcolname="VISIT_END_TM"]
+, tr > td[gcolname="VEH_YRIDNW"]
+, tr > td[gcolname="END_YN"]
+, tr > td[gh$="STD_CTTPC"] /* 칼럼 라벨명 접미사가 STD_CTTPC (연락처) */
+{
+	text-align: center;
+}
+
+tr > td > select:disabled { border-radius:0; /* 아이폰 사파리 보더 없애기 */ -webkit-appearance:none; /* 화살표 없애기 for chrome*/ -moz-appearance:none; /* 화살표 없애기 for firefox*/ appearance:none; /* 화살표 없애기 공통*/ background-color: #f8f8f8;}
+
+tr > td > select:disabled::-ms-expand{ display:none; /* 화살표 없애기 for IE10, 11*/ background-color: #f8f8f8;}

@@ -1,0 +1,17 @@
+입력 format U(Uppercase),L(Lowercase) 추가
+ - configData.js
+ - input.js, ui.js : UIFormat="U"
+ - grid.js : GF="U"
+ 
+page.js
+ - SearchHelp 호출 input이 readonly인 경우 SearchHelp에서 값을 선택하더라고 input에 값이 적용되지 않도록 변경
+ - searchHelpEventOpenBefore 함수에서 false를 리턴하는 경우 search popup을 올리지 않는 기능 추가
+ 
+input.js
+ - function comboEventDataBindeBefore(comboAtt, $comboObj) : $comboObj 추가
+ 
+Variant save, get 에서 빈값도 반영이 가능하도록 개선, range 에서 OR, AND 값 저장 하도록 개선
+ - input.js, dataBind.js, configData.js
+
+Grid head click 할 경우 sort가 되는 기능을 duble click으로 변경
+ - grid.js

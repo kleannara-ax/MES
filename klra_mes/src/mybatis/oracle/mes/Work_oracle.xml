@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Work">
+	
+	<!-- Step1. MES 실적 등록 & WMS 입고요청 (MES출고요청 = WMS입고요청) -->
+	<select id="GET_NO_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_GET_NO(
+				#{P_LOT_TEMP, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_BARCODE_SEQ, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_LOT_NO, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<!-- WCS 요청 이력 INSERT -->
+	<select id="WCS_HISTORY_SAVE_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WCS_HISTORY_SAVE(
+				#{P_ORDER_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ORDER_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_PLANT_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR_NM, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_LOT_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_UNIT, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_QTY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS_CHK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS_CHK_MSG, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_USER_ID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_RESULT, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+
+	<select id="AUTO_ERR_LOG_LIST" parameterType="hashmap" statementType="CALLABLE">
+		CALL SP_AUTO_ERR_LOG(
+			#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_ERR_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_ERR_MSG, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_DEVICE_DT, mode=IN, jdbcType=VARCHAR, javaType=String},
+			#{P_RMK, mode=IN, jdbcType=VARCHAR, javaType=String}
+		 )
+	</select>
+	<!-- Step1. MES 실적 등록 & WMS 입고요청 (MES출고요청 = WMS입고요청) -->
+	<select id="WRK00_LIST" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_AUTO_RCV_WRK_PRFM(
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_USERID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ORDER_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WRK_ORDR_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WRK_ORDR_SEQNO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_PRFM_QTY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_LOT_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{Lang, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{RS_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_PRFM_FUNC, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_USE_FUNC, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_WDOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR_NM, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_UNIT, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CUR_1, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<!-- Step3. WMS 입고 -->
+	<select id="WRK00_1_LIST" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_AUTO_RCV_STEP3(
+				#{P_JSONSTR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MATNR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_SEQ, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_USERID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_LOT_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WRK_ORDR_NO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WRK_ORDR_SEQNO, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO_TRANS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO_WMS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MOVE_FUNC, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{Lang, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{RS_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{CUR_1, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{CUR_2, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<!-- 롤백 -->
+	<select id="WRK00_2_MAP" parameterType="hashmap" statementType="CALLABLE">
+		<![CDATA[{
+			CALL SP_AUTO_CANC_SAP(
+				#{ROLLBACK_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_USERID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_WMS_CANC_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_TRANS_CANC_KEY, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{RS_CODE_RB, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_MSG_RB, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO_CANC_TRANS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO_CANC_WRK, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}]]>
+	</select>
+	
+	<select id="WRK00_3_LIST" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_AUTO_RCV_WRK_PRFM_RE(
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_ERP_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_WMS_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CUR_1, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK02_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK02_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK03_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK03_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK04_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK04_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{RS_DISPO_RFCFN, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_I_IF_ID, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_I_IF_KEY, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_SQL, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<select id="WRK04_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK04_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK05_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK05_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK05_1_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK05_I01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK06_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK06_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK07_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK07_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK08_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK08_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK09_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK09_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK10_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK10_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO3, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO4, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CLOSE_YN, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK11_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK11_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO3, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO4, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK12_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK12_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_CNL_RMK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK14_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK14_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_CNL_RMK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK15_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK15_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	<select id="WRK16_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK16_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK17_MAP" parameterType="hashmap" statementType="CALLABLE" timeout='2000'>
+		{
+			CALL SP_WRK17_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK17_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK17_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK18_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK18_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK21_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK21_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO2, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK22_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK22_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK23_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK23_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK23_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK23_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK24_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK24_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK25_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK25_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK26_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK26_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO1, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="POP_WRK30_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_POP_WRK30_I02_MES(
+				#{P_WERKS, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_MACH_CD, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_IND_BCD_LIST, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_CNL_RMK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_USERID, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{LANG, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{RS_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_PRFM_RFCFN, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_PRFM_I_IF_ID, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_PRFM_I_IF_KEY, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_PRFM_SQL, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_RFCFN, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_I_IF_ID, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_I_IF_KEY, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{RS_DISPO_SQL, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<select id="WRK27_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK27_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK28_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK28_S12(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK29_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK29_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+			}
+	</select>
+
+	<select id="WRK30_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK30_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+			}
+	</select>
+
+	<select id="WRK31_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK31_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+			}
+	</select>
+
+	<select id="WRK32_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK32_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK33_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK33_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK34_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK34_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<select id="WRK34_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK34_S02(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK34_POP02_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK34_S03(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SEND_PARAM, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_CODE, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK35_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK35_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK36_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK36_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK37_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK37_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK38_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK38_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK39_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK39_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK40_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK40_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK41_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK41_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK42_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK42_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK43_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK43_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK44_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK44_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+
+	<select id="WRK45_LIST_MAP" parameterType="Map" resultType="DataMap">
+		SELECT W018.BARCODE_NO, --업체바코드
+               W018.RCVGDS_DT,  --입고일자
+               W018.LIFT_DT,    --출고일자
+               W018.IND_BCD     BCD,        --개별바코드
+               W018.LOT_NO,     --LOT_NO
+               W018.MATNR,      --자재코드
+               M001.MATNR_NM,   --자재명
+               W018.SUPY_CD,    --공급업체코드
+               M009.CUST_NM     SUPY_NM,     --공급업체명
+               W018.ZFBLNO,     --B/L 관리번호
+               W018.CON_NO,     --컨테이너No
+               W018.ROLL_NO,    --ROLL ID
+               W018.PCODE,      --지종코드
+               M001.PCODE_NM,   --지종명
+               W018.MWIDTH,     --M/R 지폭
+               W018.ROLLCNT     MROLLCNT,    --M/R 권치수
+               W018.NET_WGT,    --Net 중량
+               W018.WGT_MUL,    --중량배수
+               W018.CORE,       --지관
+               W018.UNIT,       --중량단위
+               W018.PCODE_SUPPY,--고객 지종
+               W018.BS_WGT,     --평량
+               W018.RB_WGT      MBRGEW,     --M/R중량
+               W018.UNIT_L,     --길이단위
+               W018.STO_DOC_NO, --STO 문서번호
+               W018.WRK_STA,    --작업상태
+               W018.CNL_RMK,    --취소사유
+               W018.RMK_1,      --비고
+               W018.RMK_2,      --비고
+               W018.RMK_3,      --비고
+               W018.RMK_4,      --비고
+               W018.RMK_5,      --비고
+               W018.WRK_CLASS,  --작업반
+               W018.WRK_SHIFT,  --작업조
+               W018.DOC_NO,     --MES 문서번호
+               W018.DOC_SEQNO,  --MES 문서번호 순번
+               W018.SDOC_NO,    --SAP 확정문서번호
+               W018.SDOC_SEQNO, --SAP 확정문서 순번
+               W018.REGDATE,    --등록일시
+               (SELECT NMLAST FROM USRMA WHERE USERID = W018.REGID) REGNM,   --등록자
+               W018.UPDDATE,    --수정일시
+               (SELECT NMLAST FROM USRMA WHERE USERID = W018.UPDID) UPDNM    --수정자
+          FROM TB_WRK018 W018,    --LIFT출고이력
+               TB_MAS001 M001,    --자재
+               TB_MAS009 M009     --거래처
+         WHERE W018.MATNR = M001.MATNR(+)
+           AND W018.SUPY_CD = M009.CUST_CD(+)
+           AND M009.CUST_DIV = 'V'
+           AND BARCODE_NO = #{BARCODE_NO}
+	</select>
+	
+	<select id="WRK45_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK45_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DOC_NO, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK45_1_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK45_I01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK46_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK46_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK47_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK47_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	
+	
+	<select id="WRK48_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK48_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK50_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK50_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_DECISION_RTN, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST_01, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap},
+				#{P_RS_LIST_02, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="WRK51_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK51_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<!-- 2023-01-05(목요일) 안상현, 실적취소 ROLLBACK 관련 프로시저 추가 -->
+	<select id="WRK14_RB_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK14_RB_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_CNL_RMK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<!-- 2023-01-05(목요일) 안상현, 실적취소 ROLLBACK 관련 프로시저 추가 -->
+	<select id="WRK12_RB_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK12_RB_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_CNL_RMK, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String}
+			)
+		}
+	</select>
+	
+	<!-- 공정실적조회_점보롤 -->
+	<select id="selectProcResultList_J" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+		SELECT SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) 									  	AS PRFM_DT_YM, 
+			   SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) || '-' || SUBSTR(W1.PRFM_DT, 7, 2) 	AS PRFM_DT,
+			   W1.ORDER_NO																					  	AS ORDER_NO,
+		       W1.MATNR																							AS MATNR,
+		       SUBSTR(W1.MATNR, 1, 1)                                                                           AS MATNR_DIV,
+		       SUBSTR(W1.MATNR, 2, 1)                                                                           AS MACHINE,
+		       SUBSTR(W1.MATNR, 3, 3)                                                                           AS PCODE,
+		       SUBSTR(W1.MATNR, 6, 3)                                                                           AS BS_WGT,
+		       SUBSTR(W1.MATNR, 10, 4)                                                                          AS WLEN,
+		       SUBSTR(W1.MATNR, 14, 4)                                                                          AS VLEN,
+		       NVL(SUBSTR(W1.MATNR, 18, 1), ' ')                                                                AS PKTYPE,
+		       M1.MATNR_DIV_NM																					AS MATNR_DIV_NM,
+		       CASE WHEN SUBSTR(W1.MATNR, 5, 1) = '1' THEN '내수' ELSE '수출' END                                  AS EXPORT_GBN,
+		       ' '                                                                                              AS CORE,
+		       W1.UNIT																						    AS UNIT_KG,
+		       SUM(W1.PRFM_QTY)                                                                                 AS PRFM_QTY_KG,
+		       ' '																							    AS UNIT_EA,
+		       ' '				                                                                                AS PRFM_QTY_EA,
+		       ' '																							    AS UNIT_R,
+		       ' '				                                                                                AS PRFM_QTY_R,
+		       ' '                                                                                              AS SHEET_GBN,
+		       ' '                                                                                              AS PKCNT,
+		       M012.MACH_CD																						AS MACH_CD,
+		       M012.MACH_NM																						AS MACH_NM
+		FROM TB_WRK002 W1
+		         INNER JOIN TB_MAS001 M1    ON W1.WERKS = M1.WERKS AND W1.MATNR = M1.MATNR
+		         INNER JOIN TB_SCH015 S017  ON W1.WERKS = S017.WERKS
+		                                        AND W1.WRK_ORDR_NO = S017.WRK_ORDR_NO
+		                                        AND W1.WRK_ORDR_SEQNO = S017.WRK_ORDR_SEQNO
+		         INNER JOIN TB_MAS012 M012  ON W1.MACH_CD = M012.MACH_CD
+		WHERE 1=1
+		    AND NVL(W1.PRFM_GTHR_YN, 'N') = 'Y'
+		    AND NVL(W1.CNL_YN, 'N') = 'N'
+		    AND W1.WERKS = #{WERKS}
+		    AND W1.PRFM_DT BETWEEN #{SDATE} AND #{EDATE}                        -- 실적일자
+		    AND W1.MATNR LIKE '%' || #{MATNR} || '%'                            -- 자재코드
+		    AND S017.ORDER_NO LIKE '%' || #{ORDER_NO} || '%'                    -- 오더번호
+		    AND S017.TO_MACHINE LIKE '%' || #{MACHINE} || '%'                   -- 생산호기
+		    AND W1.MACH_CD LIKE '%' || #{MACH_CD} || '%'                        -- 설비코드
+		GROUP BY W1.PRFM_DT, W1.MATNR, M1.MATNR_DIV_NM, W1.UNIT, S017.SHEET, M012.MACH_NM, W1.ORDER_NO, M012.MACH_CD
+		ORDER BY 1, 2
+	</select>
+	
+	<!-- 공정실적조회_밀롤 -->
+	<select id="selectProcResultList_M" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+		SELECT SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) 									  AS PRFM_DT_YM, 
+			   SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) || '-' || SUBSTR(W1.PRFM_DT, 7, 2) AS PRFM_DT,
+			   W1.ORDER_NO																					  AS ORDER_NO,
+		       W1.MATNR																						  AS MATNR,
+		       SUBSTR(W1.MATNR, 1, 1)                                                                         AS MATNR_DIV,
+		       SUBSTR(W1.MATNR, 2, 1)                                                                         AS MACHINE,
+		       SUBSTR(W1.MATNR, 3, 3)                                                                         AS PCODE,
+		       SUBSTR(W1.MATNR, 6, 3)                                                                         AS BS_WGT,
+		       SUBSTR(W1.MATNR, 10, 4)                                                                        AS WLEN,
+		       SUBSTR(W1.MATNR, 14, 4)                                                                        AS VLEN,
+		       NVL(SUBSTR(W1.MATNR, 18, 1), ' ')                                                              AS PKTYPE,
+		       M1.MATNR_DIV_NM																				  AS MATNR_DIV_NM,
+		       CASE WHEN SUBSTR(W1.MATNR, 5, 1) = '1' THEN '내수' ELSE '수출' END                                AS EXPORT_GBN,
+		       W1.CORE																						  AS CORE,
+		       W1.UNIT																						  AS UNIT_KG,
+		       SUM(W1.PRFM_QTY)                                                                               AS PRFM_QTY_KG,
+		       ' '																							  AS UNIT_EA,
+		       ' '				                                                                              AS PRFM_QTY_EA,
+		       ' '																							  AS UNIT_R,
+		       ' '				                                                                              AS PRFM_QTY_R,
+		       CASE WHEN S017.SHEET = 'X' THEN '시트' ELSE '롤' END                                             AS SHEET_GBN,
+		       ' '                                                                                            AS PKCNT,
+		       M012.MACH_CD																					  AS MACH_CD,
+		       M012.MACH_NM																					  AS MACH_NM
+		FROM TB_WRK002 W1
+		         INNER JOIN TB_MAS001 M1    ON W1.WERKS = M1.WERKS AND W1.MATNR = M1.MATNR
+		         INNER JOIN TB_SCH016 S017  ON W1.WERKS = S017.WERKS
+		                                        AND W1.WRK_ORDR_NO = S017.WRK_ORDR_NO
+		                                        AND W1.WRK_ORDR_SEQNO = S017.WRK_ORDR_SEQNO
+		         INNER JOIN TB_MAS012 M012  ON W1.MACH_CD = M012.MACH_CD
+		WHERE 1=1
+		    AND NVL(W1.PRFM_GTHR_YN, 'N') = 'Y'
+		    AND NVL(W1.CNL_YN, 'N') = 'N'
+		    AND W1.WERKS = #{WERKS}
+		    AND W1.PRFM_DT BETWEEN #{SDATE} AND #{EDATE}                        -- 실적일자
+		    AND W1.MATNR LIKE '%' || #{MATNR} || '%'                            -- 자재코드
+		    AND S017.ORDER_NO LIKE '%' || #{ORDER_NO} || '%'                    -- 오더번호
+		    AND S017.TO_MACHINE LIKE '%' || #{MACHINE} || '%'                   -- 생산호기
+		    AND W1.MACH_CD LIKE '%' || #{MACH_CD} || '%'                        -- 설비코드
+		GROUP BY W1.PRFM_DT, W1.MATNR, M1.MATNR_DIV_NM, W1.UNIT, S017.SHEET, M012.MACH_NM, CORE, W1.ORDER_NO, M012.MACH_CD
+		ORDER BY 1, 2
+	</select>
+	
+	<!-- 공정실적조회_재단 -->
+	<select id="selectProcResultList_C" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+		SELECT SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) 									  AS PRFM_DT_YM, 
+			   SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) || '-' || SUBSTR(W1.PRFM_DT, 7, 2) AS PRFM_DT,
+		       W1.ORDER_NO																					  AS ORDER_NO,
+		       W1.MATNR																						  AS MATNR,
+		       SUBSTR(W1.MATNR, 1, 1)                                                                         AS MATNR_DIV,
+		       SUBSTR(W1.MATNR, 2, 1)                                                                         AS MACHINE,
+		       SUBSTR(W1.MATNR, 3, 3)                                                                         AS PCODE,
+		       SUBSTR(W1.MATNR, 6, 3)                                                                         AS BS_WGT,
+		       SUBSTR(W1.MATNR, 10, 4)                                                                        AS WLEN,
+		       SUBSTR(W1.MATNR, 14, 4)                                                                        AS VLEN,
+		       NVL(SUBSTR(W1.MATNR, 18, 1), ' ')                                                              AS PKTYPE,
+		       M1.MATNR_DIV_NM																				  AS MATNR_DIV_NM,
+		       CASE WHEN SUBSTR(W1.MATNR, 5, 1) = '1' THEN '내수' ELSE '수출' END                                AS EXPORT_GBN,
+		       ' '                                                                                            AS CORE,
+		       W1.UNIT																						  AS UNIT,
+               CASE WHEN SUBSTR(W1.MATNR, 5, 1) = '1' THEN '내수' ELSE '수출' END                               AS EXPORT_GBN,
+		       ' '                                                                                            AS CORE,
+   		       'KG'  																						  AS UNIT_KG,
+		       CASE WHEN W1.UNIT = 'EA' THEN SUM(W1.WGT)
+		            WHEN W1.UNIT = 'R' THEN 0
+		            WHEN W1.UNIT = 'KG' THEN 0
+		            ELSE 0
+		       END                                                                                            AS PRFM_QTY_KG,
+		       W1.UNIT																						  AS UNIT_EA,
+		       CASE WHEN W1.UNIT = 'EA' THEN SUM(W1.PRFM_QTY)
+		            WHEN W1.UNIT = 'R' THEN 0
+		            WHEN W1.UNIT = 'KG' THEN 0
+		            ELSE 0
+		       END                                                                                            AS PRFM_QTY_EA,
+		       'R'  																						  AS UNIT_R,
+		       CASE WHEN W1.UNIT = 'EA' THEN SUM(W1.PRFM_QTY) / 500
+		            WHEN W1.UNIT = 'R' THEN 0
+		            WHEN W1.UNIT = 'KG' THEN 0
+		            ELSE 0
+		       END                                                                                            AS PRFM_QTY_R,
+
+		       '시트'                                                                                          AS SHEET_GBN,
+		       CASE
+		           WHEN MAX(TO_NUMBER(SUBSTR(S020.MATNR, 10, 4))) / MAX(TO_NUMBER(SUBSTR(S017.MATNR, 10, 4))) >= 2 THEN '두폭'
+		           ELSE '단폭' END                                                                             AS PKCNT,
+	           M012.MACH_CD																				      AS MACH_CD,
+		       M012.MACH_NM																					  AS MACH_NM
+		FROM TB_WRK002 W1
+		         INNER JOIN TB_MAS001 M1    ON W1.WERKS = M1.WERKS AND W1.MATNR = M1.MATNR
+		         INNER JOIN TB_SCH017 S017  ON W1.WERKS = S017.WERKS
+		                                        AND W1.WRK_ORDR_NO = S017.WRK_ORDR_NO
+		                                        AND W1.WRK_ORDR_SEQNO = S017.WRK_ORDR_SEQNO
+		         INNER JOIN TB_MAS012 M012  ON W1.MACH_CD = M012.MACH_CD
+		         INNER JOIN TB_SCH020 S020  ON W1.WRK_ORDR_NO = S020.WRK_ORDR_NO AND W1.WRK_ORDR_SEQNO = S020.WRK_ORDR_SEQNO
+		WHERE 1=1
+		    AND NVL(W1.PRFM_GTHR_YN, 'N') = 'Y'
+		    AND NVL(W1.CNL_YN, 'N') = 'N'
+		    AND W1.WERKS = #{WERKS}
+		    AND W1.PRFM_DT BETWEEN #{SDATE} AND #{EDATE}                        -- 실적일자
+		    AND W1.MATNR LIKE '%' || #{MATNR} || '%'                            -- 자재코드
+		    AND S017.ORDER_NO LIKE '%' || #{ORDER_NO} || '%'                    -- 오더번호
+		    AND S017.TO_MACHINE LIKE '%' || #{MACHINE} || '%'                   -- 생산호기
+		    AND W1.MACH_CD LIKE '%' || #{MACH_CD} || '%'                        -- 설비코드
+		GROUP BY W1.PRFM_DT, W1.MATNR, M1.MATNR_DIV_NM, W1.UNIT, M012.MACH_NM, W1.ORDER_NO, M012.MACH_CD
+		ORDER BY 1, 2
+	</select>
+	
+	<!-- 공정실적조회_포장 -->
+	<select id="selectProcResultList_P" parameterType="hashmap" statementType="CALLABLE" resultType="map">
+		SELECT SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) 									  AS PRFM_DT_YM, 
+			   SUBSTR(W1.PRFM_DT, 1, 4) || '-' || SUBSTR(W1.PRFM_DT, 5, 2) || '-' || SUBSTR(W1.PRFM_DT, 7, 2) AS PRFM_DT,
+			   W1.ORDER_NO																					  AS ORDER_NO,
+		       W1.MATNR																						  AS MATNR,
+		       SUBSTR(W1.MATNR, 1, 1)                                                                         AS MATNR_DIV,
+		       SUBSTR(W1.MATNR, 2, 1)                                                                         AS MACHINE,
+		       SUBSTR(W1.MATNR, 3, 3)                                                                         AS PCODE,
+		       SUBSTR(W1.MATNR, 6, 3)                                                                         AS BS_WGT,
+		       SUBSTR(W1.MATNR, 10, 4)                                                                        AS WLEN,
+		       SUBSTR(W1.MATNR, 14, 4)                                                                        AS VLEN,
+		       NVL(SUBSTR(W1.MATNR, 18, 1), ' ')                                                              AS PKTYPE,
+		       M1.MATNR_DIV_NM																				  AS MATNR_DIV_NM,
+		       CASE WHEN SUBSTR(W1.MATNR, 5, 1) = '1' THEN '내수' ELSE '수출' END                                AS EXPORT_GBN,
+		       ' '                                                                                            AS CORE,
+		       'KG'																							  AS UNIT_KG,
+		       CASE WHEN W1.UNIT = 'EA' THEN 0
+                    WHEN W1.UNIT = 'R' THEN SUM(WGT)
+                    WHEN W1.UNIT = 'KG' THEN 0
+                    ELSE 0
+               END                                                                                            AS PRFM_QTY_KG,
+               'EA'  																						  AS UNIT_EA,
+               CASE WHEN W1.UNIT = 'EA' THEN 0
+                    WHEN W1.UNIT = 'R' THEN 0
+                    WHEN W1.UNIT = 'KG' THEN 0
+                    ELSE 0
+               END                                                                                            AS PRFM_QTY_EA,
+               W1.UNIT  																					  AS UNIT_R,
+               CASE WHEN W1.UNIT = 'EA' THEN 0
+                    WHEN W1.UNIT = 'R' THEN SUM(W1.PRFM_QTY)
+                    WHEN W1.UNIT = 'KG' THEN 0
+                    ELSE 0
+               END                                                                                            AS PRFM_QTY_R,
+               'KG'  																						  AS UNIT_EA,
+               CASE WHEN W1.UNIT = 'EA' THEN 0
+                    WHEN W1.UNIT = 'R' THEN SUM(WGT)
+                    WHEN W1.UNIT = 'KG' THEN 0
+                    ELSE 0
+               END                                                                                             AS PRFM_QTY_EA,
+		       '시트'                                                                                          AS SHEET_GBN,
+		       ' '                                                                                            AS PKCNT,
+		       M012.MACH_CD																				      AS MACH_CD,
+		       M012.MACH_NM																					  AS MACH_NM
+		FROM TB_WRK002 W1
+		         INNER JOIN TB_MAS001 M1        ON W1.WERKS = M1.WERKS AND W1.MATNR = M1.MATNR
+		         LEFT OUTER JOIN TB_SCH018 S017 ON W1.WERKS = S017.WERKS
+		                                             AND W1.WRK_ORDR_NO = S017.WRK_ORDR_NO
+		                                             AND W1.WRK_ORDR_SEQNO = S017.WRK_ORDR_SEQNO
+		         INNER JOIN TB_MAS012 M012      ON W1.MACH_CD = M012.MACH_CD
+		WHERE 1=1
+		    AND NVL(W1.PRFM_GTHR_YN, 'N') = 'Y'
+		    AND NVL(W1.CNL_YN, 'N') = 'N'
+		    AND W1.WERKS = #{WERKS}
+		    AND W1.PRFM_DT BETWEEN #{SDATE} AND #{EDATE}                        -- 실적일자
+		    AND W1.MATNR LIKE '%' || #{MATNR} || '%'                            -- 자재코드
+		    AND S017.ORDER_NO LIKE '%' || #{ORDER_NO} || '%'                    -- 오더번호
+		    AND S017.TO_MACHINE LIKE '%' || #{MACHINE} || '%'                   -- 생산호기
+		    AND W1.MACH_CD LIKE '%' || #{MACH_CD} || '%'                        -- 설비코드
+		    AND W1.MACH_CD IN (SELECT MACH_CD FROM TB_MAS012 WHERE PROC_CD IN ('PB', 'PC', 'ZA'))
+		GROUP BY W1.PRFM_DT, W1.MATNR, M1.MATNR_DIV_NM, W1.UNIT, M012.MACH_NM, W1.ORDER_NO, M012.MACH_CD
+		ORDER BY 1, 2
+	</select>
+
+	<select id="WRK53_LIST" parameterType="hashmap" resultType="map">
+		SELECT WRK002.PRFM_DT
+			 , TAPP.PRFM_DT                                                                       		AS PPRFM_DT
+-- 			 , CASE WHEN MAS009.LAND1 = 'KR' THEN '내수' ELSE '수출' END									AS DOMESTIC
+			 , CASE WHEN SUBSTR(WRK002.MATNR, 5, 1) = '1'   THEN '내수' ELSE '수출' END                  AS DOMESTIC
+			 , WRK002.MACHINE
+			 , WRK002.MACH_CD
+			 , MAS012.MACH_NM
+			 , WRK002.IND_BCD
+			 , SCH016.BS_WGT
+			 , WRK002.WIDTH
+			 , WRK002.PRFM_QTY
+			 , WRK002.KUNNR
+			 , MAS009.CUST_NM
+			 , MAS009.CUST_CD
+			 , CASE WHEN TAPP.WRAP_CD = '1' THEN '원지포장1' WHEN TAPP.WRAP_CD = '2' THEN '원지포장2' END AS PMACH_NM
+			 , MAS009.LAND1
+			 , MAS099.LAND_NM                                                                     		AS LAND1_NM
+			 , WRK002.CORE
+			 , CASE
+				   WHEN WRK002.CORE IN (12, 6) THEN 'Y' -- 12인치, 6인치는 항상 O, 3인치는 X
+				   ELSE 'N'
+			END                                                                                   		AS COVER_YN -- 지관마개여부(1자리)
+			 , CASE
+				   WHEN WRK002.CORE = 12 THEN 'Y' -- 12인치 : O
+				   WHEN WRK002.CORE = 6 THEN 'N' -- 6인치 : X
+				   WHEN WRK002.CORE = 3 AND (SELECT USARG2
+											 FROM CMCDV
+											 WHERE 1 = 1
+											   AND CMCDKY = 'P100_PROD'
+											   AND CMCDVL = SCH016.PCODE) = '1'
+					   THEN 'Y' -- 3인치 + 금은박 : O
+				   ELSE 'N' -- 나머지 3인치 : X
+			END                                                                                   		AS CORR_YN  -- 골판지여부(1자리) CORRUGATED
+			 , CASE
+				   WHEN SCH016.CORE_INCH IS NULL THEN 'Y' /* NULL = 지관인치여부 로 판단*/
+				   WHEN SCH016.PACK_YN = 'X' THEN 'Y'
+				   WHEN SCH016.PACK_YN IS NULL THEN 'N'
+				   ELSE 'N'
+			END                                                                                   		AS PACK_YN  -- 포장여부
+		FROM TB_AUTO_PKG_PRFM TAPP
+				 INNER JOIN TB_WRK002 WRK002
+							ON TAPP.IND_BCD = WRK002.IND_BCD
+				 INNER JOIN TB_MAS009 MAS009
+							ON WRK002.KUNNR = MAS009.CUST_CD
+								AND MAS009.CUST_DIV = 'C'
+				 INNER JOIN TB_SCH016 SCH016
+							ON WRK002.WRK_ORDR_NO = SCH016.WRK_ORDR_NO
+								AND WRK002.WRK_ORDR_SEQNO = SCH016.WRK_ORDR_SEQNO
+				 INNER JOIN TB_MAS099 MAS099
+							ON MAS009.LAND1 = MAS099.LAND1
+				 INNER JOIN TB_MAS012 MAS012
+							ON WRK002.MACH_CD = MAS012.MACH_CD
+		WHERE TAPP.PRFM_DT BETWEEN #{SDATE} AND #{EDATE}
+		ORDER BY WRK002.PRFM_DT, TAPP.PRFM_DT, TAPP.IND_BCD
+	</select>
+</mapper>

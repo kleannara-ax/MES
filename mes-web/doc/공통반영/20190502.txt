@@ -1,0 +1,5 @@
+wintab.jsp
+ - window tab 이 화면이 작은 경우 active된 탭만 보이는 문제 해결
+ 
+left.jsp
+ - 메뉴 검색 시 메뉴명으로도 이동이 가능하도록 기능 추가

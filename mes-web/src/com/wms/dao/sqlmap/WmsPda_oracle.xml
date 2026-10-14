@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsPda">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+
+	<select id="WAHMA_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT WAREKY, COMPKY, NAME01, NAME02, NAME03
+			  FROM WAHMA
+			 WHERE 1 = 1
+			   AND DELMAK <> 'V'
+		]]>
+	</select>
+	 
+	<select id="LOGIN_MAP" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+		SELECT 
+			    PASSWD, NMLAST, NMFIRS, DEPART, PDAMKY, (SELECT ADDR05 FROM WAHMA WHERE WAREKY = #OBJID#) AS OWNRKY,
+			    (SELECT NAME01 FROM WAHMA WHERE WAREKY = #OBJID#) AS OWNRNM
+			FROM USRMA
+			WHERE 1 = 1
+			  AND USERID = #USERID#
+		]]>
+	</select>
+	
+	<select id="LOGIN_ROLL_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT * FROM MNUDT
+			WHERE 1 = 1
+			  AND INDMUK = 'PDA'
+			  AND MENUKY = #PDAMKY#
+			  AND MENUID = #OBJID#
+		]]>
+	</select>
+	
+	<select id="AREMA_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT 
+				WAREKY, AREATY, AREAKY, SHORTX 
+			FROM AREMA 
+		]]>
+	</select>
+	
+	<select id="LOCMA_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT 
+				WAREKY,LOCAKY, LOCATY,SHORTX, ZONEKY, AREAKY
+			FROM LOCMA 
+			WHERE 1 = 1
+				AND WAREKY = #OBJID#
+		]]>
+	</select>
+	
+	<select id="UPDATE_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT MODUNM, MODUVR, SVRFLD, PDAFLD, MAINPG FROM PDAVR 
+			WHERE MODUVR > #MODUVR#	
+			ORDER BY INDORD
+		]]>
+	</select>
+	
+	<select id="GETDATE_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT TO_CHAR(SYSDATE, 'yyyy') AS SYSYEAR,
+				   TO_CHAR(SYSDATE, 'mm') AS SYSMONTH,
+				   TO_CHAR(SYSDATE, 'dd') AS SYSDAY,
+				   TO_CHAR(SYSDATE, 'hh24') AS SYSHOUR,
+				   TO_CHAR(SYSDATE, 'mi') AS SYSMINUTE,
+				   TO_CHAR(SYSDATE, 'ss') AS SYSSECOND FROM DUAL		
+		]]>
+	</select>
+	
+	<select id="HHTMG_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT
+				PGMID,
+				OBJTY,
+				OBJID,
+	            OBJDFV,
+				INDVIS,
+				INDENB,
+				INDDFC,
+				TO_CHAR(INDWTH, 'FM999') AS INDWTH,
+				INDORD,
+				VPLTCR,
+				VPLTDP
+			FROM HHTMG 
+			WHERE 1 = CASE WHEN 0 = (SELECT COUNT(*) FROM HHTMG WHERE OBJID LIKE #OBJID# || '%') THEN 0 ELSE 1 END
+                  AND OBJID LIKE #OBJID# || '%' 
+                  AND INDBZL = ' '
+		]]>
+	</select>
+	
+	<select id="HHTMG_INIT_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT
+				PGMID,
+				OBJTY,
+				OBJID,
+	            OBJDFV,
+				INDVIS,
+				INDENB,
+				INDDFC,
+				TO_CHAR(INDWTH, 'FM999') AS INDWTH,
+				INDORD,
+				VPLTCR,
+				VPLTDP
+			FROM HHTMG 
+			WHERE OBJID LIKE #OBJID# || '%'
+			  AND INDBZL = ' '
+		]]>
+	</select>
+	
+		<select id="JLBLM_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT 
+			       LANGKY,
+			       LABLGR,
+			       LABLKY,
+			       LBLTXS,
+			       LBLTXM,
+			       LBLTXL
+			FROM JLBLM 
+			WHERE 1 = CASE WHEN 0 = (SELECT COUNT(*) FROM JLBLM WHERE LANGKY = #LANGKY#
+			                                AND LABLGR IN ('HHTBTN', 'HHTGRD', 'HHTSTD', 'HHTTITLE')
+			                                AND LABLKY LIKE #OBJID# || '%') THEN 0
+			                        ELSE 1 END
+			      AND LANGKY = #LANGKY#
+			      AND LABLGR IN ('HHTGRD', 'HHTSTD')
+			      AND LABLKY LIKE #OBJID# || '%' 
+			      AND INDBZL = ' '
+		]]>
+	</select>
+	
+	<select id="JLBLM_INIT_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT 
+			       LANGKY,
+			       LABLGR,
+			       LABLKY,
+			       LBLTXS,
+			       LBLTXM,
+			       LBLTXL
+			FROM JLBLM 
+			WHERE LANGKY = #LANGKY#
+			      AND LABLGR IN ('HHTBTN', 'HHTGRD', 'HHTSTD', 'HHTTITLE')
+			      AND LABLKY LIKE #OBJID# || '%' 
+			      AND INDBZL = ' '
+		]]>
+	</select>
+	
+	<select id="JMSGM_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT 
+			       LANGKY,
+			       MESGGR,
+			       MESGKY,
+			       MESGTX
+			FROM JMSGM 
+			WHERE LANGKY = #LANGKY#
+			      AND MESGGR LIKE 'HHT' || '%'
+		]]>
+	</select>
+	
+	<select id="DOCTM_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT DOCUTY, DOCCAT, SHORTX, DOCGRP
+			  FROM DOCTM
+		]]>
+	</select>
+	
+	<select id="RSNCD_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT OWNRKY, DOCCAT, DOCUTY, RSNCOD, SHORTX 
+			  FROM RSNCD
+			 WHERE OWNRKY = #OBJID#
+			   AND DOCUTY IN ('520')
+		]]>
+	</select>
+	
+	<select id="CMCDV_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT CMCDKY,CMCDVL,CDESC1,CDESC2,USARG1,USARG2,USARG3,USARG4,USARG5 
+			  FROM CMCDV
+			 WHERE 1 = 1
+			   AND CMCDKY IN ('SKUG01', 'LOTA05')
+		]]>
+	</select>	
+	
+	<!-- //////////////////////////////////////////////////////////////////////// -->
+
+	<select id="CHECK_LIST_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT PROGID, CHCKID, 
+				   SEQUNO, DBCOLN, 
+				   APCOLN, CALPKG, 
+				   PKGPMT, SQLKEY 
+			FROM MSIMA 
+			WHERE (PROGID = #PROGID# OR PROGID = 'COMMON') 
+				  AND CHCKID = #CHCKID#
+		]]>
+	</select>
+	
+	<resultMap id="SQLKEY_SQLSTA" class="java.lang.String"> 
+		<result column="SQLSTA" property="SQLSTA" javaType="java.lang.String" jdbcType="CLOB" /> 
+	</resultMap>
+	<select id="SQLKEY" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+			SELECT SQLSTA FROM JQMAP WHERE SQLKEY = #SQLKEY#
+		]]>
+	</select>
+	
+	
+	<select id="DYNAMIC_SELECT_SQL" parameterClass="Map" resultClass="DataMap">
+			$SQL$
+	</select>
+	
+	<insert id="DYNAMIC_INSERT_SQL"  parameterClass="Map">
+			$SQL$
+	</insert>
+	
+	
+	<procedure id="VALIDATION" parameterClass="Map" resultClass="DataMap">
+		$PROCEDURE$
+	</procedure>
+	
+</sqlMap>

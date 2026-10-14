@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="System">
+
+	<!-- MSTCOMP -->
+	<select id="MSTCOMP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			C.COMPID,
+			C.COMPLABEL,
+			C.COMPNAME,
+			C.SORTORDER,
+			C.AUTOSORT,
+			C.PCOMID,
+			C.CREATEUSER,
+			C.CREATEDATE,
+			C.UPDATEUSER,
+			C.UPDATEDATE,
+			C.DELETEYN
+		FROM MSTCOMP C
+	</select>
+	
+	<insert id="MSTCOMP_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTCOMP(
+			COMPID, COMPLABEL, COMPNAME, SORTORDER, AUTOSORT,
+			PCOMID, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{COMPLABEL}, #{COMPNAME}, #{SORTORDER}, #{AUTOSORT},
+			#{PCOMID}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTCOMP_UPDATE"  parameterType="hashmap">
+		UPDATE MSTCOMP SET 
+			COMPLABEL = #{COMPLABEL},
+			COMPNAME = #{COMPNAME},
+			SORTORDER = #{SORTORDER},
+			AUTOSORT = #{AUTOSORT},
+			PCOMID = #{PCOMID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMPID = #{COMPID}
+	</update>
+	
+	<delete id="MSTCOMP_DELETE"  parameterType="hashmap">
+		UPDATE MSTCOMP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID}
+	</delete>
+	
+	<!-- MSTDEPT -->
+	<select id="MSTDEPT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			D.COMPID,
+			D.DEPTID,
+			D.DEPTLABEL,
+			D.DEPTNAME,
+			D.SORTORDER,
+			D.PDEPTID,
+			D.CREATEUSER,
+			D.CREATEDATE,
+			D.UPDATEUSER,
+			D.UPDATEDATE,
+			D.DELETEYN
+		FROM MSTDEPT D
+	</select>
+	
+	<insert id="MSTDEPT_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTDEPT(
+			COMPID, DEPTID, DEPTLABEL, DEPTNAME, SORTORDER,
+			PDEPTID, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{DEPTID}, #{DEPTLABEL}, #{DEPTNAME}, #{SORTORDER},
+			#{PDEPTID}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTDEPT_UPDATE"  parameterType="hashmap">
+		UPDATE MSTDEPT SET 
+			DEPTLABEL = #{DEPTLABEL},
+			DEPTNAME = #{DEPTNAME},
+			SORTORDER = #{SORTORDER},
+			PDEPTID = #{PDEPTID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMPID = #{COMPID} AND DEPTID = #{DEPTID}
+	</update>
+	
+	<delete id="MSTDEPT_DELETE"  parameterType="hashmap">
+		UPDATE MSTDEPT SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID} AND DEPTID = #{DEPTID}
+	</delete>
+	
+	<!-- MSTGRADE -->
+	<select id="MSTGRADE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			G.COMPID,
+			G.GRADEID,
+			G.GRADELABEL,
+			G.GRADENAME,
+			G.SORTORDER,
+			G.CREATEUSER,
+			G.CREATEDATE,
+			G.UPDATEUSER,
+			G.UPDATEDATE,
+			G.DELETEYN
+		FROM MSTGRADE G
+	</select>
+	
+	<insert id="MSTGRADE_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTGRADE(
+			COMPID, GRADEID, GRADELABEL, GRADENAME, SORTORDER,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMPID}, #{GRADEID}, #{GRADELABEL}, #{GRADENAME}, #{SORTORDER},
+			#{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTGRADE_UPDATE"  parameterType="hashmap">
+		UPDATE MSTGRADE SET 
+			GRADELABEL = #{GRADELABEL},
+			GRADENAME = #{GRADENAME},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMPID = #{COMPID} AND GRADEID = #{GRADEID}
+	</update>
+	
+	<delete id="MSTGRADE_DELETE"  parameterType="hashmap">
+		UPDATE MSTGRADE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMPID = #{COMPID} AND GRADEID = #{GRADEID}
+	</delete>
+	
+	<!-- MSTUSER -->
+	<select id="MSTUSER_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			U.USERID,
+			U.PASSWORD,
+			U.USERNAME,
+			U.COMPID,
+			U.USERTYPE,
+			U.MENUGID,
+			U.DEPTID,
+			U.GRADEID,
+			U.SORTORDER,
+			U.LOGINDATE,
+			U.LOGOUTDATE,
+			U.CREATEUSER,
+			U.CREATEDATE,
+			U.UPDATEUSER,
+			U.UPDATEDATE,
+			U.DELETEYN
+		FROM MSTUSER U
+	</select>
+	
+	<insert id="MSTUSER_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTUSER(
+			USERID, PASSWORD, USERNAME, COMPID, USERTYPE, 
+			MENUGID, DEPTID, GRADEID, SORTORDER, LOGINDATE, 
+			LOGOUTDATE, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{USERID}, #{PASSWORD}, #{USERNAME}, #{COMPID}, #{USERTYPE}, 
+			#{MENUGID},#{DEPTID}, #{GRADEID}, #{SORTORDER}, SYSDATE,
+			SYSDATE, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTUSER_UPDATE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			PASSWORD = #{PASSWORD},
+			USERNAME = #{USERNAME},
+			COMPID = #{COMPID},
+			USERTYPE = #{USERTYPE},
+			MENUGID = #{MENUGID},
+			DEPTID = #{DEPTID},
+			GRADEID = #{GRADEID},
+			SORTORDER = #{SORTORDER},
+			LOGINDATE = SYSDATE,
+			LOGOUTDATE = SYSDATE,
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			USERID = #{USERID}
+	</update>
+	
+	<delete id="MSTUSER_DELETE"  parameterType="hashmap">
+		UPDATE MSTUSER SET 
+			DELETEYN = 'Y'
+		WHERE 
+			USERID = #{USERID}
+	</delete>
+	
+	<update id="MSTUSER_PWCHANGE" parameterType="hashmap">
+		UPDATE MSTUSER SET
+			PASSWORD = #{PASSWORD},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE
+			USERID = #{USERID}
+	</update>
+	
+	<!-- MSTMENUG -->
+	<select id="MSTMENUG_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUGROUPID,
+			M.MENUGLABEL,
+			M.MENUGNAME,
+			M.COMPID,
+			M.CREATEUSER,
+			M.CREATEDATE,
+			M.UPDATEUSER,
+			M.UPDATEDATE,
+			M.DELETEYN
+		FROM MSTMENUG M
+	</select>
+	
+	<insert id="MSTMENUG_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUG(
+			MENUGROUPID, MENUGLABEL, MENUGNAME, COMPID, CREATEUSER,
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MENUGROUPID}, #{MENUGLABEL}, #{MENUGNAME}, #{COMPID}, #{SES_USER_ID},
+			SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTMENUG_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENUG SET 
+			MENUGLABEL = #{MENUGLABEL},
+			MENUGNAME = #{MENUGNAME},
+			COMPID = #{COMPID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			MENUGROUPID = #{MENUGROUPID}
+	</update>
+	
+	<delete id="MSTMENUG_DELETE"  parameterType="hashmap">
+		UPDATE MSTMENUG SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MENUGROUPID = #{MENUGROUPID}
+	</delete>
+	
+	<!-- MSTMENUGL -->
+	<select id="MSTMENUGL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUGID,
+			M.MENUID,
+			M.SORTORDER,
+			M.PMENUID,
+			M.CREATEUSER,
+			M.CREATEDATE,
+			M.UPDATEUSER,
+			M.UPDATEDATE,
+			M.DELETEYN
+		FROM MSTMENUGL M
+	</select>
+	
+	<insert id="MSTMENUGL_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENUGL(
+			MENUGID, MENUID, SORTORDER, PMENUID, CREATEUSER,
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MENUGID}, #{MENUID}, #{SORTORDER}, #{PMENUID}, #{SES_USER_ID}, 
+			SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTMENUGL_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENUGL SET 
+			SORTORDER = #{SORTORDER},
+			PMENUID = #{PMENUID},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			MENUGID = #{MENUGID} AND MENUID = #{MENUID}
+	</update>
+	
+	<delete id="MSTMENUGL_DELETE"  parameterType="hashmap">
+		UPDATE MSTMENUGL SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MENUGID = #{MENUGID} AND MENUID = #{MENUID}
+	</delete>
+	
+	<!-- MSTMENU -->
+	<select id="MSTMENU_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MENUID,
+			M.MENULABEL,
+			M.MENUNAME,
+			M.MENUTYPE,
+			M.MAUTHTYPE,
+			M.PROGID,
+			M.URI,
+			M.PARAM,
+			M.SORTORDER,
+			M.CREATEUSER,
+			M.CREATEDATE,
+			M.UPDATEUSER,
+			M.UPDATEDATE,
+			M.DELETEYN
+		FROM MSTMENU M
+	</select>
+	
+	<insert id="MSTMENU_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTMENU(
+			MENUID, MENULABEL, MENUNAME, MENUTYPE, MAUTHTYPE,
+			PROGID, URI, PARAM, SORTORDER, CREATEUSER, 
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MENUID}, #{MENULABEL}, #{MENUNAME}, #{MENUTYPE}, #{MAUTHTYPE},
+			#{PROGID}, #{URI}, #{PARAM}, #{SORTORDER}, #{SES_USER_ID},
+			SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTMENU_UPDATE"  parameterType="hashmap">
+		UPDATE MSTMENU SET 
+			MENULABEL = #{MENULABEL},
+			MENUNAME = #{MENUNAME},
+			MENUTYPE = #{MENUTYPE},
+			MAUTHTYPE = #{MAUTHTYPE},
+			PROGID = #{PROGID},
+			URI = #{URI},
+			PARAM = #{PARAM},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			MENUID = #{MENUID}
+	</update>
+	
+	<delete id="MSTMENU_DELETE"  parameterType="hashmap">
+		UPDATE MSTMENU SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MENUID = #{MENUID}
+	</delete>
+	
+	<!-- MSTPROG -->
+	<select id="MSTPROG_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			P.PROGID,
+			P.PROGLABEL,
+			P.PROGNAME,
+			P.PROGTYPE,
+			P.PAUTHTYPE,
+			P.URI,
+			P.PARAM,
+			P.CREATEUSER,
+			P.CREATEDATE,
+			P.UPDATEUSER,
+			P.UPDATEDATE,
+			P.DELETEYN
+		FROM MSTPROG P
+	</select>
+	
+	<insert id="MSTPROG_INSERT"  parameterType="hashmap">
+		INSERT INTO MSTPROG(
+			PROGID, PROGLABEL, PROGNAME, PROGTYPE, PAUTHTYPE, 
+			URI, PARAM, CREATEUSER, CREATEDATE, UPDATEUSER, 
+			UPDATEDATE
+		)
+		VALUES(
+			#{PROGID}, #{PROGLABEL}, #{PROGNAME}, #{PROGTYPE}, #{PAUTHTYPE},
+			#{URI}, #{PARAM}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, 
+			SYSDATE
+		)
+	</insert>
+	
+	<update id="MSTPROG_UPDATE"  parameterType="hashmap">
+		UPDATE MSTPROG SET 
+			PROGLABEL = #{PROGLABEL},
+			PROGNAME = #{PROGNAME},
+			PROGTYPE = #{PROGTYPE},
+			PAUTHTYPE = #{PAUTHTYPE},
+			URI = #{URI},
+			PARAM = #{PARAM},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			PROGID = #{PROGID}
+	</update>
+	
+	<delete id="MSTPROG_DELETE"  parameterType="hashmap">
+		UPDATE MSTPROG SET 
+			DELETEYN = 'Y'
+		WHERE 
+			PROGID = #{PROGID}
+	</delete>
+	
+	<!-- SYSLABEL -->
+	<select id="SYSLABEL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			L.LABELGID,
+			L.LABELID,
+			L.LANGCODE,
+			L.LABEL,
+			L.LABELTYPE,
+			L.CREATEUSER,
+			L.CREATEDATE,
+			L.UPDATEUSER,
+			L.UPDATEDATE,
+			L.DELETEYN
+		FROM SYSLABEL L
+		WHERE 1=1 
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+	</select>
+	
+	<insert id="SYSLABEL_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSLABEL(
+			LABELGID, LABELID, LANGCODE, LABEL, LABELTYPE,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{LABELGID}, #{LABELID}, #{LANGCODE}, #{LABEL}, #{LABELTYPE}, 
+			#{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSLABEL_UPDATE"  parameterType="hashmap">
+		UPDATE SYSLABEL SET 
+			LABEL = #{LABEL},
+			LABELTYPE = #{LABELTYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			LABELGID = #{LABELGID} AND LABELID = #{LABELID} AND LANGCODE = #{LANGCODE}
+	</update>
+	
+	<delete id="SYSLABEL_DELETE"  parameterType="hashmap">
+		UPDATE SYSLABEL SET 
+			DELETEYN = 'Y'
+		WHERE 
+			LABELGID = #{LABELGID} AND LABELID = #{LABELID} AND LANGCODE = #{LANGCODE}
+	</delete>
+	
+	<!-- SYSMESSAGE -->
+	<select id="SYSMESSAGE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			M.MESSAGEGID,
+			M.MESSAGEID,
+			M.LANGCODE,
+			M.MESSAGE,
+			M.MESSAGETYPE,
+			M.CREATEUSER,
+			M.CREATEDATE,
+			M.UPDATEUSER,
+			M.UPDATEDATE,
+			M.DELETEYN
+		FROM SYSMESSAGE M
+	</select>
+	
+	<insert id="SYSMESSAGE_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSMESSAGE(
+			MESSAGEGID, MESSAGEID, LANGCODE, MESSAGE, MESSAGETYPE,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{MESSAGEGID}, #{MESSAGEID}, #{LANGCODE}, #{MESSAGE}, #{MESSAGETYPE}, 
+			#{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSMESSAGE_UPDATE"  parameterType="hashmap">
+		UPDATE SYSMESSAGE SET 
+			MESSAGE = #{MESSAGE},
+			MESSAGETYPE = #{MESSAGETYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			MESSAGEGID = #{MESSAGEGID} AND MESSAGEID = #{MESSAGEID} AND LANGCODE = #{LANGCODE}
+	</update>
+	
+	<delete id="SYSMESSAGE_DELETE"  parameterType="hashmap">
+		UPDATE SYSMESSAGE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			MESSAGEGID = #{MESSAGEGID} AND MESSAGEID = #{MESSAGEID} AND LANGCODE = #{LANGCODE}
+	</delete>
+	
+	<!-- SYSCOMMON -->
+	<select id="SYSCOMMON_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMONID,
+			C.COMMLABEL, 
+			C.COMMNAME,
+			C.COMMTYPE,
+			C.CREATEUSER,
+			C.CREATEDATE,
+			C.UPDATEUSER,
+			C.UPDATEDATE,
+			C.DELETEYN
+		FROM SYSCOMMON C
+	</select>
+	
+	<insert id="SYSCOMMON_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMON(
+			COMMONID, COMMLABEL, COMMNAME, COMMTYPE, CREATEUSER,
+			CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMONID}, #{COMMLABEL}, #{COMMNAME}, #{COMMTYPE}, #{SES_USER_ID}, 
+			SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSCOMMON_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMON SET 
+			COMMLABEL = #{COMMLABEL},
+			COMMNAME = #{COMMNAME},
+			COMMTYPE = #{COMMTYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMMONID = #{COMMONID}
+	</update>
+	
+	<delete id="SYSCOMMON_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMON SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMONID = #{COMMONID}
+	</delete>
+	
+	<!-- SYSCOMMITEM -->
+	<select id="SYSCOMMITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMONID,
+			C.CITEMID,
+			C.CODELABEL,
+			C.CODENAME,
+			C.ITEMTYPE,
+			C.SORTORDER,
+			C.CREATEUSER,
+			C.CREATEDATE,
+			C.UPDATEUSER,
+			C.UPDATEDATE,
+			C.DELETEYN
+		FROM SYSCOMMITEM C 
+		WHERE 1=1
+		<if test="COMMONID != null and COMMONID != ''">
+			AND C.COMMONID = #{COMMONID}
+		</if>
+	</select>
+	
+	<insert id="SYSCOMMITEM_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMITEM(
+			COMMONID, CITEMID, CODELABEL, CODENAME, ITEMTYPE,
+			SORTORDER, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMONID}, #{CITEMID}, #{CODELABEL}, #{CODENAME}, #{ITEMTYPE}, 
+			#{SORTORDER}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSCOMMITEM_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMITEM SET
+			CODELABEL = #{CODELABEL},
+			CODENAME = #{CODENAME},
+			ITEMTYPE = #{ITEMTYPE},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMMONID = #{COMMONID} AND CITEMID = #{CITEMID}
+	</update>
+	
+	<delete id="SYSCOMMITEM_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMITEM SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMONID = #{COMMONID} AND CITEMID = #{CITEMID}
+	</delete>
+	
+	<!-- SYSCOMMPOP -->
+	<select id="SYSCOMMPOP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMPOPID,
+			C.CPOPLABEL,
+			C.CPOPNAME,
+			C.VIEWTNAME,
+			C.CPOPDESC,
+			C.CPOPTYPE,
+			C.EXETYPE,
+			C.CREATEUSER,
+			C.CREATEDATE,
+			C.UPDATEUSER,
+			C.UPDATEDATE,
+			C.DELETEYN
+		FROM SYSCOMMPOP C
+	</select>
+	
+	<insert id="SYSCOMMPOP_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCOMMPOP(
+			COMMPOPID, CPOPLABEL, CPOPNAME, VIEWTNAME, CPOPDESC,
+			CPOPTYPE, EXETYPE, CREATEUSER, CREATEDATE, UPDATEUSER,
+			UPDATEDATE
+		)
+		VALUES(
+			#{COMMPOPID}, #{CPOPLABEL}, #{CPOPNAME}, #{VIEWTNAME}, #{CPOPDESC}, 
+			#{CPOPTYPE}, #{EXETYPE}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, 
+			SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSCOMMPOP_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCOMMPOP SET 
+			CPOPLABEL = #{CPOPLABEL},
+			CPOPNAME = #{CPOPNAME},
+			VIEWTNAME = #{VIEWTNAME},
+			CPOPDESC = #{CPOPDESC},
+			CPOPTYPE = #{CPOPTYPE},
+			EXETYPE = #{EXETYPE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMMPOPID = #{COMMPOPID}
+	</update>
+	
+	<delete id="SYSCOMMPOP_DELETE"  parameterType="hashmap">
+		UPDATE SYSCOMMPOP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMPOPID = #{COMMPOPID}
+	</delete>
+	
+	<!-- SYSCPOPITEM -->
+	<select id="SYSCPOPITEM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			C.COMMPOPID,
+			C.CPOPITEMID, 
+			C.CPOPITLABEL,
+			C.CPOPITNAME,
+			C.ITEMTYPE,
+			C.SEARCHTYPE,
+			C.SFORMAT,
+			C.SOPTION,
+			C.SDEFAULT,
+			C.SREQUIRED,
+			C.GWIDTH,
+			C.RETURNCOL,
+			C.SORTORDER,
+			C.CREATEUSER,
+			C.CREATEDATE,
+			C.UPDATEUSER,
+			C.UPDATEDATE,
+			C.DELETEYN
+		FROM SYSCPOPITEM C
+	</select>
+	
+	<insert id="SYSCPOPITEM_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSCPOPITEM(
+			COMMPOPID, CPOPITEMID, CPOPITLABEL, CPOPITNAME, ITEMTYPE,
+			SEARCHTYPE, SFORMAT, SOPTION, SDEFAULT, SREQUIRED,
+			GWIDTH, RETURNCOL, SORTORDER, CREATEUSER, CREATEDATE,
+			UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{COMMPOPID}, #{CPOPITEMID}, #{CPOPITLABEL}, #{CPOPITNAME}, #{ITEMTYPE}, 
+			#{SEARCHTYPE}, #{SFORMAT}, #{SOPTION}, #{SDEFAULT}, #{SREQUIRED}, 
+			#{GWIDTH}, #{RETURNCOL}, #{SORTORDER}, #{SES_USER_ID}, SYSDATE, 
+			#{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSCPOPITEM_UPDATE"  parameterType="hashmap">
+		UPDATE SYSCPOPITEM SET
+			CPOPITLABEL = #{CPOPITLABEL},
+			CPOPITNAME = #{CPOPITNAME},
+			ITEMTYPE = #{ITEMTYPE},
+			SEARCHTYPE = #{SEARCHTYPE},
+			SFORMAT = #{SFORMAT},
+			SOPTION = #{SOPTION},
+			SDEFAULT = #{SDEFAULT},
+			SREQUIRED = #{SREQUIRED},
+			GWIDTH = #{GWIDTH},
+			RETURNCOL = #{RETURNCOL},
+			SORTORDER = #{SORTORDER},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			COMMPOPID = #{COMMPOPID} AND CPOPITEMID = #{CPOPITEMID}
+	</update>
+	
+	<delete id="SYSCPOPITEM_DELETE"  parameterType="hashmap">
+		UPDATE SYSCPOPITEM SET 
+			DELETEYN = 'Y'
+		WHERE 
+			COMMPOPID = #{COMMPOPID} AND CPOPITEMID = #{CPOPITEMID}
+	</delete>
+	
+	<!-- SYSEDIREP -->
+	<select id="SYSEDIREP_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			E.EDIID,
+			E.FILENAME,
+			E.TARGET,
+			E.STARTDATE,
+			E.SUCCESS,
+			E.FAILDESC,
+			E.ENDDATE,
+			E.DATAKEY,
+			E.CUDSUCCESS,
+			E.CUDFDESC,
+			E.CREATEUSER,
+			E.CREATEDATE,
+			E.UPDATEUSER,
+			E.UPDATEDATE,
+			E.DELETEYN
+		FROM SYSEDIREP E
+	</select>
+	
+	<insert id="SYSEDIREP_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSEDIREP(
+			EDIID, FILENAME, TARGET, STARTDATE, SUCCESS,
+			FAILDESC, ENDDATE, DATAKEY, CUDSUCCESS, CUDFDESC,
+			CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{EDIID}, #{FILENAME}, #{TARGET}, SYSDATE, #{SUCCESS}, 
+			#{FAILDESC}, SYSDATE, #{DATAKEY}, #{CUDSUCCESS}, #{CUDFDESC}, 
+			#{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSEDIREP_UPDATE"  parameterType="hashmap">
+		UPDATE SYSEDIREP SET 
+			FILENAME = #{FILENAME},
+			TARGET = #{TARGET},
+			STARTDATE = SYSDATE,
+			SUCCESS = #{SUCCESS},
+			FAILDESC = #{FAILDESC},
+			ENDDATE = SYSDATE,
+			DATAKEY = #{DATAKEY},
+			CUDSUCCESS = #{CUDSUCCESS},
+			CUDFDESC = #{CUDFDESC},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			EDIID = #{EDIID}
+	</update>
+	
+	<delete id="SYSEDIREP_DELETE"  parameterType="hashmap">
+		UPDATE SYSEDIREP SET 
+			DELETEYN = 'Y'
+		WHERE 
+			EDIID = #{EDIID}
+	</delete>
+	
+	<!-- SYSEDIERR -->
+	<select id="SYSEDIERR_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			E.EDIID,
+			E.EDIITEM,
+			E.ERRTYPE,
+			E.EDIDATA,
+			E.DBDATA,
+			E.EXCDATA,
+			E.CREATEUSER,
+			E.CREATEDATE,
+			E.UPDATEUSER,
+			E.UPDATEDATE,
+			E.DELETEYN
+		FROM SYSEDIERR E
+	</select>
+	
+	<insert id="SYSEDIERR_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSEDIERR(
+			EDIID, EDIITEM, ERRTYPE, EDIDATA, DBDATA,
+			EXCDATA, CREATEUSER, CREATEDATE, UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{EDIID}, #{EDIITEM}, #{ERRTYPE}, #{EDIDATA}, #{DBDATA}, 
+			#{EXCDATA}, #{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSEDIERR_UPDATE"  parameterType="hashmap">
+		UPDATE SYSEDIERR SET 
+			EDIITEM = #{EDIITEM},
+			ERRTYPE = #{ERRTYPE},
+			EDIDATA = #{EDIDATA},
+			DBDATA = #{DBDATA},
+			EXCDATA = #{EXCDATA},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			EDIID = #{EDIID}
+	</update>
+	
+	<delete id="SYSEDIERR_DELETE"  parameterType="hashmap">
+		UPDATE SYSEDIERR SET 
+			DELETEYN = 'Y'
+		WHERE 
+			EDIID = #{EDIID}
+	</delete>
+			
+	<!-- SYSGRIDCOL -->
+	<select id="SYSGRIDCOL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			G.USERID,
+			G.PROGID,
+			G.GRIDID,
+			G.COLGID,
+			G.GROUPDATA,
+			G.CREATEUSER,
+			G.CREATEDATE,
+			G.UPDATEUSER,
+			G.UPDATEDATE,
+			G.DELETEYN
+		FROM SYSGRIDCOL G
+	</select>
+	
+	<insert id="SYSGRIDCOL_INSERT" parameterType="hashmap">
+        INSERT INTO SYSGRIDCOL 
+            (USERID,PROGID,GRIDID,COLGID,GROUPDATA,
+            COMPID, CREATEUSER,CREATEDATE,UPDATEUSER,UPDATEDATE) 
+        VALUES 
+            (#{SES_USER_ID},#{PROGID},#{GRIDID},#{COLGID},#{GROUPDATA},
+            #{SES_USER_COMPANY}, #{SES_USER_ID},SYSDATE,#{SES_USER_ID},SYSDATE)
+    </insert>
+	
+	<update id="SYSGRIDCOL_UPDATE"  parameterType="hashmap">
+		UPDATE SYSGRIDCOL SET
+			GROUPDATA = #{GROUPDATA},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			USERID = #{USERID}
+			AND COMPID = #{SES_USER_COMPANY} 
+			AND PROGID = #{PROGID} 
+			AND GRIDID = #{GRIDID} 
+			AND COLGID = #{COLGID}
+	</update>
+	
+	<delete id="SYSGRIDCOL_DELETE"  parameterType="hashmap">
+		UPDATE SYSGRIDCOL SET 
+			DELETEYN = 'Y'
+		WHERE 
+			USERID = #{USERID} 
+			AND COMPID = #{SES_USER_COMPANY}
+			AND PROGID = #{PROGID} 
+			AND GRIDID = #{GRIDID} 
+			AND COLGID = #{COLGID}
+	</delete>
+	
+	<!-- SYSFILE -->
+	<select id="SYSFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			F.UUID,
+			F.GUUID,
+			F.RPATH,
+			F.PATH,
+			F.FNAME,
+			F.NAME,
+			F.MIME,
+			F.STYPE,
+			F.BYTE,
+			F.CREATEUSER,
+			F.CREATEDATE,
+			F.UPDATEUSER,
+			F.UPDATEDATE,
+			F.DELETEYN
+		FROM SYSFILE F
+		WHERE 1=1
+		<if test="GUUID != null and GUUID != ''">
+			AND F.GUUID = #{GUUID}
+		</if>
+		<if test="DELETEYN != null and DELETEYN != ''">
+			AND F.DELETEYN = #{DELETEYN}
+		</if>
+	</select>
+	
+	<select id="SYSFILE_MAP" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			F.UUID,
+			F.GUUID,
+			F.RPATH,
+			F.PATH,
+			F.FNAME,
+			F.NAME,
+			F.MIME,
+			F.STYPE,
+			F.BYTE,
+			F.CREATEUSER,
+			F.CREATEDATE,
+			F.UPDATEUSER,
+			F.UPDATEDATE,
+			F.DELETEYN
+		FROM SYSFILE F
+		WHERE F.UUID = #{UUID}
+	</select>
+	
+	<insert id="SYSFILE_INSERT"  parameterType="hashmap">
+		INSERT INTO SYSFILE(
+			UUID, GUUID, RPATH, PATH, FNAME, NAME,
+			MIME, STYPE, BYTE, CREATEUSER, CREATEDATE, 
+			UPDATEUSER, UPDATEDATE
+		)
+		VALUES(
+			#{UUID}, #{GUUID}, #{RPATH}, #{PATH}, #{FNAME}, #{NAME},
+			#{MIME}, #{STYPE}, #{BYTE}, #{SES_USER_ID}, SYSDATE,
+			#{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSFILE_UPDATE"  parameterType="hashmap">
+		UPDATE SYSFILE SET
+			RPATH = #{RPATH},
+			PATH = #{PATH},
+			FNAME = #{FNAME},
+			NAME = #{NAME},
+			MIME = #{MIME},
+			STYPE = #{STYPE},
+			BYTE = #{BYTE},
+			UPDATEUSER = #{SES_USER_ID},
+			UPDATEDATE = SYSDATE
+		WHERE 
+			UUID = #{UUID}
+	</update>
+	
+	<delete id="SYSFILE_DELETE"  parameterType="hashmap">
+		UPDATE SYSFILE SET 
+			DELETEYN = 'Y'
+		WHERE 
+			UUID = #{UUID}
+	</delete>
+	
+	<sql id="SYSTNFILE_TABLE">
+		SELECT
+			UUID,
+			PIXEL,
+			FNAME,
+			CREATEUSER,
+			CREATEDATE,
+			UPDATEUSER,
+			UPDATEDATE,
+			DELETEYN
+		FROM SYSTNFILE
+	</sql>
+	<select id="SYSTNFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE 1=1
+		<if test="UUID != null and UUID != ''"> 
+	    	AND UUID = #{UUID}
+	    </if>
+	</select>
+
+	<select id="SYSTNFILE_MAP" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE UUID = #{UUID}
+		AND PIXEL = #{PIXEL}
+	</select>
+	
+	<select id="SYSTNFILEMIN_MAP" parameterType="hashmap" resultType="DataMap">
+		<include refid="SYSTNFILE_TABLE" />
+		WHERE UUID = #{UUID}
+		AND PIXEL = (SELECT NVL(MIN(PIXEL), ' ') FROM SYSTNFILE WHERE UUID = #UUID#)
+	</select>
+
+	<insert id="SYSTNFILE_INSERT" parameterType="hashmap">
+		INSERT INTO SYSTNFILE 
+		(UUID,PIXEL,FNAME
+		,CREATEUSER,CREATEDATE,UPDATEUSER,UPDATEDATE) 
+ 		VALUES 
+ 		(#{UUID},#{PIXEL},#{FNAME}
+ 		,#{SES_USER_ID}, SYSDATE, #{SES_USER_ID}, SYSDATE)
+	</insert>
+
+	<delete id="SYSTNFILE_DELETE" parameterType="hashmap">
+		UPDATE SYSTNFILE
+		SET
+			DELETEYN = 'Y' ,
+			UPDATEDATE = SYSDATE,
+			UPDATEUSER = #{SES_USER_ID}
+		WHERE
+		UUID = #{UUID}
+	</delete>
+</mapper>

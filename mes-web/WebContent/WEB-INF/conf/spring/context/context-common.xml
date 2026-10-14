@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/conf/commonconfig.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    	<property name="locations">
+    		<list>
+    			<value>/WEB-INF/conf/commonconfig.properties</value>
+    		</list>
+    	</property>
+    </bean>	
+
+	<context:component-scan base-package="com">
+       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+	
+	<bean id="systemConfig" class="com.common.bean.SystemConfig" scope="application">
+		<!-- property name="asyncType" value="${asyncType}" /-->
+		<property name="theme" value="darkness" />
+		<property name="dbType" value="oracle" />
+		<property name="sqlType" value="oracle" />
+	</bean>
+	
+	<bean id="commonLoad" class="com.common.controller.CommonLoad" />
+	
+	<bean id="commonLabel" class="com.common.bean.CommonLabel" scope="application" />
+	
+	<bean id="commonSearch" class="com.common.bean.CommonSearch" scope="application" />
+	
+	<bean id="commonUser" class="com.common.bean.CommonUser" scope="application" />
+	
+	<bean id="commonMenu" class="com.common.bean.CommonMenu" scope="application" />
+	
+	<bean id="commonAction" class="com.common.bean.CommonAction" scope="application" />
+	
+	<bean id="fileRepository" class="com.common.bean.FileRepository" scope="application" />
+	
+	<bean id="dataRepository" class="com.common.bean.DataRepository" />
+	
+	<bean id="util" class="com.common.util.Util">
+		<property name="sqlType" value="oracle" />
+	</bean>
+</beans>

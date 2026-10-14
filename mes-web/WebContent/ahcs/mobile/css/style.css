@@ -1,0 +1,153 @@
+
+.ca-menu{
+	margin-top: 20px;
+	position: relative;
+	margin-right: auto;
+	margin-left: auto;
+	font-family:'Malgun Gothic', '맑은 고딕';
+    width:80%;
+	text-align: center;
+}
+.ca-menu li{
+    width: 5em;
+    height: 5em;
+    border: 1px solid #cccccc;
+	border-right: none;
+	overflow: hidden;
+    position: relative;
+    float:left;
+    background: #fff;
+}
+.ca-menu li:last-child{
+	border-right: 1px solid #cccccc;
+}
+.ca-menu li a{
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: #333;
+    position: relative;
+   -moz-box-shadow:0px 0px 3px #000000;
+   -webkit-box-shadow:0px 0px 3px #000000;
+   box-shadow:0px 0px 3px #000000;
+
+}
+
+.ca-main{
+    font-size: 12px;
+    position: absolute;
+    top: 42px;
+    height: 80px;
+    width: 50px;
+    left: 50%;
+    margin-left: -25px;
+    opacity: 0.8;
+    text-align: center;
+}
+.ca-main-s{
+    font-size: 12px;
+    position: absolute;
+    top: 42px;
+    height: 80px;
+    width: 100px;
+    left: 50%;
+    margin-left: -50px;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.ca-menu li:hover{
+    border-color: #ccc;
+}
+
+
+/*메인 아이콘 위치값 */
+.silver-flat-button.icon:before {
+	position: absolute;
+	top: 5%;
+	left: 32%;
+	text-align: center;
+    content: "";
+    width: 30px;
+    height: 30px;
+    background: url(../imges/ac-icons.png) 0 644px no-repeat;
+}
+
+.silver-flat-button.checklist.icon:before { background-position: 0 0; }
+.silver-flat-button.checklist.icon:hover:before,
+.silver-flat-button.checklist.icon:focus:before,
+.silver-flat-button.checklist.icon:active:before { background-position: 0 0; }
+
+.silver-flat-button.deliverycontrol.icon:before { background-position: -30px 0 ; }
+.silver-flat-button.deliverycontrol.icon:hover:before,
+.silver-flat-button.deliverycontrol.icon:focus:before,
+.silver-flat-button.deliverycontrol.icon:active:before { background-position: -30px 0 ; }
+
+.silver-flat-button.rawapproval.icon:before { background-position:-60px 0; }
+.silver-flat-button.rawapproval.icon:hover:before,
+.silver-flat-button.rawapproval.icon:focus:before,
+.silver-flat-button.rawapproval.icon:active:before { background-position:-60px 0; }
+
+.silver-flat-button.deliverysearch.icon:before {  background-position:-90px 0; }
+.silver-flat-button.deliverysearch.icon:hover:before,
+.silver-flat-button.deliverysearch.icon:focus:before,
+.silver-flat-button.deliverysearch.icon:active:before { background-position:-90px 0; }
+
+.silver-flat-button.listsearch.icon:before { background-position:-120px 0; }
+.silver-flat-button.listsearch.icon:hover:before,
+.silver-flat-button.listsearch.icon:focus:before,
+.silver-flat-button.listsearch.icon:active:before { background-position:-120px 0; }
+
+.silver-flat-button.pclientsearch.icon:before { background-position:-150px 0; }
+.silver-flat-button.pclientsearch.icon:hover:before,
+.silver-flat-button.pclientsearch.icon:focus:before,
+.silver-flat-button.pclientsearch.icon:active:before { background-position:-150px 0; }
+
+.silver-flat-button.tclientsearch.icon:before { background-position:-180px 0; }
+.silver-flat-button.tclientsearch.icon:hover:before,
+.silver-flat-button.tclientsearch.icon:focus:before,
+.silver-flat-button.tclientsearch.icon:active:before { background-position:-170px 0; }
+
+.silver-flat-button.executives.icon:before { background-position:-210px 0; }
+.silver-flat-button.executives.icon:hover:before,
+.silver-flat-button.executives.icon:focus:before,
+.silver-flat-button.executives.icon:active:before { background-position:-210p 0x; }
+
+.silver-flat-button.order.icon:before { background-position:-240px 0; }
+.silver-flat-button.order.icon:hover:before,
+.silver-flat-button.order.icon:focus:before,
+.silver-flat-button.order.icon:active:before { background-position:-240px 0; }
+
+.silver-flat-button.exchange.icon:before { background-position:-270px 0; }
+.silver-flat-button.exchange.icon:hover:before,
+.silver-flat-button.exchange.icon:focus:before,
+.silver-flat-button.exchange.icon:active:before { background-position:-270px 0; }
+
+.silver-flat-button.processing.icon:before { background-position:-300px 0; }
+.silver-flat-button.processing.icon:hover:before,
+.silver-flat-button.processing.icon:focus:before,
+.silver-flat-button.processing.icon:active:before { background-position:-300px 0; }
+
+.silver-flat-button.apporserach.icon:before { background-position:-330px 0; }
+.silver-flat-button.apporserach.icon:hover:before,
+.silver-flat-button.apporserach.icon:focus:before,
+.silver-flat-button.apporserach.icon:active:before { background-position:-330px 0; }
+
+.silver-flat-button.approvesing.icon:before { background-position:-360px 0; }
+.silver-flat-button.approvesing.icon:hover:before,
+.silver-flat-button.approvesing.icon:focus:before,
+.silver-flat-button.approvesing.icon:active:before { background-position:-360px 0; }
+
+.silver-flat-button.estimate.icon:before { background-position:-390px 0; }
+.silver-flat-button.estimate.icon:hover:before,
+.silver-flat-button.estimate.icon:focus:before,
+.silver-flat-button.estimate.icon:active:before { background-position:-390px 0; }
+
+.silver-flat-button.new.icon:before { background-position:-420px 0; }
+.silver-flat-button.new.icon:hover:before,
+.silver-flat-button.new.icon:focus:before,
+.silver-flat-button.new.icon:active:before { background-position:-420px 0; }
+
+
+.silver-flat-button.new.icon:before { background-position:-560px 0;

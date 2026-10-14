@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Produce">
+	<select id="MACHINE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		 	   M12.MACHINE		AS VALUE_COL,
+		 	   M12.SAP_WRK_NM	AS TEXT_COL
+		  FROM TB_MAS012 M12,
+		  	   TB_MAS013 M13
+		 WHERE M12.PROC_CD = M13.PROC_CD(+)
+		 <if test="WERKS != null and WERKS != ''">
+		   AND M13.WERKS = #{WERKS}
+		 </if>
+		 <if test="PROC_CD != null and PROC_CD != ''">
+		   AND M12.PROC_CD = #{PROC_CD}  
+		 </if>
+		   AND TRIM(M12.MACHINE) IS NOT NULL
+		 ORDER BY M12.MACHINE
+	</select>
+	
+	<select id="MACHINE2_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT DISTINCT
+		 	   M12.MACHINE	AS VALUE_COL,
+		 	   ''			AS TEXT_COL
+		  FROM TB_MAS012 M12,
+		  	   TB_MAS013 M13
+		 WHERE M12.PROC_CD = M13.PROC_CD(+)
+		   AND M13.WERKS != 'P100'
+		   AND TRIM(M12.MACHINE) IS NOT NULL
+		 ORDER BY M12.MACHINE
+	</select>
+
+	<select id="SCH01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH02_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH02_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH03_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH03_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	<select id="SCH04_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH04_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH05_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH05_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH06_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH06_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH07_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH07_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+		
+	<select id="SCH08_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH08_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH09_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH09_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH10_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH10_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH11_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH11_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH12_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH12_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH13_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH13_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH14_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH14_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH15_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH15_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH17_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH17_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH18_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH18_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH19_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH19_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH20_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH20_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH20_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH20_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>	
+	
+	<select id="SCH21_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH21_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH21_POP01_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH21_POP01_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH22_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH22_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH23_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH23_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<select id="SCH24_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_SCH24_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
+	<!-- 2022-06-22(수요일) 안상현, 선택된 사업목표 년월 데이터를 출력 -->
+	<select id="SCH21_POP01_SELECTYM_LIST" parameterType="hashmap" resultType="hashmap">
+		SELECT DISTINCT
+			MAS031.PLN_YR 											AS PLN_YR 		--사업목표년도
+		,	MAS031.PLN_MM											AS PLN_MM 		--사업목표월
+		,	'[' || MAS031.PLN_YR || ' ' || MAS031.PLN_MM || ']' 	AS PLN_YR_MM 	--사업목표년월
+		FROM 
+			TB_MAS031 MAS031
+		WHERE 1=1
+		AND MAS031.PLN_YR = #{PLN_YR}
+		ORDER BY MAS031.PLN_MM
+	</select>
+		
+</mapper>

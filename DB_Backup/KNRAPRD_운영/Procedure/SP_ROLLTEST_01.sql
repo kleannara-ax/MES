@@ -1,0 +1,61 @@
+--------------------------------------------------------
+--  DDL for Procedure SP_ROLLTEST_01
+--------------------------------------------------------
+set define off;
+
+  CREATE OR REPLACE EDITIONABLE PROCEDURE "KNRAMES"."SP_ROLLTEST_01" SP_ROLLTEST_01
+(
+     TB_WRK011_CUR          OUT SYS_REFCURSOR
+    ,TB_WRK002_CUR          OUT SYS_REFCURSOR
+)
+AS
+   	TB_INV001_CUR				SYS_REFCURSOR;
+    TB_IFS003_CUR				SYS_REFCURSOR;
+    TB_WRK021_CUR				SYS_REFCURSOR;
+    TB_WRK008_CUR				SYS_REFCURSOR;
+ 	V_WERKS   					VARCHAR2(20);
+	V_MACH_CD 					VARCHAR2(20);
+    V_WRK_ORDR_NO               TB_WRK002.WRK_ORDR_NO%TYPE;
+    V_WRK_ORDR_SEQNO            TB_WRK002.WRK_ORDR_SEQNO%TYPE;
+    V_ORDER_NO                  TB_WRK002.ORDER_NO%TYPE;
+    V_IND_BCD                   VARCHAR2(20);
+    V_LOT_NO                    VARCHAR2(10);
+	
+BEGIN
+	V_WERKS := 'P100';
+	V_MACH_CD := 'PJA03';
+
+	OPEN  TB_WRK011_CUR FOR
+	SELECT * 
+	FROM  TB_WRK011 
+	WHERE WERKS   = V_WERKS 
+	AND   MACH_CD = V_MACH_CD; -- 설비상태
+	
+	SELECT WRK_ORDR_NO ,  WRK_ORDR_SEQNO ,  ORDER_NO ,  LOT_NO 
+	INTO V_WRK_ORDR_NO, V_WRK_ORDR_SEQNO, V_ORDER_NO, V_LOT_NO 
+	FROM   TB_WRK011
+	WHERE  WERKS   = V_WERKS 
+	AND    MACH_CD = V_MACH_CD; -- 설비상태
+
+	
+	OPEN  TB_WRK002_CUR FOR
+	SELECT * 
+	FROM  TB_WRK002 
+	WHERE WERKS = V_WERKS
+	AND   MACH_CD = V_MACH_CD
+	AND	  WRK_ORDR_NO = V_WRK_ORDR_NO
+	AND   WRK_ORDR_SEQNO = V_WRK_ORDR_SEQNO
+	AND   ORDER_NO 		 = V_ORDER_NO
+	AND   LOT_NO 		 = V_LOT_NO
+	AND   NVL(CNL_YN,'N')= 'N';
+	-- 실적등록
+	
+--	SELECT * FROM TB_INV001 -- 재고 생성
+--	
+--	SELECT * FROM TB_IFS003 -- 생산오더별실적_점보롤 I/F
+--	SELECT * FROM TB_WRK021 -- 문서이력
+--	SELECT * FROM TB_WRK008 -- LOT 추적
+END
+;
+
+/

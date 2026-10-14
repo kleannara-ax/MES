@@ -1,0 +1,67 @@
+> configData.js
+​
+- WebContent/hwls/js/hwls.js 를 만들고 해당 config를 선언
+/* CONFIG DATA 추가된것 START */
+this.DEF_DUE_DT = "20991231"; //공통 판촉물 날짜
+this.IF_MAX_ROW_COUNT = 10000;//SK01,BZ01,MS01 조회수 제한
+this.IF_MAX_ROW_COUNT2 = 50000;//DL03,DL06,DL07,MV08,SD10 조회수 제한
+​
+/* CONFIG DATA 추가된것 END */
+​
+this.MSG_MASTER_PICKDEL_CONFIRM = "TASK_M0038"; //피킹취소하시겠습니까?
+this.MSG_MASTER_DOCUDEL_CONFIRM = "TASK_M0040"; //문서취소하시겠습니까?
+this.MSG_SYSTEM_WAREKY_CHANGE = "SYSTEM_M0128"; //센터 변경시 저장하지 않은 데이터는 사라집니다. 계속 진행하시겠습니까?
+​
+- 공통 데이터로 코드 변경 필요
+this.MSG_MASTER_ROWEMPTY = "SYSTEM_DATAEMPTY"; //조회된 데이터가 없습니다.
+this.MSG_MASTER_DELETE_CONFIRM = "SYSTEM_DELCONFIRM"; //삭제하시겠습니까?
+this.MSG_MASTER_ROW_SELECT = "SYSTEM_ROWSEMPTY"; //선택된 데이터가 없습니다.
+this.MSG_MASTER_SAVE_CONFIRM = "SYSTEM_SAVECF";  //저장하시겠습니까?
+​
+​
+> grid.js
+​
+- 설명 필요
+createInputObj : function($obj, rowNum, colText){
+...
+//2019.02.15 프로젝트수정
+var tmpNumber;
+if(tmpValue.indexOf(".") > -1){
+	tmpNumber = tmpValue.split(".");
+	if(tmpNumber[1] > 0){
+		tmpValue = tmpNumber[0].replace(/[^\d]+/g, '');
+			   + site.decimalSeparator
+			   + tmpNumber[1].replace(/[^\d]+/g, '');
+	}
+}
+​
+- 기존 autoNewRowType의 사용과 출돌이 발생함. 변경한 정확한 이유 설명 필요
+copyDataView : function($sColObj, copyData){
+...
+//2019.02.01 KHC : art + V시, 행이 안늘어남. autoNewRowType -> autoCopyRowType 변경
+if(this.addType && this.autoCopyRowType && tmpMaxCount < dataList.length){
+​
+- file type 사용 예제 필요
+- configData.GRID_COL_TYPE_BTN2, configData.GRID_COL_TYPE_ICON 사용 예제 필요
+​
+- 코드 추가 이유 밎 사용 예제 필요
+setRowViewHtml : function(startRow, endRow, numSetType) {
+...
+var chk = false;
+if(commonUtil.checkFn("gridListCheckBoxDrawBeforeEvent")){
+	chk = gridListCheckBoxDrawBeforeEvent(this.id, rowNum);
+}
+​
+if(chk){
+	var inputCheckBoxText = this.rowCheckText.get(this.id);
+	if(tmpRowHtml.indexOf(inputCheckBoxText) == -1){
+		var tmpLen   = configData.GRID_COL_DATA_NAME_ROWCHECK_HEAD.length;
+		var tmpIndex = inputCheckBoxText.indexOf(configData.GRID_COL_DATA_NAME_ROWCHECK_HEAD+"=\"\"");
+		if(tmpIndex > -1){
+			inputCheckBoxText = inputCheckBoxText.substring(0,tmpIndex+tmpLen)+inputCheckBoxText.substring(tmpIndex+tmpLen+3);
+		}
+	}
+	tmpRowHtml = tmpRowHtml.replace(inputCheckBoxText,"");
+	tmpRowHtml = tmpRowHtml.replace("gcrc_rowCheck editable gridColObject","gcrc_rowCheck editable gridColObject gridColDisable");
+}
+​

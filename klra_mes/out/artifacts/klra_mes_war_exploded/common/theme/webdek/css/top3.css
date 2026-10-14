@@ -1,0 +1,103 @@
+@charset "utf-8";
+@import "reset.css"; /* CSS 초기화 */
+@import "top.css"; 
+* {
+	box-sizing: border-box;
+}
+.content_top {
+	background-color: #39405a;
+}
+.logos {
+	background-color: #39405a;
+	border-right: 1px solid #39405a;	
+}
+.content_top .rightArea { 
+	position:absolute; 
+	right:0; top:0; 
+	padding:8px 15px 8px 0;
+	text-align:right;
+}
+.content_top .rightArea:after {
+	display:block;
+	content:"";
+	clear:both;
+}
+.content_top .selection {
+	width:230px;
+	min-height:10px;
+	float:left; 
+	text-align:center;
+}
+.content_top .selection select {
+	font-size:13px;
+	width:175px;
+	height:29px;
+	min-width:120px;
+	background-color:#555b72;
+	border:none;
+	color:#fff;
+	margin-top:2px;
+	border-radius: 40px;
+	padding:0px 10px 0px 10px;	
+}
+.topmenu_tab {
+	float: left;
+	display:inline-block;
+	margin-top: 5px;
+	height: 30px;
+	line-height: 30px;
+}
+.topmenu_tab > li {
+	display: inline-block;
+	height:100%
+}
+.topmenu_tab > li:nth-of-type(1) {
+	width:40px; 
+	padding:0;
+	background: url(/common/theme/webdek/images/icon_menu.png)no-repeat 50% 50%;
+}
+.topmenu_tab > li > a > span {
+	color: #555;
+	font-weight: bold;
+	padding: 0 10px;
+	display: inline-block;
+	
+}
+.topmenu_tab >li.on > a > span {
+	color: #e86b29;
+}
+.header_right {
+    display: inline-block;
+}
+.alram {
+	background: url(/common/theme/webdek/images/icon_alram.png)no-repeat 50% 50%;
+}
+.setting {
+	background: url(/common/theme/webdek/images/icon_setting.png)no-repeat 50% 50%;
+}
+.header_right li {
+    padding: 0px 5px;
+}
+.header_right li:first-of-type {
+	margin-right: 20px;
+}
+.alram a,
+.setting a {
+	visibility: hidden;
+}
+.alram {
+	position: relative;
+	cursor: pointer;
+}
+.alram:after {
+	content: '';
+	position: absolute;
+	width:7px;
+	height:7px;
+	border-radius: 50%;
+	background-color: red;
+	top: 14px;
+    right: 10px;
+	box-shadow: 0 0 0 3px #fff;
+	display: block;
+}

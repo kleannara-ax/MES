@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Demo">
+
+	<select id="COMCODE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_PARAM_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="CODE1 != null and CODE1 != ''">
+		  AND COMMONID = #{CODE1}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="COMCODE_EVENT_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			COMMONID||'_'||CITEMID AS VALUE_COL,
+			CODENAME AS TEXT_COL
+		FROM SYSCOMMITEM
+		WHERE 1=1 
+		<if test="PARAM != null and PARAM != ''">
+		  AND COMMONID = #{PARAM}
+		</if>
+		ORDER BY SORTORDER
+	</select>
+	
+	<select id="SYSFILE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+			F.UUID,
+			F.UUID AS ATTACH,
+			F.GUUID,
+			F.RPATH,
+			F.PATH,
+			F.FNAME,
+			F.NAME AS UUID_FILEVIEW,
+			F.NAME AS ATTACH_FILEVIEW,
+			F.MIME,
+			F.STYPE,
+			F.BYTE,
+			F.CREATEUSER,
+			F.CREATEDATE,
+			F.UPDATEUSER,
+			F.UPDATEDATE,
+			F.DELETEYN,
+			CASE WHEN F.BYTE <![CDATA[<]]> 1024 THEN F.BYTE || ' BYTE'
+		         WHEN F.BYTE > 1024 AND F.BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(F.BYTE/1024,2) || ' KB'
+		         ELSE ROUND(F.BYTE/(1024*1024),2) || ' MB'
+		    END  AS BYTE_FILESIZEVIEW,
+		    'Y' AS UPTBYN
+		FROM SYSFILE F
+		WHERE 1=1
+		<if test="GUUID != null and GUUID != ''">
+			AND F.GUUID = #{GUUID}
+		</if>
+		<if test="DELETEYN != null and DELETEYN != ''">
+			AND F.DELETEYN = #{DELETEYN}
+		</if>
+	</select>
+	
+	<select id="SYSFILEDEMO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT A.SEQ
+		   ,   A.UUID
+		   ,   A.SHORTX
+		   ,   A.UUID AS ATTACH
+		   ,   B.RPATH
+		   ,   B.PATH
+		   ,   B.FNAME
+		   ,   B.NAME AS UUID_FILEVIEW
+		   ,   B.NAME AS ATTACH_FILEVIEW
+		   ,   B.MIME
+		   ,   B.STYPE
+		   ,   CASE WHEN B.BYTE <![CDATA[<]]> 1024 THEN B.BYTE || ' BYTE'
+		            WHEN B.BYTE > 1024 AND B.BYTE <![CDATA[<]]> (1024*1024) THEN  ROUND(B.BYTE/1024,2) || ' KB'
+		            ELSE ROUND(B.BYTE/(1024*1024),2) || ' MB'
+		       END  AS BYTE_FILESIZEVIEW
+		   ,   A.CREATEUSER
+		   ,   A.CREATEDATE
+		   ,   A.UPDATEUSER
+		   ,   A.UPDATEDATE
+		FROM   SYSFILEDEMO A
+		       LEFT OUTER JOIN SYSFILE B ON A.UUID = B.UUID
+		WHERE 1=1
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+		${RANGE_SQL}
+		</if>
+		ORDER BY A.SEQ DESC      
+	</select>
+	
+	<insert id="SYSFILEDEMO_INSERT" parameterType="hashmap">
+		INSERT INTO SYSFILEDEMO(
+			SEQ, UUID, SHORTX,
+			CREATEUSER, CREATEDATE
+		)VALUES(
+			SEQ_SYSFILEDEMO.NEXTVAL, #{ATTACH}, NVL(#{SHORTX},' '),
+			#{SES_USER_ID}, SYSDATE
+		)
+	</insert>
+	
+	<update id="SYSFILEDEMO_UPDATE" parameterType="hashmap">
+		UPDATE SYSFILEDEMO
+		SET    UUID = #{ATTACH}
+		  ,    SHORTX = NVL(#{SHORTX},' ')
+		  ,    UPDATEUSER = #{SES_USER_ID}
+		  ,    UPDATEDATE = SYSDATE
+		WHERE  SEQ = #{SEQ}
+	</update>
+	
+	<delete id="SYSFILEDEMO_DELETE" parameterType="hashmap">
+		DELETE
+		FROM SYSFILEDEMO
+		WHERE SEQ = #{SEQ}
+	</delete>
+	
+	<select id="GRIDTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUGID, MGL.MENUID, MGL.PMENUID, CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS MENULABEL, MGL.SORTORDER,
+		    (CASE WHEN URI IS NOT NULL THEN '['||MGL.MENUID||']'||MM.MENUNAME ELSE MM.MENUNAME END) AS MENUNAME, 
+		    MM.URI, MM.PARAM, CASE WHEN URI IS NOT NULL THEN 'PRG' ELSE 'FLD' END AS PRGFLG
+		FROM
+		(
+		  SELECT 
+		     ML.MENUGID,
+		     ML.MENUID,
+		     ML.SORTORDER,
+		     ML.PMENUID
+		  FROM MSTMENUG MG INNER JOIN MSTMENUGL ML ON MG.MENUGROUPID = ML.MENUGID 
+		  WHERE MG.MENUGROUPID = #{MENUGID}
+		  AND   MG.DELETEYN = 'N'
+		) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		WHERE 1=1
+		AND   MM.DELETEYN = 'N'
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="MENUTREE_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+		    LEVEL, MGL.MENUID AS "id", MGL.PMENUID AS "pId", CL.LABEL AS CLLABEL,
+		    (CASE WHEN CL.LABEL IS NULL THEN MM.MENUNAME ELSE CL.LABEL END) AS "name",
+		    MM.MENUNAME, MM.URI, MM.PARAM
+		FROM
+		(SELECT 
+			COMPID,
+             MENUGID,
+             MENUID,
+             SORTORDER,
+             PMENUID
+         FROM MSTMENUGL 
+         WHERE MENUGID = #{MENUGID} AND COMPID = #{SES_USER_COMPANY}) MGL
+		LEFT OUTER JOIN MSTMENU MM ON MM.MENUID = MGL.MENUID AND MM.COMPID = MGL.COMPID
+		LEFT OUTER JOIN SYSLABEL CL ON CL.LABELGID = 'MENU' AND CL.LANGCODE = #{SES_LANGUAGE} AND MM.MENULABEL = CL.LABELID
+		START WITH MGL.PMENUID = 'root'
+		CONNECT BY PRIOR MGL.MENUID = MGL.PMENUID
+		ORDER BY MGL.SORTORDER
+	</select>
+	
+	<select id="SYSLABEL_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT	
+			L.LABELGID,
+			L.LABELID,
+			L.LANGCODE,
+			L.LABEL,
+			L.LABELTYPE,
+			L.CREATEUSER,
+			L.CREATEDATE,
+			L.UPDATEUSER,
+			L.UPDATEDATE,
+			L.DELETEYN
+		FROM SYSLABEL L
+		WHERE 1=1 
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+		<if test="RANGE_SQL_G1 != null and RANGE_SQL_G1 != ''">
+			${RANGE_SQL_G1}
+		</if>
+	</select>
+	
+	<select id="DEMO_LIST" parameterType="hashmap" resultType="DataMap">
+		SELECT
+				OWNRKY,
+				SKUKEY,
+				DELMAK,
+				DESC01,
+				DESC02,
+				VENDKY,
+				ASKU01,
+				ASKU02,
+				ASKU03,
+				ASKU04,
+				ASKU05,
+				ASKL01,
+				ASKL02,
+				ASKL03,
+				ASKL04,
+				ASKL05,
+				EANCOD,
+				GTINCD,
+				SKUG01,
+				SKUG02,
+				SKUG03,
+				SKUG04,
+				SKUG05,
+				SKUL01,
+				SKUL02,
+				SKUL03,
+				SKUL04,
+				SKUL05,
+				GRSWGT,
+				NETWGT,
+				WGTUNT,
+				LENGTH,
+				WIDTHW,
+				HEIGHT,
+				CAPACT,
+				DUOMKY,
+				QTDUOM,
+				ABCANV,
+				LOTL01,
+				LOTL02,
+				LOTL03,
+				LOTL04,
+				LOTL05,
+				LOTL06,
+				LOTL07,
+				LOTL08,
+				LOTL09,
+				LOTL10,
+				LOTL11,
+				LOTL12,
+				LOTL13,
+				LOTL14,
+				LOTL15,
+				LOTL16,
+				LOTL17,
+				LOTL18,
+				LOTL19,
+				LOTL20,
+				OUTDMT,
+				RIMDMT,
+				INNDPT,
+				SECTWD,
+				WEIGHT,
+				DLGORT,
+				BATMNG,
+				LGPRO,
+				CSTDAT,
+				CPSKUG,
+				DESC03,
+				DESC04,
+				QTYMON,
+				QTYSTD,
+				QTYCNT,
+				BUFMNG,
+				CREDAT,
+				CRETIM,
+				CREUSR,
+				LMODAT,
+				LMOTIM,
+				LMOUSR,
+				INDBZL,
+				INDARC,
+				UPDCHK,
+				CUBICM
+		FROM DEMO
+		WHERE 1=1 
+		<if test="RANGE_SQL != null and RANGE_SQL != ''">
+			${RANGE_SQL}
+		</if>
+	</select>
+</mapper>

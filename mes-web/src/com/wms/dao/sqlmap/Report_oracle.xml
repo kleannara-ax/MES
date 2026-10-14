@@ -1,0 +1,2326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="WmsReport">
+	<typeAlias alias="DataMap" type="com.common.bean.DataMap" />
+	<typeAlias alias="StringMap" type="com.common.util.StringMap" />
+	<select id="RL11SKUG04COMBO_LIST" parameterClass="Map" resultClass="DataMap"><!-- 거점 Combo -->
+		SELECT DISTINCT
+		    SKUG04 AS VALUE_COL,
+		    SKUG04 AS TEXT_COL
+		FROM
+		    SKUMA
+	</select>
+
+	<select id="RL01TAB1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			RH.WAREKY as "WAREKY" ,					
+      		WH.NAME01 as WAREKYNM,					
+       		SUBSTR(RH.DOCDAT,1,4) as YEAR,					
+      		SUBSTR(RH.DOCDAT,5,2) as MONTH,					
+       		NVL(SUM(RI.QTYRCV),0) as QTYRCV,                    
+            NVL(SUM(RI.QTYORG),0) as QTYORG,            
+            ROUND(NVL(SUM(RI.LOTA16*RI.QTYRCV),0),0) as AMOUNT,                     
+            0 as CUBICT,
+            RI.LOTA10 AS LOTA10					
+ 		FROM RECDH RH                    
+              INNER JOIN RECDI RI                    
+              ON RH.RECVKY = RI.RECVKY     
+       LEFT OUTER JOIN WAHMA WH                    
+              ON WH.WAREKY = RH.WAREKY
+       WHERE 1 = 1
+      <isNotEmpty property="WAREKY">
+		AND RH.WAREKY = #WAREKY#
+	  </isNotEmpty>	
+	  <isNotEmpty property="DEPART">
+        	AND RH.DEPTID1 = #DEPART# 
+      </isNotEmpty>
+	   	AND RH.STATDO &lt;&gt; 'FCN'	
+	  <isNotEmpty property="RANGE_SQL">
+		$RANGE_SQL$
+	  </isNotEmpty>			
+       GROUP BY SUBSTR(RH.DOCDAT,1,4),					
+                SUBSTR(RH.DOCDAT,5,2),					
+                RH.WAREKY, WH.NAME01, RI.LOTA10					
+       ORDER BY 1,2,3,4					
+	</select>
+	
+	<select id="RL01TAB2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			RH.WAREKY AS WAREKY,	
+			WH.NAME01 AS WAREKYNM,	
+			SUBSTR(RH.DOCDAT,1,4) AS YEAR,	
+			SUBSTR(RH.DOCDAT,5,2) AS MONTH,	
+			SUBSTR(RH.DOCDAT,7,2) AS DAY,	
+			NVL(SUM(RI.QTYRCV),0) AS QTYRCV,                    
+            NVL(SUM(RI.QTYORG),0) AS QTYORG,            
+            ROUND(NVL(SUM(RI.LOTA16*RI.QTYRCV),0),0) AS AMOUNT,  	
+			0 AS CUBICT,
+			RI.LOTA10 AS LOTA10		
+       FROM RECDH RH                    
+              INNER JOIN RECDI RI                    
+              ON RH.RECVKY = RI.RECVKY     
+       LEFT OUTER JOIN WAHMA WH                    
+              ON WH.WAREKY = RH.WAREKY
+       WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+		  AND RH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="DEPART">
+        	AND RH.DEPTID1 = #DEPART# 
+      </isNotEmpty>
+		  AND RH.STATDO &lt;&gt; 'FCN'	
+		<isNotEmpty property="RANGE_SQL">
+		  $RANGE_SQL$
+		</isNotEmpty>	
+		GROUP BY RH.DOCDAT,	
+		         RH.WAREKY, WH.NAME01, RI.LOTA10		
+		ORDER BY 1,2,3,4,5	
+	</select>
+	
+	<select id="RL01TAB3_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			RH.WAREKY AS WAREKY,	
+	        WH.NAME01 AS WAREKYNM,	
+	        RI.SKUKEY AS SKUKEY,	
+	        RI.DESC01 AS DESC01,	
+	        NVL(SUM(RI.QTYRCV),0) AS QTYRCV,                    
+            NVL(SUM(RI.QTYORG),0) AS QTYORG, 
+	        RI.LOTA16 AS PRICE,	
+	        ROUND(NVL(SUM(RI.LOTA16*RI.QTYRCV),0),0) AS AMOUNT,	
+	        ' ' AS CUBICM,	
+	        0 CUBICT,
+	        RI.LOTA10 AS LOTA10			
+        FROM RECDH RH                    
+              INNER JOIN RECDI RI                    
+              ON RH.RECVKY = RI.RECVKY     
+       LEFT OUTER JOIN WAHMA WH                    
+              ON WH.WAREKY = RH.WAREKY
+       WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+		  AND RH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="DEPART">
+        	AND RH.DEPTID1 = #DEPART# 
+     	</isNotEmpty>
+		  AND RH.STATDO &lt;&gt; 'FCN'	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>	
+		GROUP BY RH.WAREKY, WH.NAME01,	
+		         RI.SKUKEY, RI.DESC01, RI.LOTA16, RI.LOTA10	
+		ORDER BY 1,2,3,4	
+		
+	</select>
+	
+	<select id="RL01TAB4_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			RH.WAREKY AS WAREKY,
+	        WH.NAME01 AS WAREKYNM,
+	        RH.RCPTTY AS DOCUTY,
+	        DT.SHORTX AS DOCUTYNM,
+	        NVL(SUM(RI.QTYRCV),0) AS QTYRCV,                    
+            NVL(SUM(RI.QTYORG),0) AS QTYORG, 
+	        ROUND(NVL(SUM(RI.LOTA16*RI.QTYRCV),0),0) AS AMOUNT,
+	        0 AS CUBICT,
+	        RI.LOTA10 AS LOTA10	
+          FROM RECDH RH                    
+              INNER JOIN RECDI RI                    
+              ON RH.RECVKY = RI.RECVKY     
+       LEFT OUTER JOIN WAHMA WH                    
+              ON WH.WAREKY = RH.WAREKY
+         LEFT OUTER JOIN DOCTM DT
+                      ON DT.DOCUTY = RH.RCPTTY
+         WHERE  1 = 1 
+		 <isNotEmpty property="WAREKY">
+		   AND RH.WAREKY = #WAREKY#
+		 </isNotEmpty>	
+		 <isNotEmpty property="DEPART">
+        	AND RH.DEPTID1 = #DEPART# 
+         </isNotEmpty>
+		   AND RH.STATDO  &lt;&gt; 'FCN'	
+	    <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>	
+		 GROUP BY RH.WAREKY, WH.NAME01,
+		          RH.RCPTTY, DT.SHORTX, RI.LOTA10	
+		 ORDER BY 1,2,3,4
+	</select>
+	
+	<select id="RL02TAB1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			   SH.WAREKY AS WAREKY,			
+		       WH.NAME01 AS WAREKYNM,			
+		       SUBSTR(SH.DOCDAT,1,4) AS YEAR,			
+		       SUBSTR(SH.DOCDAT,5,2) AS MONTH,			
+		       NVL(SUM(SI.QTSHPO),0) AS QTSHPO,			
+		       NVL(SUM(SI.QTALOC),0) AS QTALOC,			
+		       NVL(SUM(SI.QTJCMP),0) AS QTJCMP,			
+		       NVL(SUM(SI.QTSHPD),0) AS QTSHPD,			
+		       ROUND(NVL(SUM(TI.QTCOMP*TI.LOTA16),0),0) AS AMOUNT,			
+		       <!--  NVL(SUM(SI.LOTA16 * (SI.QTSHPD - NVL(ADJ.QTADJU,0))),0) AS AMOUNT,-->		       
+		       0 AS CUBICT,
+		       TI.LOTA10 AS LOTA10				
+			 FROM SHPDH SH            
+	         INNER JOIN SHPDI SI            
+	         ON SH.SHPOKY = SI.SHPOKY    
+	         INNER JOIN TASDI TI
+	         ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+	         LEFT OUTER JOIN WAHMA WH            
+	         ON WH.WAREKY = SH.WAREKY   
+	        WHERE 1=1       
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="DEPART">
+        	AND SH.DEPTID1 = #DEPART# 
+         </isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>				
+		   AND SH.SHPMTY NOT IN ('299')			
+		GROUP BY SUBSTR(SH.DOCDAT,1,4),SUBSTR(SH.DOCDAT,5,2),			
+		          SH.WAREKY, WH.NAME01, TI.LOTA10			
+		ORDER BY 1,2,3,4			
+	</select>
+	
+	<select id="RL02TAB2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SH.WAREKY AS WAREKY,				
+		       WH.NAME01 AS WAREKYNM,				
+		       SUBSTR(SH.DOCDAT,1,4) AS YEAR,				
+		       SUBSTR(SH.DOCDAT,5,2) AS MONTH,				
+		       SUBSTR(SH.DOCDAT,7,2) AS DAY,				
+		       NVL(SUM(SI.QTSHPO),0) AS QTSHPO,				
+		       NVL(SUM(SI.QTALOC),0) AS QTALOC,				
+		       NVL(SUM(SI.QTJCMP),0) AS QTJCMP,				
+		       NVL(SUM(SI.QTSHPD),0) AS QTSHPD,				
+		       ROUND(NVL(SUM(TI.QTCOMP*TI.LOTA16),0),0) AS AMOUNT,				
+		       <!--  NVL(SUM(SI.LOTA16 * (SI.QTSHPD - NVL(ADJ.QTADJU,0))),0) AS AMOUNT,-->
+		       0 AS CUBICT,
+		       TI.LOTA10 AS LOTA10					
+		 FROM SHPDH SH            
+         INNER JOIN SHPDI SI            
+         ON SH.SHPOKY = SI.SHPOKY    
+         INNER JOIN TASDI TI
+         ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+         LEFT OUTER JOIN WAHMA WH            
+         ON WH.WAREKY = SH.WAREKY   			
+		WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="DEPART">
+        	AND SH.DEPTID1 = #DEPART# 
+         </isNotEmpty>			
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>			
+		   AND SH.SHPMTY NOT IN ('299')				
+		GROUP BY SH.DOCDAT,				
+		          SH.WAREKY, WH.NAME01, TI.LOTA10				
+		ORDER BY 1,2,3,4,5				
+	</select>
+	
+	<select id="RL02TAB3_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SH.WAREKY AS WAREKY,					
+		       WH.NAME01 AS WAREKYNM,					
+		       SI.SKUKEY AS SKUKEY,					
+		       SI.DESC01 AS DESC01,					
+		       NVL(SUM(SI.QTSHPO),0) AS QTSHPO,					
+		       NVL(SUM(SI.QTALOC),0) AS QTALOC,					
+		       NVL(SUM(SI.QTJCMP),0) AS QTJCMP,					
+		       NVL(SUM(SI.QTSHPD),0) AS QTSHPD,					
+		       SI.HEIGHT AS HEIGHT,					
+		       SI.CUBICM AS CUBICM,					
+		       ROUND(NVL(SUM(TI.QTCOMP*TI.LOTA16),0),0)  AS AMOUNT,			
+		       <!--  NVL(SUM(SI.LOTA16 * (SI.QTSHPD - NVL(ADJ.QTADJU,0))),0) AS AMOUNT,-->		
+		       0 AS CUBICT,
+		       TI.LOTA10 AS LOTA10						
+		 FROM SHPDH SH            
+         INNER JOIN SHPDI SI            
+         ON SH.SHPOKY = SI.SHPOKY    
+         INNER JOIN TASDI TI
+         ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+         LEFT OUTER JOIN WAHMA WH            
+         ON WH.WAREKY = SH.WAREKY   	
+		WHERE 1 = 1			
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="DEPART">
+        	AND SH.DEPTID1 = #DEPART# 
+         </isNotEmpty>			
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>					
+		   AND SH.SHPMTY NOT IN ('299')					
+		GROUP BY SH.WAREKY, WH.NAME01,					
+		         SI.SKUKEY, SI.DESC01, SI.HEIGHT, SI.CUBICM,TI.LOTA10					
+		ORDER BY 1,2,3,4					
+	</select>
+	
+	<select id="RL02TAB4_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SH.WAREKY AS WAREKY,
+		       WH.NAME01 AS WAREKYNM,
+		       SH.DOCUTY AS DOCUTY,
+		       DT.SHORTX AS DOCUTYNM,
+		       SH.SHPMTY,
+				(SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'SHPMTY' AND CMCDVL = SH.SHPMTY AND ROWNUM = 1) AS SHPMTYNM,
+		       NVL(SUM(SI.QTSHPO),0) AS QTSHPO,								
+		       NVL(SUM(SI.QTALOC),0) AS QTALOC,								
+		       NVL(SUM(SI.QTJCMP),0) AS QTJCMP,								
+		       NVL(SUM(SI.QTSHPD),0) AS QTSHPD,
+		       ROUND(NVL(SUM(TI.QTCOMP*TI.LOTA16),0),0)  AS AMOUNT,								
+		       <!--  NVL(SUM(SI.LOTA16 * (SI.QTSHPD - NVL(ADJ.QTADJU,0))),0) AS AMOUNT,-->								
+		       0 AS CUBICT,
+		       TI.LOTA10 AS LOTA10								
+		 FROM SHPDH SH            
+         INNER JOIN SHPDI SI            
+         ON SH.SHPOKY = SI.SHPOKY    
+         INNER JOIN TASDI TI
+         ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+         LEFT OUTER JOIN WAHMA WH            
+         ON WH.WAREKY = SH.WAREKY  							
+		       LEFT OUTER JOIN DOCTM DT								
+		               ON DT.DOCUTY = SH.DOCUTY								
+		WHERE 1 = 1			
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="DEPART">
+        	AND SH.DEPTID1 = #DEPART# 
+         </isNotEmpty>				
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>							
+		   AND SH.DOCUTY NOT IN ('299')								
+		GROUP BY SH.WAREKY, WH.NAME01,								
+		         SH.DOCUTY, DT.SHORTX, SH.SHPMTY, TI.LOTA10								
+		ORDER BY 1,2,3,4								
+	</select>
+	
+
+	<select id="RL00_LIST" parameterClass="Map" resultClass="DataMap">
+	   SELECT LOC.WAREKY AS WAREKY,
+              LOC.AREAKY AS AREAKY,
+              LOC.ZONEKY AS ZONEKY,
+              LOC.LOCAKY AS LOCAKY,
+              A.SKUKEY   AS SKUKEY,
+              A.DESC01   AS DESC01,
+              TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS DATTIM,
+              TO_CHAR(TO_DATE(DOCDAT,'YYYYMMDD'),'YYYY/MM/DD')  AS DOCDAT,
+              NVL(ST.QTSIWH,0) AS QTSIWH,
+              NVL(ST.QTABLE,0) AS QTABLE,
+              NVL(ST.QTSALO,0) AS QTSALO,
+              NVL(ST.QTSPMO,0) AS QTSPMO,
+              NVL(ST.QTSBLK,0) AS QTSBLK,
+              NVL(SUM(
+            CASE WHEN A.DOCGRP = 1 AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+                 ELSE 0 END
+              )
+           , 0) AS QTYRCV,
+       NVL(SUM(
+            CASE WHEN A.DOCGRP = 2 AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+                 ELSE 0 END
+              )
+           , 0) AS QTYMVI,
+       NVL(SUM(
+             CASE WHEN A.DOCGRP = 3 AND A.LOCAKY = LOC.LOCAKY AND A.DOCTYP NOT IN ('208','210') THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+                  ELSE 0 END
+              )
+           , 0) AS QTYMVO,
+       NVL(SUM(
+             CASE WHEN A.DOCGRP = 3 AND A.LOCAKY = LOC.LOCAKY AND A.DOCTYP IN ('208','210') THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+                  ELSE 0 END
+              )
+           , 0) AS QTYSHP,
+       NVL(SUM(
+             CASE WHEN A.DOCGRP IN (4,5) AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+                  ELSE 0 END
+              )
+           , 0) AS QTYADJ
+       FROM (
+       SELECT WAREKY, 
+               AREAKY, 
+               ZONEKY, 
+               LOCAKY
+          FROM LOCMA L
+         WHERE 1 = 1
+         <isNotEmpty property="WAREKY">		
+			   AND L.WAREKY = #WAREKY#
+		</isNotEmpty>
+       ) LOC
+       LEFT OUTER JOIN (
+                        SELECT 1                 AS DOCGRP,
+                               RH.RCPTTY         AS DOCTYP,
+                               RH.DOCDAT         AS DOCDAT,
+                               RH.WAREKY         AS WAREKY,
+                               L.AREAKY          AS AREAKY,
+                               NVL(L.ZONEKY,' ') AS ZONEKY,
+                               RI.LOCAKY         AS LOCAKY,
+                               RI.SKUKEY         AS SKUKEY,
+                               RI.DESC01         AS DESC01,
+                               RI.QTYRCV         AS QTYNOR,
+                               CASE WHEN RH.STATDO IN ('NEW','FRV') THEN 0
+                                    ELSE RI.QTYRCV END AS QTYCNC,
+                               NVL( (SELECT SUM(QTADJU)
+                                       FROM ADJDH AH INNER JOIN ADJDI AI ON AI.SADJKY = AH.SADJKY
+                                      WHERE AH.ADJUTY='475' AND AI.REFDKY=RH.RECVKY AND AI.REFDIT=RI.RECVIT),
+                                    0
+                                  ) AS QTYADJ
+                          FROM RECDH RH
+                               INNER JOIN RECDI RI
+                                       ON RI.RECVKY = RH.RECVKY
+                               LEFT OUTER JOIN LOCMA L
+                                       ON L.WAREKY = RH.WAREKY
+                                      AND L.LOCAKY = RI.LOCAKY
+                         WHERE 1 = 1
+                         <isNotEmpty property="WAREKY"> 
+                                AND RH.WAREKY = #WAREKY# 
+                            </isNotEmpty>
+                        <isNotEmpty property="RANGE_SQL">
+                           $RANGE_SQL$
+                        </isNotEmpty>
+
+                        <!--  <STATEMENT property="DOCDATRANGE" PREFIX="AND"/>-->
+                        UNION ALL
+
+                        SELECT 2,
+                               TH.TASOTY,
+                               TH.DOCDAT,
+                               TH.WAREKY,
+                               L.AREAKY,
+                               NVL(L.ZONEKY,' '),
+                               TI.LOCAAC,
+                               TI.SKUKEY,
+                               TI.DESC01,
+                               CASE WHEN TI.STATIT IN ('PPC','FPC') THEN TI.QTCOMP
+                                    ELSE 0 END,
+                               0,
+                               CASE WHEN TH.TASOTY IN ('208','210','310','320') THEN 0
+                                    ELSE NVL( (SELECT SUM(QTADJU)
+                                                 FROM ADJDH AH INNER JOIN ADJDI AI ON AI.SADJKY = AH.SADJKY
+                                                WHERE AH.ADJUTY='470' AND AI.REFDKY=TH.TASKKY AND AI.REFDIT=TI.TASKIT),
+                                              0
+                                            ) END AS QTYADJ
+                          FROM TASDH TH
+                               INNER JOIN TASDI TI
+                                       ON TI.TASKKY = TH.TASKKY
+                               LEFT OUTER JOIN LOCMA L
+                                       ON L.WAREKY = TH.WAREKY
+                                      AND L.LOCAKY = TI.LOCASR
+                          WHERE 1 = 1 
+                          	<isNotEmpty property="WAREKY">		
+                               AND TH.WAREKY = #WAREKY#
+                            </isNotEmpty>
+   
+                           AND TI.STATIT IN ('PPC','FPC')
+                           AND TH.TASOTY IN ('331','332','380',
+                                             '382','383','384','385','386','387','388','389','390',
+                                             '391','392','393','394','395','396','397','398','399')
+                        <isNotEmpty property="RANGE_SQL">
+                           $RANGE_SQL$
+                        </isNotEmpty>
+                          <!-- <STATEMENT property="DOCDATRANGE" PREFIX="AND"/> -->
+                        UNION ALL
+
+                        SELECT 3,
+                               TH.TASOTY,
+                               TH.DOCDAT,
+                               TH.WAREKY,
+                               L.AREAKY,
+                               NVL(L.ZONEKY,' '),
+                               TI.LOCASR,
+                               TI.SKUKEY,
+                               TI.DESC01,
+                               CASE WHEN TI.STATIT IN ('PPC','FPC') THEN TI.QTCOMP
+                                    ELSE 0 END,
+                               0,
+                               CASE WHEN TH.TASOTY IN ('208','210','310','320') THEN 0
+                                    ELSE NVL( (SELECT SUM(QTADJU)
+                                                 FROM ADJDH AH INNER JOIN ADJDI AI ON AI.SADJKY = AH.SADJKY
+                                                WHERE AH.ADJUTY='470' AND AI.REFDKY=TH.TASKKY AND AI.REFDIT=TI.TASKIT),
+                                              0
+                                            ) END AS QTYADJ
+                          FROM TASDH TH
+                               INNER JOIN TASDI TI
+                                       ON TI.TASKKY = TH.TASKKY
+                               LEFT OUTER JOIN LOCMA L
+                                       ON L.WAREKY = TH.WAREKY
+                                      AND L.LOCAKY = TI.LOCASR
+                          WHERE 1 = 1 
+                            <isNotEmpty property="WAREKY">		
+                               AND TH.WAREKY = #WAREKY#
+                            </isNotEmpty>
+                           AND TI.STATIT IN ('PPC','FPC')
+                           AND TH.TASOTY IN ('208','210','310','320','331','332','380',
+                                             '382','383','384','385','386','387','388','389','390',
+                                             '391','392','393','394','395','396','397','398','399')
+                            <isNotEmpty property="RANGE_SQL">
+                               $RANGE_SQL$
+                            </isNotEmpty>                  
+                            <!--  <STATEMENT property="DOCDATRANGE" PREFIX="AND"/> -->
+                        UNION ALL
+
+                        SELECT 4,
+                               AH.ADJUTY,
+                               AH.DOCDAT,
+                               AH.WAREKY,
+                               L.AREAKY,
+                               NVL(L.ZONEKY,' '),
+                               AI.LOCAKY,
+                               AI.SKUKEY,
+                               AI.DESC01,
+                               0,
+                               0,
+                               AI.QTADJU
+                          FROM ADJDH AH
+                               INNER JOIN ADJDI AI
+                                       ON AI.SADJKY = AH.SADJKY
+                               LEFT OUTER JOIN LOCMA L
+                                       ON L.WAREKY = AH.WAREKY
+                                      AND L.LOCAKY = AI.LOCAKY
+                         WHERE 1 = 1
+                          <isNotEmpty property="WAREKY">		
+                               AND AH.WAREKY = #WAREKY#
+                          </isNotEmpty>
+                           AND AH.ADJUTY IN ('401','402','410','460','465')
+                           <isNotEmpty property="RANGE_SQL">
+                               $RANGE_SQL$
+                           </isNotEmpty> 
+                          <!-- <STATEMENT property="DOCDATRANGE" PREFIX="AND"/> -->
+                        UNION ALL
+                        
+                        SELECT 5,
+                               PH.PHSCTY,
+                               PH.DOCDAT,
+                               PH.WAREKY,
+                               L.AREAKY,
+                               NVL(L.ZONEKY,' '),
+                               PI.LOCAKY,
+                               PI.SKUKEY,
+                               PI.DESC01,
+                               0,
+                               0,
+                               PI.QTADJU
+                          FROM PHYDH PH
+                               INNER JOIN PHYDI PI
+                                       ON PI.PHYIKY = PH.PHYIKY
+                               LEFT OUTER JOIN LOCMA L
+                                       ON L.WAREKY = PH.WAREKY
+                                      AND L.LOCAKY = PI.LOCAKY
+                         WHERE 1 = 1
+                         <isNotEmpty property="WAREKY">		
+                               AND PH.WAREKY = #WAREKY#
+                         </isNotEmpty>
+                           <isNotEmpty property="RANGE_SQL">
+                               $RANGE_SQL$
+                           </isNotEmpty> 
+                           <!--<STATEMENT property="DOCDATRANGE" PREFIX="AND"/> -->
+                       ) A
+               ON LOC.WAREKY = A.WAREKY
+              AND LOC.LOCAKY = A.LOCAKY
+              LEFT OUTER JOIN (SELECT WAREKY, AREAKY, ZONEKY, LOCAKY, SKUKEY, DESC01,
+                               NVL(SUM(QTSIWH),0) AS QTSIWH,
+                               NVL(SUM(QTSIWH - GREATEST(QTSALO,QTSPMO) - QTSBLK),0) AS QTABLE,
+                               NVL(SUM(QTSALO),0) AS QTSALO,
+                               NVL(SUM(GREATEST(QTSALO,QTSPMO)),0) AS QTSPMO,
+                               NVL(SUM(QTSBLK),0) AS QTSBLK
+                          FROM STKKY
+                         WHERE 1 = 1
+                          <isNotEmpty property="WAREKY">		
+                               AND WAREKY = #WAREKY#
+                          </isNotEmpty>
+                           AND QTSIWH > 0
+                         GROUP BY WAREKY, AREAKY, ZONEKY, LOCAKY, SKUKEY, DESC01
+                       ) ST
+                       ON ST.WAREKY = LOC.WAREKY
+                       AND ST.AREAKY = LOC.AREAKY
+                       AND ST.ZONEKY = LOC.ZONEKY
+                       AND ST.LOCAKY = LOC.LOCAKY
+                       AND ST.SKUKEY = A.SKUKEY
+                          WHERE 1 = 1
+                          <isNotEmpty property="WAREKY">		
+                               AND LOC.WAREKY = #WAREKY#
+                          </isNotEmpty>
+                          <isNotEmpty property="RANGE_SQL">
+                               $RANGE_SQL$
+                          </isNotEmpty> 
+	  	   <!-- <STATEMENT property="RANGE" PREFIX="AND"/> -->
+	 	   GROUP BY LOC.WAREKY, LOC.AREAKY, LOC.ZONEKY, LOC.LOCAKY, A.SKUKEY, A.DESC01, A.DOCDAT,
+	          NVL(ST.QTSIWH,0),NVL(ST.QTABLE,0),NVL(ST.QTSALO,0),NVL(ST.QTSPMO,0),NVL(ST.QTSBLK,0)
+	       HAVING NVL(SUM(
+	            CASE WHEN A.DOCGRP = 1 AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+	                 ELSE 0 END
+	              )
+	           , 0) > 0 OR
+	
+	       NVL(SUM(
+	            CASE WHEN A.DOCGRP = 2 AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+	                 ELSE 0 END
+	              )
+	           , 0) > 0 OR
+	
+	       NVL(SUM(
+	             CASE WHEN A.DOCGRP = 3 AND A.LOCAKY = LOC.LOCAKY AND A.DOCTYP NOT IN ('208','210') THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+	                  ELSE 0 END
+	              )
+	           , 0) > 0 OR
+	
+	       NVL(SUM(
+	             CASE WHEN A.DOCGRP = 3 AND A.LOCAKY = LOC.LOCAKY AND A.DOCTYP IN ('208','210') THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+	                  ELSE 0 END
+	              )
+	           , 0) > 0 OR
+	
+	       NVL(SUM(
+	             CASE WHEN A.DOCGRP IN (4,5) AND A.LOCAKY = LOC.LOCAKY THEN A.QTYNOR-A.QTYCNC-A.QTYADJ
+	                  ELSE 0 END
+	              )
+	           , 0) > 0
+	 ORDER BY 1,2,3,4,5,6
+	</select>
+	
+	
+	<select id="RL08_LIST" parameterClass="Map" resultClass="DataMap">
+	SELECT WAREKY   AS WAREKY,
+           WAREKYNM AS WAREKYNM,
+           AREAKY   AS AREAKY,
+           AREAKYNM AS AREAKYNM,
+           ZONEKY   AS ZONEKY,
+           ZONEKYNM AS ZONEKYNM,
+           STKLOC   AS STKLOC,
+           LOCCNT   AS LOCCNT,
+           LOCCNT - STKLOC AS EMPLOC,
+           DECODE(LOCCNT, 0 , '0' , ROUND((STKLOC / LOCCNT) * 100) || '%') AS PERCNT,
+           SKUCNT   AS SKUCNT,
+           STKCNT   AS STKCNT
+     FROM (
+  
+	SELECT WAREKY, 
+	       WAREKYNM, 
+	       AREAKY, 
+	       AREAKYNM, 
+	       ZONEKY, 
+	       ZONEKYNM, 
+	       STKLOC, 
+	       LOCCNT, 
+	       LOCCNT - STKLOC AS EMPLOC,
+	       DECODE(LOCCNT, 0 , '0' , ROUND((STKLOC / LOCCNT) * 100) || '%') AS PERCNT,
+	       SKUCNT, 
+	       STKCNT
+	  FROM (
+	  
+	        SELECT ZN.WAREKY AS WAREKY, 
+	               WH.NAME01 AS WAREKYNM,
+	               ' '       AS AREAKY,
+	               ' '       AS AREAKYNM,
+	               ' '       AS ZONEKY, ' ' AS ZONEKYNM,
+	               SUM(
+	               (SELECT COUNT(*) 
+	                  FROM (SELECT WAREKY, 
+	                               ZONEKY, 
+	                               LOCAKY
+	                          FROM STKKY
+	                         WHERE 1 = 1
+	                         	<isNotEmpty property="WAREKY">		           
+	                         	AND WAREKY = #WAREKY#
+	                         	</isNotEmpty>               
+	                         	AND QTSIWH > 0
+	                         	<isEqual property="HANDINC" compareValue="2">
+	                         	AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1=1
+	                         	<isNotEmpty property="WAREKY">		           
+	                         	AND WAREKY = #WAREKY#
+	                         	</isNotEmpty>               
+	                         	AND TKZONE != 'HAND')
+	                         	</isEqual>
+	                         GROUP BY WAREKY, ZONEKY, LOCAKY)
+	                         WHERE WAREKY = ZN.WAREKY
+	                           AND ZONEKY = ZN.ZONEKY)) AS STKLOC,
+					               SUM(
+					               (SELECT COUNT(*) FROM LOCMA
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY
+	                                 <isEqual property="HANDINC" compareValue="2">
+	                                 AND TKZONE != 'HAND'
+	                                 </isEqual>
+	                               )) AS LOCCNT,
+					               SUM(
+					               (SELECT COUNT(*) FROM (SELECT WAREKY, ZONEKY, SKUKEY
+	                                        FROM STKKY
+	                                       WHERE 
+	                                       1 = 1
+	                                       <isNotEmpty property="WAREKY">
+												  AND WAREKY = #WAREKY#      
+										   </isNotEmpty>                 
+						 					AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                       GROUP BY WAREKY, ZONEKY, SKUKEY)
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY)) AS SKUCNT,
+							               SUM(
+							               (SELECT NVL(SUM(QTSIWH),0) FROM STKKY
+	                                         WHERE WAREKY = ZN.WAREKY
+	                                           AND ZONEKY = ZN.ZONEKY
+	                                           AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                        )) AS STKCNT
+	          FROM ZONMA ZN
+	               LEFT OUTER JOIN AREMA AR ON AR.WAREKY = ZN.WAREKY AND AR.AREAKY = ZN.AREAKY
+	               LEFT OUTER JOIN WAHMA WH ON WH.WAREKY = ZN.WAREKY
+	         WHERE 
+	         1 = 1
+			<isNotEmpty property="WAREKY">
+				  AND AR.WAREKY = #WAREKY#      
+			</isNotEmpty> 
+			<isNotEmpty property="RANGE_SQL">
+	             $RANGE_SQL$
+	         </isNotEmpty>                
+	           <!--  <STATEMENT property="RANGE" PREFIX="AND"/>  -->
+	         GROUP BY ZN.WAREKY, WH.NAME01
+	        UNION ALL
+	        SELECT ZN.WAREKY AS WAREKY, WH.NAME01 AS WAREKYNM,
+	               ZN.AREAKY AS AREAKY, AR.SHORTX AS AREAKYNM,
+	               ' ' AS ZONEKY, ' ' AS ZONEKYNM,
+	               SUM(
+	               (SELECT COUNT(*) FROM (SELECT WAREKY, ZONEKY, LOCAKY
+	                                        FROM STKKY
+	                                       WHERE 
+	                                       1=1
+	                                       <isNotEmpty property="WAREKY">
+							  AND WAREKY = #WAREKY#      
+						</isNotEmpty> 
+	                                         AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                       GROUP BY WAREKY, ZONEKY, LOCAKY)
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY)) AS STKLOC,
+					               SUM(
+					               (SELECT COUNT(*) FROM LOCMA
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY
+	                                 <isEqual property="HANDINC" compareValue="2">
+	                                 AND TKZONE != 'HAND'
+	                                 </isEqual>
+	                               )) AS LOCCNT,
+					               SUM(
+					               (SELECT COUNT(*) FROM (SELECT WAREKY, ZONEKY, SKUKEY
+	                                        FROM STKKY
+	                                       WHERE 1 = 1 
+	                                      <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                        AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                       GROUP BY WAREKY, ZONEKY, SKUKEY)
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY)) AS SKUCNT,
+							               SUM(
+							               (SELECT NVL(SUM(QTSIWH),0) FROM STKKY
+	                                         WHERE WAREKY = ZN.WAREKY
+	                                           AND ZONEKY = ZN.ZONEKY
+	                                           AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                        )) AS STKCNT
+	          FROM ZONMA ZN
+	               LEFT OUTER JOIN AREMA AR ON AR.WAREKY = ZN.WAREKY AND AR.AREAKY = ZN.AREAKY
+	               LEFT OUTER JOIN WAHMA WH ON WH.WAREKY = ZN.WAREKY
+	         WHERE 1 = 1 
+	         <isNotEmpty property="WAREKY">			
+				AND AR.WAREKY = #WAREKY# 
+			</isNotEmpty> 
+			<isNotEmpty property="RANGE_SQL">
+				$RANGE_SQL$
+			</isNotEmpty>
+	           <!--  <STATEMENT property="RANGE" PREFIX="AND"/> -->
+	         GROUP BY ZN.WAREKY, WH.NAME01, ZN.AREAKY, AR.SHORTX
+	        UNION ALL
+	        SELECT ZN.WAREKY AS WAREKY, WH.NAME01 AS WAREKYNM,
+	               ZN.AREAKY AS AREAKY, AR.SHORTX AS AREAKYNM,
+	               ZN.ZONEKY AS ZONEKY, ZN.SHORTX AS ZONEKYNM,
+	               (SELECT COUNT(*) FROM (SELECT WAREKY, ZONEKY, LOCAKY
+	                                        FROM STKKY
+	                                       WHERE 1 = 1
+	                                       <isNotEmpty property="WAREKY">
+							  AND WAREKY = #WAREKY#      
+						</isNotEmpty>                 
+	                                         AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1 
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                        AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                       GROUP BY WAREKY, ZONEKY, LOCAKY)
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY) AS STKLOC,
+	             				  (SELECT COUNT(*) FROM LOCMA
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY
+	                                 <isEqual property="HANDINC" compareValue="2">
+	                                 AND TKZONE != 'HAND'
+	                                 </isEqual>
+	                               ) AS LOCCNT,
+	            				   (SELECT COUNT(*) FROM (SELECT WAREKY, ZONEKY, SKUKEY
+	                                        FROM STKKY
+	                                       WHERE 
+	                                       1 = 1
+	                                       <isNotEmpty property="WAREKY">
+												  AND WAREKY = #WAREKY#      
+											</isNotEmpty>                 
+	                                         AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                         AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                       GROUP BY WAREKY, ZONEKY, SKUKEY)
+	                               WHERE WAREKY = ZN.WAREKY
+	                                 AND ZONEKY = ZN.ZONEKY) AS SKUCNT,
+	              						 (SELECT NVL(SUM(QTSIWH),0) FROM STKKY
+	                                         WHERE WAREKY = ZN.WAREKY
+	                                           AND ZONEKY = ZN.ZONEKY
+	                                           AND QTSIWH > 0
+	                                         <isEqual property="HANDINC" compareValue="2">
+	                                         AND LOCAKY IN (SELECT LOCAKY FROM LOCMA WHERE 1 = 1
+	                                         <isNotEmpty property="WAREKY">		           
+	                                       	  AND WAREKY = #WAREKY#
+	                                       </isNotEmpty>               
+	                                        AND TKZONE != 'HAND')
+	                                         </isEqual>
+	                                        ) AS STKCNT
+	          FROM ZONMA ZN
+	               LEFT OUTER JOIN AREMA AR ON AR.WAREKY = ZN.WAREKY AND AR.AREAKY = ZN.AREAKY
+	               LEFT OUTER JOIN WAHMA WH ON WH.WAREKY = ZN.WAREKY
+	         WHERE 
+	         1 = 1
+	         <isNotEmpty property="WAREKY">
+		 	 AND AR.WAREKY = #WAREKY#      
+		 </isNotEmpty> 
+		 <isNotEmpty property="RANGE_SQL">
+	           $RANGE_SQL$
+	         </isNotEmpty> 
+	       )
+	     )
+	 ORDER BY 1,3,5 
+		
+	 </select>
+
+ 	<!-- 입출고리스트  -->
+	<select id="RL11_LIST" parameterClass="Map" resultClass="DataMap">
+		 SELECT TQ.DOCDAT AS DOCDAT,   /* 전기일자 */
+                TQ.WAREKY AS WAREKY,   /* 거점 */
+                TQ.SKUKEY AS SKUKEY,   /* 자재코드 */
+                TQ.ASKU01 AS ASKU01, /* 천풍코드 */            
+                TQ.DESC01 AS DESC01,   /* 자재명 */
+                TQ.DESC02 AS DESC02,   /* 모델명 */
+                TQ.SKUG05 AS SKUG05,   /* 모델명 */
+                SUM(QTY102) AS QTY102, /* 구매입고 */
+                SUM(AMT102) AS AMT102, /* 구매입고금액 */         
+                SUM(QTY107) AS QTY107, /* 공정반납(현장->부속창고) */
+                SUM(AMT107) AS AMT107,  /* 공정반납(현장->부속창고) 금액 */
+                SUM(QTY108) AS QTY108, /* 고객반품입하 */
+                SUM(AMT108) AS AMT108, /* 고객반품금액 */
+                SUM(QTY109) AS QTY109, /* 반납입하 */
+                SUM(AMT109) AS AMT109, /* 반납입하금액 */
+                SUM(QTY120) AS QTY120, /* 기타입하 */
+                SUM(AMT120) AS AMT120, /* 기타입하금액 */
+                SUM(QTY211) AS QTY211,    /* 고객출고 */
+                SUM(AMT211) AS AMT211,    /* 고객출고 금액 */
+                SUM(QTY212) AS QTY212,    /* 부속창고출고 */
+                SUM(AMT212) AS AMT212,    /* 부속창고출고 금액 */
+                SUM(QTY219) AS QTY219,    /* 고객반납후출고 */
+                SUM(AMT219) AS AMT219,    /* 고객반납후출고 금액 */
+                SUM(QTY220) AS QTY220,   /*  업체반품출고 */
+                SUM(AMT220) AS AMT220,    /* 업체반품출고 금액 */
+                SUM(QTY331) AS QTY331,   /*  부속창고현장출고 */
+                SUM(AMT331) AS AMT331,    /* 부속창고현장출고 금액 */
+                SUM(QTY380) AS QTY380,   /*  기타출고 */
+                SUM(AMT380) AS AMT380    /* 기타출고 금액 */
+          FROM (
+          /* ---입고수량 ------------------------------ */
+          SELECT A.DOCDAT, /* 전기일자 */
+                 A.WAREKY, /* 거점*/
+                 B.SKUKEY, /* MP자재코드 */
+                 B.ASKU01, /* 천풍코드 */                                      
+                 B.DESC01, /* 자재명 */
+                 B.DESC02, /* 모델명 */
+                 B.SKUG05, /* 규격 */                   
+                 SUM((CASE WHEN A.RCPTTY = '102' THEN QTYRCV ELSE 0 END )) AS QTY102, /* 구매입고 */
+                 SUM((CASE WHEN A.RCPTTY = '102' THEN QTYRCV*LOTA16 ELSE 0 END )) AS AMT102, /* 구매입고금액 */         
+                 SUM((CASE WHEN A.RCPTTY = '107' THEN QTYRCV ELSE 0 END )) AS QTY107, /* 공정반납(현장->부속창고) */
+                 SUM((CASE WHEN A.RCPTTY = '107' THEN QTYRCV*LOTA16 ELSE 0 END )) AS AMT107,  /* 공정반납(현장->부속창고) 금액 */
+                 SUM((CASE WHEN A.RCPTTY = '108' THEN QTYRCV ELSE 0 END )) AS QTY108, /* 고객반품입하 */
+                 SUM((CASE WHEN A.RCPTTY = '108' THEN QTYRCV*LOTA16 ELSE 0 END )) AS AMT108, /* 고객반품금액 */
+                 SUM((CASE WHEN A.RCPTTY = '109' THEN QTYRCV ELSE 0 END )) AS QTY109, /* 반납입하 */
+                 SUM((CASE WHEN A.RCPTTY = '109' THEN QTYRCV*LOTA16 ELSE 0 END )) AS AMT109, /* 반납입하금액 */
+                 SUM((CASE WHEN A.RCPTTY = '120' THEN QTYRCV ELSE 0 END )) AS QTY120, /* 기타입하 */
+                 SUM((CASE WHEN A.RCPTTY = '120' THEN QTYRCV*LOTA16 ELSE 0 END )) AS AMT120, /* 기타입하금액 */
+                 0 AS QTY211,    /* 고객출고 */
+                 0 AS AMT211,    /* 고객출고 금액 */
+                 0 AS QTY212,    /* 부속창고출고 */
+                 0 AS AMT212,    /* 부속창고출고 금액 */
+                 0 AS QTY219,    /* 고객반납후출고 */
+                 0 AS AMT219,    /* 고객반납후출고 금액 */
+                 0 AS QTY220,   /*  업체반품출고 */
+                 0 AS AMT220,    /* 업체반품출고 금액 */
+                 0 AS QTY331,   /*  부속창고현장출고 */
+                 0 AS AMT331,    /* 부속창고현장출고 금액 */
+                 0 AS QTY380,   /*  기타출고 */
+                 0 AS AMT380    /* 기타출고 금액 */
+          FROM RECDH A , RECDI B
+          WHERE 1=1
+          AND   A.RECVKY = B.RECVKY
+          AND   A.RCPTTY IN ('102','107','108','109','120')
+                  <isNotEmpty property="WAREKY">
+                      AND   WAREKY = #WAREKY#
+                  </isNotEmpty>
+                     <isNotEmpty property="RANGE_SQL">
+                      $RANGE_SQL$
+                  </isNotEmpty> 
+           GROUP BY A.DOCDAT, A.WAREKY, SKUKEY,B.DESC01,B.DESC02, B.ASKU01, B.SKUG05
+          /* ---출고수량 ------------------------------ */
+          UNION ALL
+            SELECT  SHP.DOCDAT ,SHP.WAREKY ,SHP.SKUKEY,SHP.ASKU01,SHP.DESC01,SHP.DESC02,SHP.SKUG05, 
+                 0 AS QTY102, /* 구매입고 */
+                 0 AS AMT102, /* 구매입고금액 */         
+                 0 AS QTY107, /* 공정반납(현장->부속창고) */
+                 0 AS AMT107,  /* 공정반납(현장->부속창고) 금액 */
+                 0 AS QTY108, /* 고객반품입하 */
+                 0 AS AMT108, /* 고객반품금액 */
+                 0 AS QTY109, /* 반납입하 */
+                 0 AS AMT109, /* 반납입하금액 */
+                 0 AS QTY120, /* 기타입하 */
+                 0 AS AMT120, /* 기타입하금액 */                   
+                 SUM((CASE WHEN SHP.SHPMTY = '211' THEN SHPSUM ELSE 0 END )) AS QTY211,    /* 고객출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '211' THEN SHPAMT ELSE 0 END )) AS AMT211,    /* 고객출고 금액 */
+                 SUM((CASE WHEN SHP.SHPMTY = '212' THEN SHPSUM ELSE 0 END )) AS QTY212,    /* 부속창고출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '212' THEN SHPAMT ELSE 0 END )) AS AMT212,    /* 부속창고출고 금액 */
+                 SUM((CASE WHEN SHP.SHPMTY = '219' THEN SHPSUM ELSE 0 END )) AS QTY217,    /* 고객반납후출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '219' THEN SHPAMT ELSE 0 END )) AS AMT219,    /* 고객반납후출고 금액 */
+                 SUM((CASE WHEN SHP.SHPMTY = '220' THEN SHPSUM ELSE 0 END )) AS QTY218,   /*  업체반품출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '220' THEN SHPAMT ELSE 0 END )) AS AMT220,    /* 업체반품출고 금액 */
+                 SUM((CASE WHEN SHP.SHPMTY = '331' THEN SHPSUM ELSE 0 END )) AS QTY331,   /*  부속창고현장출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '331' THEN SHPAMT ELSE 0 END )) AS AMT331,    /* 부속창고현장출고 금액 */
+                 SUM((CASE WHEN SHP.SHPMTY = '380' THEN SHPSUM ELSE 0 END )) AS QTY380,   /*  기타출고 */
+                 SUM((CASE WHEN SHP.SHPMTY = '380' THEN SHPAMT ELSE 0 END )) AS AMT380   /*  기타출고 금액 */
+            FROM(
+              SELECT 
+                 A.DOCDAT ,A.WAREKY ,  A.SHPMTY,
+                 B.SKUKEY,B.ASKU01, B.DESC01,B.DESC02, B.SKUG05, SUM(B.QTSHPD)  SHPSUM , SUM(B.QTSHPD*B.LOTA16) AS SHPAMT                    
+              FROM SHPDH A, SHPDI B 
+          WHERE 1=1
+                  <isNotEmpty property="WAREKY">
+                      AND   WAREKY = #WAREKY#
+                  </isNotEmpty>
+              AND   A.SHPOKY = B.SHPOKY
+              AND   A.STATDO = 'FSH'
+                     <isNotEmpty property="RANGE_SQL">
+                      $RANGE_SQL$
+                  </isNotEmpty> 
+              GROUP BY A.DOCDAT, A.WAREKY, A.SHPMTY, B.SKUKEY, B.ASKU01, B.DESC01, B.DESC02, B.SKUG05
+              UNION ALL
+              SELECT A.DOCDAT ,A.WAREKY ,  A.TASOTY,
+                     B.SKUKEY,B.ASKU01, B.DESC01, B.DESC02, B.SKUG05, SUM(B.QTCOMP) SHPSUM , SUM(B.QTCOMP*B.LOTA16) AS SHPAMT
+              FROM TASDH A , TASDI B
+          WHERE 1=1
+              AND   A.TASKKY = B.TASKKY
+              AND   A.TASOTY IN ('331','380') /*  공정,기타 */
+                  <isNotEmpty property="RANGE_SQL">
+                      $RANGE_SQL$
+                  </isNotEmpty> 
+              AND   B.STATIT = 'FPC'
+              GROUP BY A.DOCDAT ,A.WAREKY , A.TASOTY,B.SKUKEY,B.ASKU01,B.DESC01,B.DESC02, B.SKUG05
+              ) SHP
+              GROUP BY SHP.DOCDAT, SHP.WAREKY ,SHP.SKUKEY, SHP.ASKU01, SHP.DESC01, SHP.DESC02, SHP.SKUG05
+          ) TQ
+          GROUP BY TQ.DOCDAT, TQ.WAREKY, TQ.SKUKEY, TQ.ASKU01, TQ.DESC01, TQ.DESC02, TQ.SKUG05
+          ORDER BY TQ.SKUKEY
+	</select> 
+
+	<select id="RL04_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WT.TRNHKY  AS TRNHKY,
+		       WT.ITEMNO  AS ITEMNO,
+		       WT.TRNHTY  AS TRNHTY,
+		       WT.TASKTY  AS TASKTY,
+		       NVL((SELECT SHORTX FROM DOCTM DT WHERE DT.DOCUTY=  WT.TASKTY),WT.TASKTY) AS TASKTYNM ,
+		       WT.WAREKY  AS WAREKY,
+		       WT.AREAKY  AS AREAKY,
+		       WT.ZONEKY  AS ZONEKY,
+		       WT.LOCAKY  AS LOCAKY,
+		       WT.OWNRKY  AS OWNRKY,
+		       WT.SKUKEY  AS SKUKEY,
+		       WT.DESC01  AS DESC01,
+		       WT.DESC02  AS DESC02,
+		       WT.QTPROC  AS QTPROC,
+		       WT.UOMKEY  AS UOMKEY,		     
+		       WT.RECVKY  AS RECVKY,
+		       WT.RECVIT  AS RECVIT,
+		       WT.SHPOKY  AS SHPOKY,
+		       WT.SHPOIT  AS SHPOIT,
+		       WT.TASKKY  AS TASKKY,
+		       WT.TASKIT  AS TASKIT,
+		       WT.SADJKY  AS SADJKY,
+		       WT.SADJIT  AS SADJIT,
+		       WT.PHYIKY  AS PHYIKY,
+		       WT.PHYIIT  AS PHYIIT,		      
+		       WT.STRAID  AS STRAID,
+		       WT.SVBELN  AS SVBELN,
+		       WT.SPOSNR  AS SPOSNR,
+		       WT.STKNUM  AS STKNUM,
+		       WT.STPNUM  AS STPNUM,		      
+		       WT.CREDAT  AS CREDAT,
+		       WT.CRETIM  AS CRETIM,
+		       WT.CREUSR  AS CREUSR,
+		       CU.NMLAST  AS CUSRNM,
+		       WT.LMODAT  AS LMODAT,
+		       WT.LMOTIM  AS LMOTIM,
+		       WT.LMOUSR  AS LMOUSR,
+		       LU.NMLAST  AS LUSRNM,
+		       WT.TRNUID AS TRNUID,
+		       WT.LOTA01 AS LOTA01,
+		       WT.LOTA02 AS LOTA02,
+		       WT.LOTA03 AS LOTA03,
+		       WT.LOTA04 AS LOTA04,
+		       WT.LOTA05 AS LOTA05,
+		       WT.LOTA06 AS LOTA06,
+		       WT.LOTA07 AS LOTA07,
+		       WT.LOTA08 AS LOTA08,
+		       WT.LOTA09 AS LOTA09,
+		       WT.LOTA10 AS LOTA10,
+		       WT.LOTA11 AS LOTA11,
+		       WT.LOTA12 AS LOTA12,
+		       WT.LOTA13 AS LOTA13,
+		       WT.LOTA14 AS LOTA14
+		  FROM WHTRH WT
+		       LEFT OUTER JOIN USRMA CU 
+		               ON CU.USERID = WT.CREUSR 
+		       LEFT OUTER JOIN USRMA LU 
+		               ON LU.USERID = WT.LMOUSR
+		 WHERE WT.WAREKY = #WAREKY#
+		<isNotEmpty property="AREA">
+			AND WT.AREAKY = #AREA#
+		</isNotEmpty>
+		   <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+			</isNotEmpty>
+		 	<isNotEmpty property="CREDAT_F">
+				<isNotEmpty property="CREDAT_T">
+					AND WT.CREDAT BETWEEN #CREDAT_F# AND #CREDAT_T#
+				</isNotEmpty>
+				<isEmpty property="CREDAT_T">
+					AND WT.CREDAT >= #CREDAT_F#
+				</isEmpty>
+		</isNotEmpty>
+		
+		<isNotEmpty property="LOTA11T">
+			<isNotEmpty property="LOTA11F">
+				AND LOTA11 BETWEEN #LOTA11T# AND #LOTA11F#
+			</isNotEmpty>
+			<isEmpty property="LOTA11F">
+				AND LOTA11 >= #LOTA11T#
+			</isEmpty>
+		</isNotEmpty>
+		<isNotEmpty property="LOTA12T">
+			<isNotEmpty property="LOTA12F">
+				AND LOTA12 BETWEEN #LOTA12T# AND #LOTA12F#
+			</isNotEmpty>
+			<isEmpty property="LOTA12F">
+				AND LOTA12 >= #LOTA12T#
+			</isEmpty>
+		</isNotEmpty>
+		<isNotEmpty property="LOTA13T">
+			<isNotEmpty property="LOTA13F">
+				AND LOTA13 BETWEEN #LOTA13T# AND #LOTA13F#
+			</isNotEmpty>
+			<isEmpty property="LOTA13F">
+				AND LOTA13 >= #LOTA13T#
+			</isEmpty>
+		</isNotEmpty>
+		 ORDER BY WT.TRNHKY, WT.ITEMNO
+	</select>
+		
+
+
+  <!-- <select id="KP01_LIST" parameterClass="Map" resultClass="DataMap">
+	    SELECT  '111' AS STKMON ,  기준
+				    0 AS STKDIF,  재고오차율
+				    0 AS NOTSHP, 미출고율
+				    0 AS STKDAY,  재고보유일수
+				    0 AS DMGCNT,  파손건수월
+				    0 AS STKBAD  악성 재고 건수
+		FROM STKKY S
+		WHERE 1 = 1  
+			  <isNotEmpty property="AREA">
+			      AND S.AREAKY = #AREA#
+			  </isNotEmpty>
+			  <isNotEmpty property="ZONE">
+				  AND S.ZONEKY = #ZONE#
+			  </isNotEmpty>
+			  <isNotEmpty property="CREDAT">
+				  AND S.CREDAT = #CREDAT#
+			  </isNotEmpty>
+			  <isNotEmpty property="RANGE_SQL">
+				  $RANGE_SQL$
+		      </isNotEmpty>
+	</select>	 -->
+	
+	<select id="KP01_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		    WAREKY,
+		    DOCDAT,
+		    AREAKY,
+		    SKUKEY,
+		    LOTA02,
+		    STKDIF,
+		    NOTSHP,
+		    STKDAY,
+		    DMGCNT,
+		    STKBAD,
+		    N00101,
+		    N00102,
+		    CREDAT,
+		    CRETIM
+		FROM ZKPI01
+		WHERE 1 = 1
+		<isNotEmpty property="RANGE_SQL">
+		  $RANGE_SQL$
+        </isNotEmpty>
+	</select>
+
+	<select id="KP01_STKDIF_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			PH.PHYIKY,
+			PI.AREAKY, 
+			PI.LOTA02 , 
+			PI.SKUKEY, 
+			PI.DESC01, 
+			PI.DESC02, 
+			PI.ASKU01,
+			PI.SKUG05,  
+			PI.QTSPHY, 
+			PI.QTSIWH
+   		FROM PHYDH PH , PHYDI PI
+   		WHERE PH.PHYIKY = PI.PHYIKY
+   		  AND PHSCTY = '515'    
+    	  AND PH.DOCDAT = #DOCDAT#
+   		  AND PI.AREAKY NOT IN ('PV')
+   		UNION ALL
+   		SELECT 
+   			PH.PHYIKY, 
+   			PI.AREAKY, 
+   			PI.LOTA02,  
+   			PI.SKUKEY, 
+   			PI.DESC01, 
+   			PI.DESC02, 
+   			PI.ASKU01,
+   			PI.SKUG05,
+   			PI.QTSPHY, 
+   			PI.QTSIWH
+  		FROM PHYDH PH , PHYDI PI
+   		WHERE PH.PHYIKY = PI.PHYIKY
+  		  AND PHSCTY = '510'   
+          AND PH.DOCDAT = #DOCDAT#
+          AND SUBSTR(PHYIIT,6,1) = '1'    
+          AND  QTADJU <![CDATA[<>]]> 0    
+          AND PI.AREAKY NOT IN ('PV')
+	 </select>	
+		
+	 <select id="KP01_NOTSHP_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  
+			VBELN,
+			POSNR,
+		    WADAT,
+            MATNR AS SKUKEY,
+            DESC01,
+            DESC02,
+            MBLNO,
+            DEPTID1,
+            LFIMG,
+            QTSHP
+        FROM IFWMS113
+        WHERE 1=1
+          AND BWART IN ('203','220','230')
+          AND WADAT = #DOCDAT#
+        ORDER BY MBLNO, DEPTID1  
+	 </select>			
+
+	 <select id="KP01_DMGCNT_LIST" parameterClass="Map" resultClass="DataMap">
+		 SELECT  
+		   	AREAKY, 
+		   	LOTA02, 
+		   	SKUKEY,
+            SUM(QTYAMT) QTYAMT,
+            SUM(SHPAMT) SHPAMT   
+         FROM (                    
+               SELECT 
+               	  AREAKY, 
+               	  LOTA02, 
+               	  SKUKEY,
+               	  SUM(QTSIWH*LOTA16)  AS QTYAMT, 
+               	  0 AS SHPAMT
+               FROM  STKDY
+               WHERE STDDAT = #DOCDAT#
+                 AND AREAKY NOT IN ('PV')
+               GROUP BY AREAKY , LOTA02 , SKUKEY 
+               UNION ALL
+               SELECT 
+               	  AREAKY,
+               	  LOTA02, 
+               	  TI.SKUKEY, 
+               	  0,
+               	  SUM(QTCOMP*LOTA16) 
+               FROM SHPDH SH ,TASDI TI
+               WHERE SH.SHPOKY = TI.SHPOKY
+                 AND SH.STATDO = 'FSH'    
+                 AND SH.LSHPCD  = #DOCDAT#    
+                 AND SH.DOCUTY  IN ('203','220','230')
+              GROUP BY AREAKY,LOTA02, TI.SKUKEY 
+             ) 
+       GROUP BY AREAKY, LOTA02, SKUKEY  
+	  </select>	
+
+
+	  <select id="KP01_STKDAY_LIST" parameterClass="Map" resultClass="DataMap">
+		  SELECT   
+		   	 AH.SADJKY, 
+		   	 AI.AREAKY, 
+		   	 AI.LOTA02, 
+             AI.SKUKEY, 
+             AI.DESC01, 
+             AI.DESC02, 
+             AI.ASKU01, 
+             AI.SKUG05,
+             AI.QTADJU AS DMGCNT 
+         FROM ADJDH AH, ADJDI AI
+         WHERE AH.SADJKY = AI.SADJKY
+           AND AH.ADJUTY = '450' 
+           AND AH.DOCDAT = #DOCDAT# 
+           AND AI.AREAKY NOT IN ('PV')   
+           AND SUBSTR(AI.SADJIT,5,1) IN ('0','2','4','6','8')  
+           AND AI.LOTA06 = '30'
+	  </select>	
+
+	  <select id="KP01_STKBAD_LIST" parameterClass="Map" resultClass="DataMap">
+		  SELECT 
+		  	 AREAKY, 
+		   	 LOTA02 ,
+             SKUKEY, 
+             DESC01, 
+             DESC02, 
+             ASKU01,
+             SKUG05,
+             QTSIWH,
+             LOTA12,
+             LOTA13
+         FROM STKDY
+         WHERE AREAKY NOT IN ('PV')
+           AND STDDAT = #DOCDAT#
+           AND TO_DATE(LOTA13,'YYYYMMDD') - TO_DATE('20160123','YYYYMMDD') <![CDATA[<]]>= 0 
+	  </select>	
+			
+	<select id="RL11TAB1_LIST" parameterClass="Map" resultClass="DataMap">
+		 SELECT 
+		 	SKUG02 AS SKUG02, 
+            SKUL02 AS SKUL02,
+            SKUG04 AS SKUG04,
+            SUM(AMTINI) AS AMTINI, -- 기초금액 
+            SUM(AMTREC) AS AMTREC, -- 입고금액
+            SUM(AMTSHP) AS AMTSHP, --출고금액
+            SUM(AMTINI+AMTREC-AMTSHP) AS AMTSTK-- 재고금액 
+		FROM (
+            SELECT  SKUG02, 
+                    ( SELECT SKUL02 FROM SKUMA WHERE SKUKEY = STKDY.SKUKEY AND ROWNUM = 1) AS SKUL02, SKUG04 SKUG04,
+                    ROUND(SUM(QTSIWH*LOTA16),3)  AMTINI, -- 기초금액 
+                    0 AS AMTREC, --입고금액
+                    0 AS AMTSHP --출고금액              
+            FROM STKDY
+            WHERE 1=1
+            <isNotEmpty property="LSHPCDF">
+            AND STDDAT = TO_CHAR(TO_DATE(#LSHPCDF#,'YYYYMMDD')-1,'YYYYMMDD') -- 변수 
+            </isNotEmpty>
+            AND     AREAKY NOT IN ('PV')
+            GROUP BY SKUG02, SKUKEY, SKUG04            
+            UNION ALL
+            SELECT RI.SKUG02,  
+                   ( SELECT SKUL02 FROM SKUMA WHERE SKUKEY = RI.SKUKEY AND ROWNUM = 1) AS SKUL02, RI.SKUG04,
+                   0 ,ROUND(SUM(RI.LOTA16*RI.QTYRCV),3) , 0 
+            FROM RECDH RH, RECDI RI
+            WHERE RH.RECVKY = RI.RECVKY
+            AND  RI.AREAKY NOT IN ('PV')
+            <isNotEmpty property="LSHPCDF">
+            AND RH.DOCDAT <![CDATA[>]]>= #LSHPCDF#
+            </isNotEmpty>
+            <isNotEmpty property="LSHPCDT">
+            AND RH.DOCDAT <![CDATA[<]]>= #LSHPCDT#
+            </isNotEmpty>
+            GROUP BY RI.SKUG02, RI.SKUKEY, RI.SKUG04
+            UNION ALL
+            SELECT SKUG02,
+                        ( SELECT SKUL02 FROM SKUMA WHERE SKUKEY = TASDI.SKUKEY AND ROWNUM = 1) AS SKUL02, SKUG04,
+                        0,0, ROUND(SUM(LOTA16*QTCOMP) ,3)
+            FROM TASDI
+            WHERE SHPOKY IN (
+                              SELECT DISTINCT SH.SHPOKY 
+                              FROM SHPDH SH, SHPDI SI
+                              WHERE SH.SHPOKY = SI.SHPOKY
+                              AND SI.AREAKY NOT IN ('PV')
+                              <isNotEmpty property="LSHPCDF">
+                              AND SH.LSHPCD <![CDATA[>]]>= #LSHPCDF#
+                              </isNotEmpty>
+                              <isNotEmpty property="LSHPCDT">
+                              AND SH.LSHPCD <![CDATA[<]]>= #LSHPCDT#
+                              </isNotEmpty>
+                              )
+            GROUP BY SKUG02 ,TASDI.SKUKEY, SKUG04
+            )                         
+		GROUP BY SKUG02 , SKUL02 	,SKUG04
+	</select>
+	
+	<select id="RL11TAB2_LIST" parameterClass="Map" resultClass="DataMap">
+		<![CDATA[
+		SELECT  
+			X.LOTA02 AS LOTA02 ,
+            ( SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'DP' AND PTNRKY = X.LOTA02 AND ROWNUM = 1) AS LOTA02NM, 
+            SUM(AMTSHP) AS AMTSHP,
+            SUM(AMTTOT) AS AMTTOT
+		FROM(             
+	            SELECT LOTA02,
+                       ROUND(SUM(LOTA16*QTCOMP) ,3) AS  AMTSHP, --출고금액 
+                       0 AS AMTTOT -- 누적출고금액 
+	            FROM TASDI
+	            WHERE SHPOKY IN (
+                                 SELECT DISTINCT SH.SHPOKY 
+                                 FROM SHPDH SH, SHPDI SI
+                                 WHERE SH.SHPOKY = SI.SHPOKY
+                                 AND SI.AREAKY NOT IN ('PV')
+                                 AND SH.LSHPCD >= #LSHPCDF#
+                                 AND SH.LSHPCD <= #LSHPCDT#
+                                 )
+	            GROUP BY LOTA02 
+	            UNION ALL
+	            SELECT LOTA02,
+                       0 AS  AMTSHP, --출고금액 
+                       ROUND(SUM(LOTA16*QTCOMP) ,3)  AS TOTAMT -- 누적출고금액 
+	            FROM TASDI
+	            WHERE SHPOKY IN (
+                                 SELECT DISTINCT SH.SHPOKY 
+                                 FROM SHPDH SH, SHPDI SI
+                                 WHERE SH.SHPOKY = SI.SHPOKY
+                                 AND SI.AREAKY NOT IN ('PV')
+                                 AND SH.LSHPCD >= SUBSTR(#LSHPCDF#,1,6)||'01'   
+                                 AND SH.LSHPCD <= #LSHPCDT#      
+                                 )
+	                GROUP BY LOTA02                        
+		        ) X          
+		 GROUP BY LOTA02
+		 ]]>
+	</select>
+	
+	
+	<!-- <select id="RL19_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT   A.EBELN,
+       				 DECODE(A.CNT, 0, ' ', NULL , ' ', 'V') AS EXRECV,
+       				 DECODE(B.CNT, 0, ' ', NULL , ' ', 'V') AS EXRECP,
+        			 DECODE(C.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHIP,
+       				 DECODE(D.CNT, 0, ' ', NULL , ' ', 'V') AS ALLOCA,
+       				 DECODE(E.CNT , 0, ' ', NULL , ' ', 'V') AS PICKED,
+       				 DECODE(F.CNT, 0, ' ', NULL , ' ', 'V') AS SHIPED,
+       				 DECODE(G.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHEC,
+       				 DECODE(H.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHECP
+  		  FROM  (SELECT  EBELN   AS EBELN, COUNT(*) AS CNT FROM IFWMS103 
+  		            WHERE
+  		            1=1
+  		            <isNotEmpty property="RANGE_SQL">
+						$RANGE_SQL$
+	  				</isNotEmpty>	
+  		            AND WAREKY=#WAREKY#    GROUP BY EBELN ) A,
+  		            
+        			(SELECT SEBELN   AS EBELN, COUNT(*) AS CNT FROM RECDH H, RECDI I  
+        			WHERE 
+        			1=1
+        			AND H.RECVKY = I.RECVKY
+        			<isNotEmpty property="RANGE_SQL1">
+					AND ($RANGE_SQL1$)
+	  				</isNotEmpty>	
+	  				AND H.WAREKY=#WAREKY#
+	  				AND I.STATIT != 'FCN'
+	  				GROUP BY SEBELN ) B,
+	  				
+        			(SELECT SEBELN   AS EBELN, COUNT(*) AS CNT FROM RECDH H, RECDI I  
+        			WHERE 
+        			1=1
+        			AND H.RECVKY = I.RECVKY
+        			<isNotEmpty property="RANGE_SQL1">
+					   AND ($RANGE_SQL1$)
+	  				</isNotEmpty>	
+	  				AND H.WAREKY=#WAREKY#
+	  				AND I.STATIT != 'FCN'
+	  				GROUP BY SEBELN ) C,
+	  				
+        			(SELECT LOTA07  AS EBELN, COUNT(*) AS CNT FROM SHPDI I, SHPDH H 
+        			WHERE H.SHPOKY = I.SHPOKY 
+        			    AND WAREKY=#WAREKY#   
+        			<isNotEmpty property="RANGE_SQL2">
+						AND ($RANGE_SQL2$)
+	  				</isNotEmpty>	 
+        			AND H.QTALOC > 0       GROUP BY LOTA07) D,
+        			
+        			(SELECT LOTA07  AS EBELN, COUNT(*) AS CNT FROM SHPDI I, SHPDH H 
+        			WHERE H.SHPOKY = I.SHPOKY  
+        				AND WAREKY=#WAREKY#   
+        			<isNotEmpty property="RANGE_SQL2">
+						AND ($RANGE_SQL2$)
+	  				</isNotEmpty>	 
+        			 AND H.QTJCMP > 0       GROUP BY LOTA07) E,
+        			 
+        			(SELECT LOTA07  AS EBELN, COUNT(*) AS CNT FROM SHPDI I, SHPDH H 
+        			WHERE H.SHPOKY = I.SHPOKY 
+        				AND WAREKY=#WAREKY#   
+        			<isNotEmpty property="RANGE_SQL2">
+						AND ($RANGE_SQL2$)
+	  				</isNotEmpty>	 
+	  				AND H.QTSHPD > 0       GROUP BY LOTA07) F,
+	  				
+        			(SELECT USRID3  AS EBELN, COUNT(*) AS CNT FROM IFWMS103 
+        			WHERE 
+        			1=1
+        			<isNotEmpty property="RANGE_SQL3">
+						AND ($RANGE_SQL3$)
+	  				</isNotEmpty>	 
+        			GROUP BY USRID3) G,
+        			
+        			(SELECT USRID3  AS EBELN, COUNT(*) AS CNT FROM IFWMS103 
+        			WHERE 
+        			1=1
+        			<isNotEmpty property="RANGE_SQL">
+						$RANGE_SQL$
+	  				</isNotEmpty>	 
+	  				AND MENGE_R > 0      GROUP BY USRID3) H 
+		 WHERE  1=1
+		     AND  A.EBELN = B.EBELN(+)
+		     AND  A.EBELN = C.EBELN(+)
+             AND  A.EBELN = D.EBELN(+)
+			 AND  A.EBELN = E.EBELN(+)
+			 AND  A.EBELN = F.EBELN(+)
+			 AND  A.EBELN = G.EBELN(+)
+			 AND  A.EBELN = H.EBELN(+)
+		
+	</select> -->
+	
+	<!-- <select id="RL19_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+		       RI.RECVKY  AS RECVKY,
+		       RI.RECVIT  AS RECVIT,
+		       RI.STATIT  AS STATIT,
+		       DECODE(RI.SAPSTS,' ',' ','V') AS SAPSTS,
+		       RI.SKUKEY  AS SKUKEY,
+		       RI.LOTNUM  AS LOTNUM,
+		       RI.LOCAKY  AS LOCAKY, 
+		       #AREA#     AS AREAKY,
+		       RI.SECTID  AS SECTID,
+		       RI.TRNUID  AS TRNUID,
+		       RI.PACKID  AS PACKID,
+		       RI.QTYRCV  AS QTYRCV,
+		       RI.QTYRCV  AS SNDQTY,
+		       RI.QTYDIF  AS QTYDIF,
+		       RI.QTYUOM  AS QTYUOM,
+		       RI.TRUNTY  AS TRUNTY,
+		       RI.MEASKY  AS MEASKY,
+		       RI.UOMKEY  AS UOMKEY,
+		       RI.QTPUOM  AS QTPUOM,
+		       RI.DUOMKY  AS DUOMKY,
+		       RI.QTDUOM  AS QTDUOM,
+		       TRUNC(RI.QTYRCV/RI.QTDUOM) AS BOXQTY,
+		       MOD(RI.QTYRCV,RI.QTDUOM) AS REMQTY,
+		       RI.INDRCN  AS INDRCN,
+		       RI.CRECVD  AS CRECVD,
+		       RI.RSNCOD  AS RSNCOD,
+		       RI.LOTA01  AS LOTA01,
+		       NVL((SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'VD' AND PTNRKY = RI.LOTA01), ' ') AS LOTA01NMN,
+		       L01NM.NAME01 AS LOTA01NM,
+		       RI.LOTA02  AS LOTA02,
+		       (SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'DP' AND PTNRKY = RI.LOTA02) AS LOTA02NM,
+		       RI.LOTA03  AS LOTA03,
+		       RI.LOTA04  AS LOTA04,
+		       RI.LOTA05  AS LOTA05,
+		       RI.LOTA06  AS LOTA06,
+		       RI.LOTA07  AS LOTA07,
+		       RI.LOTA08  AS LOTA08,
+		       RI.LOTA09  AS LOTA09,
+		       RI.LOTA10  AS LOTA10,
+		       RI.LOTA11  AS LOTA11,
+		       RI.LOTA12  AS LOTA12,
+		       RI.LOTA13  AS LOTA13,
+		       RI.LOTA14  AS LOTA14,
+		       RI.LOTA15  AS LOTA15,
+		       RI.LOTA16  AS LOTA16,
+		       RI.LOTA17  AS LOTA17,
+		       RI.LOTA18  AS LOTA18,
+		       RI.LOTA19  AS LOTA19,
+		       RI.LOTA20  AS LOTA20,
+		       RI.AWMSNO  AS AWMSNO,
+		       RI.REFDKY  AS REFDKY,
+		       RI.REFDIT  AS REFDIT,
+		       RI.REFCAT  AS REFCAT,
+		       RI.REFDAT  AS REFDAT,
+		       RI.DESC01  AS DESC01,
+		       RI.DESC02  AS DESC02,
+		       RI.ASKU01  AS ASKU01,
+		       RI.ASKU02  AS ASKU02,
+		       RI.ASKU03  AS ASKU03,
+		       RI.ASKU04  AS ASKU04,
+		       RI.ASKU05  AS ASKU05,
+		       RI.EANCOD  AS EANCOD,
+		       RI.GTINCD  AS GTINCD,
+		       RI.SKUG01  AS SKUG01,
+		       RI.SKUG02  AS SKUG02,
+		       RI.SKUG03  AS SKUG03,
+		       RI.SKUG04  AS SKUG04,
+		       RI.SKUG05  AS SKUG05,
+		       RI.GRSWGT  AS GRSWGT,
+		       RI.NETWGT  AS NETWGT,
+		       RI.WGTUNT  AS WGTUNT,
+		       RI.LENGTH  AS LENGTH,
+		       RI.WIDTHW  AS WIDTHW,
+		       RI.HEIGHT  AS HEIGHT,
+		       RI.CUBICM  AS CUBICM,
+		       RI.CAPACT  AS CAPACT,
+		       RI.QTYORG  AS QTYORG,
+		       RI.SMANDT  AS SMANDT,
+		       RI.SEBELN  AS SEBELN,
+		       RI.SEBELP  AS SEBELP,
+		       RI.SZMBLNO AS SZMBLNO,
+		       RI.SZMIPNO AS SZMIPNO,
+		       RI.STRAID  AS STRAID,
+		       RI.SVBELN  AS SVBELN,
+		       RI.SPOSNR  AS SPOSNR,
+		       RI.STKNUM  AS STKNUM,
+		       RI.STPNUM  AS STPNUM,
+		       RI.SWERKS  AS SWERKS,
+		       RI.SLGORT  AS SLGORT,
+		       RI.SDATBG  AS SDATBG,
+		       RI.STDLNR  AS STDLNR,
+		       RI.SSORNU  AS SSORNU,
+		       RI.SSORIT  AS SSORIT,
+		       RI.SMBLNR  AS SMBLNR,
+		       RI.SZEILE  AS SZEILE,
+		       RI.SMJAHR  AS SMJAHR,
+		       RI.SXBLNR  AS SXBLNR,
+		       RI.SBKTXT  AS SBKTXT,
+		       RI.RCPRSN  AS RCPRSN,
+		       RI.CREDAT  AS CREDAT,
+		       RI.CRETIM  AS CRETIM,
+		       RI.CREUSR  AS CREUSR,
+		       CU.NMLAST  AS CUSRNM,
+		       RI.LMODAT  AS LMODAT,
+		       RI.LMOTIM  AS LMOTIM,
+		       RI.LMOUSR  AS LMOUSR,
+		       LU.NMLAST  AS LUSRNM
+		FROM   RECDH RH
+		       INNER JOIN RECDI RI ON RI.RECVKY = RH.RECVKY
+		       LEFT OUTER JOIN SKUMA SM ON SM.OWNRKY = #OWNRKY# AND SM.SKUKEY = RI.SKUKEY
+		       LEFT OUTER JOIN USRMA CU ON CU.USERID = RI.CREUSR
+		       LEFT OUTER JOIN USRMA LU ON LU.USERID = RI.LMOUSR
+		       LEFT OUTER JOIN BZPTN L01NM ON L01NM.PTNRKY = RI.LOTA01 AND L01NM.PTNRTY = 'TM'
+		 WHERE 1 = 1
+		 AND   RI.SEBELN IN (SELECT DECODE(#COLNAME#, 'EBELN', #RNAME#, ' ') FROM DUAL UNION ALL SELECT I.LOTA07 FROM SHPDH H, SHPDI I WHERE H.SHPOKY = I.SHPOKY AND H.SHPOKY = DECODE(#COLNAME#, 'H.SHPOKY', #RNAME#, ' ') )
+		 AND	 RI.STATIT != 'FCN'
+		 ORDER BY RI.RECVKY, RI.RECVIT
+	</select> -->
+	
+	<select id="RL19_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+				 SI.SHPOKY AS RECVKY,
+				 SI.SHPOIT AS RECVIT,
+				 SI.STATIT AS STATIT,
+				 DECODE(SI.SAPSTS,' ',' ','V') AS SAPSTS,
+				 SI.SKUKEY AS SKUKEY,
+				 ' ' AS LOTNUM,
+				 ' ' AS LOCAKY, 
+				 '' AS AREAKY,
+				 ' ' AS SECTID,
+				 ' ' AS TRNUID,
+				 ' '  AS PACKID,
+				 SI.QTSHPO AS QTYRCV,
+				 SI.QTSHPO AS SNDQTY,
+				 0  AS QTYDIF,
+				 SI.QTYUOM AS QTYUOM,
+				 ' ' AS TRUNTY,
+				 SI.MEASKY AS MEASKY,
+				 SI.UOMKEY AS UOMKEY,
+				 SI.QTPUOM AS QTPUOM,
+				 SI.DUOMKY AS DUOMKY,
+				 SI.QTDUOM AS QTDUOM,
+				 TRUNC(SI.QTSHPO/SI.QTDUOM) AS BOXQTY,
+				 MOD(SI.QTSHPO,SI.QTDUOM) AS REMQTY,
+				 ' ' AS INDRCN,
+				 ' ' AS CRECVD,
+				 ' ' AS RSNCOD,
+				 SI.LOTA01 AS LOTA01,
+				 NVL((SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'VD' AND PTNRKY = SI.LOTA01), ' ') AS LOTA01NMN,
+				 L01NM.NAME01 AS LOTA01NM,
+				 SI.LOTA02 AS LOTA02,
+				 (SELECT NAME01 FROM BZPTN WHERE PTNRTY = 'DP' AND PTNRKY = SI.LOTA02) AS LOTA02NM,
+				 SI.LOTA03 AS LOTA03,
+				 SI.LOTA04 AS LOTA04,
+				 SI.LOTA05 AS LOTA05,
+				 SI.LOTA06 AS LOTA06,
+				 SI.LOTA07 AS LOTA07,
+				 SI.LOTA08 AS LOTA08,
+				 SI.LOTA09 AS LOTA09,
+				 SI.LOTA10 AS LOTA10,
+				 SI.LOTA11 AS LOTA11,
+				 SI.LOTA12 AS LOTA12,
+				 SI.LOTA13 AS LOTA13,
+				 SI.LOTA14 AS LOTA14,
+				 SI.LOTA15 AS LOTA15,
+				 SI.LOTA16 AS LOTA16,
+				 SI.LOTA17 AS LOTA17,
+				 SI.LOTA18 AS LOTA18,
+				 SI.LOTA19 AS LOTA19,
+				 SI.LOTA20 AS LOTA20,
+				 SI.AWMSNO AS AWMSNO,
+				 SI.REFDKY AS REFDKY,
+				 SI.REFDIT AS REFDIT,
+				 SI.REFCAT AS REFCAT,
+				 SI.REFDAT AS REFDAT,
+				 SI.DESC01 AS DESC01,
+				 SI.DESC02 AS DESC02,
+				 SI.ASKU01 AS ASKU01,
+				 SI.ASKU02 AS ASKU02,
+				 SI.ASKU03 AS ASKU03,
+				 SI.ASKU04 AS ASKU04,
+				 SI.ASKU05 AS ASKU05,
+				 SI.EANCOD AS EANCOD,
+				 SI.GTINCD AS GTINCD,
+				 SI.SKUG01 AS SKUG01,
+				 SI.SKUG02 AS SKUG02,
+				 SI.SKUG03 AS SKUG03,
+				 SI.SKUG04 AS SKUG04,
+				 SI.SKUG05 AS SKUG05,
+				 SI.GRSWGT AS GRSWGT,
+				 SI.NETWGT AS NETWGT,
+				 SI.WGTUNT AS WGTUNT,
+				 SI.LENGTH AS LENGTH,
+				 SI.WIDTHW AS WIDTHW,
+				 SI.HEIGHT AS HEIGHT,
+				 SI.CUBICM AS CUBICM,
+				 SI.CAPACT AS CAPACT,
+				 SI.QTYORG AS QTYORG,
+				 SI.SMANDT AS SMANDT,
+				 SI.SEBELN AS SEBELN,
+				 SI.SEBELP AS SEBELP,
+				 SI.SZMBLNO AS SZMBLNO,
+				 SI.SZMIPNO AS SZMIPNO,
+				 SI.STRAID AS STRAID,
+				 SI.SVBELN AS SVBELN,
+				 SI.SPOSNR AS SPOSNR,
+				 SI.STKNUM AS STKNUM,
+				 SI.STPNUM AS STPNUM,
+				 SI.SWERKS AS SWERKS,
+				 SI.SLGORT AS SLGORT,
+				 SI.SDATBG AS SDATBG,
+				 SI.STDLNR AS STDLNR,
+				 SI.SSORNU AS SSORNU,
+				 SI.SSORIT AS SSOSIT,
+				 SI.SMBLNR AS SMBLNR,
+				 SI.SZEILE AS SZEILE,
+				 SI.SMJAHR AS SMJAHR,
+				 SI.SXBLNR AS SXBLNR,
+				 SI.SBKTXT AS SBKTXT,
+				 ' ' AS RCPRSN,
+				 SI.CREDAT AS CREDAT,
+				 SI.CRETIM AS CRETIM,
+				 SI.CREUSR AS CREUSR,
+				 CU.NMLAST AS CUSRNM,
+				 SI.LMODAT AS LMODAT,
+				 SI.LMOTIM AS LMOTIM,
+				 SI.LMOUSR AS LMOUSR,
+				 LU.NMLAST AS LUSRNM,
+				 SH.DOCTXT AS DOCTXT
+			FROM SHPDH SH
+		       INNER JOIN SHPDI SI 
+		               ON SI.SHPOKY = SH.SHPOKY
+		  LEFT OUTER JOIN SKUMA SM 
+		               ON SM.OWNRKY = 'CBEJ' 
+		              AND SM.SKUKEY = SI.SKUKEY
+		  LEFT OUTER JOIN USRMA CU
+		               ON CU.USERID = SI.CREUSR
+		  LEFT OUTER JOIN USRMA LU
+		               ON LU.USERID = SI.LMOUSR
+		  LEFT OUTER JOIN BZPTN L01NM
+		               ON L01NM.PTNRKY = SI.LOTA01
+		              AND L01NM.PTNRTY = 'TM'
+		  WHERE 1 = 1
+	    <isNotEmpty property="RNAME">
+		  AND   SH.SHPOKY = #RNAME#
+		</isNotEmpty>
+		<isNotEmpty property="EBELN">
+		  AND   SH.SEBELN = #EBELN#
+		</isNotEmpty>	
+		  AND   SI.SEBELN IN (SELECT DECODE(#COLNAME#, 'EBELN', #RNAME#, ' ') 
+		                      FROM   DUAL 
+		                      UNION ALL 
+		                      SELECT I.LOTA07 
+		                      FROM   SHPDH H, 
+		                             SHPDI I 
+		                      WHERE  H.SHPOKY = I.SHPOKY 
+		                      AND    H.SHPOKY = DECODE(#COLNAME#, 'H.SHPOKY',  #RNAME#, ' ')
+		                     )
+   		  AND	SI.STATIT != 'FCN'
+   	 ORDER BY   SI.SHPOKY, SI.SHPOIT
+	</select>
+	
+	<select id="RL19_STAT_MAP" parameterClass="Map" resultClass="DataMap">
+		<isEqual property="COLNAME" compareValue="EBELN">
+			SELECT A.EBELN,
+				   DECODE(A.CNT, 0, ' ', NULL , ' ', 'V') AS EXRECV,
+				   DECODE(B.CNT, 0, ' ', NULL , ' ', 'V') AS EXRECP,
+				   DECODE(C.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHIP,
+				   DECODE(D.CNT, 0, ' ', NULL , ' ', 'V') AS ALLOCA,
+				   DECODE(E.CNT, 0, ' ', NULL , ' ', 'V') AS PICKED,
+				   DECODE(F.CNT, 0, ' ', NULL , ' ', 'V') AS SHIPED,
+				   DECODE(G.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHEC,
+				   DECODE(H.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHECP,
+				   
+				   DECODE(TRIM(A.DAT), NULL, '-', (SUBSTR(A.DAT, 0, 4) || '-' || SUBSTR(A.DAT, 5, 2) || '-' || SUBSTR(A.DAT, 7, 2))) AS EXRECV_DATE,
+				   DECODE(TRIM(B.DAT), NULL, '-', (SUBSTR(B.DAT, 0, 4) || '-' || SUBSTR(B.DAT, 5, 2) || '-' || SUBSTR(B.DAT, 7, 2))) AS EXRECP_DATE,
+				   DECODE(TRIM(C.DAT), NULL, '-', (SUBSTR(C.DAT, 0, 4) || '-' || SUBSTR(C.DAT, 5, 2) || '-' || SUBSTR(C.DAT, 7, 2))) AS EXSHIP_DATE,
+				   DECODE(TRIM(D.DAT), NULL, '-', (SUBSTR(D.DAT, 0, 4) || '-' || SUBSTR(D.DAT, 5, 2) || '-' || SUBSTR(D.DAT, 7, 2))) AS ALLOCA_DATE,
+				   DECODE(TRIM(E.DAT), NULL, '-', (SUBSTR(E.DAT, 0, 4) || '-' || SUBSTR(E.DAT, 5, 2) || '-' || SUBSTR(E.DAT, 7, 2))) AS PICKED_DATE,
+				   DECODE(TRIM(F.DAT), NULL, '-', (SUBSTR(F.DAT, 0, 4) || '-' || SUBSTR(F.DAT, 5, 2) || '-' || SUBSTR(F.DAT, 7, 2))) AS SHIPED_DATE,
+				   DECODE(TRIM(G.DAT), NULL, '-', (SUBSTR(G.DAT, 0, 4) || '-' || SUBSTR(G.DAT, 5, 2) || '-' || SUBSTR(G.DAT, 7, 2))) AS EXSHEC_DATE,
+				   DECODE(TRIM(H.DAT), NULL, '-', (SUBSTR(H.DAT, 0, 4) || '-' || SUBSTR(H.DAT, 5, 2) || '-' || SUBSTR(H.DAT, 7, 2))) AS EXSHECP_DATE,
+				   
+				   ' ' AS EXRECV_TIME,
+				   DECODE(TRIM(B.DAT), NULL, ' ', (SUBSTR(B.DAT, 10, 2) || ':' || SUBSTR(B.DAT, 12, 2) || ':' || SUBSTR(B.DAT, 14, 2))) AS EXRECP_TIME,
+				   DECODE(TRIM(C.DAT), NULL, ' ', (SUBSTR(C.DAT, 10, 2) || ':' || SUBSTR(C.DAT, 12, 2) || ':' || SUBSTR(C.DAT, 14, 2))) AS EXSHIP_TIME,
+				   DECODE(TRIM(D.DAT), NULL, ' ', (SUBSTR(D.DAT, 10, 2) || ':' || SUBSTR(D.DAT, 12, 2) || ':' || SUBSTR(D.DAT, 14, 2))) AS ALLOCA_TIME,
+				   DECODE(TRIM(E.DAT), NULL, ' ', (SUBSTR(E.DAT, 10, 2) || ':' || SUBSTR(E.DAT, 12, 2) || ':' || SUBSTR(E.DAT, 14, 2))) AS PICKED_TIME,
+				   DECODE(TRIM(F.DAT), NULL, ' ', (SUBSTR(F.DAT, 10, 2) || ':' || SUBSTR(F.DAT, 12, 2) || ':' || SUBSTR(F.DAT, 14, 2))) AS SHIPED_TIME,
+				   DECODE(TRIM(G.DAT), NULL, ' ', (SUBSTR(G.DAT, 10, 2) || ':' || SUBSTR(G.DAT, 12, 2) || ':' || SUBSTR(G.DAT, 14, 2))) AS EXSHEC_TIME,
+				   ' ' AS EXSHECP_TIME
+			FROM
+				(
+					SELECT EBELN    AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(ZEKKO_AEDAT) AS DAT
+					FROM   IFWMS103
+					WHERE  1 = 1
+					AND    EBELN  = #RNAME#
+					GROUP BY EBELN
+				) A,
+				(
+					SELECT I.SEBELN AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(H.CREDAT || ' ' || H.CRETIM) AS DAT
+					FROM   RECDH H, RECDI I
+					WHERE  1 = 1
+					AND    H.RECVKY = I.RECVKY
+					AND    I.SEBELN = #RNAME#
+					AND    I.STATIT != 'FCN'
+					GROUP BY I.SEBELN
+				) B,
+				(
+					SELECT I.LOTA07 AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(I.ACTCDT || ' ' || I.ACTCTI) AS DAT
+					FROM   TASDH H, TASDI I
+					WHERE  1 = 1
+					AND    H.TASKKY = I.TASKKY
+					AND    H.TASOTY = '310'
+					AND    I.LOTA07 = #RNAME#
+					AND    I.STATIT IN ('FPA','PPA')
+					GROUP BY I.LOTA07
+				) C,
+				(
+					SELECT I.LOTA07 AS EBELN
+						 , COUNT(*) AS CNT
+						 , MIN(A.CREDAT || ' ' || A.CRETIM) AS DAT
+			        FROM   SHPDI I, SHPDH H, TASDH A, TASDI B
+			        WHERE  1 = 1
+			        AND    H.SHPOKY = I.SHPOKY
+			        AND    A.TASKKY = B.TASKKY
+			        AND    I.SHPOKY = B.SHPOKY
+			        AND    I.SHPOIT = B.SHPOIT
+			        AND    I.LOTA07 = #RNAME#
+			        AND    H.QTALOC > 0
+			        GROUP BY I.LOTA07
+				) D,
+				(
+					SELECT I.LOTA07 AS EBELN
+						 , COUNT(*) AS CNT
+						 , MIN(B.ACTCDT || ' ' || B.ACTCTI) AS DAT
+					FROM   SHPDI I, SHPDH H, TASDH A, TASDI B
+					WHERE  1 = 1
+					AND    H.SHPOKY = I.SHPOKY
+					AND    A.TASKKY = B.TASKKY
+					AND    I.SHPOKY = B.SHPOKY
+					AND    I.SHPOIT = B.SHPOIT
+					AND    I.LOTA07 = #RNAME#
+					AND    (TRIM(B.ACTCDT) IS NOT NULL AND B.ACTCDT != '00000000')
+					AND    H.QTJCMP > 0
+					GROUP BY I.LOTA07
+				) E,
+			  	(
+					SELECT I.LOTA07 AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(B.ACTCDT || ' ' || B.ACTCTI) AS DAT
+					FROM   SHPDI I, SHPDH H, TASDH A, TASDI B
+					WHERE  1 = 1
+					AND    H.SHPOKY = I.SHPOKY
+					AND    A.TASKKY = B.TASKKY
+					AND    I.SHPOKY = B.SHPOKY
+					AND    I.SHPOIT = B.SHPOIT
+					AND    I.LOTA07 = #RNAME#
+					AND    (TRIM(B.ACTCDT) IS NOT NULL AND B.ACTCDT != '00000000')
+					AND    H.QTJCMP > 0
+					GROUP BY I.LOTA07
+				) F,
+			  	(
+					SELECT I.LOTA07 AS EBELN
+						 , COUNT(*) AS CNT
+						 , MIN(H.LSHPCD || ' ' || H.LMOTIM) AS DAT
+					FROM   SHPDI I, SHPDH H
+					WHERE  1 = 1
+					AND    H.SHPOKY = I.SHPOKY
+					AND    I.LOTA07 = #RNAME#
+					AND    H.QTSHPD > 0
+					GROUP BY I.LOTA07
+				) G,
+			  	(
+					SELECT USRID3   AS EBELN
+						 , COUNT(*) AS CNT
+						 , MIN(ZEKKO_AEDAT) AS DAT
+					FROM   IFWMS103
+					WHERE  1 = 1
+					AND    USRID3 = #RNAME#
+					AND    MENGE_R > 0
+					GROUP BY USRID3
+				) H
+			WHERE 1 = 1
+			AND   A.EBELN = B.EBELN(+)
+			AND   A.EBELN = C.EBELN(+)
+			AND   A.EBELN = D.EBELN(+)
+			AND   A.EBELN = E.EBELN(+)
+			AND   A.EBELN = F.EBELN(+)
+			AND   A.EBELN = G.EBELN(+)
+			AND   A.EBELN = H.EBELN(+)
+		</isEqual>
+		<isEqual property="COLNAME" compareValue="H.SHPOKY">
+			SELECT D.EBELN, 
+                   ' ' AS EXRECV,
+                   ' ' AS EXRECP,
+                   ' ' AS EXSHIP,
+      		       DECODE(D.CNT, 0, ' ', NULL , ' ', 'V') AS ALLOCA,
+      		       DECODE(E.CNT, 0, ' ', NULL , ' ', 'V') AS PICKED,
+      		       DECODE(F.CNT, 0, ' ', NULL , ' ', 'V') AS SHIPED,
+      		       DECODE(G.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHEC,
+      		       DECODE(H.CNT, 0, ' ', NULL , ' ', 'V') AS EXSHECP,
+				   	
+				   '-' AS EXRECV_DATE,
+				   '-' AS EXRECP_DATE,
+				   '-' AS EXSHIP_DATE,
+				   DECODE(TRIM(D.DAT), NULL, '-', (SUBSTR(D.DAT, 0, 4) || '-' || SUBSTR(D.DAT, 5, 2) || '-' || SUBSTR(D.DAT, 7, 2))) AS ALLOCA_DATE,
+				   DECODE(TRIM(E.DAT), NULL, '-', (SUBSTR(E.DAT, 0, 4) || '-' || SUBSTR(E.DAT, 5, 2) || '-' || SUBSTR(E.DAT, 7, 2))) AS PICKED_DATE,
+				   DECODE(TRIM(F.DAT), NULL, '-', (SUBSTR(F.DAT, 0, 4) || '-' || SUBSTR(F.DAT, 5, 2) || '-' || SUBSTR(F.DAT, 7, 2))) AS SHIPED_DATE,
+				   DECODE(TRIM(G.DAT), NULL, '-', (SUBSTR(G.DAT, 0, 4) || '-' || SUBSTR(G.DAT, 5, 2) || '-' || SUBSTR(G.DAT, 7, 2))) AS EXSHEC_DATE,
+				   DECODE(TRIM(H.DAT), NULL, '-', (SUBSTR(H.DAT, 0, 4) || '-' || SUBSTR(H.DAT, 5, 2) || '-' || SUBSTR(H.DAT, 7, 2))) AS EXSHECP_DATE,
+				   
+				   ' ' AS EXRECV_TIME,
+				   ' ' AS EXRECP_TIME,
+				   ' ' AS EXSHIP_TIME,
+				   DECODE(TRIM(D.DAT), NULL, ' ', (SUBSTR(D.DAT, 10, 2) || ':' || SUBSTR(D.DAT, 12, 2) || ':' || SUBSTR(D.DAT, 14, 2))) AS ALLOCA_TIME,
+				   DECODE(TRIM(E.DAT), NULL, ' ', (SUBSTR(E.DAT, 10, 2) || ':' || SUBSTR(E.DAT, 12, 2) || ':' || SUBSTR(E.DAT, 14, 2))) AS PICKED_TIME,
+				   DECODE(TRIM(F.DAT), NULL, ' ', (SUBSTR(F.DAT, 10, 2) || ':' || SUBSTR(F.DAT, 12, 2) || ':' || SUBSTR(F.DAT, 14, 2))) AS SHIPED_TIME,
+				   DECODE(TRIM(G.DAT), NULL, ' ', (SUBSTR(G.DAT, 10, 2) || ':' || SUBSTR(G.DAT, 12, 2) || ':' || SUBSTR(G.DAT, 14, 2))) AS EXSHEC_TIME,
+				   ' ' AS EXSHECP_TIME
+			FROM 
+				(
+					SELECT H.SHPOKY AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(H.CREDAT || ' ' || H.CRETIM) AS DAT
+					FROM   SHPDI I, SHPDH H 
+					WHERE  H.SHPOKY = I.SHPOKY
+					AND    H.SHPOKY = #RNAME#
+					AND    H.QTALOC > 0       
+					GROUP BY H.SHPOKY
+				) D,
+				(
+					SELECT H.SHPOKY AS EBELN
+						 , COUNT(*) AS CNT
+						 , MIN(B.ACTCDT || ' ' || B.ACTCTI) AS DAT
+					FROM   SHPDI I, SHPDH H, TASDH A, TASDI B
+					WHERE  H.SHPOKY = I.SHPOKY
+					AND    A.TASKKY = B.TASKKY
+					AND    I.SHPOKY = B.SHPOKY
+					AND    I.SHPOIT = B.SHPOIT
+					AND    H.SHPOKY = #RNAME#
+					AND    H.QTJCMP > 0       
+					GROUP BY H.SHPOKY
+				) E,
+				(
+					SELECT H.SHPOKY AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(B.ACTCDT || ' ' || B.ACTCTI) AS DAT
+					FROM   SHPDI I, SHPDH H, TASDH A, TASDI B
+					WHERE  H.SHPOKY = I.SHPOKY
+					AND    A.TASKKY = B.TASKKY
+					AND    I.SHPOKY = B.SHPOKY
+					AND    I.SHPOIT = B.SHPOIT
+					AND    H.SHPOKY = #RNAME#
+					AND    H.QTJCMP > 0       
+					GROUP BY H.SHPOKY
+				) F,
+				(
+					 SELECT H.SHPOKY AS EBELN
+			              , COUNT(*) AS CNT
+			              , MIN(H.LSHPCD || ' ' || H.LMOTIM) AS DAT
+			         FROM   SHPDI I, SHPDH H
+			         WHERE  1 = 1
+			         AND    H.SHPOKY = I.SHPOKY
+			         AND    H.SHPOKY = #RNAME#
+			         AND    H.QTSHPD > 0
+			         GROUP BY H.SHPOKY
+				) G,
+				(
+					SELECT #RNAME# AS EBELN
+						 , COUNT(*) AS CNT
+						 , MAX(ZEKKO_AEDAT) AS DAT
+					FROM   IFWMS103
+					WHERE  1 = 1
+					AND    USRID2 IN (SELECT SVBELN FROM SHPDI WHERE SHPOKY = #RNAME#)
+					AND    MENGE_R > 0      
+					GROUP BY USRID2
+				) H 
+			WHERE 1 = 1
+			AND   D.EBELN = E.EBELN(+)
+			AND   D.EBELN = F.EBELN(+)
+			AND   D.EBELN = G.EBELN(+)
+			AND   D.EBELN = H.EBELN(+)
+		</isEqual>
+	</select>
+	
+	
+	<select id="RL20TAB1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SH.WAREKY AS WAREKY,			
+		    WH.NAME01 AS WAREKYNM,			
+		    SUBSTR(SH.DOCDAT,1,4) AS YEAR,			
+		    SUBSTR(SH.DOCDAT,5,2) AS MONTH,			
+		    NVL(SUM(SI.QTSHPO),0) AS QTSHPO,			
+		    NVL(SUM(SI.QTALOC),0) AS QTALOC,			
+		    NVL(SUM(SI.QTJCMP),0) AS QTJCMP,			
+		    NVL(SUM(SI.QTSHPD),0) AS QTSHPD,			
+		    ROUND(NVL(SUM(TI.QTCOMP*TI.LOTA16),0),0) AS AMOUNT,			
+		    0 AS CUBICT,
+		    TI.LOTA10 AS LOTA10			
+		FROM SHPDH SH            
+       INNER JOIN SHPDI SI            
+	      ON SH.SHPOKY = SI.SHPOKY    
+	   INNER JOIN TASDI TI
+	      ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+	   LEFT OUTER JOIN WAHMA WH            
+	      ON WH.WAREKY = SH.WAREKY   
+	   WHERE 1=1       
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>			
+		GROUP BY SUBSTR(SH.DOCDAT,1,4),SUBSTR(SH.DOCDAT,5,2),			
+		         SH.WAREKY, WH.NAME01, TI.LOTA10			
+		ORDER BY 1,2,3,4			
+	</select>
+	
+	<select id="RL20TAB2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SH.WAREKY AS WAREKY,				
+		    WH.NAME01 AS WAREKYNM,				
+		    SUBSTR(SH.DOCDAT,1,4) AS YEAR,				
+		    SUBSTR(SH.DOCDAT,5,2) AS MONTH,				
+		    SUBSTR(SH.DOCDAT,7,2) AS DAY,				
+		    NVL(SUM(SI.QTSHPO),0) AS QTSHPO,				
+		    NVL(SUM(SI.QTALOC),0) AS QTALOC,				
+		    NVL(SUM(SI.QTJCMP),0) AS QTJCMP,				
+		    NVL(SUM(SI.QTSHPD),0) AS QTSHPD,				
+		    ROUND(NVL(SUM(TI.QTCOMP * TI.LOTA16),0),0) AS AMOUNT,				
+		    0 AS CUBICT,
+		    TI.LOTA10 AS LOTA10					
+		FROM SHPDH SH            
+       INNER JOIN SHPDI SI            
+          ON SH.SHPOKY = SI.SHPOKY    
+       INNER JOIN TASDI TI
+          ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+        LEFT OUTER JOIN WAHMA WH            
+          ON WH.WAREKY = SH.WAREKY   			
+	   WHERE 1 = 1
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>			
+		GROUP BY SH.DOCDAT,				
+		         SH.WAREKY, WH.NAME01, TI.LOTA10				
+		ORDER BY 1,2,3,4,5				
+	</select>
+	
+	<select id="RL20TAB3_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SH.WAREKY AS WAREKY,					
+		    WH.NAME01 AS WAREKYNM,					
+		    SI.SKUKEY AS SKUKEY,					
+		    SI.DESC01 AS DESC01,					
+		    NVL(SUM(SI.QTSHPO),0) AS QTSHPO,					
+		    NVL(SUM(SI.QTALOC),0) AS QTALOC,					
+		    NVL(SUM(SI.QTJCMP),0) AS QTJCMP,					
+		    NVL(SUM(SI.QTSHPD),0) AS QTSHPD,					
+		    SI.HEIGHT AS HEIGHT,					
+		    SI.CUBICM AS CUBICM,					
+		    ROUND(NVL(SUM(TI.QTCOMP * TI.LOTA16),0),0)  AS AMOUNT,			
+		    0 AS CUBICT,
+		    TI.LOTA10 AS LOTA10						
+		FROM SHPDH SH            
+       INNER JOIN SHPDI SI            
+          ON SH.SHPOKY = SI.SHPOKY    
+       INNER JOIN TASDI TI
+          ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+        LEFT OUTER JOIN WAHMA WH            
+          ON WH.WAREKY = SH.WAREKY   	
+	   WHERE 1 = 1			
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>					
+		GROUP BY SH.WAREKY, WH.NAME01,					
+		         SI.SKUKEY, SI.DESC01, SI.HEIGHT, SI.CUBICM, TI.LOTA10					
+		ORDER BY 1,2,3,4					
+	</select>
+	
+	<select id="RL20TAB4_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SH.WAREKY AS WAREKY,					
+		    WH.NAME01 AS WAREKYNM,
+		    SI.LOTA02,
+		    (SELECT CDESC1 FROM CMCDV WHERE CMCDKY = 'COSTCT' AND CMCDVL = SI.LOTA02) AS LOTA02NM,
+		    NVL(SUM(SI.QTSHPO),0) AS QTSHPO,					
+		    NVL(SUM(SI.QTALOC),0) AS QTALOC,					
+		    NVL(SUM(SI.QTJCMP),0) AS QTJCMP,					
+		    NVL(SUM(SI.QTSHPD),0) AS QTSHPD,					
+		    SI.HEIGHT AS HEIGHT,					
+		    SI.CUBICM AS CUBICM,					
+		    ROUND(NVL(SUM(TI.QTCOMP * TI.LOTA16),0),0)  AS AMOUNT,			
+		    0 AS CUBICT,
+		    TI.LOTA10 AS LOTA10						
+		FROM SHPDH SH            
+       INNER JOIN SHPDI SI            
+          ON SH.SHPOKY = SI.SHPOKY    
+       INNER JOIN TASDI TI
+          ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+        LEFT OUTER JOIN WAHMA WH            
+          ON WH.WAREKY = SH.WAREKY
+	   WHERE 1 = 1			
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>					
+		GROUP BY SH.WAREKY, WH.NAME01,					
+		         SI.LOTA02, SI.HEIGHT, SI.CUBICM, TI.LOTA10		 			
+		ORDER BY 1,2,3,4		
+	</select>
+	
+	<select id="RL20TAB5_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+			SH.WAREKY AS WAREKY,					
+		    WH.NAME01 AS WAREKYNM,
+		    SI.CREUSR,
+		    CU.NMLAST AS CUSRNM,										
+		    NVL(SUM(SI.QTSHPO),0) AS QTSHPO,					
+		    NVL(SUM(SI.QTALOC),0) AS QTALOC,					
+		    NVL(SUM(SI.QTJCMP),0) AS QTJCMP,					
+		    NVL(SUM(SI.QTSHPD),0) AS QTSHPD,					
+		    SI.HEIGHT AS HEIGHT,					
+		    SI.CUBICM AS CUBICM,					
+		    ROUND(NVL(SUM(TI.QTCOMP * TI.LOTA16),0),0)  AS AMOUNT,			
+		    0 AS CUBICT,
+		    TI.LOTA10 AS LOTA10						
+		FROM SHPDH SH            
+       INNER JOIN SHPDI SI            
+          ON SH.SHPOKY = SI.SHPOKY    
+       INNER JOIN TASDI TI
+          ON TI.SHPOKY = SI.SHPOKY AND TI.SHPOIT = SI.SHPOIT         
+        LEFT OUTER JOIN WAHMA WH            
+          ON WH.WAREKY = SH.WAREKY
+          LEFT OUTER JOIN USRMA CU
+		  ON CU.USERID = SI.CREUSR   	
+	   WHERE 1 = 1			
+		<isNotEmpty property="WAREKY">
+			AND SH.WAREKY = #WAREKY#
+		</isNotEmpty>	
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>					
+		GROUP BY SH.WAREKY, WH.NAME01, SI.CREUSR, CU.NMLAST,			
+		         SI.HEIGHT, SI.CUBICM, TI.LOTA10					
+		ORDER BY 1,2,3,4
+	</select>
+	
+	<select id="RL03TAB1_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+	        H.WAREKY               AS WAREKY,
+	        W.NAME01               AS NAME01,
+	        I.AREAKY               AS AREAKY,         
+	        SUBSTR(H.DOCDAT,1,4)   AS YEAR,               
+	        SUBSTR(H.DOCDAT,5,2)   AS MONTH,   
+	        NVL(SUM(I.QTSPHY),0) - NVL(SUM(I.QTSIWH),0) AS QTADJU
+		FROM PHYDH H, PHYDI I, WAHMA W, SKUMA S
+       WHERE H.PHYIKY = I.PHYIKY       
+         AND H.WAREKY = W.WAREKY
+         AND I.OWNRKY = S.OWNRKY
+         AND I.SKUKEY = S.SKUKEY
+      <isNotEmpty property="WAREKY">
+		AND H.WAREKY = #WAREKY#
+	  </isNotEmpty>	         
+        <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		GROUP BY SUBSTR(H.DOCDAT,1,4),               
+	             SUBSTR(H.DOCDAT,5,2),               
+	             H.WAREKY, I.AREAKY, W.NAME01   
+ 		ORDER BY 1,2,3,4,5
+	</select>
+	
+	<select id="RL03TAB2_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+	        H.WAREKY               AS WAREKY,
+	        W.NAME01               AS NAME01,
+	        I.AREAKY               AS AREAKY,         
+	        SUBSTR(H.DOCDAT,1,4)   AS YEAR,               
+	        SUBSTR(H.DOCDAT,5,2)   AS MONTH,
+	        SUBSTR(H.DOCDAT,7,2)   AS DAY,
+	        NVL(SUM(I.QTSPHY),0) - NVL(SUM(I.QTSIWH),0) AS QTADJU
+		FROM PHYDH H, PHYDI I, WAHMA W, SKUMA S
+       WHERE H.PHYIKY = I.PHYIKY       
+         AND H.WAREKY = W.WAREKY
+         AND I.OWNRKY = S.OWNRKY
+         AND I.SKUKEY = S.SKUKEY
+      	<isNotEmpty property="WAREKY">
+			AND H.WAREKY = #WAREKY#
+	  	</isNotEmpty>	          
+        <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		GROUP BY SUBSTR(H.DOCDAT,1,4), 
+				 SUBSTR(H.DOCDAT,5,2),
+                 SUBSTR(H.DOCDAT,7,2), 
+                 H.WAREKY, I.AREAKY, W.NAME01   
+		ORDER BY 1,2,3,4,5,6
+	</select>
+	
+	<select id="RL03TAB3_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT 
+	        H.WAREKY               AS WAREKY,
+	        W.NAME01               AS NAME01,
+	        I.AREAKY               AS AREAKY,         
+	        I.SKUKEY               AS SKUKEY,
+	        S.DESC01               AS DESC01,
+	        NVL(SUM(I.QTSPHY),0) - NVL(SUM(I.QTSIWH),0) AS QTADJU
+		FROM PHYDH H, PHYDI I, WAHMA W, SKUMA S
+ 	   WHERE H.PHYIKY = I.PHYIKY       
+         AND H.WAREKY = W.WAREKY
+         AND I.OWNRKY = S.OWNRKY
+         AND I.SKUKEY = S.SKUKEY
+      	<isNotEmpty property="WAREKY">
+			AND H.WAREKY = #WAREKY#
+	  	</isNotEmpty>	         
+		<isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		</isNotEmpty>
+		GROUP BY I.SKUKEY, S.DESC01,
+                 H.WAREKY, I.AREAKY, W.NAME01   
+		ORDER BY 1,2,3,4,5
+	</select>
+	
+	<select id="RL30_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT SUBLSQ
+		     , FRDATE
+		     , TODATE
+		     , USERID
+		     , NVL((SELECT NMLAST FROM USRMA WHERE USERID = SUBUL_RUN_HIS.USERID),' ') AS USERNM
+		  FROM SUBUL_RUN_HIS
+		  ORDER BY SUBLSQ
+	</select>
+	
+	<select id="RL31_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT WAREKY -- Warehouse
+     		 , AREAKY -- Area
+		     , OWNRKY -- Owner
+		     , SKUKEY -- SKU
+		     , DESC01 -- SKU Description
+		     , DESC02 -- SKU Model
+		     , SKUG05 -- SKU Standard
+		     , DESC04 -- 제조사
+		     , SKUG02 -- 분류체계코드
+		     , LOTL03 -- 구매담당자ID
+		     , LOTL04 -- 구매담당자명
+		     , SKUG01 -- 납기일수
+		     , NVL((
+		             SELECT QTSIWH
+		               FROM SUBUL_INIT
+		              --WHERE DOCDAT = P_FRDATE
+		              WHERE DOCDAT = #CYDAT1#
+		                AND WAREKY = SUBUL_SUMMARY.WAREKY
+		                AND AREAKY = SUBUL_SUMMARY.AREAKY
+		                AND OWNRKY = SUBUL_SUMMARY.OWNRKY
+		                AND SKUKEY = SUBUL_SUMMARY.SKUKEY
+		           ),0) AS QTINIT
+		     , SUM(GRQTYT) AS GRQTYT
+		     , SUM(GIQTYT) AS GIQTYT
+		     , NVL((
+		             SELECT QTSIWH
+		               FROM SUBUL_INIT
+		              --WHERE DOCDAT = P_FRDATE
+		              WHERE DOCDAT = #CYDAT1#
+		                AND WAREKY = SUBUL_SUMMARY.WAREKY
+		                AND AREAKY = SUBUL_SUMMARY.AREAKY
+		                AND OWNRKY = SUBUL_SUMMARY.OWNRKY
+		                AND SKUKEY = SUBUL_SUMMARY.SKUKEY
+		           ),0) + SUM(GRQTYT) - SUM(GIQTYT) AS QTCOMP
+		  FROM SUBUL_SUMMARY
+		 --WHERE DOCDAT IN (SELECT SYCDAT FROM SYCAL WHERE SYCDAT BETWEEN P_FRDATE AND P_TODATE)
+		 WHERE DOCDAT IN (SELECT SYCDAT FROM SYCAL WHERE SYCDAT BETWEEN #CYDAT1# AND #CYDAT2#)
+		   -- RANGE SEARCH OPTION
+		 <isNotEmpty property="AREAKY">
+		 	AND AREAKY = #AREAKY#
+		 </isNotEmpty>
+		 <isNotEmpty property="RANGE_SQL">
+			$RANGE_SQL$
+		 </isNotEmpty>	
+		 GROUP BY WAREKY -- Warehouse
+		        , AREAKY -- Area
+		        , OWNRKY -- Owner
+		        , SKUKEY -- SKU
+		        , DESC01 -- SKU Description
+		        , DESC02 -- SKU Model
+		        , SKUG05 -- SKU Standard
+		        , DESC04 -- 제조사
+		        , SKUG02 -- 분류체계코드
+		        , LOTL03 -- 구매담당자ID
+		        , LOTL04 -- 구매담당자명
+		        , SKUG01 -- 납기일수
+	</select>
+	
+	<select id="RL31_MAP" parameterClass="Map" resultClass="DataMap">
+		{ call P_EXECUTE_SUBUL(#CYDAT1#, #CYDAT2#, #SES_USER_ID#) }
+	</select>
+	
+	<select id="RL60_SUMOK_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  LMODAT,
+		        USRID4,
+		        BSTNK, 
+		        WAREKYNM, 
+		        ALLOCATION, 
+		        PERSNM, 
+		        DLVTCNM,
+		        TRNTCNM, 
+		        MOVYN, 
+		        PO_ITM_UNP, 
+		        ZP00, 
+		        QTAPPO, 
+		        NAME01, 
+		        UNAME2, 
+		        DEPTID2, 
+		        USRUID3, 
+		        DEPTID3, 
+		        RQSHPD, 
+		        KUNNR, 
+		        KUNRE_C, 
+		        ZZDEVISION_C, 
+		        ZZORGNM1_C, 
+		        URGNR_C, 
+		        LOCAKYNM, 
+		        VEHINO, 
+		        ADDR01, 
+		        QBMANAGER, 
+		        QBCENTER, 
+		        OWNRKY
+		  FROM  SUMOK
+		 WHERE  1 = 1
+   	  ORDER BY  LMODAT, USRID4, BSTNK
+	</select>
+	
+	<select id="RL60_SUMNO_LIST" parameterClass="Map" resultClass="DataMap">
+		SELECT  LMODAT,
+		        USRID4,
+		        BSTNK, 
+		        WAREKYNM, 
+		        ALLOCATION, 
+		        PERSNM, 
+		        DLVTCNM,
+		        TRNTCNM, 
+		        MOVYN, 
+		        PO_ITM_UNP, 
+		        ZP00, 
+		        QTAPPO, 
+		        NAME01, 
+		        UNAME2, 
+		        DEPTID2, 
+		        USRUID3, 
+		        DEPTID3, 
+		        RQSHPD, 
+		        KUNNR, 
+		        KUNRE_C, 
+		        ZZDEVISION_C, 
+		        ZZORGNM1_C, 
+		        URGNR_C, 
+		        LOCAKYNM, 
+		        VEHINO, 
+		        ADDR01, 
+		        QBMANAGER, 
+		        QBCENTER, 
+		        OWNRKY
+		  FROM  SUMNO
+		 WHERE  1 = 1
+   	  ORDER BY  LMODAT, USRID4, BSTNK
+	</select>
+</sqlMap>

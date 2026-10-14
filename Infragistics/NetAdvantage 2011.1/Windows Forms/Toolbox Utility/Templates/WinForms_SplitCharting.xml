@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--This is an example that demonstrates how specific controls can be put in their own tabs.-->
+<Toolbox>
+  <!--A tab for the controls built against the CLR2.0 framework excluding the Charting controls.-->
+  <Tab Name="NetAdvantage $(var.Major).$(var.Minor) WinForms CLR2x">
+    <Assembly Include="^Infragistics2.*" />
+    <Assembly Exclude="^Infragistics2.*.Design.*" />
+    <Assembly Exclude=".*Chart.*" />
+    <Assembly Exclude=".*Gauge.*" />
+  </Tab>
+  <!--A tab for the controls built against the CLR3.0 framework.-->
+  <Tab Name="NetAdvantage $(var.Major).$(var.Minor) WinForms CLR3x">
+    <Assembly Include="Infragistics3.*" />
+  </Tab>
+  <!--A tab for the charting controls.-->
+  <Tab Name="NetAdvantage $(var.Major).$(var.Minor) WinForms Charting CLR2x">
+    <Assembly Include="Infragistics2.Win.UltraWinChart*" />
+    <Assembly Include="Infragistics2.Win.UltraWinGauge*" />
+  </Tab>
+</Toolbox>

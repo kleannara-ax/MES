@@ -1,0 +1,16 @@
+commonMessage.message.put("SYSTEM_EXCELMAXR","SYSTEM_EXCELMAXR↓다운로드 가능한 최대행 개수를 초과했습니다.");
+commonMessage.message.put("MASTER_MAX_MENU_TAB","MASTER_MAX_MENU_TAB↓윈도우탭의 최대 개수를 초과했습니다.");
+commonMessage.message.put("VALID_image","VALID_image↓이미지형식이 맞지않습니다.");
+commonMessage.message.put("SYSTEM_SAVECF","SYSTEM_SAVECF↓저장하시겠습니까?");
+commonMessage.message.put("EXECUTE_ERROR","EXECUTE_ERROR↓실패하였습니다.");
+commonMessage.message.put("SYSTEM_MWHEELC","SYSTEM_MWHEELC↓마우스 휠 클릭은 사용할 수 없습니다.");
+commonMessage.message.put("SYSTEM_DATAEMPTY","SYSTEM_DATAEMPTY↓조회된 데이터가 없습니다.");
+commonMessage.message.put("SYSTEM_ROWSEMPTY","SYSTEM_ROWSEMPTY↓선택된 데이터가 없습니다.");
+commonMessage.message.put("SYSTEM_FILEDCONFIRM","SYSTEM_FILEDCONFIRM↓{0} 파일을 다운로드 하시겠습니까?");
+commonMessage.message.put("SYSTEM_DATARELOAD","SYSTEM_DATARELOAD↓데이터 조회 후 진행 해주세요.");
+commonMessage.message.put("SYSTEM_EXCELFM","SYSTEM_EXCELFM↓엑셀 형식이 유효하지 않습니다.");
+commonMessage.message.put("SYSTEM_MODIFYITEMCHECK","SYSTEM_MODIFYITEMCHECK↓아이템에 수정된 데이터가 있습니다.\n새로운 데이터를 조회 하시겠습니까?");
+commonMessage.message.put("MASTER_WINDOWMAX","MASTER_WINDOWMAX↓메뉴탭 최대 개수는 {0}개 입니다.");
+commonMessage.message.put("VALID_excel","VALID_excel↓엑셀형식이 맞지않습니다.");
+commonMessage.message.put("SYSTEM_DELCONFIRM","SYSTEM_DELCONFIRM↓삭제하시겠습니까?");
+commonMessage.message.put("MASTER_LOADING","MASTER_LOADING↓다른 명령 실행중으로 중복 실행이 불가합니다.");
