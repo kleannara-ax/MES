@@ -236,7 +236,7 @@
 					successFunction : "savesuccessCallBack2"
 				});
 			} else if(json.P_SUCCESS == 'C'){
-				// 월/일은 유효하지만 올해가 아닌 날짜가 포함된 경우 사용자 확인 후 재요청한다.
+				// 기존 자재사용이력에 등록된 개별바코드 / 올해가 아닌 날짜가 있으면 한 번에 안내하고, 확인 시 재요청한다.
 				if(confirm(json.ERR_MSG)){
 					sendExcelUpload("Y");
 				}
