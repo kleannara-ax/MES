@@ -24,6 +24,11 @@
  *    Date        Ver       Name          Description
  * ------------ ------- ------------- ------------------------------------------
  * yyyy/mm/dd    1.0.0   여한진         Initial Version
+ * 2026/10/16    1.0.1                  엑셀업로드: 기존 사용이력/파일 내 중복 개별바코드 차단 해제,
+ *                                       기존 사용이력 바코드 전체를 모아 한 번에 사용자 확인
+ * 2026/10/16    1.0.2                  엑셀업로드: 전량 사용되어 TB_INV003 행이 DELETE되고 동일 플랜트/설비
+ *                                       사용이력만 남은 바코드(사용완료)는 확인/취소 없이 업로드 차단,
+ *                                       해당 바코드 전체를 모아 한 번에 안내
  *==============================================================================
  *  관련 테이블
  *      - [TB_INV010] : (.R..) 자재투입이력
@@ -90,6 +95,11 @@ AS
     V_SEQNO1            TB_INV010.SEQNO%TYPE;
     PROD_CUR            SYS_REFCURSOR;		-- 커서 정의
     PROD_CUR2           SYS_REFCURSOR;		-- 커서 정의
+    V_TEMP_ROWID        ROWID;              -- 엑셀업로드 TEMP 행 식별(동일 키 중복 행 대응)
+
+    -- 사용완료 바코드(투입 후 전량 사용되어 TB_INV003 행이 DELETE되고, 자재사용이력만 남은 바코드) → 업로드 차단
+    V_USED_UP_CNT       NUMBER := 0;
+    V_USED_UP_MSG       VARCHAR2(32767);    -- 사용완료 바코드 전체 목록
 
     V_STCK_QTY_INV003		NUMBER(15, 0);
     V_STCK_QTY_INV001		NUMBER(15, 0);
@@ -103,9 +113,11 @@ AS
     V_NOT_INPUT_BCD        VARCHAR2(3000);
     V_SHORT_STCK_CNT       NUMBER := 0;
     V_SHORT_STCK_BCD       VARCHAR2(3000);
-    V_YEAR_CONFIRMED       VARCHAR2(1) := 'N';
+    V_YEAR_CONFIRMED       VARCHAR2(1) := 'N';   -- 사용자 확인 여부(다른 연도 일자 + 기존 사용이력 바코드)
     V_OTHER_YEAR_DATES     VARCHAR2(3000);
     V_CHECK_DATE           DATE;
+    V_USED_BCD_MSG         VARCHAR2(32767);       -- 기존 자재사용이력 등록 바코드 전체 목록
+    V_CONFIRM_MSG          VARCHAR2(32767);       -- 사용자 확인 메시지
 
 BEGIN
 
@@ -330,13 +342,25 @@ BEGIN
                 SELECT DISTINCT T.IND_BCD_M
                   FROM TB_INV010_TEMP T
                  WHERE T.REGID = V_SESS_USER_ID
+                   -- TB_INV003에 투입 행 자체가 없고
                    AND NOT EXISTS (
                         SELECT 1
                           FROM TB_INV003 I003
                          WHERE I003.WERKS = T.WERKS
                            AND I003.MACH_CD = T.MACH_CD
                            AND I003.IND_BCD = T.IND_BCD_M
-                           AND NVL(I003.STCK_QTY, 0) > 0
+                   )
+                   /*
+                    * 같은 플랜트/설비의 자재사용이력도 없으면 미투입으로 차단한다.
+                    * (사용이력이 있는 바코드는 아래 '사용완료 바코드 차단'에서 별도 메시지로 차단)
+                    */
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV010 I010
+                         WHERE I010.WERKS = T.WERKS
+                           AND I010.MACH_CD = T.MACH_CD
+                           AND I010.IND_BCD_M = T.IND_BCD_M
+                           AND NVL(I010.CNL_YN, 'N') = 'N'
                    )
                );
 
@@ -345,6 +369,59 @@ BEGIN
             P_ERR_MSG := '원부자재 투입이 완료되지 않은 개별바코드가 있습니다.'
                          || CHR(10) || '미투입 바코드: ' || V_NOT_INPUT_BCD
                          || CHR(10) || 'PDA 원부자재 투입 후 다시 업로드해 주세요.';
+            ROLLBACK;
+            RETURN;
+        END IF;
+
+        /*
+         * 사용완료 바코드 차단
+         * 투입 후 전량 사용되어 TB_INV003 행이 DELETE되고, 같은 플랜트/설비에 자재사용이력만 남은
+         * 투입자재 개별바코드는 더 사용할 재고가 없으므로 확인/취소 없이 업로드 전체를 중단한다.
+         * 해당 바코드는 업로드 데이터 전체를 검토하여 한 번에 안내한다.
+         */
+        V_USED_UP_CNT := 0;
+        V_USED_UP_MSG := NULL;
+        FOR U IN (
+                SELECT T.IND_BCD_M,
+                       COUNT(*)          AS USED_CNT,
+                       MAX(I010.PRFM_DT) AS LAST_PRFM_DT
+                  FROM (SELECT DISTINCT WERKS, MACH_CD, IND_BCD_M
+                          FROM TB_INV010_TEMP
+                         WHERE REGID = V_SESS_USER_ID
+                           AND IND_BCD_M IS NOT NULL) T,
+                       TB_INV010 I010
+                 WHERE I010.WERKS = T.WERKS
+                   AND I010.MACH_CD = T.MACH_CD
+                   AND I010.IND_BCD_M = T.IND_BCD_M
+                   AND NVL(I010.CNL_YN, 'N') = 'N'
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV003 I003
+                         WHERE I003.WERKS = T.WERKS
+                           AND I003.MACH_CD = T.MACH_CD
+                           AND I003.IND_BCD = T.IND_BCD_M
+                   )
+                 GROUP BY T.IND_BCD_M
+                 ORDER BY T.IND_BCD_M
+        ) LOOP
+            V_USED_UP_CNT := V_USED_UP_CNT + 1;
+            -- 메시지 길이 한도(32767) 내에서 전체 바코드를 누적한다.
+            IF NVL(LENGTH(V_USED_UP_MSG), 0) < 30000 THEN
+                V_USED_UP_MSG := V_USED_UP_MSG || CHR(10)
+                                 || V_USED_UP_CNT || '. ' || U.IND_BCD_M
+                                 || ' (기존 사용 ' || U.USED_CNT || '건, 최근 실적일자: '
+                                 || NVL(U.LAST_PRFM_DT, '-') || ')';
+            END IF;
+        END LOOP;
+
+        IF V_USED_UP_CNT > 0 THEN
+            P_SUCCESS := 'N';
+            P_ERR_MSG := '투입재고가 모두 사용되어(사용완료) 더 이상 사용할 수 없는 투입자재 개별바코드가 있습니다. (총 '
+                         || V_USED_UP_CNT || '개)'
+                         || V_USED_UP_MSG
+                         || CASE WHEN NVL(LENGTH(V_USED_UP_MSG), 0) >= 30000
+                                 THEN CHR(10) || '... (이하 생략)' ELSE '' END
+                         || CHR(10) || CHR(10) || '해당 바코드를 엑셀에서 제외한 후 다시 업로드해 주세요.';
             ROLLBACK;
             RETURN;
         END IF;
@@ -385,34 +462,9 @@ BEGIN
         END IF;
 
         /*
-         * SAVE3 검증 이후 다른 세션에서 동일 바코드를 등록했을 가능성에
-         * 대비하여 업무 테이블 변경 전에 최종 중복 검증을 수행한다.
+         * 기존 자재사용이력에 등록된 투입자재 개별바코드는 SAVE3에서 사용자에게
+         * 한 번에 안내하고 확인을 받으므로 SAVE2에서는 차단하지 않는다.
          */
-        SELECT COUNT(*),
-               SUBSTR(
-                   LISTAGG(IND_BCD_M, ', ' ON OVERFLOW TRUNCATE '...' WITH COUNT)
-                       WITHIN GROUP (ORDER BY IND_BCD_M),
-                   1, 3000
-               )
-          INTO V_DUP_CNT, V_DUP_IND_BCD_M
-          FROM (
-                SELECT DISTINCT T.IND_BCD_M
-                  FROM TB_INV010_TEMP T
-                 WHERE T.REGID = V_SESS_USER_ID
-                   AND EXISTS (
-                        SELECT 1
-                          FROM TB_INV010 I010
-                         WHERE I010.IND_BCD_M = T.IND_BCD_M
-                   )
-               );
-
-        IF V_DUP_CNT > 0 THEN
-            P_SUCCESS := 'N';
-            P_ERR_MSG := '이미 자재사용이력에 등록된 투입자재 개별바코드가 있습니다.'
-                         || CHR(10) || '중복 바코드: ' || V_DUP_IND_BCD_M;
-            ROLLBACK;
-            RETURN;
-        END IF;
 
 --        OPEN PROD_CUR FOR
 --            SELECT WERKS, IND_BCD_M, UNIT, SUM(USE_QTY)
@@ -456,12 +508,11 @@ BEGIN
 --        END LOOP;
 --
         OPEN PROD_CUR2 FOR
-            SELECT WERKS, IND_BCD, LOT_NO, MATNR, MACH_CD, IND_BCD_M, LOT_NO_M, USE_QTY, NVL(SEQNO, 0)
-            INTO V_WERKS, V_IND_BCD, V_LOT_NO, V_MATNR, V_MACH_CD, V_IND_BCD_M, V_LOT_NO_M, V_USE_QTY, V_SEQNO1
+            SELECT ROWID, WERKS, IND_BCD, LOT_NO, MATNR, MACH_CD, IND_BCD_M, LOT_NO_M, USE_QTY, NVL(SEQNO, 0)
             FROM TB_INV010_TEMP
             WHERE REGID = V_SESS_USER_ID;
         LOOP
-            FETCH PROD_CUR2 INTO V_WERKS, V_IND_BCD, V_LOT_NO, V_MATNR, V_MACH_CD, V_IND_BCD_M, V_LOT_NO_M, V_USE_QTY, V_SEQNO1;
+            FETCH PROD_CUR2 INTO V_TEMP_ROWID, V_WERKS, V_IND_BCD, V_LOT_NO, V_MATNR, V_MACH_CD, V_IND_BCD_M, V_LOT_NO_M, V_USE_QTY, V_SEQNO1;
             EXIT WHEN PROD_CUR2 %NOTFOUND;
 
             BEGIN
@@ -491,14 +542,8 @@ BEGIN
                  , tit.WRK_ORDR_NO, tit.WRK_ORDR_SEQNO
                  , tit.MATNR_M, tit.IND_BCD_M, tit.LOT_NO_M, tit.USE_QTY, tit.UNIT, '1', SYSDATE, V_SESS_USER_ID
             FROM TB_INV010_TEMP tit
-            WHERE tit.WERKS = V_WERKS
-              AND tit.MACH_CD = V_MACH_CD
-              AND tit.IND_BCD = V_IND_BCD
-              AND tit.LOT_NO = V_LOT_NO
-              AND tit.IND_BCD_M = V_IND_BCD_M
-              AND tit.LOT_NO_M = V_LOT_NO_M
-              AND tit.SEQNO = V_SEQNO1
-              AND tit.REGID = V_SESS_USER_ID;
+            -- 엑셀 내 동일 바코드 행을 허용하므로 커서의 현재 행(ROWID)만 1건씩 등록한다.
+            WHERE tit.ROWID = V_TEMP_ROWID;
 
 
             UPDATE TB_INV003
@@ -635,30 +680,11 @@ BEGIN
                 END IF;
             END LOOP;
 
-        /* 업로드 파일 내부에서 같은 투입자재 개별바코드가 중복된 경우 */
-        SELECT COUNT(*),
-               SUBSTR(
-                   LISTAGG(IND_BCD_M, ', ' ON OVERFLOW TRUNCATE '...' WITH COUNT)
-                       WITHIN GROUP (ORDER BY IND_BCD_M),
-                   1, 3000
-               )
-          INTO V_FILE_DUP_CNT, V_FILE_DUP_IND_BCD_M
-          FROM (
-                SELECT T.IND_BCD_M
-                  FROM TB_INV010_TEMP T
-                 WHERE T.REGID = V_SESS_USER_ID
-                   AND T.IND_BCD_M IS NOT NULL
-                 GROUP BY T.IND_BCD_M
-                HAVING COUNT(*) > 1
-               );
-
-        IF V_FILE_DUP_CNT > 0 THEN
-            P_SUCCESS := 'N';
-            P_ERR_MSG := '엑셀 업로드 데이터에 중복된 투입자재 개별바코드가 있습니다.'
-                         || CHR(10) || '중복 바코드: ' || V_FILE_DUP_IND_BCD_M;
-            ROLLBACK;
-            RETURN;
-        END IF;
+        /*
+         * 업로드 파일 내부의 투입자재 개별바코드 중복은 화면(INV10.jsp)에서
+         * 중복 대상 전체를 안내하고 사용자 확인을 받으므로 차단하지 않는다.
+         * (동일 바코드 사용량은 아래 투입잔량 검증에서 합산하여 비교한다.)
+         */
 
         /* PDA_INV02 원부자재 투입 완료 및 투입잔량 검증 */
         SELECT COUNT(*),
@@ -672,13 +698,25 @@ BEGIN
                 SELECT DISTINCT T.IND_BCD_M
                   FROM TB_INV010_TEMP T
                  WHERE T.REGID = V_SESS_USER_ID
+                   -- TB_INV003에 투입 행 자체가 없고
                    AND NOT EXISTS (
                         SELECT 1
                           FROM TB_INV003 I003
                          WHERE I003.WERKS = T.WERKS
                            AND I003.MACH_CD = T.MACH_CD
                            AND I003.IND_BCD = T.IND_BCD_M
-                           AND NVL(I003.STCK_QTY, 0) > 0
+                   )
+                   /*
+                    * 같은 플랜트/설비의 자재사용이력도 없으면 미투입으로 차단한다.
+                    * (사용이력이 있는 바코드는 아래 '사용완료 바코드 차단'에서 별도 메시지로 차단)
+                    */
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV010 I010
+                         WHERE I010.WERKS = T.WERKS
+                           AND I010.MACH_CD = T.MACH_CD
+                           AND I010.IND_BCD_M = T.IND_BCD_M
+                           AND NVL(I010.CNL_YN, 'N') = 'N'
                    )
                );
 
@@ -687,6 +725,59 @@ BEGIN
             P_ERR_MSG := '원부자재 투입이 완료되지 않은 개별바코드가 있습니다.'
                          || CHR(10) || '미투입 바코드: ' || V_NOT_INPUT_BCD
                          || CHR(10) || 'PDA 원부자재 투입 후 다시 업로드해 주세요.';
+            ROLLBACK;
+            RETURN;
+        END IF;
+
+        /*
+         * 사용완료 바코드 차단
+         * 투입 후 전량 사용되어 TB_INV003 행이 DELETE되고, 같은 플랜트/설비에 자재사용이력만 남은
+         * 투입자재 개별바코드는 더 사용할 재고가 없으므로 확인/취소 없이 업로드 전체를 중단한다.
+         * 해당 바코드는 업로드 데이터 전체를 검토하여 한 번에 안내한다.
+         */
+        V_USED_UP_CNT := 0;
+        V_USED_UP_MSG := NULL;
+        FOR U IN (
+                SELECT T.IND_BCD_M,
+                       COUNT(*)          AS USED_CNT,
+                       MAX(I010.PRFM_DT) AS LAST_PRFM_DT
+                  FROM (SELECT DISTINCT WERKS, MACH_CD, IND_BCD_M
+                          FROM TB_INV010_TEMP
+                         WHERE REGID = V_SESS_USER_ID
+                           AND IND_BCD_M IS NOT NULL) T,
+                       TB_INV010 I010
+                 WHERE I010.WERKS = T.WERKS
+                   AND I010.MACH_CD = T.MACH_CD
+                   AND I010.IND_BCD_M = T.IND_BCD_M
+                   AND NVL(I010.CNL_YN, 'N') = 'N'
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV003 I003
+                         WHERE I003.WERKS = T.WERKS
+                           AND I003.MACH_CD = T.MACH_CD
+                           AND I003.IND_BCD = T.IND_BCD_M
+                   )
+                 GROUP BY T.IND_BCD_M
+                 ORDER BY T.IND_BCD_M
+        ) LOOP
+            V_USED_UP_CNT := V_USED_UP_CNT + 1;
+            -- 메시지 길이 한도(32767) 내에서 전체 바코드를 누적한다.
+            IF NVL(LENGTH(V_USED_UP_MSG), 0) < 30000 THEN
+                V_USED_UP_MSG := V_USED_UP_MSG || CHR(10)
+                                 || V_USED_UP_CNT || '. ' || U.IND_BCD_M
+                                 || ' (기존 사용 ' || U.USED_CNT || '건, 최근 실적일자: '
+                                 || NVL(U.LAST_PRFM_DT, '-') || ')';
+            END IF;
+        END LOOP;
+
+        IF V_USED_UP_CNT > 0 THEN
+            P_SUCCESS := 'N';
+            P_ERR_MSG := '투입재고가 모두 사용되어(사용완료) 더 이상 사용할 수 없는 투입자재 개별바코드가 있습니다. (총 '
+                         || V_USED_UP_CNT || '개)'
+                         || V_USED_UP_MSG
+                         || CASE WHEN NVL(LENGTH(V_USED_UP_MSG), 0) >= 30000
+                                 THEN CHR(10) || '... (이하 생략)' ELSE '' END
+                         || CHR(10) || CHR(10) || '해당 바코드를 엑셀에서 제외한 후 다시 업로드해 주세요.';
             ROLLBACK;
             RETURN;
         END IF;
@@ -725,44 +816,58 @@ BEGIN
             RETURN;
         END IF;
 
-        /* 기존 자재사용이력에 이미 존재하는 투입자재 개별바코드 검증 */
-        SELECT COUNT(*),
-               SUBSTR(
-                   LISTAGG(IND_BCD_M, ', ' ON OVERFLOW TRUNCATE '...' WITH COUNT)
-                       WITHIN GROUP (ORDER BY IND_BCD_M),
-                   1, 3000
-               )
-          INTO V_DUP_CNT, V_DUP_IND_BCD_M
-          FROM (
-                SELECT DISTINCT T.IND_BCD_M
-                  FROM TB_INV010_TEMP T
-                 WHERE T.REGID = V_SESS_USER_ID
-                   AND EXISTS (
-                        SELECT 1
-                          FROM TB_INV010 I010
-                         WHERE I010.IND_BCD_M = T.IND_BCD_M
-                   )
-               );
-
-        IF V_DUP_CNT > 0 THEN
-            P_SUCCESS := 'N';
-            P_ERR_MSG := '이미 자재사용이력에 등록된 투입자재 개별바코드가 있습니다.'
-                         || CHR(10) || '중복 바코드: ' || V_DUP_IND_BCD_M;
-            ROLLBACK;
-            RETURN;
-        END IF;
+        /*
+         * 기존 자재사용이력에 이미 등록된 투입자재 개별바코드는 차단하지 않고,
+         * 업로드 데이터 전체를 검토하여 해당 바코드를 모두 모은 뒤 사용자에게 한 번에 안내한다.
+         */
+        V_DUP_CNT := 0;
+        FOR R IN (
+                SELECT T.IND_BCD_M,
+                       COUNT(*)        AS USED_CNT,
+                       MAX(I010.PRFM_DT) AS LAST_PRFM_DT
+                  FROM (SELECT DISTINCT IND_BCD_M
+                          FROM TB_INV010_TEMP
+                         WHERE REGID = V_SESS_USER_ID
+                           AND IND_BCD_M IS NOT NULL) T,
+                       TB_INV010 I010
+                 WHERE I010.IND_BCD_M = T.IND_BCD_M
+                 GROUP BY T.IND_BCD_M
+                 ORDER BY T.IND_BCD_M
+        ) LOOP
+            V_DUP_CNT := V_DUP_CNT + 1;
+            -- 메시지 길이 한도(32767) 내에서 전체 바코드를 누적한다.
+            IF NVL(LENGTH(V_USED_BCD_MSG), 0) < 30000 THEN
+                V_USED_BCD_MSG := V_USED_BCD_MSG || CHR(10)
+                                  || V_DUP_CNT || '. ' || R.IND_BCD_M
+                                  || ' (기존 사용 ' || R.USED_CNT || '건, 최근 실적일자: '
+                                  || NVL(R.LAST_PRFM_DT, '-') || ')';
+            END IF;
+        END LOOP;
 
         /*
-         * 월/일이 유효한 다른 연도의 날짜는 사용자에게 한 번 확인한다.
-         * 확인 전에는 TEMP 적재도 롤백하며, 확인 후 동일 데이터를 다시 전송한다.
+         * 사용자 확인 대상(기존 사용이력 바코드, 현재 연도가 아닌 일자)을 하나의 메시지로 묶어
+         * 한 번만 확인 받는다. 확인 전에는 TEMP 적재도 롤백하며, 확인 후 동일 데이터를 다시 전송한다.
          */
-        IF V_OTHER_YEAR_DATES IS NOT NULL AND V_YEAR_CONFIRMED <> 'Y' THEN
+        IF (V_DUP_CNT > 0 OR V_OTHER_YEAR_DATES IS NOT NULL) AND V_YEAR_CONFIRMED <> 'Y' THEN
+            IF V_DUP_CNT > 0 THEN
+                V_CONFIRM_MSG := '이미 자재사용이력에 등록된 투입자재 개별바코드가 있습니다. (총 '
+                                 || V_DUP_CNT || '개)'
+                                 || V_USED_BCD_MSG;
+                IF NVL(LENGTH(V_USED_BCD_MSG), 0) >= 30000 THEN
+                    V_CONFIRM_MSG := V_CONFIRM_MSG || CHR(10) || '... (이하 생략)';
+                END IF;
+            END IF;
+
+            IF V_OTHER_YEAR_DATES IS NOT NULL THEN
+                V_CONFIRM_MSG := V_CONFIRM_MSG
+                                 || CASE WHEN V_CONFIRM_MSG IS NULL THEN '' ELSE CHR(10) || CHR(10) END
+                                 || '현재 연도(' || TO_CHAR(SYSDATE, 'YYYY')
+                                 || '년)가 아닌 투입/실적일자가 있습니다. ['
+                                 || V_OTHER_YEAR_DATES || ']';
+            END IF;
+
             P_SUCCESS := 'C';
-            P_ERR_MSG := '현재 연도('
-                         || TO_CHAR(SYSDATE, 'YYYY')
-                         || '년)가 아닌 투입/실적일자가 있습니다. ['
-                         || V_OTHER_YEAR_DATES
-                         || '] 그래도 진행하시겠습니까?';
+            P_ERR_MSG := V_CONFIRM_MSG || CHR(10) || CHR(10) || '그래도 진행하시겠습니까?';
             ROLLBACK;
             RETURN;
         END IF;
