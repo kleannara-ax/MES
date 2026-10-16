@@ -26,6 +26,9 @@
  * yyyy/mm/dd    1.0.0   여한진         Initial Version
  * 2026/10/16    1.0.1                  엑셀업로드: 기존 사용이력/파일 내 중복 개별바코드 차단 해제,
  *                                       기존 사용이력 바코드 전체를 모아 한 번에 사용자 확인
+ * 2026/10/16    1.0.2                  엑셀업로드: 전량 사용되어 TB_INV003 재고가 없는 바코드(사용완료)는
+ *                                       동일 플랜트/설비 사용이력이 있으면 미투입/잔량부족으로 차단하지 않고
+ *                                       TB_INV003 차감 없이 사용이력만 등록
  *==============================================================================
  *  관련 테이블
  *      - [TB_INV010] : (.R..) 자재투입이력
@@ -93,6 +96,12 @@ AS
     PROD_CUR            SYS_REFCURSOR;		-- 커서 정의
     PROD_CUR2           SYS_REFCURSOR;		-- 커서 정의
     V_TEMP_ROWID        ROWID;              -- 엑셀업로드 TEMP 행 식별(동일 키 중복 행 대응)
+
+    -- 사용완료 바코드(투입 후 전량 사용되어 TB_INV003 재고가 없고, 자재사용이력만 남은 바코드)
+    TYPE T_FLAG_MAP IS TABLE OF VARCHAR2(1) INDEX BY VARCHAR2(200);
+    V_USED_UP_MAP       T_FLAG_MAP;         -- KEY: WERKS|MACH_CD|IND_BCD_M
+    V_USED_UP_KEY       VARCHAR2(200);
+    V_USED_UP_CNT       NUMBER := 0;
 
     V_STCK_QTY_INV003		NUMBER(15, 0);
     V_STCK_QTY_INV001		NUMBER(15, 0);
@@ -343,6 +352,18 @@ BEGIN
                            AND I003.IND_BCD = T.IND_BCD_M
                            AND NVL(I003.STCK_QTY, 0) > 0
                    )
+                   /*
+                    * 투입 후 전량 사용되어 TB_INV003 재고가 삭제(또는 0)된 바코드는
+                    * 같은 플랜트/설비에 자재사용이력이 있으면 '사용완료'로 보고 미투입으로 차단하지 않는다.
+                    */
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV010 I010
+                         WHERE I010.WERKS = T.WERKS
+                           AND I010.MACH_CD = T.MACH_CD
+                           AND I010.IND_BCD_M = T.IND_BCD_M
+                           AND NVL(I010.CNL_YN, 'N') = 'N'
+                   )
                );
 
         IF V_NOT_INPUT_CNT > 0 THEN
@@ -377,6 +398,15 @@ BEGIN
                            AND I003.IND_BCD = T.IND_BCD_M) AS INPUT_STCK_QTY
                   FROM TB_INV010_TEMP T
                  WHERE T.REGID = V_SESS_USER_ID
+                   -- 사용완료 바코드(TB_INV003 재고 없음)는 차감할 재고가 없으므로 잔량 비교에서 제외한다.
+                   AND EXISTS (
+                        SELECT 1
+                          FROM TB_INV003 I003
+                         WHERE I003.WERKS = T.WERKS
+                           AND I003.MACH_CD = T.MACH_CD
+                           AND I003.IND_BCD = T.IND_BCD_M
+                           AND NVL(I003.STCK_QTY, 0) > 0
+                   )
                  GROUP BY T.WERKS, T.MACH_CD, T.IND_BCD_M
                )
          WHERE INPUT_STCK_QTY < EXCEL_USE_QTY;
@@ -435,6 +465,35 @@ BEGIN
 --
 --        END LOOP;
 --
+        /*
+         * 사용완료 바코드 목록을 TB_INV010 등록 전에 확정한다.
+         * (루프 안에서 판단하면 이번 업로드로 등록한 이력/차감 결과에 영향을 받으므로 미리 계산)
+         */
+        V_USED_UP_MAP.DELETE;
+        FOR U IN (
+                SELECT DISTINCT T.WERKS, T.MACH_CD, T.IND_BCD_M
+                  FROM TB_INV010_TEMP T
+                 WHERE T.REGID = V_SESS_USER_ID
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV003 I003
+                         WHERE I003.WERKS = T.WERKS
+                           AND I003.MACH_CD = T.MACH_CD
+                           AND I003.IND_BCD = T.IND_BCD_M
+                           AND NVL(I003.STCK_QTY, 0) > 0
+                   )
+                   AND EXISTS (
+                        SELECT 1
+                          FROM TB_INV010 I010
+                         WHERE I010.WERKS = T.WERKS
+                           AND I010.MACH_CD = T.MACH_CD
+                           AND I010.IND_BCD_M = T.IND_BCD_M
+                           AND NVL(I010.CNL_YN, 'N') = 'N'
+                   )
+        ) LOOP
+            V_USED_UP_MAP(U.WERKS || '|' || U.MACH_CD || '|' || U.IND_BCD_M) := 'Y';
+        END LOOP;
+
         OPEN PROD_CUR2 FOR
             SELECT ROWID, WERKS, IND_BCD, LOT_NO, MATNR, MACH_CD, IND_BCD_M, LOT_NO_M, USE_QTY, NVL(SEQNO, 0)
             FROM TB_INV010_TEMP
@@ -474,21 +533,26 @@ BEGIN
             WHERE tit.ROWID = V_TEMP_ROWID;
 
 
-            UPDATE TB_INV003
-            SET USE_QTY = NVL(USE_QTY, 0) + V_USE_QTY,
-                STCK_QTY = STCK_QTY - V_USE_QTY
-            WHERE WERKS = V_WERKS
-              AND MACH_CD = V_MACH_CD
-              AND IND_BCD = V_IND_BCD_M
-              AND NVL(STCK_QTY, 0) >= V_USE_QTY;
+            V_USED_UP_KEY := V_WERKS || '|' || V_MACH_CD || '|' || V_IND_BCD_M;
 
-            IF SQL%ROWCOUNT = 0 THEN
-                P_SUCCESS := 'N';
-                P_ERR_MSG := V_IND_BCD_M
-                             || ' 개별바코드의 원부자재 투입재고가 없거나 부족합니다.'
-                             || CHR(10) || 'PDA 원부자재 투입 상태를 확인해 주세요.';
-                ROLLBACK;
-                RETURN;
+            -- 사용완료 바코드는 TB_INV003 재고가 없으므로 차감하지 않고 사용이력만 등록한다.
+            IF NOT V_USED_UP_MAP.EXISTS(V_USED_UP_KEY) THEN
+                UPDATE TB_INV003
+                SET USE_QTY = NVL(USE_QTY, 0) + V_USE_QTY,
+                    STCK_QTY = STCK_QTY - V_USE_QTY
+                WHERE WERKS = V_WERKS
+                  AND MACH_CD = V_MACH_CD
+                  AND IND_BCD = V_IND_BCD_M
+                  AND NVL(STCK_QTY, 0) >= V_USE_QTY;
+
+                IF SQL%ROWCOUNT = 0 THEN
+                    P_SUCCESS := 'N';
+                    P_ERR_MSG := V_IND_BCD_M
+                                 || ' 개별바코드의 원부자재 투입재고가 없거나 부족합니다.'
+                                 || CHR(10) || 'PDA 원부자재 투입 상태를 확인해 주세요.';
+                    ROLLBACK;
+                    RETURN;
+                END IF;
             END IF;
 
 
@@ -634,6 +698,18 @@ BEGIN
                            AND I003.IND_BCD = T.IND_BCD_M
                            AND NVL(I003.STCK_QTY, 0) > 0
                    )
+                   /*
+                    * 투입 후 전량 사용되어 TB_INV003 재고가 삭제(또는 0)된 바코드는
+                    * 같은 플랜트/설비에 자재사용이력이 있으면 '사용완료'로 보고 미투입으로 차단하지 않는다.
+                    */
+                   AND NOT EXISTS (
+                        SELECT 1
+                          FROM TB_INV010 I010
+                         WHERE I010.WERKS = T.WERKS
+                           AND I010.MACH_CD = T.MACH_CD
+                           AND I010.IND_BCD_M = T.IND_BCD_M
+                           AND NVL(I010.CNL_YN, 'N') = 'N'
+                   )
                );
 
         IF V_NOT_INPUT_CNT > 0 THEN
@@ -667,6 +743,15 @@ BEGIN
                            AND I003.IND_BCD = T.IND_BCD_M) AS INPUT_STCK_QTY
                   FROM TB_INV010_TEMP T
                  WHERE T.REGID = V_SESS_USER_ID
+                   -- 사용완료 바코드(TB_INV003 재고 없음)는 차감할 재고가 없으므로 잔량 비교에서 제외한다.
+                   AND EXISTS (
+                        SELECT 1
+                          FROM TB_INV003 I003
+                         WHERE I003.WERKS = T.WERKS
+                           AND I003.MACH_CD = T.MACH_CD
+                           AND I003.IND_BCD = T.IND_BCD_M
+                           AND NVL(I003.STCK_QTY, 0) > 0
+                   )
                  GROUP BY T.WERKS, T.MACH_CD, T.IND_BCD_M
                )
          WHERE INPUT_STCK_QTY < EXCEL_USE_QTY;
@@ -698,12 +783,31 @@ BEGIN
                  ORDER BY T.IND_BCD_M
         ) LOOP
             V_DUP_CNT := V_DUP_CNT + 1;
+
+            -- 사용완료 바코드 여부 (TB_INV003 재고 없음 → 재고 차감 없이 이력만 등록됨)
+            SELECT COUNT(*)
+              INTO V_USED_UP_CNT
+              FROM TB_INV010_TEMP T
+             WHERE T.REGID = V_SESS_USER_ID
+               AND T.IND_BCD_M = R.IND_BCD_M
+               AND NOT EXISTS (
+                    SELECT 1
+                      FROM TB_INV003 I003
+                     WHERE I003.WERKS = T.WERKS
+                       AND I003.MACH_CD = T.MACH_CD
+                       AND I003.IND_BCD = T.IND_BCD_M
+                       AND NVL(I003.STCK_QTY, 0) > 0
+               );
+
             -- 메시지 길이 한도(32767) 내에서 전체 바코드를 누적한다.
             IF NVL(LENGTH(V_USED_BCD_MSG), 0) < 30000 THEN
                 V_USED_BCD_MSG := V_USED_BCD_MSG || CHR(10)
                                   || V_DUP_CNT || '. ' || R.IND_BCD_M
                                   || ' (기존 사용 ' || R.USED_CNT || '건, 최근 실적일자: '
-                                  || NVL(R.LAST_PRFM_DT, '-') || ')';
+                                  || NVL(R.LAST_PRFM_DT, '-') || ')'
+                                  || CASE WHEN V_USED_UP_CNT > 0
+                                          THEN ' ※ 투입재고 없음(사용완료) - 재고 차감 없이 이력만 등록'
+                                          ELSE '' END;
             END IF;
         END LOOP;
 
