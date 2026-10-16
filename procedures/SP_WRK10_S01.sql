@@ -1486,18 +1486,22 @@ BEGIN
                                        
         IF V_DOC_SEQNO_1 > 0 THEN
             P_DOC_NO1 := V_DOC_NO_1;
+            PKG_WRK055.LOG_DOC('SP_WRK10_S01', V_WERKS, V_DOC_NO_1, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
         END IF;
         
         IF V_DOC_SEQNO_2 > 0 THEN
             P_DOC_NO2 := V_DOC_NO_2;
+            PKG_WRK055.LOG_DOC('SP_WRK10_S01', V_WERKS, V_DOC_NO_2, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
         END IF;
 
         IF V_DOC_SEQNO_3 > 0 THEN
             P_DOC_NO3 := V_DOC_NO_3;
+            PKG_WRK055.LOG_DOC('SP_WRK10_S01', V_WERKS, V_DOC_NO_3, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
         END IF;
 
         IF V_DOC_SEQNO_4 > 0 THEN
             P_DOC_NO4 := V_DOC_NO_4;
+            PKG_WRK055.LOG_DOC('SP_WRK10_S01', V_WERKS, V_DOC_NO_4, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
         END IF;
         
     ELSIF P_TYPE = 'DELETE' THEN          --폐품 취소
@@ -1713,6 +1717,7 @@ BEGIN
 
         IF V_DOC_SEQNO_1 > 0 THEN
             P_DOC_NO1 := V_DOC_NO_1;
+            PKG_WRK055.LOG_DOC('SP_WRK10_S01', V_WERKS, V_DOC_NO_1, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
         END IF;
     ELSIF P_TYPE = 'ROLLBACK1' THEN         --폐품실적 취소 오류 시 롤백 (취소 롤백)
         V_ARR_LIST2                 := TREAT (V_JSON.get ('head') AS json_object_t);
