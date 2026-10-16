@@ -398,6 +398,7 @@ BEGIN
             END IF;
 
             --자재 반납요청
+            PKG_WRK055.LOG_IF('SP_POP_WRK82_U01', P_WERKS, 'MES_IF_400', V_DOC_NO, P_USER_ID);   -- WRK55 RFC 전송로그
             V_SQL := FN_IF_QUERY('MES_IF_400', V_DOC_NO);
             IF V_SQL IS NOT NULL THEN
             	OPEN CUR_1 FOR V_SQL;

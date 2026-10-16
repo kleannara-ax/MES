@@ -595,11 +595,13 @@ BEGIN
     --생산오더별 투입자재 취소 실적
     IF V_DOC_SEQNO_1 > 0 THEN
         P_DOC_NO1 := V_DOC_NO_1;
+        PKG_WRK055.LOG_DOC('SP_INV09_S01', V_WERKS, V_DOC_NO_1, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
     END IF;
     
     --생산오더별 투입자재 실적
     IF V_DOC_SEQNO_2 > 0 THEN
         P_DOC_NO2 := V_DOC_NO_2;
+        PKG_WRK055.LOG_DOC('SP_INV09_S01', V_WERKS, V_DOC_NO_2, V_SESS_USER_ID);   -- WRK55 RFC 전송로그
     END IF;
     
     P_SUCCESS := 'Y';
