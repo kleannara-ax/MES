@@ -63,24 +63,26 @@
 	}
 
 	// 같은 엑셀 파일 안의 투입자재 개별바코드 중복 및 날짜 유효성 검사
+	// - 날짜 오류: 업로드 중단
+	// - 개별바코드 중복: 중복 대상 전체를 안내하고 확인 시 계속 진행, 취소 시 중단
 	function inv10ValidateExcelRows(dataList){
 		if(!dataList || dataList.length == 0){
 			return true;
 		}
 
-		var barcodeMap = {};
-		var duplicateList = [];
+		var barcodeRowMap = {};   // 바코드별 행 번호 목록
+		var barcodeOrder = [];    // 바코드 최초 등장 순서
 		var invalidDateList = [];
 
 		for(var i = 0; i < dataList.length; i++){
 			var barcode = dataList[i].IND_BCD_M;
 			barcode = barcode == null ? "" : String(barcode).replace(/^\s+|\s+$/g, "");
-			if(barcode != "" && barcodeMap[barcode]){
-				if(duplicateList.indexOf(barcode) == -1){
-					duplicateList.push(barcode);
+			if(barcode != ""){
+				if(!barcodeRowMap.hasOwnProperty(barcode)){
+					barcodeRowMap[barcode] = [];
+					barcodeOrder.push(barcode);
 				}
-			}else if(barcode != ""){
-				barcodeMap[barcode] = true;
+				barcodeRowMap[barcode].push(i + 1);
 			}
 
 			var inpDt = dataList[i].INP_DT;
@@ -93,17 +95,31 @@
 			}
 		}
 
-		if(duplicateList.length > 0){
-			alert("엑셀 파일 내 투입자재 개별바코드가 중복되었습니다.\n\n"
-					+ duplicateList.join(", ")
-					+ "\n\n중복 데이터를 제거한 후 다시 업로드해 주세요.");
-			return false;
-		}
+		// 날짜 오류는 계속 진행할 수 없으므로 먼저 검사하여 중단한다.
 		if(invalidDateList.length > 0){
 			alert("엑셀 파일의 투입일자 또는 실적일자가 올바르지 않습니다.\n\n"
 					+ invalidDateList.join("\n")
 					+ "\n\nYYYYMMDD 형식의 실제 날짜로 수정한 후 다시 업로드해 주세요.");
 			return false;
+		}
+
+		// 중복 개별바코드 전체 목록 (바코드 / 건수 / 해당 행)
+		var duplicateList = [];
+		var duplicateRowCount = 0;
+		for(var j = 0; j < barcodeOrder.length; j++){
+			var rows = barcodeRowMap[barcodeOrder[j]];
+			if(rows.length > 1){
+				duplicateRowCount += rows.length;
+				duplicateList.push((duplicateList.length + 1) + ". " + barcodeOrder[j]
+						+ " (" + rows.length + "건 - " + rows.join(", ") + "행)");
+			}
+		}
+
+		if(duplicateList.length > 0){
+			return confirm("엑셀 파일 내 중복된 투입자재 개별바코드가 있습니다.\n"
+					+ "(중복 바코드 " + duplicateList.length + "개 / 해당 행 " + duplicateRowCount + "건)\n\n"
+					+ duplicateList.join("\n")
+					+ "\n\n계속 진행하시겠습니까?\n[확인] 계속 진행 / [취소] 업로드 중단");
 		}
 
 		return true;

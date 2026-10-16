@@ -833,6 +833,19 @@
 		}
 	</select>
 	
+	<!-- WRK55 : 화장지 실적 현황 -->
+	<select id="WRK55_MAP" parameterType="hashmap" statementType="CALLABLE">
+		{
+			CALL SP_WRK55_S01(
+				#{P_TYPE, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_JSON_STR, mode=IN, jdbcType=VARCHAR, javaType=String},
+				#{P_SUCCESS, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_ERR_MSG, mode=OUT, jdbcType=VARCHAR, javaType=String},
+				#{P_RS_LIST, mode=OUT, jdbcType=CURSOR, javaType=ResultSet, resultMap=resultMap}
+			)
+		}
+	</select>
+	
 	<select id="WRK50_MAP" parameterType="hashmap" statementType="CALLABLE">
 		{
 			CALL SP_WRK50_S01(

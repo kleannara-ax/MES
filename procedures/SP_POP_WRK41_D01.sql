@@ -334,6 +334,7 @@ BEGIN
                      , 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS I_IF_KEY
                 FROM dual;
                 --인터페이스 상세 파라미터
+                PKG_WRK055.LOG_IF('SP_POP_WRK41_D01', P_WERKS, V_EIF_ID, V_DOC_DISPO, P_USERID);   -- WRK55 RFC 전송로그
                 V_SQL_E := FN_IF_QUERY(V_EIF_ID, V_DOC_DISPO);
                 IF V_SQL_E IS NOT NULL THEN
                 	OPEN CUR_2 FOR V_SQL_E;
@@ -410,6 +411,7 @@ BEGIN
                      , 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS I_IF_KEY
                 FROM dual;
                 --인터페이스 상세 파라미터
+                PKG_WRK055.LOG_IF('SP_POP_WRK41_D01', P_WERKS, V_PIF_ID, V_DOC_NO, P_USERID);   -- WRK55 RFC 전송로그
                 V_SQL_P := FN_IF_QUERY(V_PIF_ID, V_DOC_NO);
                 IF V_SQL_P IS NOT NULL THEN
                 	OPEN CUR_4 FOR V_SQL_P;
@@ -451,6 +453,7 @@ BEGIN
                      , 'M' || LTRIM(RTRIM(TO_CHAR(SEQ_GET_IFR_KEY.NEXTVAL, '00000000000000000000000000000'))) AS I_IF_KEY
                 FROM dual;
                 --인터페이스 상세 파라미터
+                PKG_WRK055.LOG_IF('SP_POP_WRK41_D01', P_WERKS, V_EIF_ID, V_DOC_DISPO, P_USERID);   -- WRK55 RFC 전송로그
                 V_SQL_E := FN_IF_QUERY(V_EIF_ID, V_DOC_DISPO);
                 IF V_SQL_E IS NOT NULL THEN
                 	OPEN CUR_2 FOR V_SQL_E;
