@@ -144,6 +144,21 @@ namespace SmartDas.POPUP
                 return;
             }
 
+            // 실재고는 전산재고를 초과할 수 없음 (서버 SP_POP_WRK82_U01 에서도 동일 검증)
+            double dSysStckQty;
+            if (dStckQty < 0.0)
+            {
+                new POPUP.MessageForm("실재고는 0보다 작을 수 없습니다.", MessageBoxButtons.OK, "알   림").ShowDialog(this);
+                return;
+            }
+            if (double.TryParse(lblStockQty.Text.Replace(",", "").Trim(), out dSysStckQty) && dStckQty > dSysStckQty)
+            {
+                new POPUP.MessageForm("입력한 실재고(" + string.Format("{0:#,##0.###}", dStckQty) + ")가 전산재고("
+                                      + string.Format("{0:#,##0.###}", dSysStckQty) + ")보다 많아 처리할 수 없습니다.\n실재고를 다시 확인하여 주시기 바랍니다."
+                                      , MessageBoxButtons.OK, "알   림").ShowDialog(this);
+                return;
+            }
+
             try
             {
                 //실잔량 수량 확인
