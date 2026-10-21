@@ -29,11 +29,14 @@
  * 2026/10/16    1.0.2                  엑셀업로드: 전량 사용되어 TB_INV003 행이 DELETE되고 동일 플랜트/설비
  *                                       사용이력만 남은 바코드(사용완료)는 확인/취소 없이 업로드 차단,
  *                                       해당 바코드 전체를 모아 한 번에 안내
+ * 2026/10/21    1.0.3                  엑셀업로드: TB_INV001 기준 투입자재 개별바코드 LOT번호/단위 검증
+ *                                       (바코드 없음/LOT 오류/단위 오류는 차단, 단위가 모두 빈칸이면 확인)
  *==============================================================================
  *  관련 테이블
  *      - [TB_INV010] : (.R..) 자재투입이력
  *      - [TB_MAS012] : (.R..) 설비 마스터
  *      - [TB_MAS001] : (.R..) 자재
+ *      - [TB_INV001] : (.R..) 공정재고 (엑셀업로드 투입자재 LOT번호/단위 기준)
  *=============================================================================*/
 
 AS
@@ -113,11 +116,28 @@ AS
     V_NOT_INPUT_BCD        VARCHAR2(3000);
     V_SHORT_STCK_CNT       NUMBER := 0;
     V_SHORT_STCK_BCD       VARCHAR2(3000);
-    V_YEAR_CONFIRMED       VARCHAR2(1) := 'N';   -- 사용자 확인 여부(다른 연도 일자 + 기존 사용이력 바코드)
+    V_YEAR_CONFIRMED       VARCHAR2(1) := 'N';   -- 사용자 확인 여부(다른 연도 일자 + 기존 사용이력 바코드 + 단위 빈칸)
     V_OTHER_YEAR_DATES     VARCHAR2(3000);
     V_CHECK_DATE           DATE;
     V_USED_BCD_MSG         VARCHAR2(32767);       -- 기존 자재사용이력 등록 바코드 전체 목록
     V_CONFIRM_MSG          VARCHAR2(32767);       -- 사용자 확인 메시지
+
+    -- TB_INV001(공정재고) 기준 투입자재 개별바코드 LOT번호/단위 검증용 변수
+    V_I001_CNT             NUMBER := 0;           -- 개별바코드의 TB_INV001 행 수
+    V_LOT_OK_CNT           NUMBER := 0;           -- 엑셀 LOT번호와 일치하는 TB_INV001 행 수
+    V_UNIT_OK_CNT          NUMBER := 0;           -- 엑셀 단위와 일치하는 TB_INV001 행 수
+    V_I001_LOTS            VARCHAR2(4000);        -- TB_INV001의 올바른 LOT번호
+    V_I001_UNITS           VARCHAR2(4000);        -- TB_INV001의 올바른 단위
+    V_SHOW_LOT             VARCHAR2(4000);        -- 단위 메시지에 표시할 LOT번호
+    V_NO_BCD_CNT           NUMBER := 0;           -- TB_INV001에 없는 개별바코드 수
+    V_NO_BCD_MSG           VARCHAR2(10000);
+    V_LOT_ERR_CNT          NUMBER := 0;           -- LOT번호 오류 수
+    V_LOT_ERR_MSG          VARCHAR2(10000);
+    V_UNIT_ERR_CNT         NUMBER := 0;           -- 단위 오류 수
+    V_UNIT_ERR_MSG         VARCHAR2(10000);
+    V_BLANK_UNIT_CNT       NUMBER := 0;           -- 엑셀/TB_INV001 모두 단위가 빈칸인 수 (사용자 확인)
+    V_BLANK_UNIT_MSG       VARCHAR2(10000);
+    V_BLOCK_MSG            VARCHAR2(32767);       -- 차단 메시지
 
 BEGIN
 
@@ -681,6 +701,144 @@ BEGIN
             END LOOP;
 
         /*
+         * TB_INV001(공정재고) 기준 투입자재 개별바코드 LOT번호 / 단위 검증
+         *  - WMS 불출 시 TB_INV001에 개별바코드별 LOT번호/단위가 등록되므로 이를 기준값으로 사용한다.
+         *  - 아래 1~3은 업로드 데이터 전체를 검토한 뒤 한 번에 안내하고 확인/취소 없이 업로드를 중단한다.
+         *    1) TB_INV001에 없는 개별바코드
+         *    2) 엑셀 LOT번호가 TB_INV001 LOT번호와 다른 경우 (올바른 LOT번호 안내)
+         *    3) 엑셀 단위가 TB_INV001 단위와 다른 경우 (올바른 단위 안내)
+         *  - 엑셀/TB_INV001 단위가 모두 빈칸이면 오류가 아니라 사용자 확인 대상으로 모은다.
+         *  - 공백은 TRIM 후 비교하며, 빈칸은 메시지에 '(빈칸)'으로 표시한다.
+         */
+        V_NO_BCD_CNT := 0;      V_NO_BCD_MSG := NULL;
+        V_LOT_ERR_CNT := 0;     V_LOT_ERR_MSG := NULL;
+        V_UNIT_ERR_CNT := 0;    V_UNIT_ERR_MSG := NULL;
+        V_BLANK_UNIT_CNT := 0;  V_BLANK_UNIT_MSG := NULL;
+
+        FOR T IN (
+                SELECT DISTINCT
+                       WERKS,
+                       TRIM(IND_BCD_M)          AS IND_BCD_M,
+                       NVL(TRIM(LOT_NO_M), ' ') AS LOT_NO_M,
+                       NVL(TRIM(UNIT), ' ')     AS UNIT
+                  FROM TB_INV010_TEMP
+                 WHERE REGID = V_SESS_USER_ID
+                   AND TRIM(IND_BCD_M) IS NOT NULL
+                 ORDER BY 2, 3, 4
+        ) LOOP
+            SELECT COUNT(*)
+              INTO V_I001_CNT
+              FROM TB_INV001 I001
+             WHERE I001.WERKS = T.WERKS
+               AND I001.IND_BCD = T.IND_BCD_M;
+
+            IF V_I001_CNT = 0 THEN
+                /* 1) TB_INV001에 없는 개별바코드 (같은 바코드는 1번만 표시) */
+                IF INSTR(V_NO_BCD_MSG || CHR(10), '. ' || T.IND_BCD_M || CHR(10)) = 0 THEN
+                    V_NO_BCD_CNT := V_NO_BCD_CNT + 1;
+                    IF NVL(LENGTH(V_NO_BCD_MSG), 0) < 9000 THEN
+                        V_NO_BCD_MSG := V_NO_BCD_MSG || CHR(10) || V_NO_BCD_CNT || '. ' || T.IND_BCD_M;
+                    END IF;
+                END IF;
+            ELSE
+                /* TB_INV001의 올바른 LOT번호 (여러 행이면 모두 표시) */
+                SELECT COUNT(CASE WHEN LOT_NO = T.LOT_NO_M THEN 1 END),
+                       SUBSTR(LISTAGG(CASE WHEN LOT_NO = ' ' THEN '(빈칸)' ELSE LOT_NO END, ', ')
+                                  WITHIN GROUP (ORDER BY LOT_NO), 1, 4000)
+                  INTO V_LOT_OK_CNT, V_I001_LOTS
+                  FROM (SELECT DISTINCT NVL(TRIM(I001.LOT_NO), ' ') AS LOT_NO
+                          FROM TB_INV001 I001
+                         WHERE I001.WERKS = T.WERKS
+                           AND I001.IND_BCD = T.IND_BCD_M);
+
+                /* 2) LOT번호 오류 */
+                IF V_LOT_OK_CNT = 0 THEN
+                    V_LOT_ERR_CNT := V_LOT_ERR_CNT + 1;
+                    IF NVL(LENGTH(V_LOT_ERR_MSG), 0) < 9000 THEN
+                        V_LOT_ERR_MSG := V_LOT_ERR_MSG || CHR(10)
+                                         || V_LOT_ERR_CNT || '. 개별바코드 ' || T.IND_BCD_M
+                                         || ' : 올바른 LOT번호는 [' || V_I001_LOTS || '] 인데 Excel에는 ['
+                                         || CASE WHEN T.LOT_NO_M = ' ' THEN '(빈칸)' ELSE T.LOT_NO_M END
+                                         || '] 로 입력하셨습니다.';
+                    END IF;
+                END IF;
+
+                /*
+                 * 단위 비교 기준 : LOT번호가 일치하는 TB_INV001 행
+                 * (LOT번호가 틀린 경우에도 단위 오류를 함께 안내하기 위해 바코드의 전체 행과 비교)
+                 */
+                SELECT COUNT(CASE WHEN UNIT = T.UNIT THEN 1 END),
+                       SUBSTR(LISTAGG(CASE WHEN UNIT = ' ' THEN '(빈칸)' ELSE UNIT END, ', ')
+                                  WITHIN GROUP (ORDER BY UNIT), 1, 4000)
+                  INTO V_UNIT_OK_CNT, V_I001_UNITS
+                  FROM (SELECT DISTINCT NVL(TRIM(I001.UNIT), ' ') AS UNIT
+                          FROM TB_INV001 I001
+                         WHERE I001.WERKS = T.WERKS
+                           AND I001.IND_BCD = T.IND_BCD_M
+                           AND (V_LOT_OK_CNT = 0 OR NVL(TRIM(I001.LOT_NO), ' ') = T.LOT_NO_M));
+
+                V_SHOW_LOT := CASE WHEN V_LOT_OK_CNT > 0
+                                   THEN CASE WHEN T.LOT_NO_M = ' ' THEN '(빈칸)' ELSE T.LOT_NO_M END
+                                   ELSE V_I001_LOTS END;
+
+                IF V_UNIT_OK_CNT = 0 THEN
+                    /* 3) 단위 오류 */
+                    V_UNIT_ERR_CNT := V_UNIT_ERR_CNT + 1;
+                    IF NVL(LENGTH(V_UNIT_ERR_MSG), 0) < 9000 THEN
+                        V_UNIT_ERR_MSG := V_UNIT_ERR_MSG || CHR(10)
+                                          || V_UNIT_ERR_CNT || '. 개별바코드 ' || T.IND_BCD_M
+                                          || ' 의 LOT번호 ' || V_SHOW_LOT
+                                          || ' 는 단위가 [' || V_I001_UNITS || '] 인데 Excel에는 ['
+                                          || CASE WHEN T.UNIT = ' ' THEN '(빈칸)' ELSE T.UNIT END
+                                          || '] 로 입력하셨습니다.';
+                    END IF;
+                ELSIF T.UNIT = ' ' THEN
+                    /* 엑셀/TB_INV001 모두 단위 빈칸 → 사용자 확인 대상 */
+                    V_BLANK_UNIT_CNT := V_BLANK_UNIT_CNT + 1;
+                    IF NVL(LENGTH(V_BLANK_UNIT_MSG), 0) < 9000 THEN
+                        V_BLANK_UNIT_MSG := V_BLANK_UNIT_MSG || CHR(10)
+                                            || V_BLANK_UNIT_CNT || '. 개별바코드 ' || T.IND_BCD_M
+                                            || ' (LOT번호 ' || V_SHOW_LOT || ')';
+                    END IF;
+                END IF;
+            END IF;
+        END LOOP;
+
+        IF V_NO_BCD_CNT > 0 OR V_LOT_ERR_CNT > 0 OR V_UNIT_ERR_CNT > 0 THEN
+            V_BLOCK_MSG := NULL;
+
+            IF V_NO_BCD_CNT > 0 THEN
+                V_BLOCK_MSG := '■ 투입자재 개별바코드가 없습니다. (총 ' || V_NO_BCD_CNT || '개)'
+                               || V_NO_BCD_MSG
+                               || CASE WHEN NVL(LENGTH(V_NO_BCD_MSG), 0) >= 9000
+                                       THEN CHR(10) || '... (이하 생략)' ELSE '' END;
+            END IF;
+
+            IF V_LOT_ERR_CNT > 0 THEN
+                V_BLOCK_MSG := V_BLOCK_MSG
+                               || CASE WHEN V_BLOCK_MSG IS NULL THEN '' ELSE CHR(10) || CHR(10) END
+                               || '■ LOT번호가 잘못 입력되었습니다. (총 ' || V_LOT_ERR_CNT || '건)'
+                               || V_LOT_ERR_MSG
+                               || CASE WHEN NVL(LENGTH(V_LOT_ERR_MSG), 0) >= 9000
+                                       THEN CHR(10) || '... (이하 생략)' ELSE '' END;
+            END IF;
+
+            IF V_UNIT_ERR_CNT > 0 THEN
+                V_BLOCK_MSG := V_BLOCK_MSG
+                               || CASE WHEN V_BLOCK_MSG IS NULL THEN '' ELSE CHR(10) || CHR(10) END
+                               || '■ 단위가 잘못 입력되었습니다. (총 ' || V_UNIT_ERR_CNT || '건)'
+                               || V_UNIT_ERR_MSG
+                               || CASE WHEN NVL(LENGTH(V_UNIT_ERR_MSG), 0) >= 9000
+                                       THEN CHR(10) || '... (이하 생략)' ELSE '' END;
+            END IF;
+
+            P_SUCCESS := 'N';
+            P_ERR_MSG := V_BLOCK_MSG || CHR(10) || CHR(10) || '엑셀을 수정한 후 다시 업로드해 주세요.';
+            ROLLBACK;
+            RETURN;
+        END IF;
+
+        /*
          * 업로드 파일 내부의 투입자재 개별바코드 중복은 화면(INV10.jsp)에서
          * 중복 대상 전체를 안내하고 사용자 확인을 받으므로 차단하지 않는다.
          * (동일 바코드 사용량은 아래 투입잔량 검증에서 합산하여 비교한다.)
@@ -845,10 +1003,11 @@ BEGIN
         END LOOP;
 
         /*
-         * 사용자 확인 대상(기존 사용이력 바코드, 현재 연도가 아닌 일자)을 하나의 메시지로 묶어
+         * 사용자 확인 대상(기존 사용이력 바코드, 현재 연도가 아닌 일자, 단위 빈칸)을 하나의 메시지로 묶어
          * 한 번만 확인 받는다. 확인 전에는 TEMP 적재도 롤백하며, 확인 후 동일 데이터를 다시 전송한다.
          */
-        IF (V_DUP_CNT > 0 OR V_OTHER_YEAR_DATES IS NOT NULL) AND V_YEAR_CONFIRMED <> 'Y' THEN
+        IF (V_DUP_CNT > 0 OR V_OTHER_YEAR_DATES IS NOT NULL OR V_BLANK_UNIT_CNT > 0)
+           AND V_YEAR_CONFIRMED <> 'Y' THEN
             IF V_DUP_CNT > 0 THEN
                 V_CONFIRM_MSG := '이미 자재사용이력에 등록된 투입자재 개별바코드가 있습니다. (총 '
                                  || V_DUP_CNT || '개)'
@@ -864,6 +1023,18 @@ BEGIN
                                  || '현재 연도(' || TO_CHAR(SYSDATE, 'YYYY')
                                  || '년)가 아닌 투입/실적일자가 있습니다. ['
                                  || V_OTHER_YEAR_DATES || ']';
+            END IF;
+
+            -- 엑셀/TB_INV001 모두 단위가 빈칸인 투입자재 개별바코드
+            IF V_BLANK_UNIT_CNT > 0 THEN
+                V_CONFIRM_MSG := V_CONFIRM_MSG
+                                 || CASE WHEN V_CONFIRM_MSG IS NULL THEN '' ELSE CHR(10) || CHR(10) END
+                                 || '단위가 빈칸인 투입자재 개별바코드가 있습니다. (총 '
+                                 || V_BLANK_UNIT_CNT || '건)'
+                                 || V_BLANK_UNIT_MSG
+                                 || CASE WHEN NVL(LENGTH(V_BLANK_UNIT_MSG), 0) >= 9000
+                                         THEN CHR(10) || '... (이하 생략)' ELSE '' END
+                                 || CHR(10) || '단위가 빈칸인데 진행하시겠습니까?';
             END IF;
 
             P_SUCCESS := 'C';
