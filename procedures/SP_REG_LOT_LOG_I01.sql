@@ -78,6 +78,8 @@ AS
     V_SAP_WRK_CD        VARCHAR(20); --SAP 작업장 코드
     V_DOC_NO            VARCHAR(30); --사용량 IF 문서번호
     V_DOC_SEQ           VARCHAR(6) := '1'; --사용량 IF 문서번호
+    V_SEQNO_START       NUMBER; --시작 이력 순번(사용이력 생성 건수 확인용)
+    V_BOM_STCK_CNT      NUMBER; --설비에 남아있는 BOM 투입자재 건수
     --커서처리
     CURSOR BOM_CUR IS SELECT S020.MATNR, S020.ORDER_ITM_NO, S020.ORDER_BOM_QTY, S020.UNIT
                         FROM TB_SCH020 S020, TB_MAS001 M001
@@ -114,6 +116,8 @@ BEGIN
         EXCEPTION WHEN NO_DATA_FOUND THEN
             V_SEQNO_REG := 1;
         END;
+        --사용이력 생성 여부 확인용 시작 순번 보관
+        V_SEQNO_START := V_SEQNO_REG;
         --설비정보 확인
         BEGIN
             SELECT SAP_WRK_CD
@@ -447,6 +451,40 @@ BEGIN
             END LOOP;
         END LOOP;
         CLOSE BOM_CUR;
+
+        --사용이력 0건 방지
+        --설비에 BOM 투입자재 재고가 있는데도 사용이력이 한 건도 생성되지 않은 경우 오류 처리
+        --(예: 가공기가 다음 작업지시로 전환되어 투입자재가 이동된 뒤, 포장기에서 이전 지시로 실적 등록)
+        --사용이력이 없으면 POP 실적현황(SP_POP_WRK20_S01)에서 조회되지 않아 생산확인/SAP 전송이 불가능해짐
+        IF V_SEQNO_REG = V_SEQNO_START AND NVL(P_PRFM_QTY, 0) > 0 THEN
+            SELECT COUNT(*)
+              INTO V_BOM_STCK_CNT
+              FROM TB_INV003 I003
+             WHERE 1=1
+               AND I003.WERKS = P_WERKS
+               AND I003.MACH_CD = P_MACH_CD
+               AND I003.STCK_QTY > 0
+               AND I003.MATNR IN (SELECT S020.MATNR
+                                    FROM TB_SCH020 S020, TB_MAS001 M001
+                                   WHERE 1=1
+                                     AND S020.WERKS = M001.WERKS
+                                     AND S020.MATNR = M001.MATNR
+                                     AND S020.WERKS = P_WERKS
+                                     AND S020.WRK_ORDR_NO = P_WRK_ORDR_NO
+                                     AND S020.WRK_ORDR_SEQNO = P_WRK_ORDR_SEQNO
+                                     AND NVL(S020.ORDER_BOM_QTY, 0) > 0
+                                     --PS는 포장 부자재만 처리 (BOM_CUR 조건과 동일)
+                                     AND ( (S020.WERKS = 'P100' AND M001.MATNR_DIV = 'ROH7')
+                                           OR S020.WERKS != 'P100'));
+
+            IF V_BOM_STCK_CNT > 0 THEN
+                P_RS_CODE := 'E';
+                P_RS_MSG  := '투입자재 사용이력이 생성되지 않았습니다.\n'
+                          || '작업지시(' || P_WRK_ORDR_NO || '-' || P_WRK_ORDR_SEQNO || ')에 연결된 투입자재가 없습니다.\n'
+                          || '가공기 작업지시가 이미 전환되었는지 확인하여 주시기 바랍니다.';
+                RETURN;
+            END IF;
+        END IF;
 
     --예외처리(catch)
     EXCEPTION
